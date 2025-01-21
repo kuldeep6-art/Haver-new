@@ -11,6 +11,8 @@ namespace haver.Models
         [Display(Name = "Machine Description")]
         [Required(ErrorMessage = "cannot leave the machine description blank.")]
         [MaxLength(100, ErrorMessage = "Description cannot exceed 100 Characters")]
+        [MinLength(10, ErrorMessage = "Description cannot be less than 10 characters long.")]
+
         public string? Description { get; set; }
 
         //Serial Num Annotations

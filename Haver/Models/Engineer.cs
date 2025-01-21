@@ -11,6 +11,7 @@ namespace haver.Models
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "cannot leave the first name blank.")]
         [MaxLength(50, ErrorMessage = "First name cannot be more than 50 characters long.")]
+        [MinLength(2, ErrorMessage = "First name cannot be less than 2 characters long.")]
         public string? FirstName { get; set; }
 
         //Last Name Annotations
@@ -18,6 +19,7 @@ namespace haver.Models
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "cannot leave the last name blank.")]
         [MaxLength(50, ErrorMessage = "Last name cannot be more than 50 characters long.")]
+        [MinLength(2, ErrorMessage = "Last name cannot be less than 2 characters long.")]
         public string? LastName { get; set; }
 
         //Phone Annotations
