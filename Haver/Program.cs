@@ -50,4 +50,12 @@ using(var scope = app.Services.CreateScope())
     HaverInitializer.Initialize(services);
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+   HaverInitializer.Initialize(services);
+}
+
+
 app.Run();
