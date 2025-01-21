@@ -35,6 +35,11 @@ namespace haver.Models
         [DataType(DataType.PhoneNumber)]
         [MaxLength(10)]
         public string? Phone { get; set; }
+
+
+        public string? CompanyName { get; set; }
+
+
         public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
     }
 }
