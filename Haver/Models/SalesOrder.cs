@@ -9,8 +9,10 @@ namespace haver.Models
         //OrderNumber  Annotations
 
         [Display(Name = "Order Number")]
-        [Required(ErrorMessage = "Order Number Cannot be blank")]
-        public int OrderNumber { get; set; }
+        [Required(ErrorMessage = "Order Number cannot be blank")]
+        [RegularExpression("^\\d{8}$", ErrorMessage = "The OHIP number must be exactly 8 numeric digits.")]
+        [StringLength(8)]
+        public string? OrderNumber { get; set; }
 
         //SoDate  Annotations
 
@@ -36,25 +38,30 @@ namespace haver.Models
 
         //AppDwgRcd  Annotations
 
-        [Display(Name = "AppDwgRcd")]
-        [Required(ErrorMessage = "AppDwgRcd is Required")]
+        [Display(Name = "Approved Drawings Recieved")]
+        [Required(ErrorMessage = "Enter the date approved drawings from the customer was recieved")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime AppDwgRcd { get; set; }
 
         //DwgIsDt  Annotations
 
-        [Display(Name = "DwgIsDt")]
-        [Required(ErrorMessage = "DwgIsDt is Required")]
+        [Display(Name = "Order Drawings Sent")]
+        [Required(ErrorMessage = "Enter the date drawings for this order was sent to the customer")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DwgIsDt { get; set; }
+
         public int CustomerID { get; set; }
+
         public Customer? Customer { get; set; }
+
         public int VendorID { get; set; }
+
         public Vendor? Vendor { get; set; }
 
         public ICollection<SalesOrderMachine> SalesOrderMachines { get; set; } = new HashSet<SalesOrderMachine>();
+
         public ICollection<SalesOrderPO> SalesOrderPOs { get; set; } = new HashSet<SalesOrderPO>();
     }
 }

@@ -3,6 +3,7 @@
     public enum Name
     {
         HINGSTONMETAL,
-        PROCESSGROUP
+        PROCESSGROUP, 
+        PRECISIONMETALWORKS
     }
 }
