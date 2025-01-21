@@ -1,6 +1,8 @@
 ﻿namespace haver.Models
 {
-    public class NamePlate
+    public enum NamePlate
     {
+        Received,
+        Required
     }
 }
