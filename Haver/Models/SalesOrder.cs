@@ -60,8 +60,8 @@ namespace haver.Models
 
         public Vendor? Vendor { get; set; }
 
-        public ICollection<SalesOrderMachine> SalesOrderMachines { get; set; } = new HashSet<SalesOrderMachine>();
+        public int MachineScheduleID {  get; set; }
 
-        public ICollection<SalesOrderPO> SalesOrderPOs { get; set; } = new HashSet<SalesOrderPO>();
+        public MachineSchedule? MachineSchedule { get; set; }
     }
 }
