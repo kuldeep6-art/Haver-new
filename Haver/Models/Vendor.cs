@@ -9,9 +9,9 @@ namespace haver.Models
         //ShippingTerms  Annotations
 
         [Display(Name = "Name")]
-        [Required(ErrorMessage = "You cannot leave the name blank.")]
-        [MaxLength(50, ErrorMessage = "name cannot be more than 50 characters long.")]
-        public string? Name { get; set; }
+        //[Required(ErrorMessage = "You cannot leave the name blank.")]
+        //[MaxLength(50, ErrorMessage = "name cannot be more than 50 characters long.")]
+        public Name? Name { get; set; }
 
         //ShippingTerms  Annotations
 
