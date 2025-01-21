@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "haver", "haver\haver.csproj", "{55843B41-7289-4788-81F0-8A38598EC8D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55843B41-7289-4788-81F0-8A38598EC8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55843B41-7289-4788-81F0-8A38598EC8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55843B41-7289-4788-81F0-8A38598EC8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55843B41-7289-4788-81F0-8A38598EC8D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41D8049E-2EBE-4631-B60B-E3E87F233710}
+	EndGlobalSection
+EndGlobal
