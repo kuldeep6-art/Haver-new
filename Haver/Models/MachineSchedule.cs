@@ -88,10 +88,6 @@ namespace haver.Models
         public bool Dissembly { get; set; }
         public int NoteID { get; set; }
 
-        //Note Annotations
-
-        //[MaxLength(1000, ErrorMessage = "Limit of 1000 characters for notes.")]
-        //[DataType(DataType.MultilineText)]
         public Note? Note { get; set; }
 
         public int MachineID { get; set; }
