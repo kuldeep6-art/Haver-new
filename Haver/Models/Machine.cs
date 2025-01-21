@@ -46,46 +46,8 @@ namespace haver.Models
         [Range(1, int.MaxValue, ErrorMessage = "Size Deck must be a Positive number")]
         public string? SizeDeck { get; set; }
 
-        //Media Annotations
+       
 
-        [Display(Name = "Media")]
-        [Required(ErrorMessage = "Media is required")]
-        public bool Media { get; set; }
-
-        //SpareParts Annotations
-
-        [Display(Name = "Spare Parts")]
-        public bool SpareParts { get; set; }
-
-        //SparePMedia Annotations
-
-        [Display(Name = "SpareP Media")]
-        public bool SparePMedia { get; set; }
-
-        //Base Annotations
-
-        [Display(Name = "Base")]
-        [Required(ErrorMessage = "Base is required")]
-        public bool Base { get; set; }
-
-        //Air Seal Annotations
-
-        [Display(Name = "Air Seal")]
-        [Required(ErrorMessage = "Air Seal is required")]
-        public bool AirSeal { get; set; }
-
-        //Coating Lining Annotations
-
-        [Display(Name = "Coating Lining")]
-        [Required(ErrorMessage = "Coating Lining is required")]
-        public bool CoatingLining { get; set; }
-
-        //Dissembly Annotations
-
-        [Display(Name = "Dissembly")]
-        [Required(ErrorMessage = "Dissembly is required")]
-        public bool Dissembly { get; set; }
-
-        public ICollection<SalesOrderMachine> SalesOrderMachines { get; set; } = new HashSet<SalesOrderMachine>();
+        public ICollection<MachineSchedule> MachineSchedules { get; set; } = new HashSet<MachineSchedule>();
     }
 }

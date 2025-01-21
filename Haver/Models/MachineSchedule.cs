@@ -46,6 +46,46 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DeliveryDate { get; set; }
 
+
+        //Media Annotations
+
+        [Display(Name = "Media")]
+        [Required(ErrorMessage = "Media is required")]
+        public bool Media { get; set; }
+
+        //SpareParts Annotations
+
+        [Display(Name = "Spare Parts")]
+        public bool SpareParts { get; set; }
+
+        //SparePMedia Annotations
+
+        [Display(Name = "SpareP Media")]
+        public bool SparePMedia { get; set; }
+
+        //Base Annotations
+
+        [Display(Name = "Base")]
+        [Required(ErrorMessage = "Base is required")]
+        public bool Base { get; set; }
+
+        //Air Seal Annotations
+
+        [Display(Name = "Air Seal")]
+        [Required(ErrorMessage = "Air Seal is required")]
+        public bool AirSeal { get; set; }
+
+        //Coating Lining Annotations
+
+        [Display(Name = "Coating Lining")]
+        [Required(ErrorMessage = "Coating Lining is required")]
+        public bool CoatingLining { get; set; }
+
+        //Dissembly Annotations
+
+        [Display(Name = "Dissembly")]
+        [Required(ErrorMessage = "Dissembly is required")]
+        public bool Dissembly { get; set; }
         public int NoteID { get; set; }
 
         //Note Annotations
@@ -54,10 +94,16 @@ namespace haver.Models
         //[DataType(DataType.MultilineText)]
         public Note? Note { get; set; }
 
+        public int MachineID { get; set; }
+
         public Machine? Machine { get; set; }
+
+        public PackageRelease? PackageRelease { get; set; }
 
         public ICollection<MachineScheduleEngineer> MachineScheduleEngineers { get; set; } = new HashSet<MachineScheduleEngineer>();
 
-        public ICollection<PackageRelease> PackageReleases { get; set; } = new HashSet<PackageRelease>();
+        public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
+
+        
     }
 }
