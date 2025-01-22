@@ -6,18 +6,25 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
+        //Start Date Annotation (set to datetime now.)
+        [Display(Name = "Start On")]
+        [Required(ErrorMessage = "The start date for can only be set to now or in days ahead")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime StartDate { get; set; }
+
         //DueDate Annotations
 
-        [Display(Name = "Due Date")]
-        [Required(ErrorMessage = "Due date is required")]
+        [Display(Name = "Due By")]
+        [Required(ErrorMessage = "Enter the day this schedule is due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DueDate { get; set; }
 
         //EndDate Annotations
 
-        [Display(Name = "End Date")]
-        [Required(ErrorMessage = "End date is required")]
+        [Display(Name = "Ended On")]
+        //[Required(ErrorMessage = "End date is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
