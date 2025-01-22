@@ -10,7 +10,7 @@ namespace haver.Models
 
         [Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
-        [RegularExpression("^\\d{8}$", ErrorMessage = "The OHIP number must be exactly 8 numeric digits.")]
+        [RegularExpression("^\\d{8}$", ErrorMessage = "The sales order number must be exactly 8 numeric digits.")]
         [StringLength(8)]
         public string? OrderNumber { get; set; }
 
