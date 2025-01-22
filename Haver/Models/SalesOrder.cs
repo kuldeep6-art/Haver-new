@@ -18,7 +18,7 @@ namespace haver.Models
 
         [Display(Name = "SO Date")]
         [Required(ErrorMessage = "Date is Required")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SoDate { get; set; }
 
@@ -40,7 +40,7 @@ namespace haver.Models
 
         [Display(Name = "Approved Drawings Recieved")]
         [Required(ErrorMessage = "Enter the date approved drawings from the customer was recieved")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime AppDwgRcd { get; set; }
 
@@ -48,7 +48,7 @@ namespace haver.Models
 
         [Display(Name = "Order Drawings Sent")]
         [Required(ErrorMessage = "Enter the date drawings for this order was sent to the customer")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DwgIsDt { get; set; }
 
