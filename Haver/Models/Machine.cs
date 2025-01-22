@@ -32,7 +32,6 @@ namespace haver.Models
 
         [Display(Name = "Size of Machine")]
         [Required(ErrorMessage = "Size Is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Size must be a Positive number")]
         public string? Size { get; set; }
 
         //Class Annotations
@@ -45,7 +44,6 @@ namespace haver.Models
 
         [Display(Name = "Size Deck")]
         [Required(ErrorMessage = "Size Deck is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Size Deck must be a Positive number")]
         public string? SizeDeck { get; set; }
 
        
