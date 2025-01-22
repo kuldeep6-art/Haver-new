@@ -54,14 +54,30 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Date,Phone,CompanyName")] Customer customer)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,MiddleName,LastName,Date,Phone,CompanyName")] Customer customer)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(customer);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Customers.Phone"))
+                {
+                    ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate Phone numbers.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+
+
             return View(customer);
         }
 
@@ -86,23 +102,30 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Date,Phone,CompanyName")] Customer customer)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != customer.ID)
+            //Go get the customer to update
+            var customerToUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.ID == id);
+
+
+            if (customerToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            if (await TryUpdateModelAsync<Customer>(customerToUpdate, "",
+                  p => p.FirstName, p => p.MiddleName, p => p.LastName, p => p.Date,
+                 p => p.Phone, p => p.CompanyName))
             {
                 try
                 {
-                    _context.Update(customer);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.ID))
+                    if (!CustomerExists(customerToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -111,9 +134,19 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Customers.Phone"))
+                    {
+                        ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate Phone numbers.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
             }
-            return View(customer);
+            return View(customerToUpdate);
         }
 
         // GET: Customer/Delete/5
@@ -125,9 +158,10 @@ namespace haver.Controllers
             }
 
             var customer = await _context.Customers
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (customer == null)
-            {
+            {   
                 return NotFound();
             }
 
@@ -140,13 +174,23 @@ namespace haver.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-            }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (customer != null)
+                {
+                    _context.Customers.Remove(customer);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException) 
+            {
+                
+                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(customer);
         }
 
         private bool CustomerExists(int id)
