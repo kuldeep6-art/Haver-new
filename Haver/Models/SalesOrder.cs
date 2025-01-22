@@ -7,10 +7,9 @@ namespace haver.Models
         public int ID { get; set; }
 
         //OrderNumber  Annotations
-
+        //[RegularExpression("^\\d{8}$", ErrorMessage = "The Order number must be exactly 8 numeric digits.")]
         [Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
-        [RegularExpression("^\\d{8}$", ErrorMessage = "The OHIP number must be exactly 8 numeric digits.")]
         [StringLength(8)]
         public string? OrderNumber { get; set; }
 
@@ -52,6 +51,7 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DwgIsDt { get; set; }
 
+        public string? PoNumber {  get; set; } 
         public int CustomerID { get; set; }
 
         public Customer? Customer { get; set; }
