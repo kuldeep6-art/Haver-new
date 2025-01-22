@@ -21,7 +21,7 @@ namespace haver.Data.HaverMigrations
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
-                    CompanyName = table.Column<string>(type: "TEXT", nullable: true)
+                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,6 +101,7 @@ namespace haver.Data.HaverMigrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     PackageRDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -164,10 +165,10 @@ namespace haver.Data.HaverMigrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    PReleaseDateP = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PReleaseDateA = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Notes = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    PReleaseDateP = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PReleaseDateA = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Notes = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
                     MachineScheduleID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -193,6 +194,7 @@ namespace haver.Data.HaverMigrations
                     ShippingTerms = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     AppDwgRcd = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DwgIsDt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PoNumber = table.Column<string>(type: "TEXT", nullable: true),
                     CustomerID = table.Column<int>(type: "INTEGER", nullable: false),
                     VendorID = table.Column<int>(type: "INTEGER", nullable: false),
                     MachineScheduleID = table.Column<int>(type: "INTEGER", nullable: false)
