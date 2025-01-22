@@ -17,23 +17,21 @@ namespace haver.Models
         [MaxLength(200, ErrorMessage = "Limit of 200 characters for scope")]
         public string? Scope { get; set; }
 
-        //AssemblyHours  Annotations
-
+        //AssemblyHours Annotations
         [Display(Name = "Assembly Hours:")]
-        [DataType(DataType.Time)]
-        public Decimal AssemblyHours { get; set; }
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] // Two decimal places
+        public decimal AssemblyHours { get; set; }
 
-        //ReworkHours  Annotations
-
+        //ReworkHours Annotations
         [Display(Name = "Rework Hours:")]
-        [DataType(DataType.Time)]
-        public Decimal ReworkHours { get; set; }
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] // Two decimal places
+        public decimal ReworkHours { get; set; }
 
-        //BudgetHours  Annotations
-
+        //BudgetHours Annotations
         [Display(Name = "Budget Hours:")]
-        [DataType(DataType.Time)]
-        public Decimal BudgetHours { get; set; }
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] // Two decimal places
+        public decimal BudgetHours { get; set; }
+
 
         //NamePlate  Annotations
 
