@@ -50,9 +50,8 @@ namespace haver.Controllers
         // GET: SalesOrder/Create
         public IActionResult Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Email");
+           
+            PopulateDropDownLists();
             return View();
         }
 
@@ -63,15 +62,27 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,PoNumber,CustomerID,VendorID,MachineScheduleID")] SalesOrder salesOrder)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(salesOrder);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(salesOrder);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName", salesOrder.CustomerID);
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", salesOrder.MachineScheduleID);
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Email", salesOrder.VendorID);
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+                {
+                    ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            PopulateDropDownLists(salesOrder);
             return View(salesOrder);
         }
 
@@ -88,9 +99,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName", salesOrder.CustomerID);
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", salesOrder.MachineScheduleID);
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Email", salesOrder.VendorID);
+            PopulateDropDownLists(salesOrder);
             return View(salesOrder);
         }
 
@@ -99,23 +108,28 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,PoNumber,CustomerID,VendorID,MachineScheduleID")] SalesOrder salesOrder)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != salesOrder.ID)
+            //Go get the sales order to update
+            var salesOrderToUpdate = await _context.SalesOrders.FirstOrDefaultAsync(p => p.ID == id);
+
+            if (salesOrderToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
+               p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.ShippingTerms, p => p.ShippingTerms,
+               p => p.AppDwgRcd, p => p.DwgIsDt, p => p.PoNumber, p => p.CustomerID, p => p.VendorID,p => p.MachineScheduleID))
             {
                 try
                 {
-                    _context.Update(salesOrder);
                     await _context.SaveChangesAsync();
-                }
+                    return RedirectToAction(nameof(Index));
+                } 
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SalesOrderExists(salesOrder.ID))
+                    if (!SalesOrderExists(salesOrderToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -124,12 +138,21 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+                    {
+                        ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
+
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName", salesOrder.CustomerID);
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", salesOrder.MachineScheduleID);
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Email", salesOrder.VendorID);
-            return View(salesOrder);
+            PopulateDropDownLists(salesOrderToUpdate);
+            return View(salesOrderToUpdate);
         }
 
         // GET: SalesOrder/Delete/5
@@ -158,16 +181,38 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var salesOrder = await _context.SalesOrders.FindAsync(id);
-            if (salesOrder != null)
-            {
-                _context.SalesOrders.Remove(salesOrder);
-            }
+            var salesOrder = await _context.SalesOrders
+                .Include(s => s.Customer)
+                .Include(s => s.MachineSchedule)
+                .Include(s => s.Vendor)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (salesOrder != null)
+                {
+                    _context.SalesOrders.Remove(salesOrder);
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                //Note: there is really no reason a delete should fail if you can "talk" to the database.
+                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(salesOrder);
+
+
         }
 
+
+        private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+        {
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Email");
+        }
         private bool SalesOrderExists(int id)
         {
             return _context.SalesOrders.Any(e => e.ID == id);
