@@ -11,7 +11,7 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250121175754_Initial")]
+    [Migration("20250122064730_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -27,6 +27,8 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
@@ -172,6 +174,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("SpareParts")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.HasIndex("MachineID");
@@ -243,15 +248,21 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(400)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("PReleaseDateA")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("PReleaseDateP")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -286,6 +297,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<string>("OrderNumber")
                         .IsRequired()
                         .HasMaxLength(8)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PoNumber")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")

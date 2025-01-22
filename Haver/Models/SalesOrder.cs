@@ -10,10 +10,7 @@ namespace haver.Models
         //[RegularExpression("^\\d{8}$", ErrorMessage = "The Order number must be exactly 8 numeric digits.")]
         [Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
-<<<<<<< HEAD
-=======
         [RegularExpression("^\\d{8}$", ErrorMessage = "The sales order number must be exactly 8 numeric digits.")]
->>>>>>> 9964855d174716f0ba529bd8fd30918d95d13ab2
         [StringLength(8)]
         public string? OrderNumber { get; set; }
 

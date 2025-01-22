@@ -171,6 +171,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("SpareParts")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.HasIndex("MachineID");

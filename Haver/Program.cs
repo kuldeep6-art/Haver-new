@@ -43,19 +43,13 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 //To prepare database and seed data
-using(var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
     HaverInitializer.Initialize(services);
 }
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-   HaverInitializer.Initialize(services);
-}
 
 
 app.Run();
