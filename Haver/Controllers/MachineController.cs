@@ -56,12 +56,28 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Description,SerialNumber,Quantity,Size,Class,SizeDeck")] Machine machine)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(machine);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(machine);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machine.SerialNumber"))
+                {
+                    ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate serial numbers.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+
+
             return View(machine);
         }
 
@@ -86,23 +102,29 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Description,SerialNumber,Quantity,Size,Class,SizeDeck")] Machine machine)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != machine.ID)
+            //Go get the machine to update
+            var machineToUpdate = await _context.Machines.FirstOrDefaultAsync(c => c.ID == id);
+
+
+            if (machineToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            if (await TryUpdateModelAsync<Machine>(machineToUpdate, "",
+                  p => p.Description,p => p.SerialNumber,p=>p.Quantity,p => p.Size,p=> p.Class,p => p.SizeDeck))
             {
                 try
                 {
-                    _context.Update(machine);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MachineExists(machine.ID))
+                    if (!MachineExists(machineToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -111,9 +133,19 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machine.SerialNumber"))
+                    {
+                        ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate serial numbers.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
             }
-            return View(machine);
+            return View(machineToUpdate);
         }
 
         // GET: Machine/Delete/5
@@ -134,19 +166,36 @@ namespace haver.Controllers
             return View(machine);
         }
 
+
         // POST: Machine/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var machine = await _context.Machines.FindAsync(id);
-            if (machine != null)
-            {
-                _context.Machines.Remove(machine);
-            }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (machine != null)
+                {
+                    _context.Machines.Remove(machine);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Machine.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(machine);
         }
 
         private bool MachineExists(int id)

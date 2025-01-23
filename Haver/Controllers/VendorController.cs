@@ -56,16 +56,30 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,Phone,Email")] Vendor vendor)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(vendor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(vendor);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendor.Name"))
+                {
+                    ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Names.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
             return View(vendor);
         }
 
-        // GET: Vendor/Edit/5
+        // GET: Customer/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,36 +87,41 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            var vendor = await _context.Vendors.FindAsync(id);
-            if (vendor == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            return View(vendor);
+            return View(customer);
         }
+
 
         // POST: Vendor/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Phone,Email")] Vendor vendor)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != vendor.ID)
+            //Go get the vendor to update
+            var vendorToUpdate = await _context.Vendors.FirstOrDefaultAsync(c => c.ID == id);
+
+            if (vendorToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<Vendor>(vendorToUpdate, "",
+                  p => p.Name, p => p.Phone, p => p.Email))
             {
                 try
                 {
-                    _context.Update(vendor);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VendorExists(vendor.ID))
+                    if (!VendorExists(vendorToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -111,9 +130,19 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendor.Name"))
+                    {
+                        ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Names.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
             }
-            return View(vendor);
+            return View(vendorToUpdate);
         }
 
         // GET: Vendor/Delete/5
@@ -140,13 +169,29 @@ namespace haver.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vendor = await _context.Vendors.FindAsync(id);
-            if (vendor != null)
-            {
-                _context.Vendors.Remove(vendor);
-            }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (vendor != null)
+                {
+                    _context.Vendors.Remove(vendor);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Vendor.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(vendor);
         }
 
         private bool VendorExists(int id)
