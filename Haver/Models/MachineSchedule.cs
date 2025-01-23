@@ -93,16 +93,23 @@ namespace haver.Models
         [Display(Name = "Dissembly")]
         [Required(ErrorMessage = "Dissembly is required")]
         public bool Dissembly { get; set; }
-        public int NoteID { get; set; }
+        //public int NoteID { get; set; }
 
-        public Note? Note { get; set; }
+        //public Note? Note { get; set; }
 
         public int MachineID { get; set; }
 
         public Machine? Machine { get; set; }
 
-        public PackageRelease? PackageRelease { get; set; }
 
+        //// One-to-one relationship with PackageRelease
+        //public int? PackageReleaseID { get; set; }
+        //public PackageRelease? PackageRelease { get; set; }
+
+
+        // One-to-One Relationships
+        public Note? Note { get; set; } // Navigation property to Note
+        public PackageRelease? PackageRelease { get; set; } // Navigation property to PackageRelease
         public ICollection<MachineScheduleEngineer> MachineScheduleEngineers { get; set; } = new HashSet<MachineScheduleEngineer>();
 
         public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
