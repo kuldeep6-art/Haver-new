@@ -30,6 +30,9 @@ namespace haver.Models
             }
         }
 
+        public string PhoneFormatted => "(" + Phone.Substring(0, 3) + ") "
+           + Phone.Substring(3, 3) + "-" + Phone[6..];
+
         #endregion 
 
         //First Name Annotations
