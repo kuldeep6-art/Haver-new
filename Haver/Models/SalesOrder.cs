@@ -52,17 +52,21 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DwgIsDt { get; set; }
 
-        public string? PoNumber {  get; set; } 
-        public int CustomerID { get; set; }
+        [Display(Name = "Purchase Order Number")]
+        public string? PoNumber {  get; set; }
 
+        [Display(Name = "Customer")]
+        public int CustomerID { get; set; }
         public Customer? Customer { get; set; }
 
-        public int VendorID { get; set; }
 
+        [Display(Name = "Vendor")]
+        public int VendorID { get; set; }
         public Vendor? Vendor { get; set; }
 
+        [Display(Name = "Machine Schedule")]
         public int MachineScheduleID {  get; set; }
-
+   
         public MachineSchedule? MachineSchedule { get; set; }
     }
 }
