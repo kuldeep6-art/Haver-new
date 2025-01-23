@@ -65,16 +65,11 @@ namespace haver.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            catch (DbUpdateException dex)
+            catch (DbUpdateException)
             {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendor.Name"))
-                {
-                    ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Names.");
-                }
-                else
-                {
+               
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
+                
             }
             return View(vendor);
         }
@@ -184,7 +179,7 @@ namespace haver.Controllers
             {
                 if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
                 {
-                    ModelState.AddModelError("", "Unable to Delete Vendor.");
+                    ModelState.AddModelError("", "Unable to Delete Vendor.  Remember, you cannot delete a Vendor attached to a Sales Order");
                 }
                 else
                 {

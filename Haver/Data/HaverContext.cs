@@ -37,6 +37,12 @@ namespace haver.Data
                 .HasForeignKey(so => so.VendorID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<MachineSchedule>()
+               .HasOne<Machine>(so => so.Machine)
+               .WithMany(v => v.MachineSchedules)
+               .HasForeignKey(so => so.MachineID)
+               .OnDelete(DeleteBehavior.Restrict);
+
 
 
             modelBuilder.Entity<MachineScheduleEngineer>()

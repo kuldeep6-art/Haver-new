@@ -11,14 +11,14 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250122064730_Initial")]
+    [Migration("20250123175339_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
             modelBuilder.Entity("haver.Models.Customer", b =>
                 {
@@ -27,7 +27,6 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CompanyName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
@@ -40,12 +39,14 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MiddleName")
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
@@ -359,7 +360,7 @@ namespace haver.Data.HaverMigrations
                     b.HasOne("haver.Models.Machine", "Machine")
                         .WithMany("MachineSchedules")
                         .HasForeignKey("MachineID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("haver.Models.Note", "Note")
