@@ -10,6 +10,7 @@ using haver.Models;
 
 namespace haver.Controllers
 {
+    
     public class EngineerController : Controller
     {
         private readonly HaverContext _context;
@@ -19,6 +20,8 @@ namespace haver.Controllers
             _context = context;
         }
 
+
+        // adding in Sorting and filtering for the engineer section based on ??(Dont know which variables to sort by yet)
         // GET: Engineer
         public async Task<IActionResult> Index()
         {
