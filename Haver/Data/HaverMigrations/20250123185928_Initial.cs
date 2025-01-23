@@ -64,24 +64,6 @@ namespace haver.Data.HaverMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notes",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PreOrder = table.Column<string>(type: "TEXT", nullable: true),
-                    Scope = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
-                    AssemblyHours = table.Column<decimal>(type: "TEXT", nullable: false),
-                    ReworkHours = table.Column<decimal>(type: "TEXT", nullable: false),
-                    BudgetHours = table.Column<decimal>(type: "TEXT", nullable: false),
-                    NamePlate = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notes", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Vendors",
                 columns: table => new
                 {
@@ -115,7 +97,6 @@ namespace haver.Data.HaverMigrations
                     AirSeal = table.Column<bool>(type: "INTEGER", nullable: false),
                     CoatingLining = table.Column<bool>(type: "INTEGER", nullable: false),
                     Dissembly = table.Column<bool>(type: "INTEGER", nullable: false),
-                    NoteID = table.Column<int>(type: "INTEGER", nullable: false),
                     MachineID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -127,12 +108,6 @@ namespace haver.Data.HaverMigrations
                         principalTable: "Machines",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MachineSchedules_Notes_NoteID",
-                        column: x => x.NoteID,
-                        principalTable: "Notes",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +129,31 @@ namespace haver.Data.HaverMigrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MachineScheduleEngineers_MachineSchedules_MachineScheduleID",
+                        column: x => x.MachineScheduleID,
+                        principalTable: "MachineSchedules",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PreOrder = table.Column<string>(type: "TEXT", nullable: true),
+                    Scope = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    AssemblyHours = table.Column<decimal>(type: "TEXT", nullable: false),
+                    ReworkHours = table.Column<decimal>(type: "TEXT", nullable: false),
+                    BudgetHours = table.Column<decimal>(type: "TEXT", nullable: false),
+                    NamePlate = table.Column<int>(type: "INTEGER", nullable: true),
+                    MachineScheduleID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Notes_MachineSchedules_MachineScheduleID",
                         column: x => x.MachineScheduleID,
                         principalTable: "MachineSchedules",
                         principalColumn: "ID",
@@ -252,9 +252,9 @@ namespace haver.Data.HaverMigrations
                 column: "MachineID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MachineSchedules_NoteID",
-                table: "MachineSchedules",
-                column: "NoteID",
+                name: "IX_Notes_MachineScheduleID",
+                table: "Notes",
+                column: "MachineScheduleID",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -298,6 +298,9 @@ namespace haver.Data.HaverMigrations
                 name: "MachineScheduleEngineers");
 
             migrationBuilder.DropTable(
+                name: "Notes");
+
+            migrationBuilder.DropTable(
                 name: "PackageReleases");
 
             migrationBuilder.DropTable(
@@ -317,9 +320,6 @@ namespace haver.Data.HaverMigrations
 
             migrationBuilder.DropTable(
                 name: "Machines");
-
-            migrationBuilder.DropTable(
-                name: "Notes");
         }
     }
 }

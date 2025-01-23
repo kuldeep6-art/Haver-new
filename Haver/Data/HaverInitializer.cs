@@ -80,45 +80,10 @@ namespace haver.Data
                         context.SaveChanges();
                     }
 
-                    // 4. Seed Engineers
-                    if (!context.Engineers.Any())
-                    {
-                        context.Engineers.AddRange(
-                            new Engineer { FirstName = "John", LastName = "Doe", Phone = "1234567890", Email = "johndoe@example.com" },
-                            new Engineer { FirstName = "Jane", LastName = "Smith", Phone = "2345678901", Email = "janesmith@example.com" }
-                        );
-                        context.SaveChanges();
-                    }
-
-                    // 5. Seed Notes
-                    if (!context.Notes.Any())
-                    {
-                        context.Notes.AddRange(
-                            new Note
-                            {
-                                PreOrder = "Pre-order for machine assembly.",
-                                Scope = "Assembly of base components.",
-                                AssemblyHours = 15.5m,
-                                ReworkHours = 2.0m,
-                                BudgetHours = 20.0m,
-                                NamePlate = NamePlate.Required
-                            },
-                            new Note
-                            {
-                                PreOrder = "Pre-order for advanced assembly.",
-                                Scope = "Assembly of additional components.",
-                                AssemblyHours = 18.0m,
-                                ReworkHours = 3.5m,
-                                BudgetHours = 22.0m,
-                                NamePlate = NamePlate.Received
-                            });
-                        context.SaveChanges();
-                    }
-
-                    // 6. Seed Machine Schedules
+                    // 4. Seed Machine Schedules
                     if (!context.MachineSchedules.Any())
                     {
-                        var machineSchedule = new MachineSchedule
+                        context.MachineSchedules.Add(new MachineSchedule
                         {
                             StartDate = DateTime.Now,
                             DueDate = DateTime.Parse("2024-07-15"),
@@ -128,58 +93,89 @@ namespace haver.Data
                             DeliveryDate = DateTime.Parse("2024-07-21"),
                             Media = true,
                             SpareParts = false,
-                            NoteID = context.Notes.FirstOrDefault().ID, // Make sure Notes exists
-                            MachineID = context.Machines.FirstOrDefault().ID // Make sure Machines exist
-                        };
-                        context.MachineSchedules.Add(machineSchedule);
+                            MachineID = context.Machines.FirstOrDefault().ID
+                        });
                         context.SaveChanges();
                     }
 
-                    // 7. Seed Package Releases
+                    // 5. Seed Notes (One-to-One with MachineSchedule)
+                    if (!context.Notes.Any())
+                    {
+                        var machineSchedule = context.MachineSchedules.FirstOrDefault();
+                        if (machineSchedule != null)
+                        {
+                            context.Notes.Add(new Note
+                            {
+                                PreOrder = "Pre-order for machine assembly.",
+                                Scope = "Assembly of base components.",
+                                AssemblyHours = 15.5m,
+                                ReworkHours = 2.0m,
+                                BudgetHours = 20.0m,
+                                NamePlate = NamePlate.Required,
+                                MachineScheduleID = machineSchedule.ID
+                            });
+                            context.SaveChanges();
+                        }
+                    }
+
+                    // 6. Seed Package Releases (One-to-One with MachineSchedule)
                     if (!context.PackageReleases.Any())
                     {
-                        var packageRelease = new PackageRelease
+                        var machineSchedule = context.MachineSchedules.FirstOrDefault();
+                        if (machineSchedule != null)
                         {
-                            MachineScheduleID = context.MachineSchedules.FirstOrDefault().ID, // Link to MachineSchedule
-                            Name = "Package 101 Release",
-                            PReleaseDateP = DateTime.Parse("2024-07-01"),
-                            PReleaseDateA = DateTime.Parse("2024-07-05"),
-                            Notes = "Initial package release."
-                        };
-                        context.PackageReleases.Add(packageRelease);
-                        context.SaveChanges();
+                            context.PackageReleases.Add(new PackageRelease
+                            {
+                                MachineScheduleID = machineSchedule.ID,
+                                Name = "Package 101 Release",
+                                PReleaseDateP = DateTime.Parse("2024-07-01"),
+                                PReleaseDateA = DateTime.Parse("2024-07-05"),
+                                Notes = "Initial package release."
+                            });
+                            context.SaveChanges();
+                        }
                     }
 
-                    // 8. Seed Sales Orders (with valid MachineScheduleID and VendorID)
+                    // 7. Seed Sales Orders
                     if (!context.SalesOrders.Any())
                     {
-                        var salesOrder = new SalesOrder
+                        var customer = context.Customers.FirstOrDefault(c => c.CompanyName == "Owens Corning");
+                        var machineSchedule = context.MachineSchedules.FirstOrDefault();
+                        var vendor = context.Vendors.FirstOrDefault();
+
+                        if (customer != null && machineSchedule != null && vendor != null)
                         {
-                            OrderNumber = "10439607",
-                            SoDate = DateTime.Parse("2024-07-23"),
-                            ShippingTerms = "Delivered to the customer.",
-                            AppDwgRcd = DateTime.Parse("2024-07-17"),
-                            DwgIsDt = DateTime.Parse("2024-07-12"),
-                            CustomerID = context.Customers.FirstOrDefault(c => c.CompanyName == "Owens Corning").ID,
-                            MachineScheduleID = context.MachineSchedules.FirstOrDefault().ID, // Make sure MachineScheduleID exists
-                            VendorID = context.Vendors.FirstOrDefault().ID // Make sure VendorID exists
-                        };
-                        context.SalesOrders.Add(salesOrder);
-                        context.SaveChanges();
+                            context.SalesOrders.Add(new SalesOrder
+                            {
+                                OrderNumber = "10439607",
+                                SoDate = DateTime.Parse("2024-07-23"),
+                                ShippingTerms = "Delivered to the customer.",
+                                AppDwgRcd = DateTime.Parse("2024-07-17"),
+                                DwgIsDt = DateTime.Parse("2024-07-12"),
+                                CustomerID = customer.ID,
+                                MachineScheduleID = machineSchedule.ID,
+                                VendorID = vendor.ID
+                            });
+                            context.SaveChanges();
+                        }
                     }
 
-                    // 9. Seed Machine Schedule Engineers (with valid MachineScheduleID and EngineerID)
+                    // 8. Seed Machine Schedule Engineers
                     if (!context.MachineScheduleEngineers.Any())
                     {
-                        var machineScheduleEngineer = new MachineScheduleEngineer
-                        {
-                            MachineScheduleID = context.MachineSchedules.FirstOrDefault().ID, // Make sure MachineScheduleID exists
-                            EngineerID = context.Engineers.FirstOrDefault().ID // Make sure EngineerID exists
-                        };
-                        context.MachineScheduleEngineers.Add(machineScheduleEngineer);
-                        context.SaveChanges();
-                    }
+                        var machineSchedule = context.MachineSchedules.FirstOrDefault();
+                        var engineer = context.Engineers.FirstOrDefault();
 
+                        if (machineSchedule != null && engineer != null)
+                        {
+                            context.MachineScheduleEngineers.Add(new MachineScheduleEngineer
+                            {
+                                MachineScheduleID = machineSchedule.ID,
+                                EngineerID = engineer.ID
+                            });
+                            context.SaveChanges();
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -187,5 +183,6 @@ namespace haver.Data
                 }
             }
         }
+
     }
 }

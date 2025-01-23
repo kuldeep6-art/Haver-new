@@ -11,7 +11,7 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250123175339_Initial")]
+    [Migration("20250123185928_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -160,9 +160,6 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("Media")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("NoteID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("PODueDate")
                         .HasColumnType("TEXT");
 
@@ -181,9 +178,6 @@ namespace haver.Data.HaverMigrations
                     b.HasKey("ID");
 
                     b.HasIndex("MachineID");
-
-                    b.HasIndex("NoteID")
-                        .IsUnique();
 
                     b.ToTable("MachineSchedules");
                 });
@@ -221,6 +215,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<decimal>("BudgetHours")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("MachineScheduleID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("NamePlate")
                         .HasColumnType("INTEGER");
 
@@ -235,6 +232,9 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("MachineScheduleID")
+                        .IsUnique();
 
                     b.ToTable("Notes");
                 });
@@ -363,15 +363,7 @@ namespace haver.Data.HaverMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("haver.Models.Note", "Note")
-                        .WithOne("MachineSchedule")
-                        .HasForeignKey("haver.Models.MachineSchedule", "NoteID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Machine");
-
-                    b.Navigation("Note");
                 });
 
             modelBuilder.Entity("haver.Models.MachineScheduleEngineer", b =>
@@ -391,6 +383,17 @@ namespace haver.Data.HaverMigrations
                     b.Navigation("Engineer");
 
                     b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("haver.Models.Note", b =>
+                {
+                    b.HasOne("haver.Models.MachineSchedule", "MachineSchedule")
+                        .WithOne("Note")
+                        .HasForeignKey("haver.Models.Note", "MachineScheduleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MachineSchedule");
                 });
 
             modelBuilder.Entity("haver.Models.PackageRelease", b =>
@@ -450,14 +453,11 @@ namespace haver.Data.HaverMigrations
                 {
                     b.Navigation("MachineScheduleEngineers");
 
+                    b.Navigation("Note");
+
                     b.Navigation("PackageRelease");
 
                     b.Navigation("SalesOrders");
-                });
-
-            modelBuilder.Entity("haver.Models.Note", b =>
-                {
-                    b.Navigation("MachineSchedule");
                 });
 
             modelBuilder.Entity("haver.Models.Vendor", b =>

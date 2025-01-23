@@ -19,17 +19,17 @@ namespace haver.Models
 
         //AssemblyHours Annotations
         [Display(Name = "Assembly Hours:")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] // Two decimal places
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] 
         public decimal AssemblyHours { get; set; }
 
         //ReworkHours Annotations
         [Display(Name = "Rework Hours:")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] // Two decimal places
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] 
         public decimal ReworkHours { get; set; }
 
         //BudgetHours Annotations
         [Display(Name = "Budget Hours:")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] // Two decimal places
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] 
         public decimal BudgetHours { get; set; }
 
 
@@ -38,6 +38,7 @@ namespace haver.Models
         [Display(Name = "Name plate")]
         public NamePlate? NamePlate { get; set; }
 
+        public int MachineScheduleID { get; set; }
         public MachineSchedule? MachineSchedule { get; set; }
     }
 }
