@@ -6,6 +6,14 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
+
+        #region SUMMARY PROPERTIES
+
+        public string PhoneFormatted => "(" + Phone.Substring(0, 3) + ") "
+          + Phone.Substring(3, 3) + "-" + Phone[6..];
+
+        #endregion 
+
         //ShippingTerms  Annotations
 
         [Display(Name = "Name")]

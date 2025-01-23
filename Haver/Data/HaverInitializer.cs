@@ -61,7 +61,7 @@ namespace haver.Data
                         context.Machines.AddRange(
                             new Machine
                             {
-                                Description = "Heavy-duty industrial cutting machine, used for precision metal cutting",
+                                Description = "T-330 4'x10' - 1D",
                                 SerialNumber = "HDCM-12345",
                                 Quantity = 3,
                                 Size = "Large",
@@ -70,7 +70,7 @@ namespace haver.Data
                             },
                             new Machine
                             {
-                                Description = "Precision milling machine for high-accuracy part fabrication",
+                                Description = "F-600 5'x10' - 1D",
                                 SerialNumber = "PM-54321",
                                 Quantity = 5,
                                 Size = "Medium",
