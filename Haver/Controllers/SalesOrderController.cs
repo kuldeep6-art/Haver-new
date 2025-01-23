@@ -209,9 +209,9 @@ namespace haver.Controllers
 
         private void PopulateDropDownLists(SalesOrder? salesOrder = null)
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "Summary");
             ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Email");
+            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Name");
         }
         private bool SalesOrderExists(int id)
         {
