@@ -357,7 +357,7 @@ namespace haver.Data.HaverMigrations
                     b.HasOne("haver.Models.Machine", "Machine")
                         .WithMany("MachineSchedules")
                         .HasForeignKey("MachineID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("haver.Models.Note", "Note")

@@ -18,10 +18,11 @@ namespace haver.Data.HaverMigrations
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    MiddleName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
-                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
+                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -125,7 +126,7 @@ namespace haver.Data.HaverMigrations
                         column: x => x.MachineID,
                         principalTable: "Machines",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MachineSchedules_Notes_NoteID",
                         column: x => x.NoteID,

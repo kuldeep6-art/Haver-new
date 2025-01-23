@@ -67,7 +67,7 @@ namespace haver.Controllers
             }
             catch (DbUpdateException dex)
             {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machine.SerialNumber"))
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
                 {
                     ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate serial numbers.");
                 }
@@ -135,7 +135,7 @@ namespace haver.Controllers
                 }
                 catch (DbUpdateException dex)
                 {
-                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machine.SerialNumber"))
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
                     {
                         ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate serial numbers.");
                     }
@@ -188,7 +188,7 @@ namespace haver.Controllers
             {
                 if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
                 {
-                    ModelState.AddModelError("", "Unable to Delete Machine.");
+                    ModelState.AddModelError("", "Unable to Delete Machine. Remember, you cannot delete a machine attached to a Machine Schedule");
                 }
                 else
                 {
