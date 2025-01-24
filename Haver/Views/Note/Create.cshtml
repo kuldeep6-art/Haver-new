@@ -43,6 +43,10 @@
                 <span asp-validation-for="NamePlate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="MachineScheduleID" class="control-label"></label>
+                <select asp-for="MachineScheduleID" class ="form-control" asp-items="ViewBag.MachineScheduleID"></select>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
