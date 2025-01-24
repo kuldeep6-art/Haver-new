@@ -35,11 +35,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
-<<<<<<< HEAD
                 .AsNoTracking()
-=======
-                .Include(n => n.MachineSchedule)
->>>>>>> 72ec3151358c738571b34bf22b29aa45f8631ede
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
             {
@@ -104,36 +100,20 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-<<<<<<< HEAD
         public async Task<IActionResult> Edit(int id)
         {
 
             //Go get the note to update
             var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(c => c.ID == id);
-=======
-<<<<<<< HEAD
-        public async Task<IActionResult> Edit(int id)
-=======
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
->>>>>>> 72ec3151358c738571b34bf22b29aa45f8631ede
-        {
-            var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(n => n.ID == id);
->>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
 
             if (noteToUpdate == null)
             {
                 return NotFound();
             }
 
-<<<<<<< HEAD
             if (await TryUpdateModelAsync<Note>(noteToUpdate, "",
                   p => p.PreOrder, p => p.Scope, p => p.AssemblyHours, p => p.ReworkHours,
-                 p => p.BudgetHours, p => p.NamePlate,p => p.MachineScheduleID))
-=======
-            if (await TryUpdateModelAsync<Note>(noteToUpdate, "", n => n.PreOrder,
-                    n => n.Scope, n => n.AssemblyHours, n => n.ReworkHours, n => n.BudgetHours,
-                    n => n.NamePlate, n => n.MachineScheduleID))
->>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
+                 p => p.BudgetHours, p => p.NamePlate, p => p.MachineScheduleID))
             {
                 try
                 {
@@ -150,27 +130,16 @@ namespace haver.Controllers
                     {
                         throw;
                     }
-<<<<<<< HEAD
-                }      
-            }     
-            return View(noteToUpdate);
-=======
                 }
-                catch (DbUpdateException dex)
+                catch (DbUpdateException)
                 {
-                  
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
 
+                }
             }
-<<<<<<< HEAD
             PopulateDropDownLists(noteToUpdate);
-            return View(noteToUpdate);
-=======
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
-            return View(note);
->>>>>>> 72ec3151358c738571b34bf22b29aa45f8631ede
->>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
+                return View(noteToUpdate);
+            
         }
 
         // GET: Note/Delete/5
@@ -182,11 +151,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
-<<<<<<< HEAD
                 .AsNoTracking()
-=======
-                .Include(n => n.MachineSchedule)
->>>>>>> 72ec3151358c738571b34bf22b29aa45f8631ede
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
             {
@@ -201,16 +166,7 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-<<<<<<< HEAD
             var note = await _context.Notes.FindAsync(id);
-=======
-            var note = await _context.Notes
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (note != null)
-            {
-                _context.Notes.Remove(note);
-            }
->>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
 
             try
             {
