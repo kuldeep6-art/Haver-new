@@ -16,7 +16,7 @@ using haver.Utilities;
 
 namespace haver.Controllers
 {
-    public class MachineScheduleController : Controller
+    public class MachineScheduleController : CognizantController
     {
         private readonly HaverContext _context;
 
@@ -26,7 +26,7 @@ namespace haver.Controllers
         }
 
         // GET: MachineSchedule
-        public async Task<IActionResult> Index(int? page, int? MachineID, string? actionButton, string sortDirection = "asc", string sortField = "Machine")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MachineID, string? actionButton, string sortDirection = "asc", string sortField = "Machine")
         {
             //List of sort options.
             string[] sortOptions = new[] { "Machine", "StartDate", "DueDate", "EndDate","PackageRDate","PODueDate","DeliveryDate" };
@@ -172,7 +172,8 @@ namespace haver.Controllers
             ViewData["sortDirection"] = sortDirection;
 
             //Handle Paging
-            int pageSize = 10;//Change as required
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<MachineSchedule>.CreateAsync(machineSchedules.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);
