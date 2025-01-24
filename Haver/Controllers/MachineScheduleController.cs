@@ -25,13 +25,24 @@ namespace haver.Controllers
         }
 
         // GET: MachineSchedule
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? MachineID)
         {
-            var haverContext = _context.MachineSchedules
-                .Include(m => m.Machine)
-                .Include(n => n.Note);
+            PopulateDropDownLists();
 
-            return View(await haverContext.ToListAsync());
+            var machineSchedules = from m in _context.MachineSchedules
+                .Include(m => m.Machine)
+                .Include(n => n.Note)
+                .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
+                .AsNoTracking()
+                select m;
+
+            //Add as many filters as needed
+            if (MachineID.HasValue)
+            {
+                machineSchedules = machineSchedules.Where(p => p.MachineID == MachineID);
+            }
+
+            return View(await machineSchedules.ToListAsync());
         }
 
         // GET: MachineSchedule/Details/5
@@ -77,10 +88,6 @@ namespace haver.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-            }
-            catch (RetryLimitExceededException /* dex */)
-            {
-                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
             }
             catch (DbUpdateException)
             {

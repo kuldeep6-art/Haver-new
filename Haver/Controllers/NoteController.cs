@@ -52,7 +52,7 @@ namespace haver.Controllers
         // GET: Note/Create
         public IActionResult Create()
         {
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+            PopulateDropDownLists();
             return View();
         }
 
@@ -63,13 +63,22 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                _context.Add(note);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(note);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            PopulateDropDownLists(note);
             return View(note);
         }
 
@@ -86,7 +95,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
+            PopulateDropDownLists(note);
             return View(note);
         }
 
@@ -97,20 +106,34 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
 <<<<<<< HEAD
         public async Task<IActionResult> Edit(int id)
+        {
+
+            //Go get the note to update
+            var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(c => c.ID == id);
+=======
+<<<<<<< HEAD
+        public async Task<IActionResult> Edit(int id)
 =======
         public async Task<IActionResult> Edit(int id, [Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
 >>>>>>> 72ec3151358c738571b34bf22b29aa45f8631ede
         {
             var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(n => n.ID == id);
+>>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
 
             if (noteToUpdate == null)
             {
                 return NotFound();
             }
 
+<<<<<<< HEAD
+            if (await TryUpdateModelAsync<Note>(noteToUpdate, "",
+                  p => p.PreOrder, p => p.Scope, p => p.AssemblyHours, p => p.ReworkHours,
+                 p => p.BudgetHours, p => p.NamePlate,p => p.MachineScheduleID))
+=======
             if (await TryUpdateModelAsync<Note>(noteToUpdate, "", n => n.PreOrder,
                     n => n.Scope, n => n.AssemblyHours, n => n.ReworkHours, n => n.BudgetHours,
                     n => n.NamePlate, n => n.MachineScheduleID))
+>>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
             {
                 try
                 {
@@ -133,11 +156,21 @@ namespace haver.Controllers
             return View(noteToUpdate);
 =======
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                  
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+
             }
+<<<<<<< HEAD
+            PopulateDropDownLists(noteToUpdate);
+            return View(noteToUpdate);
+=======
             ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
             return View(note);
 >>>>>>> 72ec3151358c738571b34bf22b29aa45f8631ede
+>>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
         }
 
         // GET: Note/Delete/5
@@ -168,17 +201,42 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+<<<<<<< HEAD
+            var note = await _context.Notes.FindAsync(id);
+=======
             var note = await _context.Notes
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note != null)
             {
                 _context.Notes.Remove(note);
             }
+>>>>>>> e8abcea7fc1b155af8e55d167416451dde874354
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (note != null)
+                {
+                    _context.Notes.Remove(note);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                
+            }
+            return View(note);
+           
+          
         }
 
+
+        private void PopulateDropDownLists(Note? note = null)
+        {
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+        }
         private bool NoteExists(int id)
         {
             return _context.Notes.Any(e => e.ID == id);
