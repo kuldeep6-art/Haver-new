@@ -42,13 +42,13 @@ namespace haver.Data
                         context.Vendors.AddRange(
                             new Vendor
                             {
-                                Name = Name.HINGSTONMETAL,
+                                Name = "HINGSTON METAL",
                                 Phone = "9056583456",
                                 Email = "purchaseorders@precisionmetals.com"
                             },
                             new Vendor
                             {
-                                Name = Name.PROCESSGROUP,
+                                Name ="PROCESS GROUP",
                                 Phone = "2876581056",
                                 Email = "purchaseorders@hingstonmetal.com"
                             });

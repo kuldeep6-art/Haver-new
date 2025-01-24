@@ -30,8 +30,10 @@ namespace haver.Models
             }
         }
 
-        public string PhoneFormatted => "(" + Phone.Substring(0, 3) + ") "
-           + Phone.Substring(3, 3) + "-" + Phone[6..];
+        public string PhoneFormatted =>
+       !string.IsNullOrEmpty(Phone) && Phone.Length == 10
+           ? $"({Phone.Substring(0, 3)}) {Phone.Substring(3, 3)}-{Phone[6..]}"
+           : "N/A";
 
         #endregion 
 

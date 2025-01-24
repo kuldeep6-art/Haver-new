@@ -82,12 +82,12 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var vendor = await _context.Vendors.FindAsync(id);
+            if (vendor == null)
             {
                 return NotFound();
             }
-            return View(customer);
+            return View(vendor);
         }
 
 

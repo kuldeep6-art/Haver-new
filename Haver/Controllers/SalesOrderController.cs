@@ -22,7 +22,9 @@ namespace haver.Controllers
         // GET: SalesOrder
         public async Task<IActionResult> Index()
         {
-            var haverContext = _context.SalesOrders.Include(s => s.Customer).Include(s => s.MachineSchedule).Include(s => s.Vendor);
+            var haverContext = _context.SalesOrders.Include(s => s.Customer)
+                .Include(s => s.MachineSchedule)
+                .Include(s => s.Vendor);
             return View(await haverContext.ToListAsync());
         }
 
