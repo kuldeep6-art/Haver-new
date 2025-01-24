@@ -40,6 +40,6 @@ namespace haver.Models
         public string? Notes { get; set; }
 
         public int MachineScheduleID { get; set; }
-        public MachineSchedule? Schedule { get; set; }
+        public MachineSchedule? MachineSchedule { get; set; }
     }
 }

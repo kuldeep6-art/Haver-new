@@ -216,7 +216,7 @@ namespace haver.Controllers
 
         private void PopulateDropDownLists(MachineSchedule? machineSchedule = null)
         {
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", machineSchedule?.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class", machineSchedule?.MachineID);
         }
 
         private bool MachineScheduleExists(int id)

@@ -4,40 +4,58 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Package Release</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
-
 <table class="table table-striped table-bordered table-hover shadow-sm">
     <thead class="thead-dark">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.PReleaseDateP)</th>
-            <th>@Html.DisplayNameFor(model => model.PReleaseDateA)</th>
-            <th>@Html.DisplayNameFor(model => model.Notes)</th>
-            <th>@Html.DisplayNameFor(model => model.Schedule)</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PReleaseDateP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PReleaseDateA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MachineSchedule)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.PReleaseDateP)</td>
-                <td>@Html.DisplayFor(modelItem => item.PReleaseDateA)</td>
-                <td>@Html.DisplayFor(modelItem => item.Notes)</td>
-                <td>@Html.DisplayFor(modelItem => item.Schedule.ID)</td>
-                <td>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PReleaseDateP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PReleaseDateA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MachineSchedule.ID)
+            </td>
+            <td>
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn ">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
                     </a> |
                     <a asp-action="Details" asp-route-id="@item.ID" class="btn">  <i class="fa-solid fa-circle-info"></i> Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.ID" class="btn"> <i class="fa-solid fa-delete-left"></i> Delete</a>
-                </td>
-            </tr>
-        }
+            </td>
+        </tr>
+}
     </tbody>
 </table>
