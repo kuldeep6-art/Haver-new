@@ -9,105 +9,38 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-bordered table-hover shadow-sm">
+    <thead class="thead-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PackageRDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PODueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Media)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpareParts)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SparePMedia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Base)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AirSeal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CoatingLining)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dissembly)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Machine)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+            <th>@Html.DisplayNameFor(model => model.DueDate)</th>
+            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.PackageRDate)</th>
+            <th>@Html.DisplayNameFor(model => model.PODueDate)</th>
+            <th>@Html.DisplayNameFor(model => model.DeliveryDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Machine)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackageRDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PODueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Media)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpareParts)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SparePMedia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Base)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AirSeal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoatingLining)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dissembly)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Machine.Class)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.DueDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.PackageRDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.PODueDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.DeliveryDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Machine.Class)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn ">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn">  <i class="fa-solid fa-circle-info"></i> Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn"> <i class="fa-solid fa-delete-left"></i> Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

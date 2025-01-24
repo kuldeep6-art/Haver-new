@@ -7,65 +7,41 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="table table-striped table-bordered table-hover shadow-sm">
+    <thead class="thead-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PreOrder)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Scope)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssemblyHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReworkHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BudgetHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NamePlate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MachineSchedule)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.PreOrder)</th>
+            <th>@Html.DisplayNameFor(model => model.Scope)</th>
+            <th>@Html.DisplayNameFor(model => model.AssemblyHours)</th>
+            <th>@Html.DisplayNameFor(model => model.ReworkHours)</th>
+            <th>@Html.DisplayNameFor(model => model.BudgetHours)</th>
+            <th>@Html.DisplayNameFor(model => model.NamePlate)</th>
+            <th>@Html.DisplayNameFor(model => model.MachineSchedule)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PreOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Scope)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssemblyHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReworkHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BudgetHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamePlate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MachineSchedule.ID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.PreOrder)</td>
+                <td>@Html.DisplayFor(modelItem => item.Scope)</td>
+                <td>@Html.DisplayFor(modelItem => item.AssemblyHours)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReworkHours)</td>
+                <td>@Html.DisplayFor(modelItem => item.BudgetHours)</td>
+                <td>@Html.DisplayFor(modelItem => item.NamePlate)</td>
+                <td>@Html.DisplayFor(modelItem => item.MachineSchedule.ID)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn ">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn">  <i class="fa-solid fa-circle-info"></i> Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn"> <i class="fa-solid fa-delete-left"></i> Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
