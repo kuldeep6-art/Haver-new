@@ -48,7 +48,7 @@ namespace haver.Controllers
         // GET: Note/Create
         public IActionResult Create()
         {
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+            PopulateDropDownLists();
             return View();
         }
 
@@ -59,13 +59,22 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                _context.Add(note);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(note);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            PopulateDropDownLists(note);
             return View(note);
         }
 
@@ -82,7 +91,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
+            PopulateDropDownLists(note);
             return View(note);
         }
 
@@ -91,23 +100,29 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != note.ID)
+
+            //Go get the note to update
+            var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(c => c.ID == id);
+
+            if (noteToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<Note>(noteToUpdate, "",
+                  p => p.PreOrder, p => p.Scope, p => p.AssemblyHours, p => p.ReworkHours,
+                 p => p.BudgetHours, p => p.NamePlate,p => p.MachineScheduleID))
             {
                 try
                 {
-                    _context.Update(note);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NoteExists(note.ID))
+                    if (!NoteExists(noteToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -116,10 +131,15 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                  
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+
             }
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
-            return View(note);
+            PopulateDropDownLists(noteToUpdate);
+            return View(noteToUpdate);
         }
 
         // GET: Note/Delete/5
@@ -147,15 +167,32 @@ namespace haver.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var note = await _context.Notes.FindAsync(id);
-            if (note != null)
-            {
-                _context.Notes.Remove(note);
-            }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (note != null)
+                {
+                    _context.Notes.Remove(note);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                
+            }
+            return View(note);
+           
+          
         }
 
+
+        private void PopulateDropDownLists(Note? note = null)
+        {
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+        }
         private bool NoteExists(int id)
         {
             return _context.Notes.Any(e => e.ID == id);
