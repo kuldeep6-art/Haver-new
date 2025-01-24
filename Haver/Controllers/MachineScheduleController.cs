@@ -25,8 +25,16 @@ namespace haver.Controllers
         }
 
         // GET: MachineSchedule
-        public async Task<IActionResult> Index(int? MachineID)
+        public async Task<IActionResult> Index(int? MachineID, string? actionButton, string sortDirection = "asc", string sortField = "Machine"
+)
         {
+            //List of sort options.
+            string[] sortOptions = new[] { "Machine", "StartDate", "DueDate", "EndDate","PackageRDate","PODueDate","DeliveryDate" };
+
+            //Count the number of filters applied - start by assuming no filters
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
             PopulateDropDownLists();
 
             var machineSchedules = from m in _context.MachineSchedules
@@ -40,8 +48,127 @@ namespace haver.Controllers
             if (MachineID.HasValue)
             {
                 machineSchedules = machineSchedules.Where(p => p.MachineID == MachineID);
+                numberFilters++;
             }
 
+            if (numberFilters != 0)
+            {
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+
+            //Now we know which field and direction to sort by
+            if (sortField == "StartDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.StartDate);
+                }
+                else
+                {
+                   machineSchedules = machineSchedules
+                        .OrderBy(p => p.StartDate);
+                }
+            }
+            else if (sortField == "DueDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.DueDate);
+                }
+                else
+                {
+                    machineSchedules = machineSchedules
+                         .OrderBy(p => p.DueDate);
+                }
+            }
+            else if (sortField == "EndDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.EndDate);
+                }
+                else
+                {
+                    machineSchedules = machineSchedules
+                         .OrderBy(p => p.EndDate);
+                }
+            }
+            else if (sortField == "PackageRDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.PackageRDate);
+                }
+                else
+                {
+                    machineSchedules = machineSchedules
+                         .OrderBy(p => p.PackageRDate);
+                }
+            }
+            else if (sortField == "PODueDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.PODueDate);
+                }
+                else
+                {
+                    machineSchedules = machineSchedules
+                         .OrderBy(p => p.PODueDate);
+                }
+            }
+            else if (sortField == "DeliveryDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.DeliveryDate);
+                }
+                else
+                {
+                    machineSchedules = machineSchedules
+                         .OrderBy(p => p.DeliveryDate);
+                }
+            }
+            else 
+            {
+                if (sortDirection == "asc")
+                {
+                    machineSchedules = machineSchedules
+                         .OrderBy(p => p.Machine.Class);
+                }
+                else
+                {
+                    machineSchedules = machineSchedules
+                        .OrderByDescending(p => p.Machine.Class);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
             return View(await machineSchedules.ToListAsync());
         }
 
