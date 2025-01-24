@@ -22,7 +22,8 @@ namespace haver.Controllers
         // GET: Note
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Notes.ToListAsync());
+            var haverContext = _context.Notes.Include(n => n.MachineSchedule);
+            return View(await haverContext.ToListAsync());
         }
 
         // GET: Note/Details/5
@@ -34,6 +35,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
+                .Include(n => n.MachineSchedule)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
             {
@@ -46,6 +48,7 @@ namespace haver.Controllers
         // GET: Note/Create
         public IActionResult Create()
         {
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate")] Note note)
+        public async Task<IActionResult> Create([Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace haver.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
             return View(note);
         }
 
@@ -78,6 +82,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
             return View(note);
         }
 
@@ -86,7 +91,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate")] Note note)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate,MachineScheduleID")] Note note)
         {
             if (id != note.ID)
             {
@@ -113,6 +118,7 @@ namespace haver.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", note.MachineScheduleID);
             return View(note);
         }
 
@@ -125,6 +131,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
+                .Include(n => n.MachineSchedule)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
             {

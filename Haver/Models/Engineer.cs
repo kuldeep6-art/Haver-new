@@ -6,6 +6,25 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
+        #region SUMMARY PROPERTIES
+
+        [Display(Name = "Engineer Initials")]
+        public string EngineerInitials
+        {
+            get
+            {
+              
+                if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
+                {
+                    return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper();
+                }
+                return string.Empty; 
+            }
+        }
+
+
+        #endregion
+
         //First Name Annotations
 
         [Display(Name = "First Name")]
