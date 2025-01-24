@@ -28,7 +28,8 @@ namespace haver.Controllers
         public async Task<IActionResult> Index()
         {
             var haverContext = _context.MachineSchedules
-                .Include(m => m.Machine);
+                .Include(m => m.Machine)
+                .Include(n => n.Note);
 
             return View(await haverContext.ToListAsync());
         }
@@ -43,6 +44,8 @@ namespace haver.Controllers
 
             var machineSchedule = await _context.MachineSchedules
                 .Include(m => m.Machine)
+                .Include(n => n.Note)
+                .Include(p => p.PackageRelease)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machineSchedule == null)
             {
