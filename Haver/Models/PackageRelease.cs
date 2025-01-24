@@ -16,7 +16,7 @@ namespace haver.Models
 
         //Package Release DateP Annotations
 
-        [Display(Name = "Package Release DateP")]
+        [Display(Name = "Date Released")]
         [Required(ErrorMessage = "Date is Required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -24,7 +24,7 @@ namespace haver.Models
 
         //Package Release DateA Annotations
 
-        [Display(Name = "Package Release DateA")]
+        [Display(Name = "Date Approved")]
         [Required(ErrorMessage = "Date is Required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
