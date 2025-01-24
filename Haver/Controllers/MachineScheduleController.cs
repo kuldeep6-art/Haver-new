@@ -117,7 +117,9 @@ namespace haver.Controllers
                 return NotFound();
             }
             if (await TryUpdateModelAsync<MachineSchedule>(scheduleToUpdate, "",
-                s => s.StartDate, s => s.DueDate, s => s.EndDate, s=>s.PackageRDate, s=>s.PODueDate, s=>s.DeliveryDate, s=>s.Media, s=>s.SpareParts, s=>s.SparePMedia, s=>s.Base, s => s.AirSeal, s => s.CoatingLining, s => s.Dissembly, s => s.MachineID))
+                s => s.StartDate, s => s.DueDate, s => s.EndDate, s=>s.PackageRDate,
+                s=>s.PODueDate, s=>s.DeliveryDate, s=>s.Media, s=>s.SpareParts,
+                s=>s.SparePMedia, s=>s.Base, s => s.AirSeal, s => s.CoatingLining, s => s.Dissembly, s => s.MachineID))
             {
                 try
                 {
@@ -140,18 +142,11 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                catch (DbUpdateException dex)
+                catch (DbUpdateException )
                 {
-                    string message = dex.GetBaseException().Message;
-                    if (message.Contains("UNIQUE") && message.Contains("Email"))
-                    {
-                        ModelState.AddModelError("Email", "Unable to save changes. Remember, " +
-                            "you cannot have duplicate Email addresses for Instructors.");
-                    }
-                    else
-                    {
+                    
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    }
+
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -199,16 +194,9 @@ namespace haver.Controllers
                 }
                 return Redirect(returnUrl);
             }
-            catch (DbUpdateException dex)
-            {
-                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
-                {
-                    ModelState.AddModelError("", "Unable to Delete Instructor. Remember, you cannot delete a Instructor that teaches Group Classes.");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
+            catch (DbUpdateException)
+            {       
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");  
             }
             return View(machineSchedule);
 
