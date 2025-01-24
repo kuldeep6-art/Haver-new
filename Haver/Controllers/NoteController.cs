@@ -34,6 +34,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
             {
@@ -86,23 +87,27 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PreOrder,Scope,AssemblyHours,ReworkHours,BudgetHours,NamePlate")] Note note)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != note.ID)
+            var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(n => n.ID == id);
+
+            if (noteToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<Note>(noteToUpdate, "", n => n.PreOrder,
+                    n => n.Scope, n => n.AssemblyHours, n => n.ReworkHours, n => n.BudgetHours,
+                    n => n.NamePlate, n => n.MachineScheduleID))
             {
                 try
                 {
-                    _context.Update(note);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NoteExists(note.ID))
+                    if (!NoteExists(noteToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -110,10 +115,9 @@ namespace haver.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(note);
+                }      
+            }     
+            return View(noteToUpdate);
         }
 
         // GET: Note/Delete/5
@@ -125,6 +129,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
             {
@@ -139,7 +144,8 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var note = await _context.Notes.FindAsync(id);
+            var note = await _context.Notes
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (note != null)
             {
                 _context.Notes.Remove(note);

@@ -22,8 +22,10 @@ namespace haver.Controllers
         // GET: PackageRelease
         public async Task<IActionResult> Index()
         {
-            var haverContext = _context.PackageReleases.Include(p => p.Schedule);
-            return View(await haverContext.ToListAsync());
+            var packageReleases = _context.PackageReleases
+                .Include(p => p.Schedule)
+                .AsNoTracking();
+            return View(await packageReleases.ToListAsync());
         }
 
         // GET: PackageRelease/Details/5
@@ -36,6 +38,7 @@ namespace haver.Controllers
 
             var packageRelease = await _context.PackageReleases
                 .Include(p => p.Schedule)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (packageRelease == null)
             {
@@ -59,12 +62,26 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,PReleaseDateP,PReleaseDateA,Notes,MachineScheduleID")] PackageRelease packageRelease)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(packageRelease);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(packageRelease);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PackageRelease.MachineScheduleID"))
+                {
+                    ModelState.AddModelError("MachineScheduleID", "Unable to save changes, Remenmber you can not have duplicate machine schedules");
+                }
+                else 
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again and if problem persists contact your system admistrator");
+                }
+            }         
             ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", packageRelease.MachineScheduleID);
             return View(packageRelease);
         }
@@ -91,23 +108,30 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,PReleaseDateP,PReleaseDateA,Notes,MachineScheduleID")] PackageRelease packageRelease)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != packageRelease.ID)
+            //Get the record to be updated and checks if it exists or it is null
+            var packageReleaseToUpdate = await _context.PackageReleases.FirstOrDefaultAsync(p => p.ID == id);
+
+            if (packageReleaseToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //updates with values posted
+            if (await TryUpdateModelAsync<PackageRelease>(packageReleaseToUpdate, "", 
+                p => p.Name, p => p.PReleaseDateA, p => p.PReleaseDateP, p => p.Notes, 
+                p => p.MachineScheduleID))
+
             {
                 try
                 {
-                    _context.Update(packageRelease);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PackageReleaseExists(packageRelease.ID))
+                    if (!PackageReleaseExists(packageReleaseToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -116,10 +140,20 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch(DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: PackageRelease.MachineScheduleID"))
+                    {
+                        ModelState.AddModelError("MachineScheduleID", "Unable to save changes, Remenmber you can not have duplicate machine schedules");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again and if problem persists contact your system admistrator");
+                    }
+                }
             }
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", packageRelease.MachineScheduleID);
-            return View(packageRelease);
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID", packageReleaseToUpdate.MachineScheduleID);
+            return View(packageReleaseToUpdate);
         }
 
         // GET: PackageRelease/Delete/5
@@ -132,6 +166,7 @@ namespace haver.Controllers
 
             var packageRelease = await _context.PackageReleases
                 .Include(p => p.Schedule)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (packageRelease == null)
             {
@@ -146,14 +181,24 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var packageRelease = await _context.PackageReleases.FindAsync(id);
-            if (packageRelease != null)
+            var packageRelease = await _context.PackageReleases
+                .Include(p => p.Schedule)
+                .FirstOrDefaultAsync(m => m.ID == id);
+            try
             {
-                _context.PackageReleases.Remove(packageRelease);
-            }
+                if (packageRelease != null)
+                {
+                    _context.PackageReleases.Remove(packageRelease);
+                }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to delete record. Try again and if the problem persists contact your sytems administrator.");
+            }
+            return View(packageRelease);
         }
 
         private bool PackageReleaseExists(int id)
