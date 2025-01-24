@@ -12,6 +12,7 @@ using System.Numerics;
 using Microsoft.VisualBasic;
 using System.Reflection.PortableExecutable;
 using System.Reflection;
+using haver.Utilities;
 
 namespace haver.Controllers
 {
@@ -25,8 +26,7 @@ namespace haver.Controllers
         }
 
         // GET: MachineSchedule
-        public async Task<IActionResult> Index(int? MachineID, string? actionButton, string sortDirection = "asc", string sortField = "Machine"
-)
+        public async Task<IActionResult> Index(int? page, int? MachineID, string? actionButton, string sortDirection = "asc", string sortField = "Machine")
         {
             //List of sort options.
             string[] sortOptions = new[] { "Machine", "StartDate", "DueDate", "EndDate","PackageRDate","PODueDate","DeliveryDate" };
@@ -64,6 +64,7 @@ namespace haver.Controllers
             //Before we sort, see if we have called for a change of filtering or sorting
             if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
             {
+                page = 1;
                 if (sortOptions.Contains(actionButton))//Change of sort is requested
                 {
                     if (actionButton == sortField) //Reverse order on same field
@@ -169,7 +170,12 @@ namespace haver.Controllers
             //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
-            return View(await machineSchedules.ToListAsync());
+
+            //Handle Paging
+            int pageSize = 10;//Change as required
+            var pagedData = await PaginatedList<MachineSchedule>.CreateAsync(machineSchedules.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: MachineSchedule/Details/5
