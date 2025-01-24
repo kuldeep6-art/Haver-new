@@ -103,7 +103,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Phone,Email")] Engineer engineer)
+        public async Task<IActionResult> Edit(int id)
         {
             var engineerToUpdate = await _context.Engineers.FirstOrDefaultAsync(e => e.ID == id);
             if (engineerToUpdate == null)
@@ -132,14 +132,10 @@ namespace haver.Controllers
                 }
                 catch (DbUpdateException dex)
                 {
-                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Engineers.Phone"))
-                    {
-                        ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate Phone numbers.");
-                    }
-                    else
-                    {
+                   
+                    
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    }
+                    
                 }
                 //Dont know if this line is needed
                 
@@ -181,16 +177,12 @@ namespace haver.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException dex)
+            catch (DbUpdateException)
             {
-                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
-                {
-                    ModelState.AddModelError("", "Unable to Delete Engineer. Remember, you cannot delete a Engineer that has a Sales Order");
-                }
-                else
-                {
+               
+                
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
+                
             }
             return View(engineer);
 
