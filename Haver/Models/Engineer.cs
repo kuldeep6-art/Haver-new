@@ -38,5 +38,10 @@ namespace haver.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = "";
         public ICollection<MachineScheduleEngineer> MachineScheduleEngineers { get; set; } = new HashSet<MachineScheduleEngineer>();
+        
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{ }
+
+
     }
 }
