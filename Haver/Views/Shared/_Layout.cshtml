@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/haver.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -58,6 +60,12 @@
         </main>
     </div>
 
+    <!-- Scroll to Top Button -->
+    <a href="#" class="btn btn-primary scroll-to-top" id="scrollToTop" role="button" data-toggle="tooltip" title="Back to Top">
+        <i class="bi bi-arrow-up"></i>
+    </a>
+
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - haver - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -69,7 +77,24 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        // Show/hide the scroll-to-top button
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 200) {
+                $('#scrollToTop').fadeIn();
+            } else {
+                $('#scrollToTop').fadeOut();
+            }
+        });
 
+        // Smooth scroll to top when button is clicked
+        $('#scrollToTop').click(function (e) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: 0 }, 800);
+        });
+    });
+</script>
 <style>
 
 .logo {

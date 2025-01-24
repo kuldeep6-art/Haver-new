@@ -18,7 +18,7 @@ namespace haver.Models
 
         [Display(Name = "Date Released")]
         [Required(ErrorMessage = "Date is Required")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PReleaseDateP { get; set; }
 
@@ -26,7 +26,7 @@ namespace haver.Models
 
         [Display(Name = "Date Approved")]
         [Required(ErrorMessage = "Date is Required")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PReleaseDateA { get; set; }
 

@@ -9,8 +9,11 @@ namespace haver.Models
 
         #region SUMMARY PROPERTIES
 
-        public string PhoneFormatted => "(" + Phone.Substring(0, 3) + ") "
-          + Phone.Substring(3, 3) + "-" + Phone[6..];
+        public string PhoneFormatted =>
+      !string.IsNullOrEmpty(Phone) && Phone.Length == 10
+          ? $"({Phone.Substring(0, 3)}) {Phone.Substring(3, 3)}-{Phone[6..]}"
+          : "N/A";
+
 
         #endregion 
 
@@ -19,11 +22,11 @@ namespace haver.Models
         [Display(Name = "Name")]
         //[Required(ErrorMessage = "You cannot leave the name blank.")]
         //[MaxLength(50, ErrorMessage = "name cannot be more than 50 characters long.")]
-        public Name? Name { get; set; }
+        public string? Name { get; set; }
 
         //ShippingTerms  Annotations
 
-        [Required(ErrorMessage = "Phone number is required.")]
+//        [Required(ErrorMessage = "Phone number is required.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number (no spaces).")]
         [DataType(DataType.PhoneNumber)]
         [MaxLength(10)]
@@ -31,7 +34,7 @@ namespace haver.Models
 
         //ShippingTerms  Annotations
 
-        [Required(ErrorMessage = "Email address is required.")]
+       // [Required(ErrorMessage = "Email address is required.")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Please follow the correct email format test@email.com")]
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]

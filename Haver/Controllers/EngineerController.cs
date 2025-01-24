@@ -59,11 +59,25 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Phone,Email")] Engineer engineer)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(engineer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(engineer);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Engineers.Phone"))
+                {
+                    ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate Phone numbers.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
             return View(engineer);
         }
@@ -89,23 +103,25 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Phone,Email")] Engineer engineer)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != engineer.ID)
+            var engineerToUpdate = await _context.Engineers.FirstOrDefaultAsync(e => e.ID == id);
+            if (engineerToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if ((await TryUpdateModelAsync<Engineer>(engineerToUpdate, "", n=>n.FirstName,
+                n => n.LastName, n => n.Phone, n=> n.Email )))
             {
                 try
                 {
-                    _context.Update(engineer);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EngineerExists(engineer.ID))
+                    if (!EngineerExists(engineerToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -114,9 +130,17 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException dex)
+                {
+                   
+                    
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    
+                }
+                //Dont know if this line is needed
+                
             }
-            return View(engineer);
+            return View(engineerToUpdate);
         }
 
         // GET: Engineer/Delete/5
@@ -128,6 +152,7 @@ namespace haver.Controllers
             }
 
             var engineer = await _context.Engineers
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (engineer == null)
             {
@@ -143,13 +168,25 @@ namespace haver.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var engineer = await _context.Engineers.FindAsync(id);
-            if (engineer != null)
+            try
             {
-                _context.Engineers.Remove(engineer);
+                if (engineer != null)
+                {
+                    _context.Engineers.Remove(engineer);
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
+            catch (DbUpdateException)
+            {
+               
+                
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                
+            }
+            return View(engineer);
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            
         }
 
         private bool EngineerExists(int id)

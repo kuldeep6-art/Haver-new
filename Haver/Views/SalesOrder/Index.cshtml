@@ -9,81 +9,36 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-bordered table-hover shadow-sm">
+    <thead class="thead-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShippingTerms)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppDwgRcd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DwgIsDt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PoNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vendor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MachineSchedule)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.OrderNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.SoDate)</th>
+            <th>@Html.DisplayNameFor(model => model.PoNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.Customer)</th>
+            <th>@Html.DisplayNameFor(model => model.Vendor)</th>
+            <th>@Html.DisplayNameFor(model => model.MachineSchedule)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShippingTerms)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppDwgRcd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DwgIsDt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PoNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Summary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vendor.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MachineSchedule.ID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.OrderNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.SoDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.PoNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Customer.Summary)</td>
+                <td>@Html.DisplayFor(modelItem => item.Vendor.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.MachineSchedule.ID)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn ">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn">  <i class="fa-solid fa-circle-info"></i> Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn"> <i class="fa-solid fa-delete-left"></i> Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
