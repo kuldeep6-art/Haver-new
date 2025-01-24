@@ -27,7 +27,9 @@ namespace haver.Controllers
         // GET: MachineSchedule
         public async Task<IActionResult> Index()
         {
-            var haverContext = _context.MachineSchedules.Include(m => m.Machine);
+            var haverContext = _context.MachineSchedules
+                .Include(m => m.Machine);
+
             return View(await haverContext.ToListAsync());
         }
 
@@ -53,7 +55,7 @@ namespace haver.Controllers
         // GET: MachineSchedule/Create
         public IActionResult Create()
         {
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class");
+           PopulateDropDownLists();
             return View();
         }
 
@@ -81,7 +83,7 @@ namespace haver.Controllers
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class", machineSchedule.MachineID);
+            PopulateDropDownLists(machineSchedule);
                 return View(machineSchedule);
             
         }
@@ -150,7 +152,7 @@ namespace haver.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class", scheduleToUpdate.MachineID);
+            PopulateDropDownLists(scheduleToUpdate);
             return View(scheduleToUpdate);
         }
 
@@ -200,6 +202,11 @@ namespace haver.Controllers
             }
             return View(machineSchedule);
 
+        }
+
+        private void PopulateDropDownLists(MachineSchedule? machineSchedule = null)
+        {
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", machineSchedule?.MachineID);
         }
 
         private bool MachineScheduleExists(int id)
