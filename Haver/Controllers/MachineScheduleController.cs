@@ -193,6 +193,7 @@ namespace haver.Controllers
                 .Include(m => m.Machine)
                 .Include(n => n.Note)
                 .Include(p => p.PackageRelease)
+                .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machineSchedule == null)
             {
@@ -242,7 +243,8 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            var machineSchedule = await _context.MachineSchedules.FindAsync(id);
+            var machineSchedule = await _context.MachineSchedules
+                .FindAsync(id);
             if (machineSchedule == null)
             {
                 return NotFound();
@@ -259,7 +261,8 @@ namespace haver.Controllers
         public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         { 
             var scheduleToUpdate = await _context.MachineSchedules
-                .FirstOrDefaultAsync(p => p.ID == id);
+                .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (scheduleToUpdate == null)
             {
                 return NotFound();
@@ -313,6 +316,7 @@ namespace haver.Controllers
 
             var machineSchedule = await _context.MachineSchedules
                 .Include(m => m.Machine)
+                .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machineSchedule == null)
             {
