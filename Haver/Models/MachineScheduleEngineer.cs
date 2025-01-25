@@ -1,6 +1,6 @@
 ﻿namespace haver.Models
 {
-    public class MachineScheduleEngineer
+    public class MachineScheduleEngineer : Auditable
     {
         public int ID { get; set; }
 

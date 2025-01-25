@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class Vendor
+    public class Vendor : Auditable
     {
         public int ID { get; set; }
 

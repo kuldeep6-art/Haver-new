@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class Engineer
+    public class Engineer : Auditable
     {
         public int ID { get; set; }
 
