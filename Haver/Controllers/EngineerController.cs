@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
 using haver.CustomControllers;
+using System.Reflection.PortableExecutable;
 
 namespace haver.Controllers
 {
@@ -24,8 +25,54 @@ namespace haver.Controllers
 
         // adding in Sorting and filtering for the engineer section based on ??(Dont know which variables to sort by yet)
         // GET: Engineer
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? actionButton, int? EngineerID, string sortDirection = "asc", string sortField = "LastName")
         {
+            string[] sortOptions = new[] { "FirstName", "LastName"};
+
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
+            var engineers = from e in _context.Engineers
+                            .Include(e => e.FirstName)
+                            .Include(e => e.LastName)
+                            select e;
+
+            //Filter part got from Machine Schedule Controller
+            if (EngineerID.HasValue)
+            {
+                engineers = engineers.Where(e => e.ID == EngineerID);
+                numberFilters++;
+            }
+
+            if (sortField == "FirstName")
+            {
+                if (sortDirection == "asc")
+                {
+                    engineers = engineers
+                        .OrderByDescending(p => p.FirstName);
+                }
+                else
+                {
+                    engineers = engineers
+                         .OrderBy(p => p.FirstName);
+                }
+            }
+            if (sortField == "LastName")
+            {
+                if (sortDirection == "asc")
+                {
+                    engineers = engineers
+                        .OrderByDescending(p => p.LastName);
+                }
+                else
+                {
+                    engineers = engineers
+                         .OrderBy(p => p.LastName);
+                }
+            }
+
+
+
             return View(await _context.Engineers.ToListAsync());
         }
 
