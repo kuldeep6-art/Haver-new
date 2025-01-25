@@ -15,6 +15,7 @@ using System.Reflection;
 using haver.Utilities;
 using haver.CustomControllers;
 using Machine = haver.Models.Machine;
+using haver.ViewModels;
 
 namespace haver.Controllers
 {
@@ -206,7 +207,9 @@ namespace haver.Controllers
         // GET: MachineSchedule/Create
         public IActionResult Create()
         {
-           PopulateDropDownLists();
+            MachineSchedule schedule= new MachineSchedule();
+            PopulateAssignedSpecialtyData(schedule);
+            PopulateDropDownLists();
             return View();
         }
 
@@ -215,10 +218,12 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,StartDate,DueDate,EndDate,PackageRDate,PODueDate,DeliveryDate,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Dissembly,MachineID")] MachineSchedule machineSchedule)
+        public async Task<IActionResult> Create([Bind("ID,StartDate,DueDate,EndDate,PackageRDate,PODueDate,DeliveryDate,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Dissembly,MachineID")] MachineSchedule machineSchedule,
+            string[] selectedOptions)
         {
             try
             {
+                UpdateDoctorSpecialties(selectedOptions, machineSchedule);
                 if (ModelState.IsValid)
                 {
                     _context.Add(machineSchedule);
@@ -226,10 +231,15 @@ namespace haver.Controllers
                     return RedirectToAction("Details", new { machineSchedule.ID });
                 }
             }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+            }
             catch (DbUpdateException)
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
+            PopulateAssignedSpecialtyData(machineSchedule);  
             PopulateDropDownLists(machineSchedule);
                 return View(machineSchedule);
             
@@ -244,12 +254,15 @@ namespace haver.Controllers
             }
 
             var machineSchedule = await _context.MachineSchedules
-                .FindAsync(id);
+                 .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
             if (machineSchedule == null)
             {
                 return NotFound();
             }
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class", machineSchedule.MachineID);
+            PopulateAssignedSpecialtyData(machineSchedule);
             return View(machineSchedule);
         }
 
@@ -258,7 +271,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions,Byte[] RowVersion)
         { 
             var scheduleToUpdate = await _context.MachineSchedules
                 .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
@@ -267,6 +280,8 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
+
+            UpdateDoctorSpecialties(selectedOptions, scheduleToUpdate);
 
             //Put the original RowVersion value in the OriginalValues collection for the entity
             _context.Entry(scheduleToUpdate).Property("RowVersion").OriginalValue = RowVersion;
@@ -282,6 +297,10 @@ namespace haver.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", new { scheduleToUpdate.ID });
                 }
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!MachineScheduleExists(scheduleToUpdate.ID))
@@ -294,15 +313,16 @@ namespace haver.Controllers
                             + "was modified by another user. Please go back and refresh.");
                     }
                 }
-                catch (DbUpdateException )
+                catch (DbUpdateException)
                 {
-                    
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
 
                 }
                 return RedirectToAction(nameof(Index));
             }
             PopulateDropDownLists(scheduleToUpdate);
+            PopulateAssignedSpecialtyData(scheduleToUpdate);
             return View(scheduleToUpdate);
         }
 
@@ -359,6 +379,87 @@ namespace haver.Controllers
         {
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class", machineSchedule?.MachineID);
         }
+
+
+        private void PopulateAssignedSpecialtyData(MachineSchedule machineSchedule)
+        {
+            //For this to work, you must have Included the child collection in the parent object
+            var allOptions = _context.Engineers;
+            var currentOptionsHS = new HashSet<int>(machineSchedule.MachineScheduleEngineers.Select(b => b.EngineerID));
+            //Instead of one list with a boolean, we will make two lists
+            var selected = new List<ListOptionVM>();
+            var available = new List<ListOptionVM>();
+            foreach (var s in allOptions)
+            {
+                if (currentOptionsHS.Contains(s.ID))
+                {
+                    selected.Add(new ListOptionVM
+                    {
+                        ID = s.ID,
+                        DisplayText = s.EngineerInitials
+                    });
+                }
+                else
+                {
+                    available.Add(new ListOptionVM
+                    {
+                        ID = s.ID,
+                        DisplayText = s.EngineerInitials
+                    });
+                }
+            }
+
+            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+        }
+        private void UpdateDoctorSpecialties(string[] selectedOptions, MachineSchedule scheduleToUpdate)
+        {
+            if (selectedOptions == null)
+            {
+                scheduleToUpdate.MachineScheduleEngineers = new List<MachineScheduleEngineer>();
+                return;
+            }
+
+            // Ensure scheduleToUpdate.MachineScheduleEngineers is initialized
+            if (scheduleToUpdate.MachineScheduleEngineers == null)
+            {
+                scheduleToUpdate.MachineScheduleEngineers = new List<MachineScheduleEngineer>();
+            }
+
+            // Convert selectedOptions to a HashSet for quick lookup
+            var selectedOptionsHS = new HashSet<int>(selectedOptions.Select(int.Parse)); // Ensure conversion to int
+            var currentOptionsHS = new HashSet<int>(scheduleToUpdate.MachineScheduleEngineers.Select(b => b.EngineerID));
+
+            foreach (var engineer in _context.Engineers)
+            {
+                if (selectedOptionsHS.Contains(engineer.ID)) // Engineer is selected
+                {
+                    if (!currentOptionsHS.Contains(engineer.ID)) // Not in the current collection
+                    {
+                        // Add new MachineScheduleEngineer
+                        scheduleToUpdate.MachineScheduleEngineers.Add(new MachineScheduleEngineer
+                        {
+                            EngineerID = engineer.ID,
+                            MachineScheduleID = scheduleToUpdate.ID
+                        });
+                    }
+                }
+                else // Engineer is not selected
+                {
+                    if (currentOptionsHS.Contains(engineer.ID)) // But is currently in the collection
+                    {
+                        // Find and remove the MachineScheduleEngineer entity
+                        var specToRemove = scheduleToUpdate.MachineScheduleEngineers
+                            .FirstOrDefault(d => d.EngineerID == engineer.ID);
+                        if (specToRemove != null)
+                        {
+                            _context.Remove(specToRemove);
+                        }
+                    }
+                }
+            }
+        }
+
 
         private bool MachineScheduleExists(int id)
         {

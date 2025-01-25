@@ -80,6 +80,23 @@
                 <select asp-for="MachineID" class="form-control" asp-items="ViewBag.MachineID"></select>
                 <span asp-validation-for="MachineID" class="text-danger"></span>
             </div>
+             <div class="col-md-8">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="control-label"> All Engineers</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                        <strong>-</strong>
+                    </button>
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="control-label"> Choose Engineers</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                        <strong>+</strong>
+                    </button>
+                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                </div>
+            </div>
+        </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -94,3 +111,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+ <script src="~/js/multiselect.js"></script>
