@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
+using haver.CustomControllers;
 
 namespace haver.Controllers
 {
     
-    public class EngineerController : Controller
+    public class EngineerController : ElephantController
     {
         private readonly HaverContext _context;
 
@@ -65,7 +66,7 @@ namespace haver.Controllers
                 {
                     _context.Add(engineer);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { engineer.ID });
                 }
             }
             catch (DbUpdateException dex)
@@ -117,7 +118,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { engineerToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -175,7 +176,12 @@ namespace haver.Controllers
                     _context.Engineers.Remove(engineer);
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var returnUrl = ViewData["returnURL"]?.ToString();
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return Redirect(returnUrl);
             }
             catch (DbUpdateException)
             {

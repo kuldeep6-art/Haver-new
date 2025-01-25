@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class MachineSchedule
+    public class MachineSchedule : Auditable
     {
         public int ID { get; set; }
 

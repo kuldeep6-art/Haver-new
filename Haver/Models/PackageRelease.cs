@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class PackageRelease
+    public class PackageRelease : Auditable
     {
         public int ID { get; set; }
 
