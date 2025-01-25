@@ -52,6 +52,7 @@
                         </button>
                     </th>
                 }
+                <th>Engineers</th>
                 <th class="align-middle">Actions</th>
             </tr>
         </thead>
@@ -66,6 +67,35 @@
                     <td>@Html.DisplayFor(modelItem => item.PODueDate)</td>
                     <td>@Html.DisplayFor(modelItem => item.DeliveryDate)</td>
                     <td>@Html.DisplayFor(modelItem => item.Machine.Class)</td>
+                    <td>
+                        @{
+                            int specCount = item.MachineScheduleEngineers.Count;
+                            if (specCount > 0)
+                            {
+                                string firstSpec = item.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
+                                if (specCount > 1)
+                                {
+                                    string specList = "";//Html string of specialty names separated by <br /> tags
+                                    var s = item.MachineScheduleEngineers.ToList();
+                                    for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                                    {
+                                        specList += s[i].Engineer.EngineerInitials + " <br />";
+                                    }
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
+                                       aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
+                                        @firstSpec <span class="badge bg-info">@specCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseSpecalty@(item.ID)">
+                                        @Html.Raw(specList)
+                                    </div>
+                                }
+                                else
+                                {
+                                    @firstSpec
+                                }
+                            }
+                        }
+                    </td>
                     <td class="text-center">
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
