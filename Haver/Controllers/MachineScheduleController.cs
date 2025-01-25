@@ -17,7 +17,7 @@ using haver.CustomControllers;
 
 namespace haver.Controllers
 {
-    public class MachineScheduleController : CognizantController
+    public class MachineScheduleController : ElephantController
     {
         private readonly HaverContext _context;
 
@@ -221,7 +221,7 @@ namespace haver.Controllers
                 {
                     _context.Add(machineSchedule);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { machineSchedule.ID });
                 }
             }
             catch (DbUpdateException)
@@ -271,12 +271,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    var returnUrl = ViewData["returnURL"]?.ToString();
-                    if (string.IsNullOrEmpty(returnUrl))
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
-                    return Redirect(returnUrl);
+                    return RedirectToAction("Details", new { scheduleToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
