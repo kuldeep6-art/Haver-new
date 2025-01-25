@@ -11,8 +11,8 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250124024408_updatevendor")]
-    partial class updatevendor
+    [Migration("20250125215801_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,13 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<string>("CompanyName")
                         .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
@@ -50,6 +57,13 @@ namespace haver.Data.HaverMigrations
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.HasIndex("Phone")
@@ -63,6 +77,13 @@ namespace haver.Data.HaverMigrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -84,6 +105,13 @@ namespace haver.Data.HaverMigrations
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.ToTable("Engineers");
@@ -97,6 +125,13 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<string>("Class")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -117,6 +152,13 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<string>("SizeDeck")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -142,6 +184,13 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("CoatingLining")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("TEXT");
 
@@ -166,6 +215,11 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime>("PackageRDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
                     b.Property<bool>("SparePMedia")
                         .HasColumnType("INTEGER");
 
@@ -173,6 +227,13 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -190,8 +251,22 @@ namespace haver.Data.HaverMigrations
                     b.Property<int>("EngineerID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("MachineScheduleID", "EngineerID");
 
@@ -215,6 +290,13 @@ namespace haver.Data.HaverMigrations
                     b.Property<decimal>("BudgetHours")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("MachineScheduleID")
                         .HasColumnType("INTEGER");
 
@@ -231,6 +313,13 @@ namespace haver.Data.HaverMigrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.HasIndex("MachineScheduleID")
@@ -244,6 +333,13 @@ namespace haver.Data.HaverMigrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("MachineScheduleID")
                         .HasColumnType("INTEGER");
@@ -266,6 +362,13 @@ namespace haver.Data.HaverMigrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.HasIndex("MachineScheduleID")
@@ -284,6 +387,13 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("AppDwgRcd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("CustomerID")
@@ -314,6 +424,13 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime>("SoDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("VendorID")
                         .HasColumnType("INTEGER");
 
@@ -337,6 +454,13 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
@@ -346,6 +470,13 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<string>("Phone")
                         .HasMaxLength(10)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -396,13 +527,13 @@ namespace haver.Data.HaverMigrations
 
             modelBuilder.Entity("haver.Models.PackageRelease", b =>
                 {
-                    b.HasOne("haver.Models.MachineSchedule", "Schedule")
+                    b.HasOne("haver.Models.MachineSchedule", "MachineSchedule")
                         .WithOne("PackageRelease")
                         .HasForeignKey("haver.Models.PackageRelease", "MachineScheduleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Schedule");
+                    b.Navigation("MachineSchedule");
                 });
 
             modelBuilder.Entity("haver.Models.SalesOrder", b =>

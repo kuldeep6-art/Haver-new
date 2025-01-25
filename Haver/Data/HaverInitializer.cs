@@ -6,68 +6,11 @@ namespace haver.Data
 {
     public static class HaverInitializer
     {
-        public static void Initialize(IServiceProvider serviceProvider,
-             bool DeleteDatabase = false, bool UseMigrations = true, bool SeedSampleData = true)
+        public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new HaverContext(
                 serviceProvider.GetRequiredService<DbContextOptions<HaverContext>>()))
             {
-
-                //Refresh the database as per the parameter options
-                #region Prepare the Database
-                try
-                {
-                    //Note: .CanConnect() will return false if the database is not there!
-                    if (DeleteDatabase || !context.Database.CanConnect())
-                    {
-                        context.Database.EnsureDeleted(); //Delete the existing version 
-                        if (UseMigrations)
-                        {
-                            context.Database.Migrate(); //Create the Database and apply all migrations
-                        }
-                        else
-                        {
-                            context.Database.EnsureCreated(); //Create and update the database as per the Model
-                        }
-                        //Now create any additional database objects such as Triggers or Views
-                        //--------------------------------------------------------------------
-                        //Create the Triggers
-                        string sqlCmd = @"
-                            CREATE TRIGGER SetMachineScheduleTimestampOnUpdate
-                            AFTER UPDATE ON MachineSchedules
-                            BEGIN
-                                UPDATE MachineSchedules
-                                SET RowVersion = randomblob(8)
-                                WHERE rowid = NEW.rowid;
-                            END;
-                        ";
-                        context.Database.ExecuteSqlRaw(sqlCmd);
-
-                        sqlCmd = @"
-                            CREATE TRIGGER SetMachineScheduleTimestampOnInsert
-                            AFTER INSERT ON MachineSchedules
-                            BEGIN
-                                UPDATE MachineSchedules
-                                SET RowVersion = randomblob(8)
-                                WHERE rowid = NEW.rowid;
-                            END
-                        ";
-                        context.Database.ExecuteSqlRaw(sqlCmd);
-                    }
-                    else //The database is already created
-                    {
-                        if (UseMigrations)
-                        {
-                            context.Database.Migrate(); //Apply all migrations
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.GetBaseException().Message);
-                }
-                #endregion
-
                 #region seed data
                 try
                 {
