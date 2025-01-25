@@ -54,6 +54,11 @@ namespace haver.Models
         public DateTime DeliveryDate { get; set; }
 
 
+        [ScaffoldColumn(false)]
+        [Timestamp]
+        public Byte[]? RowVersion { get; set; }//Added for concurrency
+
+
         //Media Annotations
 
         [Display(Name = "Media")]

@@ -131,7 +131,7 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                catch (DbUpdateException dex)
+                catch (DbUpdateException)
                 {
                    
                     

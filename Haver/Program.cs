@@ -47,7 +47,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    HaverInitializer.Initialize(services);
+    HaverInitializer.Initialize(serviceProvider: services, DeleteDatabase: false,
+        UseMigrations: true, SeedSampleData: true);
 }
 
 
