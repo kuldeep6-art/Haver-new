@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace haver
+namespace haver.CustomControllers
 {
     /// <summary>
     /// Makes the controller "self aware" knowing it's own name
