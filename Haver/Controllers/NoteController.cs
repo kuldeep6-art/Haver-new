@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
+using haver.CustomControllers;
 
 namespace haver.Controllers
 {
-    public class NoteController : Controller
+    public class NoteController : ElephantController
     {
         private readonly HaverContext _context;
 
@@ -67,7 +68,7 @@ namespace haver.Controllers
                 {
                     _context.Add(note);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { note.ID });
                 }
             }
             catch (DbUpdateException)
@@ -118,7 +119,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { noteToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -176,7 +177,12 @@ namespace haver.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var returnUrl = ViewData["returnURL"]?.ToString();
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return Redirect(returnUrl);
             }
             catch (DbUpdateException)
             {

@@ -1,10 +1,6 @@
 ﻿@model haver.Models.Engineer
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-<h1>Create</h1>
+<partial name="_ViewHeading" />
 
 <h4>Engineer</h4>
 <hr />
@@ -40,7 +36,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <partial name="_BackToList" />
 </div>
 
 @section Scripts {
