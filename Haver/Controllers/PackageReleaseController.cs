@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
+using haver.CustomControllers;
 using haver.Utilities;
-using static Azure.Core.HttpHeader;
-using System.Reflection.PortableExecutable;
 
 namespace haver.Controllers
 {
-    public class PackageReleaseController : CognizantController
+    public class PackageReleaseController : ElephantController
     {
         private readonly HaverContext _context;
 
@@ -186,7 +185,7 @@ namespace haver.Controllers
                 {
                     _context.Add(packageRelease);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { packageRelease.ID });
                 }
             }
             catch (DbUpdateException)
@@ -236,7 +235,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { packageToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -294,7 +293,12 @@ namespace haver.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var returnUrl = ViewData["returnURL"]?.ToString();
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return Redirect(returnUrl);
             }
             catch (DbUpdateException)
             {
