@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
+using haver.Utilities;
+using static Azure.Core.HttpHeader;
+using System.Reflection.PortableExecutable;
 
 namespace haver.Controllers
 {
-    public class PackageReleaseController : Controller
+    public class PackageReleaseController : CognizantController
     {
         private readonly HaverContext _context;
 
@@ -20,11 +23,127 @@ namespace haver.Controllers
         }
 
         // GET: PackageRelease
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID,string? SearchName,string? SearchNotes,int? MachineScheduleID, string? actionButton, string sortDirection = "asc", string sortField = "PReleaseDateP")
         {
-            var haverContext = _context.PackageReleases
-                .Include(p => p.MachineSchedule);
-            return View(await haverContext.ToListAsync());
+            string[] sortOptions = new[] { "Name", "PReleaseDateP", "PReleaseDateA", "Notes", "MachineSchedule" };
+            var packageRelease = from m in _context.PackageReleases
+                         .Include(m => m.MachineSchedule)
+                         .AsNoTracking()
+                          select m;
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+            PopulateDropDownLists();
+
+            if (MachineScheduleID.HasValue)
+            {
+                packageRelease = packageRelease.Where(p => p.MachineScheduleID == MachineScheduleID);
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(SearchName))
+            {
+                packageRelease = packageRelease.Where(p => p.Name.ToUpper().Contains(SearchName.ToUpper()));
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(SearchNotes))
+            {
+                packageRelease = packageRelease.Where(p => p.Notes.ToUpper().Contains(SearchNotes.ToUpper()));
+                numberFilters++;
+            }
+
+
+            if (numberFilters != 0)
+            {
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                page = 1;
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            if (sortField == "PReleaseDateP")
+            {
+                if (sortDirection == "asc")
+                {
+                    packageRelease = packageRelease
+                        .OrderByDescending(p => p.PReleaseDateP);
+                }
+                else
+                {
+                    packageRelease = packageRelease
+                         .OrderBy(p => p.PReleaseDateP);
+                }
+            }
+            else if(sortField=="Name")
+            {
+                if (sortDirection == "asc")
+                {
+                    packageRelease = packageRelease
+                        .OrderByDescending(p => p.Name);
+                }
+                else
+                {
+                    packageRelease = packageRelease
+                         .OrderBy(p => p.Name);
+                }
+            }
+            else if (sortField == "Notes")
+            {
+                if (sortDirection == "asc")
+                {
+                    packageRelease = packageRelease
+                        .OrderByDescending(p => p.Notes);
+                }
+                else
+                {
+                    packageRelease = packageRelease
+                         .OrderBy(p => p.Notes);
+                }
+            }
+            else if (sortField == "MachineSchedule")
+            {
+                if (sortDirection == "asc")
+                {
+                    packageRelease = packageRelease
+                        .OrderByDescending(p => p.MachineSchedule);
+                }
+                else
+                {
+                    packageRelease = packageRelease
+                         .OrderBy(p => p.MachineSchedule);
+                }
+            }
+            else
+            {
+                if (sortDirection == "asc")
+                {
+                    packageRelease = packageRelease
+                        .OrderByDescending(p => p.PReleaseDateA);
+                }
+                else
+                {
+                    packageRelease = packageRelease
+                         .OrderBy(p => p.PReleaseDateA);
+                }
+            }
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<PackageRelease>.CreateAsync(packageRelease.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: PackageRelease/Details/5
