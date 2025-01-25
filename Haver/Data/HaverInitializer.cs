@@ -11,6 +11,7 @@ namespace haver.Data
             using (var context = new HaverContext(
                 serviceProvider.GetRequiredService<DbContextOptions<HaverContext>>()))
             {
+                #region seed data
                 try
                 {
                     // 1. Seed Customers
@@ -181,6 +182,8 @@ namespace haver.Data
                 {
                     Debug.WriteLine(ex.GetBaseException().Message);
                 }
+
+                #endregion
             }
         }
 

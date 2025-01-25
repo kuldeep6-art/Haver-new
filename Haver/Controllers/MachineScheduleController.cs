@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +14,7 @@ using System.Reflection.PortableExecutable;
 using System.Reflection;
 using haver.Utilities;
 using haver.CustomControllers;
+using Machine = haver.Models.Machine;
 
 namespace haver.Controllers
 {
@@ -255,14 +256,19 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
-        {
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
+        { 
             var scheduleToUpdate = await _context.MachineSchedules
                 .FirstOrDefaultAsync(p => p.ID == id);
             if (scheduleToUpdate == null)
             {
                 return NotFound();
             }
+
+            //Put the original RowVersion value in the OriginalValues collection for the entity
+            _context.Entry(scheduleToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+
+
             if (await TryUpdateModelAsync<MachineSchedule>(scheduleToUpdate, "",
                 s => s.StartDate, s => s.DueDate, s => s.EndDate, s=>s.PackageRDate,
                 s=>s.PODueDate, s=>s.DeliveryDate, s=>s.Media, s=>s.SpareParts,
@@ -281,7 +287,8 @@ namespace haver.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                            + "was modified by another user. Please go back and refresh.");
                     }
                 }
                 catch (DbUpdateException )

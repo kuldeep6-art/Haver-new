@@ -212,6 +212,11 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime>("PackageRDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
                     b.Property<bool>("SparePMedia")
                         .HasColumnType("INTEGER");
 
