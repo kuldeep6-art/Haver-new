@@ -9,6 +9,7 @@ using haver.Data;
 using haver.Models;
 using haver.CustomControllers;
 using System.Reflection.PortableExecutable;
+using haver.Utilities;
 
 namespace haver.Controllers
 {
@@ -25,25 +26,52 @@ namespace haver.Controllers
 
         // adding in Sorting and filtering for the engineer section based on ??(Dont know which variables to sort by yet)
         // GET: Engineer
-        public async Task<IActionResult> Index(string? actionButton, int? EngineerID, string sortDirection = "asc", string sortField = "LastName")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "LastName")
         {
-            string[] sortOptions = new[] { "FirstName", "LastName"};
 
+            string[] sortOptions = new[] { "LastName","FirstName", "Phone", "Email" };
+
+            //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
 
             var engineers = from e in _context.Engineers
-                            .Include(e => e.FirstName)
-                            .Include(e => e.LastName)
+                            .AsNoTracking()
                             select e;
 
-            //Filter part got from Machine Schedule Controller
-            if (EngineerID.HasValue)
+
+            if (!String.IsNullOrEmpty(SearchString))
             {
-                engineers = engineers.Where(e => e.ID == EngineerID);
+                engineers = engineers.Where(p => p.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                       || p.FirstName.ToUpper().Contains(SearchString.ToUpper()));
                 numberFilters++;
             }
 
+            //Give feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending on if we are filtering
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            //Now we know which field and direction to sort by
             if (sortField == "FirstName")
             {
                 if (sortDirection == "asc")
@@ -54,26 +82,60 @@ namespace haver.Controllers
                 else
                 {
                     engineers = engineers
-                         .OrderBy(p => p.FirstName);
+                        .OrderBy(p => p.FirstName);
                 }
             }
-            if (sortField == "LastName")
+            if (sortField == "Phone")
             {
                 if (sortDirection == "asc")
                 {
                     engineers = engineers
-                        .OrderByDescending(p => p.LastName);
+                        .OrderByDescending(p => p.Phone);
                 }
                 else
                 {
                     engineers = engineers
-                         .OrderBy(p => p.LastName);
+                        .OrderBy(p => p.Phone);
                 }
             }
+            else if (sortField == "Email")
+            {
+                if (sortDirection == "asc")
+                {
+                    engineers = engineers
+                        .OrderByDescending(p => p.Email);
+                }
+                else
+                {
+                    engineers = engineers
+                        .OrderBy(p => p.Email);
+                }
+            }
+            else 
+            {
+                if (sortDirection == "asc")
+                {
+                    engineers = engineers
+                        .OrderBy(p => p.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    engineers = engineers
+                        .OrderByDescending(p => p.LastName)
+                        .ThenByDescending(p => p.FirstName);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
 
+            //Handle Paging
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<Engineer>.CreateAsync(engineers.AsNoTracking(), page ?? 1, pageSize);
 
-
-            return View(await _context.Engineers.ToListAsync());
+            return View(pagedData);
         }
 
         // GET: Engineer/Details/5
