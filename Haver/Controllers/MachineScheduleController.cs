@@ -412,6 +412,7 @@ namespace haver.Controllers
             ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
             ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
         }
+
         private void UpdateDoctorSpecialties(string[] selectedOptions, MachineSchedule scheduleToUpdate)
         {
             if (selectedOptions == null)
@@ -420,37 +421,26 @@ namespace haver.Controllers
                 return;
             }
 
-            // Ensure scheduleToUpdate.MachineScheduleEngineers is initialized
-            if (scheduleToUpdate.MachineScheduleEngineers == null)
-            {
-                scheduleToUpdate.MachineScheduleEngineers = new List<MachineScheduleEngineer>();
-            }
-
-            // Convert selectedOptions to a HashSet for quick lookup
-            var selectedOptionsHS = new HashSet<int>(selectedOptions.Select(int.Parse)); // Ensure conversion to int
+            var selectedOptionsHS = new HashSet<string>(selectedOptions);
             var currentOptionsHS = new HashSet<int>(scheduleToUpdate.MachineScheduleEngineers.Select(b => b.EngineerID));
-
-            foreach (var engineer in _context.Engineers)
+            foreach (var s in _context.Engineers)
             {
-                if (selectedOptionsHS.Contains(engineer.ID)) // Engineer is selected
+                if (selectedOptionsHS.Contains(s.ID.ToString()))//it is selected
                 {
-                    if (!currentOptionsHS.Contains(engineer.ID)) // Not in the current collection
+                    if (!currentOptionsHS.Contains(s.ID))
                     {
-                        // Add new MachineScheduleEngineer
                         scheduleToUpdate.MachineScheduleEngineers.Add(new MachineScheduleEngineer
                         {
-                            EngineerID = engineer.ID,
+                            EngineerID = s.ID,
                             MachineScheduleID = scheduleToUpdate.ID
                         });
                     }
                 }
-                else // Engineer is not selected
+                else //not selected
                 {
-                    if (currentOptionsHS.Contains(engineer.ID)) // But is currently in the collection
+                    if (currentOptionsHS.Contains(s.ID))
                     {
-                        // Find and remove the MachineScheduleEngineer entity
-                        var specToRemove = scheduleToUpdate.MachineScheduleEngineers
-                            .FirstOrDefault(d => d.EngineerID == engineer.ID);
+                        MachineScheduleEngineer? specToRemove = scheduleToUpdate.MachineScheduleEngineers.FirstOrDefault(d => d.EngineerID == s.ID);
                         if (specToRemove != null)
                         {
                             _context.Remove(specToRemove);
@@ -459,7 +449,6 @@ namespace haver.Controllers
                 }
             }
         }
-
 
         private bool MachineScheduleExists(int id)
         {
