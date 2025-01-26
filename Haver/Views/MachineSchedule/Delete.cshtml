@@ -1,207 +1,144 @@
 ﻿@model haver.Models.MachineSchedule
 
 <partial name="_ViewHeading" />
-<div>
-    <h4>MachineSchedule</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DueDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PackageRDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PackageRDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PODueDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PODueDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Media)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Media)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpareParts)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpareParts)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SparePMedia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SparePMedia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Base)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Base)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AirSeal)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AirSeal)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CoatingLining)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CoatingLining)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dissembly)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dissembly)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Machine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Machine.Class)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MachineScheduleEngineers)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                int specCount = Model.MachineScheduleEngineers.Count;
-                if (specCount > 0)
-                {
-                    string firstSpec = Model.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
-                    if (specCount > 1)
-                    {
-                        string specList = "";//Html string of specialty names separated by <br /> tags
-                        var s = Model.MachineScheduleEngineers.ToList();
-                        for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+
+<div class="container my-3">
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
+            <h4>MachineSchedule Details</h4>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StartDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.StartDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DueDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DueDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.EndDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PackageRDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PackageRDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PODueDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PODueDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DeliveryDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DeliveryDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Media)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Media)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SpareParts)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SpareParts)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SparePMedia)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SparePMedia)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Base)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Base)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AirSeal)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.AirSeal)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CoatingLining)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CoatingLining)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Dissembly)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Dissembly)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Machine)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Machine.Class)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MachineScheduleEngineers)</dt>
+                <dd class="col-sm-9">
+                    @{
+
+                        int specCount = Model.MachineScheduleEngineers.Count;
+                        if (specCount > 0)
                         {
-                            specList += s[i].Engineer.EngineerInitials + " <br />";
+                            string firstSpec = Model.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
+                            if (specCount > 1)
+                            {
+                                string specList = "";
+                                var s = Model.MachineScheduleEngineers.ToList();
+                                for (int i = 1; i < specCount; i++)
+                                {
+                                    specList += s[i].Engineer.EngineerInitials + " <br />";
+                                }
+                                <a data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)" aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
+                                    @firstSpec <span class="badge bg-info">@specCount</span>
+                                </a>
+                                <div class="collapse" id="collapseSpecalty@(Model.ID)">
+                                    @Html.Raw(specList)
+                                </div>
+                            }
+                            else
+                            {
+                                @firstSpec
+                            }
                         }
-                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
-                           aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
-                            @firstSpec <span class="badge bg-info">@specCount</span>
-                        </a>
-                        <div class="collapse" id="collapseSpecalty@(Model.ID)">
-                            @Html.Raw(specList)
-                        </div>
                     }
-                    else
-                    {
-                        @firstSpec
-                    }
-                }
+                </dd>
+            </dl>
+
+            <p>Comments / Notes</p>
+            @if (Model.Note != null)
+            {
+                <dl class="row">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note.PreOrder)</dt>
+                    <dd class="col-sm-9">@Html.Raw(Model.Note.PreOrder)</dd>
+
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note.Scope)</dt>
+                    <dd class="col-sm-9">@Html.Raw(Model.Note.Scope)</dd>
+
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note.AssemblyHours)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Note.AssemblyHours)</dd>
+
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note.ReworkHours)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Note.ReworkHours)</dd>
+
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note.BudgetHours)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Note.BudgetHours)</dd>
+                </dl>
             }
-        </dd>
+            else
+            {
+                <p>No notes available for this schedule.</p>
+            }
 
-        <!-- Display Note details -->
+            <p>Package Release Information</p>
+            @if (Model.PackageRelease != null)
+            {
+                <dl class="row">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PackageRelease.Name)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.PackageRelease.Name)</dd>
 
-        <p>Comments / Notes </p>
-        @if (Model.Note != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Note.PreOrder)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Note.PreOrder)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Note.Scope)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Note.Scope)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Note.AssemblyHours)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Note.AssemblyHours)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Note.ReworkHours)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Note.ReworkHours)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Note.BudgetHours)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Note.BudgetHours)
-            </dd>
-        }
-        else
-        {
-            <p>No notes available for this schedule.</p>
-        }
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)</dd>
 
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)</dd>
 
-        <p>Package Release Information</p>
-        @if (Model.PackageRelease != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PackageRelease.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.Notes)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.PackageRelease.Notes)
-            </dd>
-        }
-        else
-        {
-            <p>No Package Release Information available for this schedule.</p>
-        }
-    </dl>
-    
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <partial name="_BackToList" />
-    </form>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PackageRelease.Notes)</dt>
+                    <dd class="col-sm-9">@Html.Raw(Model.PackageRelease.Notes)</dd>
+                </dl>
+            }
+            else
+            {
+                <p>No Package Release Information available for this schedule.</p>
+            }
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete" class="d-inline">
+                <input type="hidden" asp-for="ID" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <span class="mx-2">|</span>
+            <partial name="_BackToList" />
+        </div>
+    </div>
 </div>
