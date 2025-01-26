@@ -25,8 +25,11 @@ namespace haver.Controllers
         public async Task<IActionResult> Index(int? page, int? pageSizeID)
         {
             var notes = from m in _context.Notes
+                        .Include(m => m.MachineSchedule)
                         .AsNoTracking()
-                            select m;
+                           select m;
+
+
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<Note>.CreateAsync(notes.AsNoTracking(), page ?? 1, pageSize);
@@ -43,6 +46,7 @@ namespace haver.Controllers
             }
 
             var note = await _context.Notes
+                  .Include(m => m.MachineSchedule)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (note == null)
@@ -204,7 +208,7 @@ namespace haver.Controllers
 
         private void PopulateDropDownLists(Note? note = null)
         {
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
         }
         private bool NoteExists(int id)
         {

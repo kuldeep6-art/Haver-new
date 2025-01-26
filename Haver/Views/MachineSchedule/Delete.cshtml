@@ -121,8 +121,84 @@
                 }
             }
         </dd>
+
+        <!-- Display Note details -->
+
+        <p>Comments / Notes </p>
+        @if (Model.Note != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Note.PreOrder)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.Raw(Model.Note.PreOrder)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Note.Scope)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.Raw(Model.Note.Scope)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Note.AssemblyHours)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Note.AssemblyHours)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Note.ReworkHours)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Note.ReworkHours)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Note.BudgetHours)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Note.BudgetHours)
+            </dd>
+        }
+        else
+        {
+            <p>No notes available for this schedule.</p>
+        }
+
+
+        <p>Package Release Information</p>
+        @if (Model.PackageRelease != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PackageRelease.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PackageRelease.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PackageRelease.Notes)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PackageRelease.Notes)
+            </dd>
+        }
+        else
+        {
+            <p>No Package Release Information available for this schedule.</p>
+        }
     </dl>
     
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
