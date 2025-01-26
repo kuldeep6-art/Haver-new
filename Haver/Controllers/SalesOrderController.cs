@@ -22,6 +22,107 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
+<<<<<<< HEAD
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, 
+            string? SearchOrder, string? SearchPO, string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
+        {
+            string[] sortOptions = new[] { "OrderNumber", "SoDate", "PoNumber" };
+
+
+            //Count the number of filters applied - start by assuming no filters
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
+            var salesOrders =  from s in _context.SalesOrders
+                         .Include(s => s.Customer)
+                .Include(s => s.MachineSchedule)
+                .Include(s => s.Vendor)
+                select s;
+
+            if (!String.IsNullOrEmpty(SearchOrder))
+            {
+                salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchOrder));
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(SearchPO))
+            {
+                salesOrders = salesOrders.Where(p => p.PoNumber.Contains(SearchPO));
+                numberFilters++;
+            }
+
+            //Give feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending on if we are filtering
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+
+            //Now we know which field and direction to sort by
+            if (sortField == "SoDate")
+            {
+                if (sortDirection == "asc")
+                {
+                    salesOrders = salesOrders
+                        .OrderByDescending(p => p.SoDate);
+                }
+                else
+                {
+                    salesOrders = salesOrders
+                        .OrderBy(p => p.SoDate);
+                }
+            }
+            else   //Now we know which field and direction to sort by
+            if (sortField == "PoNumber")
+            {
+                if (sortDirection == "asc")
+                {
+                    salesOrders = salesOrders
+                        .OrderByDescending(p => p.PoNumber);
+                }
+                else
+                {
+                    salesOrders = salesOrders
+                        .OrderBy(p => p.PoNumber);
+                }
+            }
+
+
+            else 
+            {
+                if (sortDirection == "asc")
+                {
+                    salesOrders = salesOrders
+                        .OrderByDescending(p => p.OrderNumber);
+                }
+                else
+                {
+                    salesOrders = salesOrders
+                        .OrderBy(p => p.OrderNumber);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+=======
         public async Task<IActionResult> Index(int? page, int? pageSizeID)
         {
             var salesOrders = from m in _context.SalesOrders
@@ -30,6 +131,7 @@ namespace haver.Controllers
                             .Include(s=>s.Vendor)
                         .AsNoTracking()
                             select m;
+>>>>>>> 787d4b3741e292cf308bc27f8ff2835293287066
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<SalesOrder>.CreateAsync(salesOrders.AsNoTracking(), page ?? 1, pageSize);
@@ -226,7 +328,7 @@ namespace haver.Controllers
         private void PopulateDropDownLists(SalesOrder? salesOrder = null)
         {
             ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "Summary");
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
             ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Name");
         }
         private bool SalesOrderExists(int id)
