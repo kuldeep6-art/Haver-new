@@ -11,9 +11,6 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.PreOrder)</th>
             <th>@Html.DisplayNameFor(model => model.Scope)</th>
-            <th>@Html.DisplayNameFor(model => model.AssemblyHours)</th>
-            <th>@Html.DisplayNameFor(model => model.ReworkHours)</th>
-            <th>@Html.DisplayNameFor(model => model.BudgetHours)</th>
             <th>@Html.DisplayNameFor(model => model.NamePlate)</th>
             <th>@Html.DisplayNameFor(model => model.MachineSchedule)</th>
             <th></th>
@@ -23,13 +20,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.PreOrder)</td>
-                <td>@Html.DisplayFor(modelItem => item.Scope)</td>
-                <td>@Html.DisplayFor(modelItem => item.AssemblyHours)</td>
-                <td>@Html.DisplayFor(modelItem => item.ReworkHours)</td>
-                <td>@Html.DisplayFor(modelItem => item.BudgetHours)</td>
+                <td>@Html.Raw(item.PreOrder)</td>
+                <td>@Html.Raw(item.Scope)</td>
                 <td>@Html.DisplayFor(modelItem => item.NamePlate)</td>
-                <td>@Html.DisplayFor(modelItem => item.MachineSchedule.ID)</td>
+                <td>@Html.DisplayFor(modelItem => item.MachineSchedule.Summary)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn ">
                         <i class="fa-solid fa-pen-to-square"></i> Edit

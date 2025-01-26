@@ -336,6 +336,8 @@ namespace haver.Controllers
 
             var machineSchedule = await _context.MachineSchedules
                 .Include(m => m.Machine)
+                .Include(n => n.Note)
+                .Include(p => p.PackageRelease)
                 .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machineSchedule == null)
