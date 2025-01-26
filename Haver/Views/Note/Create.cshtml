@@ -1,58 +1,114 @@
 ﻿@model haver.Models.Note
 
-<partial name="_ViewHeading" />
+<div class="container-fluid bg-light">
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color: #0361A3;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Create Note
+            </h4>
+        </div>
+    </div>
 
-<h4>Note</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PreOrder" class="control-label"></label>
-                <input asp-for="PreOrder" class="form-control" />
-                <span asp-validation-for="PreOrder" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Scope" class="control-label"></label>
-                <input asp-for="Scope" class="form-control" />
-                <span asp-validation-for="Scope" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssemblyHours" class="control-label"></label>
-                <input asp-for="AssemblyHours" class="form-control" />
-                <span asp-validation-for="AssemblyHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReworkHours" class="control-label"></label>
-                <input asp-for="ReworkHours" class="form-control" />
-                <span asp-validation-for="ReworkHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BudgetHours" class="control-label"></label>
-                <input asp-for="BudgetHours" class="form-control" />
-                <span asp-validation-for="BudgetHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NamePlate" class="control-label"></label>
-                <input asp-for="NamePlate" class="form-control" />
-                <span asp-validation-for="NamePlate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MachineScheduleID" class="control-label"></label>
-                <select asp-for="MachineScheduleID" class ="form-control" asp-items="ViewBag.MachineScheduleID"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="row py-4">
+        <div class="col-md-6 offset-md-3">
+            <form asp-action="Create" class="border p-4 shadow-sm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="PreOrder" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Pre Order
+                    </label>
+                    <input asp-for="PreOrder" class="form-control"
+                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="PreOrder" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Scope" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Scope
+                    </label>
+                    <input asp-for="Scope" class="form-control"
+                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="Scope" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AssemblyHours" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Assembly Hours
+                    </label>
+                    <input asp-for="AssemblyHours" class="form-control"
+                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"
+                           type="number" step="0.01" />
+                    <span asp-validation-for="AssemblyHours" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ReworkHours" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Rework Hours
+                    </label>
+                    <input asp-for="ReworkHours" class="form-control"
+                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"
+                           type="number" step="0.01" />
+                    <span asp-validation-for="ReworkHours" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="BudgetHours" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Budget Hours
+                    </label>
+                    <input asp-for="BudgetHours" class="form-control"
+                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"
+                           type="number" step="0.01" />
+                    <span asp-validation-for="BudgetHours" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="NamePlate" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Name Plate
+                    </label>
+                    <input asp-for="NamePlate" class="form-control"
+                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="NamePlate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="MachineScheduleID" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                        Machine Schedule
+                    </label>
+                    <select asp-for="MachineScheduleID" class="form-control"
+                            asp-items="ViewBag.MachineScheduleID"
+                            style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;">
+                        <option value="">Select Machine Schedule</option>
+                    </select>
+                    <span asp-validation-for="MachineScheduleID" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color: #0361A3; border-color: #0361A3; font-family: 'Avenir Heavy', sans-serif;">
+                        Create Note
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-3">
+            <partial name="_BackToList" />
+        </div>
     </div>
 </div>
 
-<div>
-    <partial name="_BackToList" />
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
