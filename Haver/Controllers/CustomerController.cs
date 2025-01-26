@@ -22,11 +22,101 @@ namespace haver.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? SearchCname,
+            string? actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
+            string[] sortOptions = new[] { "Customer", "Date", "Phone", "CompanyName" };
+
+            //Count the number of filters applied - start by assuming no filters
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
             var customers = from m in _context.Customers
                         .AsNoTracking()
                          select m;
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                customers = customers.Where(p => p.LastName.ToUpper().Contains(SearchString.ToUpper())
+                                       || p.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(SearchCname))
+            {
+                customers = customers.Where(p => p.CompanyName.ToUpper().Contains(SearchCname.ToUpper()));
+                numberFilters++;
+            }
+
+            //Give feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending on if we are filtering
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }
+
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            //Now we know which field and direction to sort by
+            if (sortField == "Date")
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.Date);
+                }
+                else
+                {
+                    customers = customers
+                        .OrderBy(p => p.Date);
+                }
+            }
+            if (sortField == "Phone")
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.Phone);
+                }
+                else
+                {
+                    customers = customers
+                        .OrderBy(p => p.Phone);
+                }
+            }
+            else
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderBy(p => p.LastName)
+                        .ThenBy(p => p.FirstName);
+                }
+                else
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.LastName)
+                        .ThenByDescending(p => p.FirstName);
+                }
+            }
+
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), page ?? 1, pageSize);
