@@ -11,8 +11,6 @@
             <th>@Html.DisplayNameFor(model => model.OrderNumber)</th>
             <th>@Html.DisplayNameFor(model => model.SoDate)</th>
             <th>@Html.DisplayNameFor(model => model.PoNumber)</th>
-            <th>@Html.DisplayNameFor(model => model.Customer)</th>
-            <th>@Html.DisplayNameFor(model => model.Vendor)</th>
             <th>@Html.DisplayNameFor(model => model.MachineSchedule)</th>
             <th></th>
         </tr>
@@ -24,9 +22,7 @@
                 <td>@Html.DisplayFor(modelItem => item.OrderNumber)</td>
                 <td>@Html.DisplayFor(modelItem => item.SoDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.PoNumber)</td>
-                <td>@Html.DisplayFor(modelItem => item.Customer.Summary)</td>
-                <td>@Html.DisplayFor(modelItem => item.Vendor.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.MachineSchedule.ID)</td>
+                <td>@Html.DisplayFor(modelItem => item.MachineSchedule.Summary)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn ">
                         <i class="fa-solid fa-pen-to-square"></i> Edit

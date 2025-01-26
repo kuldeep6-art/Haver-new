@@ -6,6 +6,20 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
+
+        #region summary properties
+        [Display(Name = "Machine Schedule")]
+        public string Summary
+        {
+            get
+            {
+                return $"Starts on {StartDate:yyyy-MM-dd}, Due by {DueDate:yyyy-MM-dd}";
+            }
+        }
+
+
+        #endregion
+
         //Start Date Annotation (set to datetime now.)
         [Display(Name = "Start On")]
         [Required(ErrorMessage = "The start date for can only be set to now or in days ahead")]
