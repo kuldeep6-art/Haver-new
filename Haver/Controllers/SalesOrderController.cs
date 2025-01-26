@@ -22,7 +22,6 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-<<<<<<< HEAD
         public async Task<IActionResult> Index(int? page, int? pageSizeID, 
             string? SearchOrder, string? SearchPO, string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
@@ -122,16 +121,6 @@ namespace haver.Controllers
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
-=======
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
-        {
-            var salesOrders = from m in _context.SalesOrders
-                            .Include(s=>s.Customer)
-                            .Include(s=>s.MachineSchedule)
-                            .Include(s=>s.Vendor)
-                        .AsNoTracking()
-                            select m;
->>>>>>> 787d4b3741e292cf308bc27f8ff2835293287066
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<SalesOrder>.CreateAsync(salesOrders.AsNoTracking(), page ?? 1, pageSize);
