@@ -19,17 +19,20 @@ namespace haver.Models
 
         //AssemblyHours Annotations
         [Display(Name = "Assembly Hours:")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Assembly hours cannot be negative.")]
         public decimal AssemblyHours { get; set; }
 
         //ReworkHours Annotations
         [Display(Name = "Rework Hours:")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Rework hours cannot be negative.")]
         public decimal ReworkHours { get; set; }
 
         //BudgetHours Annotations
         [Display(Name = "Budget Hours:")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Budget hours cannot be negative.")]
         public decimal BudgetHours { get; set; }
 
 
@@ -38,6 +41,9 @@ namespace haver.Models
         [Display(Name = "Name plate")]
         public NamePlate? NamePlate { get; set; }
 
+        //Machine schedule annotation
+        [Display(Name = "Machine Schedule")]
+        [Required(ErrorMessage = "Select the machine schedule this order is related to")]
         public int MachineScheduleID { get; set; }
         public MachineSchedule? MachineSchedule { get; set; }
     }

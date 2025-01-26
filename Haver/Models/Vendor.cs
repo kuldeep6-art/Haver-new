@@ -17,24 +17,26 @@ namespace haver.Models
 
         #endregion 
 
-        //ShippingTerms  Annotations
+        //Name  Annotations
 
-        [Display(Name = "Name")]
-        //[Required(ErrorMessage = "You cannot leave the name blank.")]
-        //[MaxLength(50, ErrorMessage = "name cannot be more than 50 characters long.")]
+        [Display(Name = "Vendor Name")]
+        [Required(ErrorMessage = "Enter the name of the vendor, it is required.")]
+        [MaxLength(50, ErrorMessage = "Vendor name can not be more than 50 characters long.")]
         public string? Name { get; set; }
 
-        //ShippingTerms  Annotations
+        //Phone number  Annotations
 
-//        [Required(ErrorMessage = "Phone number is required.")]
-        [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number (no spaces).")]
+        [Display(Name = "Phone Number")]
+        [Required(ErrorMessage = "This vendor's phone number is required.")]
+        [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number with no spacing.")]
         [DataType(DataType.PhoneNumber)]
-        [MaxLength(10)]
+        [MaxLength(10, ErrorMessage = "Phone can not be more than 10 digits.")]
         public string? Phone { get; set; }
 
-        //ShippingTerms  Annotations
+        //Email  Annotations
 
-       // [Required(ErrorMessage = "Email address is required.")]
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Email address is required.")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Please follow the correct email format test@email.com")]
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]

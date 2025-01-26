@@ -20,8 +20,8 @@ namespace haver.Models
 
         #endregion
 
-        //Start Date Annotation (set to datetime now.)
-        [Display(Name = "Start On")]
+        //Start Date Annotation
+        [Display(Name = "Starts On")]
         [Required(ErrorMessage = "The start date for can only be set to now or in days ahead")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -33,36 +33,36 @@ namespace haver.Models
         [Required(ErrorMessage = "Enter the day this schedule is due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [CustomValidation(typeof(MachineSchedule), "ValidateStartAndDueDate")]
         public DateTime DueDate { get; set; }
 
         //EndDate Annotations
 
         [Display(Name = "Ended On")]
-        //[Required(ErrorMessage = "End date is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
 
         //PackageRDate  Annotations
 
-        [Display(Name = "Package Released Date")]
-        [Required(ErrorMessage = "PackageR date is required")]
+        [Display(Name = "Package Released On")]
+        [Required(ErrorMessage = "Enter the day packages related to this schedule was relaeased.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PackageRDate { get; set; }
 
         //PODueDate Annotations
 
-        [Display(Name = "PODue Date")]
-        [Required(ErrorMessage = "PODue date is required")]
+        [Display(Name = "Purchase Order Due On")]
+        [Required(ErrorMessage = "Enter the day the purchase orders related to this schedule is due.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PODueDate { get; set; }
 
         //DeliveryDate Annotations
 
-        [Display(Name = "Delivery Date")]
-        [Required(ErrorMessage = "Delivery Date is required")]
+        [Display(Name = "Deliver By")]
+        [Required(ErrorMessage = "Enter the day the order related to this schedule is due for delivery.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DeliveryDate { get; set; }
@@ -81,12 +81,12 @@ namespace haver.Models
 
         //SpareParts Annotations
 
-        [Display(Name = "Spare Parts")]
+        [Display(Name = "Spare parts")]
         public bool SpareParts { get; set; }
 
         //SparePMedia Annotations
 
-        [Display(Name = "SpareP Media")]
+        [Display(Name = "Spare Parts/Media")]
         public bool SparePMedia { get; set; }
 
         //Base Annotations
@@ -98,12 +98,12 @@ namespace haver.Models
         //Air Seal Annotations
 
         [Display(Name = "Air Seal")]
-        [Required(ErrorMessage = "Air Seal is required")]
+        [Required(ErrorMessage = "Air seal is required")]
         public bool AirSeal { get; set; }
 
         //Coating Lining Annotations
 
-        [Display(Name = "Coating Lining")]
+        [Display(Name = "Coating/Lining")]
         [Required(ErrorMessage = "Coating Lining is required")]
         public bool CoatingLining { get; set; }
 
@@ -133,6 +133,20 @@ namespace haver.Models
 
         public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
 
-        
+
+        public static ValidationResult ValidateStartAndDueDate(DateTime dueDate, ValidationContext context)
+        {
+            var instance = context.ObjectInstance as MachineSchedule;
+            if (instance != null)
+            {
+                if (instance.StartDate > dueDate)
+                {
+                    return new ValidationResult("Due date cannot be earlier than the start date.");
+                }
+            }
+            return ValidationResult.Success;
+
+        }
     }
 }
+

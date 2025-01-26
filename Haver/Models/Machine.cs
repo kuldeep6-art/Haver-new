@@ -19,7 +19,7 @@ namespace haver.Models
 
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "Serial number is required")]
-        public string? SerialNumber { get; set; }
+        public string SerialNumber { get; set; }
 
         //Quantity Num Annotations
 
@@ -32,19 +32,19 @@ namespace haver.Models
 
         [Display(Name = "Size of Machine")]
         [Required(ErrorMessage = "Size Is required")]
-        public string? Size { get; set; }
+        public string Size { get; set; }
 
         //Class Annotations
 
         [Display(Name = "Class")]
         [Required(ErrorMessage = "Class is required")]
-        public string? Class { get; set; }
+        public string Class { get; set; }
 
         //SizeDeck Annotations
 
         [Display(Name = "Size Deck")]
         [Required(ErrorMessage = "Size Deck is required")]
-        public string? SizeDeck { get; set; }
+        public string SizeDeck { get; set; }
 
        
 

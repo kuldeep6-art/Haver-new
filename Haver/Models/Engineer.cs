@@ -28,7 +28,7 @@ namespace haver.Models
         //First Name Annotations
 
         [Display(Name = "First Name")]
-        [Required(ErrorMessage = "cannot leave the first name blank.")]
+        [Required(ErrorMessage = "Enter the first name of the engineer related to this schedule.")]
         [MaxLength(50, ErrorMessage = "First name cannot be more than 50 characters long.")]
         [MinLength(2, ErrorMessage = "First name cannot be less than 2 characters long.")]
         public string? FirstName { get; set; }
@@ -36,7 +36,7 @@ namespace haver.Models
         //Last Name Annotations
 
         [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "cannot leave the last name blank.")]
+        [Required(ErrorMessage = "Enter the first name of the engineer related to this schedule.")]
         [MaxLength(50, ErrorMessage = "Last name cannot be more than 50 characters long.")]
         [MinLength(2, ErrorMessage = "Last name cannot be less than 2 characters long.")]
         public string? LastName { get; set; }
@@ -46,7 +46,7 @@ namespace haver.Models
         [Required(ErrorMessage = "Phone number is required.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number (no spaces).")]
         [DataType(DataType.PhoneNumber)]
-        [MaxLength(10)]
+        [MaxLength(10, ErrorMessage = "Phone number can be 10 digits only")]
         public string? Phone { get; set; }
 
         //Email Annotations
