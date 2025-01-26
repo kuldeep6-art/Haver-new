@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
 using haver.CustomControllers;
+using haver.Utilities;
 
 namespace haver.Controllers
 {
@@ -21,9 +22,16 @@ namespace haver.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID)
         {
-            return View(await _context.Customers.ToListAsync());
+            var customers = from m in _context.Customers
+                        .AsNoTracking()
+                         select m;
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: Customer/Details/5

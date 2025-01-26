@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<haver.Models.SalesOrder>
 
+<<<<<<< HEAD
 <partial name="_ViewHeading" />
 
 <h1 class="text-center my-4">@ViewData["ControllerFriendlyName"]</h1>
@@ -40,6 +41,30 @@
 
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="bg-dark text-white text-center">
+=======
+<h1 class="text-center my-4">Sales Order Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
+    </a>
+</div>
+<form asp-action="index" method="get">
+<table class="table table-striped table-bordered table-hover shadow-sm">
+    <thead class="thead-dark bg-dark text-white">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.OrderNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.SoDate)</th>
+            <th>@Html.DisplayNameFor(model => model.PoNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.Customer)</th>
+            <th>@Html.DisplayNameFor(model => model.Vendor)</th>
+            <th>@Html.DisplayNameFor(model => model.MachineSchedule)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+>>>>>>> 787d4b3741e292cf308bc27f8ff2835293287066
             <tr>
                 @foreach (var field in new[] { "OrderNumber", "SoDate", "PoNumber", "MachineSchedule" })
                 {
@@ -55,6 +80,7 @@
                 }
                 <th class="align-middle">Actions</th>
             </tr>
+<<<<<<< HEAD
         </thead>
         <tbody>
             @foreach (var item in Model)
@@ -97,3 +123,10 @@
         outline: none;
     }
 </style>
+=======
+        }
+    </tbody>
+</table>
+    <partial name="_PagingNavBar" />
+</form>
+>>>>>>> 787d4b3741e292cf308bc27f8ff2835293287066
