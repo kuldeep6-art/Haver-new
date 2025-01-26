@@ -127,8 +127,14 @@ namespace haver.Models
 
 
         // One-to-One Relationships
+
+        [Display(Name = "Note")]
         public Note? Note { get; set; } // Navigation property to Note
+
+        [Display(Name = "Package Release")]
         public PackageRelease? PackageRelease { get; set; } // Navigation property to PackageRelease
+
+        [Display(Name = "Engineer")]
         public ICollection<MachineScheduleEngineer> MachineScheduleEngineers { get; set; } = new HashSet<MachineScheduleEngineer>();
 
         public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
