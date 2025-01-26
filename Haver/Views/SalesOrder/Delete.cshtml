@@ -1,75 +1,54 @@
 ﻿@model haver.Models.SalesOrder
 
 <partial name="_ViewHeading" />
-<div>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShippingTerms)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShippingTerms)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppDwgRcd)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppDwgRcd)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DwgIsDt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DwgIsDt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PoNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PoNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Summary)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vendor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vendor.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MachineSchedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MachineSchedule.Summary)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <partial name="_BackToList" />
-    </form>
+
+<div class="container my-3">
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
+            <h4>SalesOrder Details</h4>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.OrderNumber)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.OrderNumber)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SoDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SoDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Price)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Price)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ShippingTerms)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ShippingTerms)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AppDwgRcd)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.AppDwgRcd)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DwgIsDt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DwgIsDt)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PoNumber)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PoNumber)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Customer)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Customer.Summary)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Vendor)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Vendor.Name)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MachineSchedule)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MachineSchedule.Summary)</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete" class="d-inline">
+                <input type="hidden" asp-for="ID" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <span class="mx-2">|</span>
+            <partial name="_BackToList" />
+        </div>
+    </div>
 </div>

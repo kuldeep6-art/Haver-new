@@ -2,63 +2,44 @@
 
 <partial name="_ViewHeading" />
 
-<div>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PreOrder)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw(Model.PreOrder)  <!-- Display raw HTML content -->
-        </dd>
+<div class="container my-3">
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
+            <h4>Note Details</h4>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Scope)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw(Model.Scope)  <!-- Display raw HTML content -->
-        </dd>
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PreOrder)</dt>
+                <dd class="col-sm-9">@Html.Raw(Model.PreOrder)</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AssemblyHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayNameFor(model => model.AssemblyHours)  <!-- Display raw HTML content -->
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Scope)</dt>
+                <dd class="col-sm-9">@Html.Raw(Model.Scope)</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReworkHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayNameFor(model => model.ReworkHours)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AssemblyHours)</dt>
+                <dd class="col-sm-9">@Html.DisplayNameFor(model => model.AssemblyHours)</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BudgetHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayNameFor(model => model.BudgetHours)  <!-- Display raw HTML content -->
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ReworkHours)</dt>
+                <dd class="col-sm-9">@Html.DisplayNameFor(model => model.ReworkHours)</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NamePlate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NamePlate)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.BudgetHours)</dt>
+                <dd class="col-sm-9">@Html.DisplayNameFor(model => model.BudgetHours)</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MachineSchedule)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MachineSchedule.Summary)
-        </dd>
-    </dl>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.NamePlate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.NamePlate)</dd>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <partial name="_BackToList" />
-    </form>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MachineSchedule)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MachineSchedule.Summary)</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete" class="d-inline">
+                <input type="hidden" asp-for="ID" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <span class="mx-2">|</span>
+            <partial name="_BackToList" />
+        </div>
+    </div>
 </div>
