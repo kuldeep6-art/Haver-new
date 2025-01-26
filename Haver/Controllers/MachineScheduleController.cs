@@ -29,7 +29,9 @@ namespace haver.Controllers
         }
 
         // GET: MachineSchedule
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MachineID, string? actionButton, string sortDirection = "asc", string sortField = "Machine")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MachineID, 
+            DateTime? DueDate,DateTime? RelDate, DateTime? PODate, DateTime? DelDate,
+            string? actionButton, string sortDirection = "asc", string sortField = "Machine")
         {
             //List of sort options.
             string[] sortOptions = new[] { "Machine", "StartDate", "DueDate", "EndDate","PackageRDate","PODueDate","DeliveryDate" };
@@ -53,6 +55,42 @@ namespace haver.Controllers
                 machineSchedules = machineSchedules.Where(p => p.MachineID == MachineID);
                 numberFilters++;
             }
+
+
+            if (DueDate.HasValue)
+            {
+                DateTime SearchDValue = DueDate.Value.Date;
+                machineSchedules = machineSchedules.Where(o => o.DueDate.Year == SearchDValue.Year &&
+                                                                     o.DueDate.Month == SearchDValue.Month &&
+                                                                      o.DueDate.Day == SearchDValue.Day);
+                numberFilters++;
+            }
+
+            if (RelDate.HasValue)
+            {
+                DateTime SearchDValue = RelDate.Value.Date;
+               machineSchedules = machineSchedules.Where(o => o.PackageRDate.Year == SearchDValue.Year &&
+                                                                    o.PackageRDate.Month == SearchDValue.Month &&
+                                                                     o.PackageRDate.Day == SearchDValue.Day);
+                numberFilters++;
+            }
+            if (PODate.HasValue)
+            {
+                DateTime SearchDValue = PODate.Value.Date;
+                machineSchedules = machineSchedules.Where(o => o.PODueDate.Year == SearchDValue.Year &&
+                                                                    o.PODueDate.Month == SearchDValue.Month &&
+                                                                     o.PODueDate.Day == SearchDValue.Day);
+                numberFilters++;
+            }
+            if (DelDate.HasValue)
+            {
+                DateTime SearchDValue = DelDate.Value.Date;
+                machineSchedules = machineSchedules.Where(o => o.DeliveryDate.Year == SearchDValue.Year &&
+                                                                    o.DeliveryDate.Month == SearchDValue.Month &&
+                                                                     o.DeliveryDate.Day == SearchDValue.Day);
+                numberFilters++;
+            }
+
 
             if (numberFilters != 0)
             {
