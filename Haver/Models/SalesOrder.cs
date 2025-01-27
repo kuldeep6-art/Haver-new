@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class SalesOrder : Auditable
+    public class SalesOrder : Auditable, IValidatableObject
     {
         public int ID { get; set; }
 
@@ -70,5 +70,15 @@ namespace haver.Models
         public int MachineScheduleID {  get; set; }
    
         public MachineSchedule? MachineSchedule { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            // Validate that Approved Drawings Received date is after Drawings Sent date
+            if (AppDwgRcd < DwgIsDt)
+            {
+                yield return new ValidationResult("Approved Drawings Received date cannot be earlier than Order Drawings Sent date.", new[] { nameof(AppDwgRcd) });
+            }
+
+        }
     }
 }

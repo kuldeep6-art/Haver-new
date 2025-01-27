@@ -63,7 +63,7 @@ namespace haver.Models
 
         //Date Name Annotations
 
-        [Display(Name = "Package Recieved On")]
+        [Display(Name = "Date")]
         [Required(ErrorMessage = "Select the day engineering package was released.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -71,7 +71,7 @@ namespace haver.Models
 
         //Phone Name Annotations
 
-        [Required(ErrorMessage = "Customers phone number is required and can not be left blank.")]
+        //[Required(ErrorMessage = "Customers phone number is required and can not be left blank.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number with no spaces.")]
         [DataType(DataType.PhoneNumber)]
         [MaxLength(10)]

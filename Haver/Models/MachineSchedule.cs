@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class MachineSchedule : Auditable
+    public class MachineSchedule : Auditable, IValidatableObject
     {
         public int ID { get; set; }
 
@@ -33,7 +33,6 @@ namespace haver.Models
         [Required(ErrorMessage = "Enter the day this schedule is due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [CustomValidation(typeof(MachineSchedule), "ValidateStartAndDueDate")]
         public DateTime DueDate { get; set; }
 
         //EndDate Annotations
@@ -143,19 +142,26 @@ namespace haver.Models
         public bool IsCompleted { get; set; }
 
 
-        public static ValidationResult ValidateStartAndDueDate(DateTime dueDate, ValidationContext context)
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            var instance = context.ObjectInstance as MachineSchedule;
-            if (instance != null)
+            if (StartDate < DateTime.Today)
             {
-                if (instance.StartDate > dueDate)
-                {
-                    return new ValidationResult("Due date cannot be earlier than the start date.");
-                }
+                yield return new ValidationResult("Start Date cannot be in the past.", new[] { nameof(StartDate) });
             }
-            return ValidationResult.Success;
 
+            if (DueDate <= StartDate)
+            {
+                yield return new ValidationResult("Due Date must be after the Start Date.", new[] { nameof(DueDate) });
+            }
+
+            if (PODueDate > DueDate)
+            {
+                yield return new ValidationResult("Purchase Order Due Date must not exceed the Due Date.", new[] { nameof(PODueDate) });
+            }
+
+        
+
+           
         }
     }
 }
-

@@ -122,7 +122,38 @@
                 }
             }
         </dd>
-
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SalesOrders)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                int spCount = Model.SalesOrders.Count;
+                if (spCount > 0)
+                {
+                    string firstSpec = Model.SalesOrders.FirstOrDefault().OrderNumber;
+                    if (spCount > 1)
+                    {
+                        string specList = "";//Html string of specialty names separated by <br /> tags
+                        var s = Model.SalesOrders.ToList();
+                        for (int i = 1; i < spCount; i++)//Skip the first because we have it already
+                        {
+                            specList += s[i].OrderNumber + " <br />";
+                        }
+                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
+                           aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
+                            @firstSpec <span class="badge bg-info">@spCount</span>
+                        </a>
+                        <div class="collapse" id="collapseSpecalty@(Model.ID)">
+                            @Html.Raw(specList)
+                        </div>
+                    }
+                    else
+                    {
+                        @firstSpec
+                    }
+                }
+            }
+        </dd>
         <!-- Display Note details -->
 
         <p>Comments / Notes </p>
@@ -202,8 +233,8 @@
 
 <div>
     <!-- Print Button -->
-    <button type="button" class="btn btn-primary" onclick="printPage()">Print</button>
-    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-warning">Edit</a> |
+    <button type="button" class="btn" onclick="printPage()">Print</button>
+    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn">Edit</a> |
 
     @if (!Model.IsCompleted)
     {
