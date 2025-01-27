@@ -9,15 +9,16 @@
 <h1 class="text-center my-4">Machine Schedule Index</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a asp-action="Create" class="btn btn-primary">
+    <a asp-action="Create" class="btn btn-primary" aria-label="Create a new machine schedule" data-bs-toggle="tooltip" title="Create a new machine schedule">
         <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
     </a>
 </div>
+
 <form asp-action="Index" method="get">
     <div class="form-horizontal">
         <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
         <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
-        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" aria-label="Filter machine schedules" data-bs-toggle="tooltip" title="Filter machine schedules">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
@@ -25,28 +26,28 @@
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label class="form-label fw-bold">Select by Machine Class:</label>
-                        @Html.DropDownList("MachineID", null, "All Machines", htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("MachineID", null, "All Machines", htmlAttributes: new { @class = "form-control", aria_label = "Filter by machine class" })
                     </div>
                     <div class="form-group col-md-4">
                         <label class="form-label fw-bold">Search by Due Date:</label>
-                        @Html.TextBox("DueDate", null, new { @class = "form-control", @type="date" })
+                        @Html.TextBox("DueDate", null, new { @class = "form-control", @type = "date", aria_label = "Search by due date" })
                     </div>
                     <div class="form-group col-md-4">
                         <label class="form-label fw-bold">Search by Package Release Date:</label>
-                        @Html.TextBox("RelDate", null, new { @class = "form-control", @type = "date" })
+                        @Html.TextBox("RelDate", null, new { @class = "form-control", @type = "date", aria_label = "Search by package release date" })
                     </div>
                     <div class="form-group col-md-4">
                         <label class="form-label fw-bold">Search by PO Due Date:</label>
-                        @Html.TextBox("PODate", null, new { @class = "form-control", @type = "date" })
+                        @Html.TextBox("PODate", null, new { @class = "form-control", @type = "date", aria_label = "Search by PO due date" })
                     </div>
                     <div class="form-group col-md-4">
                         <label class="form-label fw-bold">Search by Delivery Date:</label>
-                        @Html.TextBox("DelDate", null, new { @class = "form-control", @type = "date" })
+                        @Html.TextBox("DelDate", null, new { @class = "form-control", @type = "date", aria_label = "Search by delivery date" })
                     </div>
 
                     <div class="form-group col-md-4 align-self-end">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
-                        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filters" data-bs-toggle="tooltip" title="Apply filters" />
+                        <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear all filters" data-bs-toggle="tooltip" title="Clear all filters">Clear</a>
                     </div>
                 </div>
             </div>
@@ -59,7 +60,7 @@
                 @foreach (var field in new[] { "StartDate", "DueDate", "EndDate", "PackageRDate", "PODueDate", "DeliveryDate", "Machine" })
                 {
                     <th class="align-middle">
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field">
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
                             @field
                             @if (currentSortField == field)
                             {
@@ -98,7 +99,7 @@
                                         specList += s[i].Engineer.EngineerInitials + " <br />";
                                     }
                                     <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
-                                       aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
+                                       aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)" aria-label="View engineers for item @(item.ID)" data-bs-toggle="tooltip" title="View engineers for this item">
                                         @firstSpec <span class="badge bg-info">@specCount</span>
                                     </a>
                                     <div class="collapse" id="collapseSpecalty@(item.ID)">
@@ -115,28 +116,28 @@
                     <td class="text-center">
                         @if (item.IsCompleted)
                         {
-                            <span class="badge bg-success mx-1">Completed</span>
+                            <span class="badge bg-success mx-1" data-bs-toggle="tooltip" title="This schedule entry is completed">Completed</span>
                         }
                         else
                         {
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1">
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit schedule entry for @item.ID" data-bs-toggle="tooltip" title="Edit this schedule entry">
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                             </a>
                         }
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white">
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of schedule entry for @item.ID" data-bs-toggle="tooltip" title="View details of this schedule entry">
                             <i class="fa-solid fa-circle-info"></i> Details
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1">
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete schedule entry for @item.ID" data-bs-toggle="tooltip" title="Delete this schedule entry">
                             <i class="fa-solid fa-delete-left"></i> Delete
                         </a>
                     </td>
-
                 </tr>
             }
         </tbody>
     </table>
     <partial name="_PagingNavBar" />
 </form>
+
 @section Scripts {
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -145,9 +146,10 @@
         })
     </script>
 }
+
 <style>
-    .align-middle button{
-        background:none;
+    .align-middle button {
+        background: none;
         outline: none;
     }
 </style>
