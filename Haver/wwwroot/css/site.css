@@ -59,8 +59,8 @@ tbody tr:hover {
     padding: 8px 15px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    background-color :#1C355E;
-    color:#fff;
+    background-color: #0C2340;
+    color: #fff;
 }
 .btn:hover {
     color: #fff;
@@ -101,14 +101,14 @@ footer {
     z-index: 1000; /* Above other elements */
     border-radius: 50%;
     padding: 10px 15px;
-    background-color: #1C355E;
+    background-color: #0C2340;
     color: white;
     text-align: center;
     cursor: pointer;
 }
 
     .scroll-to-top:hover {
-        background-color: #1C355E;
+        background-color: #0C2340;
     }
 
     .scroll-to-top i {

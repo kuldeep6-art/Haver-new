@@ -2,7 +2,7 @@
 
 <div class="container-fluid bg-light">
     <div class="row">
-        <div class="col-md-12 py-4" style="background-color: #0361A3;">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
                 Package Release
             </h4>
@@ -16,54 +16,54 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Name
                     </label>
                     <input asp-for="Name" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="PReleaseDateP" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Planned Release Date
                     </label>
                     <input asp-for="PReleaseDateP" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
                            type="date" />
                     <span asp-validation-for="PReleaseDateP" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="PReleaseDateA" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Actual Release Date
                     </label>
                     <input asp-for="PReleaseDateA" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
                            type="date" />
                     <span asp-validation-for="PReleaseDateA" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Notes" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Notes
                     </label>
                     <textarea asp-for="Notes" class="form-control summernote"
-                              style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif; min-height: 100px;"></textarea>
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; min-height: 100px;"></textarea>
                     <span asp-validation-for="Notes" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="MachineScheduleID" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Machine Schedule
                     </label>
                     <select asp-for="MachineScheduleID" class="form-control"
                             asp-items="ViewBag.MachineScheduleID"
-                            style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;">
+                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
                         <option value="">Select Machine Schedule</option>
                     </select>
                     <span asp-validation-for="MachineScheduleID" class="text-danger"></span>
@@ -71,7 +71,7 @@
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"
-                            style="background-color: #0361A3; border-color: #0361A3; font-family: 'Avenir Heavy', sans-serif;">
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Create Package Release
                     </button>
                 </div>

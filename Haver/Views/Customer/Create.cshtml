@@ -2,7 +2,7 @@
 
 <div class="container-fluid bg-light">
     <div class="row">
-        <div class="col-md-12 py-4" style="background-color: #0361A3;">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
                 Customer Registration
             </h4>
@@ -16,71 +16,77 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="FirstName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         First Name
                     </label>
                     <input asp-for="FirstName" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="MiddleName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Middle Name
                     </label>
                     <input asp-for="MiddleName" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="MiddleName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="LastName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Last Name
                     </label>
                     <input asp-for="LastName" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Date" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Registration Date
                     </label>
                     <input asp-for="Date" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Phone" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Contact Number
                     </label>
                     <input asp-for="Phone" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="CompanyName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Company Name
                     </label>
                     <input asp-for="CompanyName" class="form-control"
-                           style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="CompanyName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"
-                            style="background-color: #0361A3; border-color: #0361A3; font-family: 'Avenir Heavy', sans-serif;">
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Create Customer
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-3">
+            <partial name="_BackToList" />
         </div>
     </div>
 </div>
