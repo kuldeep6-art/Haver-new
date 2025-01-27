@@ -1,37 +1,37 @@
 ﻿@model IEnumerable<haver.Models.SalesOrder>
 
-<partial name="_ViewHeading" />
+@* <partial name="_ViewHeading" /> *@
 
-<h1 class="text-center my-4">@ViewData["ControllerFriendlyName"]</h1>
+<h1 class="text-center my-4" aria-label="@ViewData["ControllerFriendlyName"]">@ViewData["ControllerFriendlyName"]</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a asp-action="Create" class="btn btn-primary">
+    <a asp-action="Create" class="btn btn-primary" aria-label="Create a new sales order" data-bs-toggle="tooltip" title="Create a new sales order">
         <i class="fa-solid fa-plus"></i> Create New
     </a>
 </div>
 
-<form asp-action="Index" method="get">
+<form asp-action="Index" method="get" aria-label="Sales order filter form">
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
 
     <div class="form-horizontal">
-        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" aria-label="Toggle filter/search options" data-bs-toggle="tooltip" title="Filter/Search">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
             <div class="card card-body bg-light">
                 <div class="row">
                     <div class="form-group col-md-4">
-                        <label class="form-label fw-bold">Search Order Number:</label>
-                        @Html.TextBox("SearchOrder", null, new { @class = "form-control", placeholder = "Enter Order Number" })
+                        <label class="form-label fw-bold" for="SearchOrder">Search Order Number:</label>
+                        @Html.TextBox("SearchOrder", null, new { @class = "form-control", placeholder = "Enter Order Number", aria_label = "Enter order number to search" })
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="form-label fw-bold">Search PO Number:</label>
-                        @Html.TextBox("SearchPO", null, new { @class = "form-control", placeholder = "Enter PO Number" })
+                        <label class="form-label fw-bold" for="SearchPO">Search PO Number:</label>
+                        @Html.TextBox("SearchPO", null, new { @class = "form-control", placeholder = "Enter PO Number", aria_label = "Enter PO number to search" })
                     </div>
                     <div class="form-group col-md-4 align-self-end">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
-                        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
+                        <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
         <thead class="bg-dark text-white text-center">
             <tr>
                 <th>
-                    <button class="btn btn-link bb text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="OrderNumber">
+                    <button class="btn btn-link bb text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="OrderNumber" aria-label="Sort by Order Number" data-bs-toggle="tooltip" title="Sort by Order Number">
                         Order Number
                         @if (ViewData["sortField"]?.ToString() == "OrderNumber")
                         {
@@ -51,7 +51,7 @@
                     </button>
                 </th>
                 <th>
-                    <button class="btn btn-link bb text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="SoDate">
+                    <button class="btn btn-link bb text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="SoDate" aria-label="Sort by Sales Order Date" data-bs-toggle="tooltip" title="Sort by SO Date">
                         SO Date
                         @if (ViewData["sortField"]?.ToString() == "SoDate")
                         {
@@ -60,7 +60,7 @@
                     </button>
                 </th>
                 <th>
-                    <button class="btn btn-link bb  text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="PoNumber">
+                    <button class="btn btn-link bb  text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="PoNumber" aria-label="Sort by PO Number" data-bs-toggle="tooltip" title="Sort by PO Number">
                         PO Number
                         @if (ViewData["sortField"]?.ToString() == "PoNumber")
                         {
@@ -69,7 +69,7 @@
                     </button>
                 </th>
                 <th>
-                    <button class="btn btn-link text-white bb  p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="MachineSchedule">
+                    <button class="btn btn-link text-white bb  p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="MachineSchedule" aria-label="Sort by Machine Schedule" data-bs-toggle="tooltip" title="Sort by Machine Schedule">
                         Machine Schedule
                         @if (ViewData["sortField"]?.ToString() == "MachineSchedule")
                         {
@@ -89,13 +89,13 @@
                     <td>@Html.DisplayFor(modelItem => item.PoNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.MachineSchedule.Summary)</td>
                     <td class="text-center">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Edit sales order">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white">
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of sales order @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1">
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Delete sales order">
                             <i class="fa-solid fa-delete-left"></i> Delete
                         </a>
                     </td>
