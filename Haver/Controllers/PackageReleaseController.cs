@@ -313,7 +313,7 @@ namespace haver.Controllers
 
         private void PopulateDropDownLists(PackageRelease? packageRelease = null)
         {
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "ID");
+            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
         }
         private bool PackageReleaseExists(int id)
         {
