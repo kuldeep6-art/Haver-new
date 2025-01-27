@@ -1,34 +1,34 @@
 ﻿@model IEnumerable<haver.Models.Customer>
 
-<h1 class="text-center my-4">Customer Index</h1>
+<h1 class="text-center my-4" aria-label="Customer Index">Customer Index</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a asp-action="Create" class="btn btn-primary">
+    <a asp-action="Create" class="btn btn-primary" aria-label="Create a new customer" data-bs-toggle="tooltip" title="Create a new customer">
         <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
     </a>
 </div>
 
-<form asp-action="Index" method="get">
+<form asp-action="Index" method="get" aria-label="Customer filter form">
     <div class="form-horizontal">
         <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
         <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
-        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" aria-label="Toggle filter/search options" data-bs-toggle="tooltip" title="Filter/Search">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
             <div class="card card-body bg-light">
                 <div class="row">
                     <div class="form-group col-md-4">
-                        <label class="form-label fw-bold">Search by Customer Name:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter Customer Name" })
+                        <label class="form-label fw-bold" for="SearchString">Search by Customer Name:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter Customer Name", aria_label = "Enter customer name to search" })
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="form-label fw-bold">Search by Company Name:</label>
-                        @Html.TextBox("SearchCname", null, new { @class = "form-control", placeholder = "Enter Company Name" })
+                        <label class="form-label fw-bold" for="SearchCname">Search by Company Name:</label>
+                        @Html.TextBox("SearchCname", null, new { @class = "form-control", placeholder = "Enter Company Name", aria_label = "Enter company name to search" })
                     </div>
                     <div class="form-group col-md-4 align-self-end">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
-                        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
+                        <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                 @foreach (var field in new[] { "Customer", "Date", "Phone", "CompanyName" })
                 {
                     <th class="align-middle">
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field">
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
                             @field
                             @if (ViewData["sortField"]?.ToString() == field)
                             {
@@ -62,13 +62,13 @@
                     <td>@Html.DisplayFor(modelItem => item.PhoneFormatted)</td>
                     <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
                     <td class="text-center">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit customer @item.Summary" data-bs-toggle="tooltip" title="Edit customer">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white">
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of customer @item.Summary" data-bs-toggle="tooltip" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1">
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete customer @item.Summary" data-bs-toggle="tooltip" title="Delete customer">
                             <i class="fa-solid fa-delete-left"></i> Delete
                         </a>
                     </td>
