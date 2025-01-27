@@ -6,7 +6,7 @@
     var currentSortDirection = ViewData["sortDirection"]?.ToString();
 }
 
-<h1 class="text-center my-4">Machine Schedule Index</h1>
+<h1 class="text-center my-4">Machine Schedule</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn btn-primary" aria-label="Create a new machine schedule" data-bs-toggle="tooltip" title="Create a new machine schedule">
@@ -70,6 +70,7 @@
                     </th>
                 }
                 <th>Engineers</th>
+                <th>Sales Orders</th>
                 <th class="align-middle">Actions</th>
             </tr>
         </thead>
@@ -103,6 +104,35 @@
                                         @firstSpec <span class="badge bg-info">@specCount</span>
                                     </a>
                                     <div class="collapse" id="collapseSpecalty@(item.ID)">
+                                        @Html.Raw(specList)
+                                    </div>
+                                }
+                                else
+                                {
+                                    @firstSpec
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            int spCount = item.SalesOrders.Count;
+                            if (spCount > 0)
+                            {
+                                string firstSpec = item.SalesOrders.FirstOrDefault().OrderNumber;
+                                if (spCount > 1)
+                                {
+                                    string specList = "";//Html string of specialty names separated by <br /> tags
+                                    var s = item.SalesOrders.ToList();
+                                    for (int i = 1; i < spCount; i++)//Skip the first because we have it already
+                                    {
+                                        specList += s[i].OrderNumber + " <br />";
+                                    }
+                                    <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpeclty@(item.ID)"
+                                       aria-expanded="false" aria-controls="collapseSpeclty@(item.ID)" aria-label="View engineers for item @(item.ID)" data-bs-toggle="tooltip" title="View Sales orders for this schedule">
+                                        @firstSpec <span class="badge bg-info">@spCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseSpeclty@(item.ID)">
                                         @Html.Raw(specList)
                                     </div>
                                 }
