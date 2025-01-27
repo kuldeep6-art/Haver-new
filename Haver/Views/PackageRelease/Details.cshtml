@@ -1,44 +1,76 @@
 ﻿@model haver.Models.PackageRelease
 
-<partial name="_ViewHeading" />
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Package Release Details
+            </h4>
+        </div>
+    </div>
 
-<div>
-    <h4>PackageRelease</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PReleaseDateP)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PReleaseDateP)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PReleaseDateA)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PReleaseDateA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.Raw(Model.Notes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MachineSchedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MachineSchedule.Summary)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <partial name="_BackToList" />
+    <!-- Details Content -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border shadow-sm">
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <!-- Name -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <!-- Planned Release Date -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PReleaseDateP)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PReleaseDateP)
+                        </dd>
+
+                        <!-- Actual Release Date -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PReleaseDateA)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PReleaseDateA)
+                        </dd>
+
+                        <!-- Notes -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Notes)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.Raw(Model.Notes)
+                        </dd>
+
+                        <!-- Machine Schedule -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.MachineSchedule)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.MachineSchedule.Summary)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary mx-3"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Edit
+                    </a>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 d-flex gap-3">
+                <div style="font-family: 'Avenir Roman', sans-serif;">
+                    <partial name="_BackToList" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

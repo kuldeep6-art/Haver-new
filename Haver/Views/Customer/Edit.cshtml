@@ -1,55 +1,103 @@
 ﻿@model haver.Models.Customer
 
-<partial name="_ViewHeading" />
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Edit Costumer
+            </h4>
+        </div>
+    </div>
 
-<h4>Customer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MiddleName" class="control-label"></label>
-                <input asp-for="MiddleName" class="form-control" />
-                <span asp-validation-for="MiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
-                <input asp-for="CompanyName" class="form-control" />
-                <span asp-validation-for="CompanyName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Centered Form -->
+    <div class="row py-4">
+        <div class="col-md-6 offset-md-3">
+            <form asp-action="Edit" class="border p-4 shadow-sm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" />
+
+                <!-- First Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="FirstName" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        First Name
+                    </label>
+                    <input asp-for="FirstName" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <!-- Middle Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="MiddleName" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Middle Name
+                    </label>
+                    <input asp-for="MiddleName" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="LastName" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Last Name
+                    </label>
+                    <input asp-for="LastName" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <!-- Registration Date -->
+                <div class="form-group mb-3">
+                    <label asp-for="Date" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Registration Date
+                    </label>
+                    <input asp-for="Date" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <!-- Contact Number -->
+                <div class="form-group mb-3">
+                    <label asp-for="Phone" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Contact Number
+                    </label>
+                    <input asp-for="Phone" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div> Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="CompanyName" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Company Name
+                    </label>
+                    <input asp-for="CompanyName" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                </div>
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-3">
+            <partial name="_BackToList" />
+        </div>
     </div>
 </div>
 
-<div>
-    <partial name="_BackToList" />
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

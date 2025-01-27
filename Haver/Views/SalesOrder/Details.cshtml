@@ -1,74 +1,117 @@
 ﻿@model haver.Models.SalesOrder
 
-<partial name="_ViewHeading" />
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Sales Order Details
+            </h4>
+        </div>
+    </div>
 
-<div>
-    <h4>SalesOrder</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShippingTerms)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShippingTerms)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppDwgRcd)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppDwgRcd)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DwgIsDt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DwgIsDt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PoNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PoNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Summary)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vendor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vendor.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MachineSchedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MachineSchedule.Summary)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <partial name="_BackToList" />
+    <!-- Details Content -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border shadow-sm">
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <!-- Order Number -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.OrderNumber)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.OrderNumber)
+                        </dd>
+
+                        <!-- Sales Order Date -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.SoDate)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.SoDate)
+                        </dd>
+
+                        <!-- Price -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+
+                        <!-- Shipping Terms -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.ShippingTerms)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.ShippingTerms)
+                        </dd>
+
+                        <!-- Approval Drawing Received -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.AppDwgRcd)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.AppDwgRcd)
+                        </dd>
+
+                        <!-- Drawing Issue Date -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.DwgIsDt)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.DwgIsDt)
+                        </dd>
+
+                        <!-- PO Number -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PoNumber)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PoNumber)
+                        </dd>
+
+                        <!-- Customer -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Customer)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Customer.Summary)
+                        </dd>
+
+                        <!-- Vendor -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Vendor)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Vendor.Name)
+                        </dd>
+
+                        <!-- Machine Schedule -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.MachineSchedule)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.MachineSchedule.Summary)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary mx-3"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Edit
+                    </a>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 d-flex gap-3">
+            
+                <div style="font-family: 'Avenir Roman', sans-serif;">
+                    <partial name="_BackToList" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

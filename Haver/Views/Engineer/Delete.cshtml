@@ -2,35 +2,71 @@
 
 <partial name="_ViewHeading" />
 
-<div class="container my-3">
-    <div class="card border-primary">
-        <div class="card-header bg-primary text-white">
-            <h4>Engineer Details</h4>
+<div class="container-fluid bg-light my-3">
+    <div class="row">
+        <!-- Header -->
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Engineer Details
+            </h4>
         </div>
-        <div class="card-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-            <dl class="row">
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+        <!-- Details Content -->
+        <div class="row py-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card border shadow-sm">
+                    <div class="card-body p-4">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastName)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+                        <dl class="row mb-0">
+                            <!-- First Name -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.FirstName)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.FirstName)
+                            </dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Phone)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Phone)</dd>
+                            <!-- Last Name -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.LastName)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.LastName)
+                            </dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Email)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
-            </dl>
-        </div>
-        <div class="card-footer">
-            <form asp-action="Delete" class="d-inline">
-                <input type="hidden" asp-for="ID" />
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-            <span class="mx-2">|</span>
-            <partial name="_BackToList" />
+                            <!-- Phone -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Phone)
+                            </dd>
+
+                            <!-- Email -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                        </dl>
+                        <form asp-action="Delete" class="d-inline">
+                            <input type="hidden" asp-for="ID" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                
+
+                    <div class="mt-4 d-flex gap-3">
+                        <div style="font-family: 'Avenir Roman', sans-serif;">
+                            <partial name="_BackToList" />
+                        </div>
+                    </div>
+               
+            </div>
         </div>
     </div>
 </div>

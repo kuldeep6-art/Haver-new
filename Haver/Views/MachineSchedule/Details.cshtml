@@ -1,247 +1,293 @@
 ﻿@model haver.Models.MachineSchedule
 
-<partial name="_ViewHeading" />
 
-<div id="mPrint">
-    <h4>MachineSchedule</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DueDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PackageRDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PackageRDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PODueDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PODueDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Media)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Media)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpareParts)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpareParts)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SparePMedia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SparePMedia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Base)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Base)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AirSeal)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AirSeal)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CoatingLining)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CoatingLining)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dissembly)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dissembly)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Machine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Machine.Class)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MachineScheduleEngineers)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                int specCount = Model.MachineScheduleEngineers.Count;
-                if (specCount > 0)
-                {
-                    string firstSpec = Model.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
-                    if (specCount > 1)
-                    {
-                        string specList = "";//Html string of specialty names separated by <br /> tags
-                        var s = Model.MachineScheduleEngineers.ToList();
-                        for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+<div id="mPrint" class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Machine Schedule Details
+            </h4>
+        </div>
+    </div>
+
+    <!-- Details Content -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border shadow-sm">
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <!-- Start Date -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.StartDate)
+                        </dd>
+
+                        <!-- Due Date -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.DueDate)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.DueDate)
+                        </dd>
+
+                        <!-- End Date -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.EndDate)
+                        </dd>
+
+                        <!-- Package Release Date -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PackageRDate)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PackageRDate)
+                        </dd>
+
+                        <!-- PO Due Date -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PODueDate)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PODueDate)
+                        </dd>
+
+                        <!-- Delivery Date -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.DeliveryDate)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.DeliveryDate)
+                        </dd>
+
+                        <!-- Media -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Media)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Media)
+                        </dd>
+
+                        <!-- Spare Parts -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.SpareParts)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.SpareParts)
+                        </dd>
+
+                        <!-- Spare Parts Media -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.SparePMedia)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.SparePMedia)
+                        </dd>
+
+                        <!-- Base -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Base)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Base)
+                        </dd>
+
+                        <!-- Air Seal -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.AirSeal)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.AirSeal)
+                        </dd>
+
+                        <!-- Coating Lining -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.CoatingLining)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.CoatingLining)
+                        </dd>
+
+                        <!-- Dissembly -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Dissembly)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Dissembly)
+                        </dd>
+
+                        <!-- Machine -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Machine)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Machine.Class)
+                        </dd>
+
+                        <!-- Machine Schedule Engineers -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.MachineScheduleEngineers)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @{
+                                int specCount = Model.MachineScheduleEngineers.Count;
+                                if (specCount > 0)
+                                {
+                                    string firstSpec = Model.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
+                                    if (specCount > 1)
+                                    {
+                                        string specList = "";
+                                        var s = Model.MachineScheduleEngineers.ToList();
+                                        for (int i = 1; i < specCount; i++)
+                                        {
+                                            specList += s[i].Engineer.EngineerInitials + " <br />";
+                                        }
+                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
+                                           aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
+                                            @firstSpec <span class="badge bg-info">@specCount</span>
+                                        </a>
+                                        <div class="collapse" id="collapseSpecalty@(Model.ID)">
+                                            @Html.Raw(specList)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @firstSpec
+                                    }
+                                }
+                            }
+                        </dd>
+
+                        <!-- Notes Section -->
+                        <p style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">Comments / Notes</p>
+                        @if (Model.Note != null)
                         {
-                            specList += s[i].Engineer.EngineerInitials + " <br />";
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Note.PreOrder)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.Raw(Model.Note.PreOrder)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Note.Scope)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.Raw(Model.Note.Scope)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Note.AssemblyHours)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Note.AssemblyHours)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Note.ReworkHours)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Note.ReworkHours)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Note.BudgetHours)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Note.BudgetHours)
+                            </dd>
                         }
-                                <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
-                                   aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
-                                    @firstSpec <span class="badge bg-info">@specCount</span>
-                                </a>
-                                <div class="collapse" id="collapseSpecalty@(Model.ID)">
-                                    @Html.Raw(specList)
-                                </div>
+                        else
+                        {
+                            <p style="font-family: 'Avenir Roman', sans-serif;">No notes available for this schedule.</p>
+                        }
+
+                        <!-- Package Release Information -->
+                        <p style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">Package Release Information</p>
+                        @if (Model.PackageRelease != null)
+                        {
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.PackageRelease.Name)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.PackageRelease.Name)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
+                            </dd>
+                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.PackageRelease.Notes)
+                            </dt>
+                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.Raw(Model.PackageRelease.Notes)
+                            </dd>
+                        }
+                        else
+                        {
+                            <p style="font-family: 'Avenir Roman', sans-serif;">No Package Release Information available for this schedule.</p>
+                        }
+                    </dl>
+                </div>
+                <div class="mt-4 d-flex gap-3 mx-4 mb-3">
+                    <button type="button" class="btn btn-primary" onclick="printPage()" style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Print
+                    </button>
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-warning" style="font-family: 'Avenir Heavy', sans-serif;">
+                        Edit
+                    </a>
+                    @if (!Model.IsCompleted)
+                    {
+                        <form asp-action="MarkAsCompleted" asp-route-id="@Model.ID" method="post" class="d-inline">
+                            <button type="submit" class="btn" style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; color: white;">
+                                Mark as Completed
+                            </button>
+                        </form>
                     }
                     else
                     {
-                                @firstSpec
+                        <span class="text-success" style="font-family: 'Avenir Roman', sans-serif;">This schedule is marked as completed.</span>
+                        <form asp-action="Unfinalize" asp-route-id="@Model.ID" method="post" class="d-inline">
+                            <button type="submit" class="btn" style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; color: white;">
+                                Unfinalize
+                            </button>
+                        </form>
                     }
-                }
-            }
-        </dd>
 
-        <!-- Display Note details -->
-
-        <p>Comments / Notes </p>
-        @if (Model.Note != null)
-{
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Note.PreOrder)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw(Model.Note.PreOrder)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Note.Scope)
-        </dt>
-        <dd class="col-sm-10">
-                @Html.Raw(Model.Note.Scope)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Note.AssemblyHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Note.AssemblyHours)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Note.ReworkHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Note.ReworkHours)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Note.BudgetHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Note.BudgetHours)
-        </dd>
-        }
-        else
-        {
-            <p>No notes available for this schedule.</p>
-        }
-
-
-        <p>Package Release Information</p>
-        @if (Model.PackageRelease != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PackageRelease.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease.Notes)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.PackageRelease.Notes)
-            </dd>
-        }
-        else
-        {
-            <p>No Package Release Information available for this schedule.</p>
-        }
-    </dl>
+                </div>
+              
+            </div>
+               <div class="mt-4 d-flex gap-3">
+               
+                <div style="font-family: 'Avenir Roman', sans-serif;">
+                    <partial name="_BackToList" />
+                </div>
+            </div>
+        </div>
+       
+    </div>
+   
 </div>
 
-<div>
-    <!-- Print Button -->
-    <button type="button" class="btn btn-primary" onclick="printPage()">Print</button>
-    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-warning">Edit</a> |
-
-    @if (!Model.IsCompleted)
-    {
-        <form asp-action="MarkAsCompleted" asp-route-id="@Model.ID" method="post" class="d-inline">
-            <button type="submit" class="btn">Mark as Completed</button>
-        </form>
-    }
-    else
-    {
-        <span class="text-success">This schedule is marked as completed.</span>
-        <form asp-action="Unfinalize" asp-route-id="@Model.ID" method="post" class="d-inline">
-            <button type="submit" class="btn">Unfinalize</button>
-        </form>
-    }
-    <partial name="_BackToList" />
-</div>
+<!-- Action Buttons -->
 
 
 <script>
     function printPage() {
-        // Get the content to print
         const pContent = document.getElementById('mPrint').innerHTML;
-
-        // Save the original body content
         const originalContent = document.body.innerHTML;
-
-        // Replace body content with the print content
         document.body.innerHTML = `<div>${pContent}</div>`;
-
-        // Trigger print
         window.print();
-
-        // Restore the original content
         document.body.innerHTML = originalContent;
-
-        // Ensure scripts and event handlers remain intact
         location.reload();
     }
 </script>
-
-

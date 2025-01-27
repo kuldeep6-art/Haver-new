@@ -1,50 +1,85 @@
 ﻿@model haver.Models.Machine
 
-<partial name="_ViewHeading" />
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Machine Details
+            </h4>
+        </div>
+    </div>
 
-<div>
-    <h4>Machine</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SerialNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Size)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Class)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Class)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SizeDeck)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SizeDeck)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <partial name="_BackToList" />
+    <!-- Details Content -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border shadow-sm">
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <!-- Description -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+
+                        <!-- Serial Number -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.SerialNumber)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.SerialNumber)
+                        </dd>
+
+                        <!-- Quantity -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Quantity)
+                        </dd>
+
+                        <!-- Size -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Size)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Size)
+                        </dd>
+
+                        <!-- Class -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Class)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Class)
+                        </dd>
+
+                        <!-- Size Deck -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.SizeDeck)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.SizeDeck)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary mx-3"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Edit
+                    </a>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 d-flex gap-3">
+
+                <div style="font-family: 'Avenir Roman', sans-serif;">
+                    <partial name="_BackToList" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

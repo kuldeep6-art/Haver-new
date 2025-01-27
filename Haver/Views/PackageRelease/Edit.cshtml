@@ -1,48 +1,95 @@
 ﻿@model haver.Models.PackageRelease
 
-<partial name="_ViewHeading" />
-
-<h4>PackageRelease</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PReleaseDateP" class="control-label"></label>
-                <input asp-for="PReleaseDateP" class="form-control" />
-                <span asp-validation-for="PReleaseDateP" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PReleaseDateA" class="control-label"></label>
-                <input asp-for="PReleaseDateA" class="form-control" />
-                <span asp-validation-for="PReleaseDateA" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <textarea asp-for="Notes" class="form-control summernote"></textarea>
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MachineScheduleID" class="control-label"></label>
-                <select asp-for="MachineScheduleID" class="form-control" asp-items="ViewBag.MachineScheduleID"></select>
-                <span asp-validation-for="MachineScheduleID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Edit Package Release
+            </h4>
+        </div>
     </div>
-</div>
 
-<div>
-    <partial name="_BackToList" />
+    <!-- Centered Form -->
+    <div class="row py-4">
+        <div class="col-md-6 offset-md-3">
+            <form asp-action="Edit" class="border p-4 shadow-sm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" />
+
+                <!-- Name -->
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Name
+                    </label>
+                    <input asp-for="Name" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Planned Release Date -->
+                <div class="form-group mb-3">
+                    <label asp-for="PReleaseDateP" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Planned Release Date
+                    </label>
+                    <input asp-for="PReleaseDateP" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="PReleaseDateP" class="text-danger"></span>
+                </div>
+
+                <!-- Actual Release Date -->
+                <div class="form-group mb-3">
+                    <label asp-for="PReleaseDateA" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Actual Release Date
+                    </label>
+                    <input asp-for="PReleaseDateA" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="PReleaseDateA" class="text-danger"></span>
+                </div>
+
+                <!-- Notes -->
+                <div class="form-group mb-3">
+                    <label asp-for="Notes" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Notes
+                    </label>
+                    <textarea asp-for="Notes" class="form-control summernote"
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <!-- Machine Schedule -->
+                <div class="form-group mb-3">
+                    <label asp-for="MachineScheduleID" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Machine Schedule
+                    </label>
+                    <select asp-for="MachineScheduleID" class="form-control"
+                            asp-items="ViewBag.MachineScheduleID"
+                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></select>
+                    <span asp-validation-for="MachineScheduleID" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Back to List -->
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-3">
+            <partial name="_BackToList" />
+        </div>
+    </div>
 </div>
 
 @section Head {
