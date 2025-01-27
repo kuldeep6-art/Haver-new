@@ -91,6 +91,24 @@ namespace haver.Controllers
             return View(pagedData);
         }
 
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var machine = await _context.Machines
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (machine == null)
+            {
+                return NotFound();
+            }
+
+            return View(machine);
+        }
+
+
         // GET: Machine/Create
         public IActionResult Create()
         {

@@ -4,14 +4,14 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Create a Machine Schedule 
+                Create a Machine Schedule
             </h4>
         </div>
     </div>
 
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
-            <form asp-action="Create" class="border p-4 shadow-sm">
+            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Machine Schedule">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="row">
@@ -20,6 +20,7 @@
                             <label asp-for="StartDate" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Start Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The date when the schedule starts."></i>
                             </label>
                             <input asp-for="StartDate" class="form-control" type="date"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -31,6 +32,7 @@
                             <label asp-for="DueDate" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Due Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The date by which the work is expected to be completed."></i>
                             </label>
                             <input asp-for="DueDate" class="form-control" type="date"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -45,6 +47,7 @@
                             <label asp-for="EndDate" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 End Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The final date for the schedule."></i>
                             </label>
                             <input asp-for="EndDate" class="form-control" type="date"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -56,6 +59,7 @@
                             <label asp-for="PackageRDate" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Package R Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The package release date."></i>
                             </label>
                             <input asp-for="PackageRDate" class="form-control" type="date"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -70,6 +74,7 @@
                             <label asp-for="PODueDate" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 PO Due Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Purchase Order due date."></i>
                             </label>
                             <input asp-for="PODueDate" class="form-control" type="date"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -81,6 +86,7 @@
                             <label asp-for="DeliveryDate" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Delivery Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Expected delivery date."></i>
                             </label>
                             <input asp-for="DeliveryDate" class="form-control" type="date"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -95,6 +101,7 @@
                             <label asp-for="MachineID" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Select Machine
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine for this schedule."></i>
                             </label>
                             <select asp-for="MachineID" class="form-control"
                                     asp-items="ViewBag.MachineID"
@@ -114,53 +121,46 @@
                             <div class="col-md-4">
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="Media" id="mediaCheck" />
-                                    <label class="form-check-label" for="mediaCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.Media)
+                                    <label class="form-check-label" for="mediaCheck">
+                                        Media
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="SpareParts" id="sparePartsCheck" />
-                                    <label class="form-check-label" for="sparePartsCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.SpareParts)
+                                    <label class="form-check-label" for="sparePartsCheck">
+                                        Spare Parts
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="SparePMedia" id="sparePMediaCheck" />
-                                    <label class="form-check-label" for="sparePMediaCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.SparePMedia)
+                                    <label class="form-check-label" for="sparePMediaCheck">
+                                        Spare PMedia
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="Base" id="baseCheck" />
-                                    <label class="form-check-label" for="baseCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.Base)
+                                    <label class="form-check-label" for="baseCheck">
+                                        Base
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="AirSeal" id="airSealCheck" />
-                                    <label class="form-check-label" for="airSealCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.AirSeal)
+                                    <label class="form-check-label" for="airSealCheck">
+                                        Air Seal
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="CoatingLining" id="coatingLiningCheck" />
-                                    <label class="form-check-label" for="coatingLiningCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.CoatingLining)
+                                    <label class="form-check-label" for="coatingLiningCheck">
+                                        Coating/Lining
                                     </label>
                                 </div>
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" asp-for="Dissembly" id="dissemblyCheck" />
-                                    <label class="form-check-label" for="dissemblyCheck"
-                                           style="font-family: 'Avenir Roman', sans-serif;">
-                                        @Html.DisplayNameFor(model => model.Dissembly)
+                                    <label class="form-check-label" for="dissemblyCheck">
+                                        Dissembly
                                     </label>
                                 </div>
                             </div>
@@ -168,11 +168,11 @@
                                 <div class="form-group">
                                     <label class="control-label"
                                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                        Specialties Management
+                                        Assign Engineers
                                     </label>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label class="control-label">Accredited</label>
+                                            <label class="control-label">Selected</label>
                                             @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 5, @class = "form-control" })
                                         </div>
                                         <div class="col-md-6">
@@ -181,10 +181,10 @@
                                         </div>
                                     </div>
                                     <div class="mt-2 text-center">
-                                        <button type="button" id="btnLeft" class="btn btn-sm btn-success mx-1">
+                                        <button type="button" id="btnLeft" class="btn btn-sm btn-success mx-1" tabindex="0">
                                             <i class="fas fa-arrow-left"></i>
                                         </button>
-                                        <button type="button" id="btnRight" class="btn btn-sm btn-danger mx-1">
+                                        <button type="button" id="btnRight" class="btn btn-sm btn-danger mx-1" tabindex="0">
                                             <i class="fas fa-arrow-right"></i>
                                         </button>
                                     </div>
@@ -215,5 +215,12 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="~/js/multiselect.js"></script>
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 }
+
+<script src="~/js/multiselect.js"></script>
