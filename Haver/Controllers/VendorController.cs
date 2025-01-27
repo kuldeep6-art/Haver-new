@@ -21,18 +21,71 @@ namespace haver.Controllers
             _context = context;
         }
 
-        // GET: Vendor
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
+        public async Task<IActionResult> Index(int? page,int? pageSizeID,string? SearchCname,string? SearchString,string? actionButton,string sortDirection = "asc",string sortField = "Name")
         {
-            var vendors = from m in _context.Vendors
-                        .AsNoTracking()
-                            select m;
+            string[] sortOptions = new[] { "Name", "Phone","Email" };
+
+            var vendors = from m in _context.Vendors.AsNoTracking() select m;
+
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
+            if (!string.IsNullOrEmpty(SearchCname))
+            {
+                vendors = vendors.Where(v => v.Name.ToUpper().Contains(SearchCname.ToUpper()));
+                numberFilters++;
+            }
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                vendors = vendors.Where(v => v.Phone.ToUpper().Contains(SearchString.ToUpper()));
+                numberFilters++;
+            }
+
+            if (numberFilters > 0)
+            {
+                ViewData["Filtering"] = "btn-danger";
+                ViewData["numberFilters"] = $"({numberFilters} Filter{(numberFilters > 1 ? "s" : "")} Applied)";
+                ViewData["ShowFilter"] = "show";
+            }
+            else
+            {
+                ViewData["numberFilters"] = string.Empty;
+                ViewData["ShowFilter"] = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(actionButton) && sortOptions.Contains(actionButton))
+            {
+                if (actionButton == sortField)
+                {
+                    sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                }
+                sortField = actionButton;
+            }
+
+            vendors = sortField switch
+            {
+                "Phone" => sortDirection == "asc"
+                    ? vendors.OrderBy(v => v.Phone)
+                    : vendors.OrderByDescending(v => v.Phone),
+                "Email" => sortDirection == "asc"
+                    ? vendors.OrderBy(v => v.Email)
+                    : vendors.OrderByDescending(v => v.Email),
+                _ => sortDirection == "asc"
+                    ? vendors.OrderBy(v => v.Name)
+                    : vendors.OrderByDescending(v => v.Name),
+            };
+
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-            var pagedData = await PaginatedList<Vendor>.CreateAsync(vendors.AsNoTracking(), page ?? 1, pageSize);
+            var pagedData = await PaginatedList<Vendor>.CreateAsync(vendors, page ?? 1, pageSize);
 
             return View(pagedData);
         }
+
         // GET: Vendor/Details/5
         public async Task<IActionResult> Details(int? id)
         {
