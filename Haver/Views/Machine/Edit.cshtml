@@ -12,8 +12,8 @@
 
     <!-- Centered Form -->
     <div class="row py-4">
-        <div class="col-md-6 offset-md-3">
-            <form asp-action="Edit" class="border p-4 shadow-sm">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Machine Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
 
@@ -22,6 +22,7 @@
                     <label asp-for="Description" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Description
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's description."></i>
                     </label>
                     <input asp-for="Description" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -33,6 +34,7 @@
                     <label asp-for="SerialNumber" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Serial Number
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's serial number."></i>
                     </label>
                     <input asp-for="SerialNumber" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -44,6 +46,7 @@
                     <label asp-for="Quantity" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Quantity
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the quantity"></i>
                     </label>
                     <input asp-for="Quantity" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -55,6 +58,7 @@
                     <label asp-for="Size" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Size
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's size."></i>
                     </label>
                     <input asp-for="Size" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -66,6 +70,7 @@
                     <label asp-for="Class" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Class
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's class or category."></i>
                     </label>
                     <input asp-for="Class" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -77,6 +82,7 @@
                     <label asp-for="SizeDeck" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Size Deck
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the deck size of the machine."></i>
                     </label>
                     <input asp-for="SizeDeck" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -84,7 +90,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <div class="form-group">
+                <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Save
@@ -96,7 +102,7 @@
 
     <!-- Back to List Link -->
     <div class="row">
-        <div class="col-md-6 offset-md-3 mt-3">
+        <div class="col-md-8 offset-md-2 mt-3">
             <partial name="_BackToList" />
         </div>
     </div>
@@ -106,4 +112,10 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 }
