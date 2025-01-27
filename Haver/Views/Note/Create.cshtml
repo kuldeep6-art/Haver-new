@@ -2,7 +2,7 @@
 
 <div class="container-fluid bg-light">
     <div class="row">
-        <div class="col-md-12 py-4" style="background-color: #0361A3;">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
                 Create Note
             </h4>
@@ -16,71 +16,71 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="PreOrder" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Pre Order
                     </label>
                     <textarea asp-for="PreOrder" class="form-control summernote"
-                              style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"></textarea>
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
                     <span asp-validation-for="PreOrder" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Scope" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Scope
                     </label>
                     <textarea asp-for="Scope" class="form-control summernote"
-                              style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"></textarea>
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
                     <span asp-validation-for="Scope" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="AssemblyHours" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Assembly Hours
                     </label>
                     <input asp-for="AssemblyHours" class="form-control"
-                              style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="AssemblyHours" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="ReworkHours" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Rework Hours
                     </label>
                     <input asp-for="ReworkHours" class="form-control "
-                              style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="ReworkHours" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="BudgetHours" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Budget Hours
                     </label>
                     <input asp-for="BudgetHours" class="form-control"
-                              style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;" />
+                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="BudgetHours" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="NamePlate" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;"></label>
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;"></label>
                     <select asp-for="NamePlate" class="form-control"
                             asp-items="Html.GetEnumSelectList<NamePlate>()"
-                            style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;"></select>
+                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></select>
                     <span asp-validation-for="NamePlate" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="MachineScheduleID" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color: #0361A3;">
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Machine Schedule
                     </label>
                     <select asp-for="MachineScheduleID" class="form-control"
                             asp-items="ViewBag.MachineScheduleID"
-                            style="border-color: #0361A3; font-family: 'Avenir Roman', sans-serif;">
+                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
                         <option value="">Select Machine Schedule</option>
                     </select>
                     <span asp-validation-for="MachineScheduleID" class="text-danger"></span>
@@ -88,7 +88,7 @@
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"
-                            style="background-color: #0361A3; border-color: #0361A3; font-family: 'Avenir Heavy', sans-serif;">
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Create Note
                     </button>
                 </div>
