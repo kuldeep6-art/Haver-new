@@ -137,7 +137,10 @@ namespace haver.Models
         [Display(Name = "Engineer")]
         public ICollection<MachineScheduleEngineer> MachineScheduleEngineers { get; set; } = new HashSet<MachineScheduleEngineer>();
 
+        [Display(Name = "Sales Orders")]
         public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
+
+        public bool IsCompleted { get; set; }
 
 
         public static ValidationResult ValidateStartAndDueDate(DateTime dueDate, ValidationContext context)
