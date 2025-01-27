@@ -299,6 +299,13 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
+
+            if (machineSchedule.IsCompleted)
+            {
+                TempData["ErrorMessage"] = "This schedule is marked as completed and cannot be edited.";
+                return RedirectToAction(nameof(Index));
+            }
+
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Class", machineSchedule.MachineID);
             PopulateAssignedSpecialtyData(machineSchedule);
             return View(machineSchedule);
@@ -414,6 +421,48 @@ namespace haver.Controllers
             return View(machineSchedule);
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkAsCompleted(int id)
+        {
+            var machineSchedule = await _context.MachineSchedules.FindAsync(id);
+            if (machineSchedule == null)
+            {
+                return NotFound();
+            }
+
+            machineSchedule.IsCompleted = true;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "The schedule has been marked as completed.";
+            }
+            catch (DbUpdateException)
+            {
+                TempData["ErrorMessage"] = "An error occurred while updating the schedule.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        public IActionResult Unfinalize(int id)
+        {
+            var machineSchedule = _context.MachineSchedules.Find(id);
+            if (machineSchedule == null)
+            {
+                return NotFound();
+            }
+
+            machineSchedule.IsCompleted = false;
+            _context.Update(machineSchedule);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
 
         private void PopulateDropDownLists(MachineSchedule? machineSchedule = null)
         {

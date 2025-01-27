@@ -203,9 +203,24 @@
 <div>
     <!-- Print Button -->
     <button type="button" class="btn btn-primary" onclick="printPage()">Print</button>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-warning">Edit</a> |
+
+    @if (!Model.IsCompleted)
+    {
+        <form asp-action="MarkAsCompleted" asp-route-id="@Model.ID" method="post" class="d-inline">
+            <button type="submit" class="btn">Mark as Completed</button>
+        </form>
+    }
+    else
+    {
+        <span class="text-success">This schedule is marked as completed.</span>
+        <form asp-action="Unfinalize" asp-route-id="@Model.ID" method="post" class="d-inline">
+            <button type="submit" class="btn">Unfinalize</button>
+        </form>
+    }
     <partial name="_BackToList" />
 </div>
+
 
 <script>
     function printPage() {
