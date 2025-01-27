@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class PackageRelease : Auditable
+    public class PackageRelease : Auditable , IValidatableObject
     {
         public int ID { get; set; }
 
@@ -41,5 +41,34 @@ namespace haver.Models
 
         public int MachineScheduleID { get; set; }
         public MachineSchedule? MachineSchedule { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            // Validate that Date Approved is after or equal to Date Released
+            if (PReleaseDateP.HasValue && PReleaseDateA.HasValue && PReleaseDateA < PReleaseDateP)
+            {
+                yield return new ValidationResult("Date Approved cannot be earlier than Date Released.", new[] { nameof(PReleaseDateA) });
+            }
+
+            // Validate that Dates fall within the Machine Schedule timeline
+            if (MachineSchedule != null)
+            {
+                if (PReleaseDateP.HasValue && (PReleaseDateP < MachineSchedule.StartDate || PReleaseDateP > MachineSchedule.DueDate))
+                {
+                    yield return new ValidationResult("Date Released must be within the Machine Schedule timeline.", new[] { nameof(PReleaseDateP) });
+                }
+
+                if (PReleaseDateA.HasValue && (PReleaseDateA < MachineSchedule.StartDate || PReleaseDateA > MachineSchedule.DueDate))
+                {
+                    yield return new ValidationResult("Date Approved must be within the Machine Schedule timeline.", new[] { nameof(PReleaseDateA) });
+                }
+            }
+
+            // Validate that notes contain enough useful content
+            if (!string.IsNullOrEmpty(Notes) && Notes.Trim().Length < 10)
+            {
+                yield return new ValidationResult("Notes must provide sufficient information (at least 10 characters).", new[] { nameof(Notes) });
+            }
+        }
     }
-}
+    }

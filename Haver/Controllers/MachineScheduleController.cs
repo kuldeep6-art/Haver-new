@@ -45,6 +45,8 @@ namespace haver.Controllers
             var machineSchedules = from m in _context.MachineSchedules
                 .Include(m => m.Machine)
                 .Include(n => n.Note)
+                .Include(s => s.SalesOrders)
+                 .Include(p => p.PackageRelease)
                 .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
                 .AsNoTracking()
                 select m;
@@ -231,6 +233,7 @@ namespace haver.Controllers
             var machineSchedule = await _context.MachineSchedules
                 .Include(m => m.Machine)
                 .Include(n => n.Note)
+                 .Include(s => s.SalesOrders)
                 .Include(p => p.PackageRelease)
                 .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
                 .FirstOrDefaultAsync(m => m.ID == id);

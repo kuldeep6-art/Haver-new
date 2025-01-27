@@ -18,7 +18,7 @@
     <div class="container-fluid d-flex align-items-center">
         <div class="logo-container me-3">
             <a asp-area="" asp-controller="Home" asp-action="Index">
-                <img src="/Images/logo-haver.png" alt="Logo for Haver" width="220">
+                <img src="/Images/logo-haver.png" alt="Logo for Haver" width="230">
             </a>
         </div>
 
@@ -29,7 +29,15 @@
         </button>
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav flex-grow-1">
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MachineSchedule" asp-action="Index">Machine Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SalesOrder" asp-action="Index">Sales Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Machine" asp-action="Index">Machine</a>
+                        </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Menu
@@ -37,20 +45,15 @@
                     <ul class="dropdown-menu custom-dropdown" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index"><span class="icon">➤ </span> Customer</a></li>
                         <li><a class="dropdown-item" asp-area="" asp-controller="Engineer" asp-action="Index"><span class="icon">➤</span> Engineer</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Vendor" asp-action="Index"><span class="icon">➤</span> Vendor</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Machine" asp-action="Index"><span class="icon">➤</span> Machine</a></li>
                         <li><a class="dropdown-item" asp-area="" asp-controller="Note" asp-action="Index"><span class="icon">➤</span> Notes</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="PackageRelease" asp-action="Index"><span class="icon">➤</span> Package Release</a></li>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="Vendor" asp-action="Index"><span class="icon">➤</span> Vendor</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="SalesOrder" asp-action="Index"><span class="icon">➤</span> Sales Order</a></li>
-                        <li><a class="dropdown-item" asp-area="" asp-controller="MachineSchedule" asp-action="Index"><span class="icon">➤</span> Machine Schedule</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PackageRelease" asp-action="Index"><span class="icon">➤</span> Package Release</a></li>                      
                     </ul>
                 </li>
             </ul>
 
-            <partial name="_LoginPartial" />
+            @* <partial name="_LoginPartial" /> *@
         </div>
     </div>
 </nav>
@@ -70,7 +73,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - haver - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Haver & Boecker - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> @* <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -114,8 +117,9 @@ body {
     }
 
 a {
-        color: #0C2340;
+    color: #0C2340;
     text-decoration: none;
+    font-weight:bold;
 }
 
 a:hover {
