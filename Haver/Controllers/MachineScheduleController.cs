@@ -468,8 +468,8 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions,Byte[] RowVersion)
-        { 
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions)
+        {
             var scheduleToUpdate = await _context.MachineSchedules
                 .Include(e => e.MachineScheduleEngineers).ThenInclude(e => e.Engineer)
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -481,13 +481,13 @@ namespace haver.Controllers
             UpdateDoctorSpecialties(selectedOptions, scheduleToUpdate);
 
             //Put the original RowVersion value in the OriginalValues collection for the entity
-            _context.Entry(scheduleToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+            //_context.Entry(scheduleToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
 
             if (await TryUpdateModelAsync<MachineSchedule>(scheduleToUpdate, "",
-                s => s.StartDate, s => s.DueDate, s => s.EndDate, s=>s.PackageRDate,
-                s=>s.PODueDate, s=>s.DeliveryDate, s=>s.Media, s=>s.SpareParts,
-                s=>s.SparePMedia, s=>s.Base, s => s.AirSeal, s => s.CoatingLining, s => s.Dissembly, s => s.MachineID))
+                s => s.StartDate, s => s.DueDate, s => s.EndDate, s => s.PackageRDate,
+                s => s.PODueDate, s => s.DeliveryDate, s => s.Media, s => s.SpareParts,
+                s => s.SparePMedia, s => s.Base, s => s.AirSeal, s => s.CoatingLining, s => s.Dissembly, s => s.MachineID))
             {
                 try
                 {
@@ -503,11 +503,6 @@ namespace haver.Controllers
                     if (!MachineScheduleExists(scheduleToUpdate.ID))
                     {
                         return NotFound();
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
-                            + "was modified by another user. Please go back and refresh.");
                     }
                 }
                 catch (DbUpdateException)

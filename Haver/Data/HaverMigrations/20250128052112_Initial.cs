@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace haver.Data.HaverMigrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,10 +19,10 @@ namespace haver.Data.HaverMigrations
                         .Annotation("Sqlite:Autoincrement", true),
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     MiddleName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
-                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -41,7 +41,7 @@ namespace haver.Data.HaverMigrations
                         .Annotation("Sqlite:Autoincrement", true),
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -81,7 +81,7 @@ namespace haver.Data.HaverMigrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -115,6 +115,7 @@ namespace haver.Data.HaverMigrations
                     CoatingLining = table.Column<bool>(type: "INTEGER", nullable: false),
                     Dissembly = table.Column<bool>(type: "INTEGER", nullable: false),
                     MachineID = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -225,7 +226,7 @@ namespace haver.Data.HaverMigrations
                     OrderNumber = table.Column<string>(type: "TEXT", maxLength: 8, nullable: false),
                     SoDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    ShippingTerms = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    ShippingTerms = table.Column<string>(type: "TEXT", maxLength: 800, nullable: false),
                     AppDwgRcd = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DwgIsDt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     PoNumber = table.Column<string>(type: "TEXT", nullable: true),
@@ -326,8 +327,6 @@ namespace haver.Data.HaverMigrations
                 name: "IX_SalesOrders_VendorID",
                 table: "SalesOrders",
                 column: "VendorID");
-
-            ExtraMigration.Steps(migrationBuilder);
         }
 
         /// <inheritdoc />
