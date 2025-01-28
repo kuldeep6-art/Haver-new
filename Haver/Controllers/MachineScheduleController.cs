@@ -19,6 +19,7 @@ using haver.ViewModels;
 using System.Drawing;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.Text.RegularExpressions;
 
 namespace haver.Controllers
 {
@@ -227,35 +228,48 @@ namespace haver.Controllers
 
         public IActionResult DownloadMachineSchedules()
         {
-            var schedules = from ms in _context.MachineSchedules
-                            .Include(ms => ms.Machine)
-                            .Include(ms => ms.PackageRelease)
-                            .Include(ms => ms.Note)
-                            .OrderByDescending(ms => ms.StartDate)
-                            select new
-                            {
-                                SalesOrder = ms.SalesOrders.FirstOrDefault().OrderNumber ?? "",
-                                CustomerName = ms.SalesOrders.FirstOrDefault().Customer.CompanyName ?? "",
-                                MachineDescription = ms.Machine.Description ?? "",
-                                SerialNumber = ms.Machine.SerialNumber ?? "",
-                                Quantity = ms.Machine.Quantity,
-                                Size = ms.Machine.Size ?? "",
-                                Class = ms.Machine.Class ?? "",
-                                SizeDeck = ms.Machine.SizeDeck ?? "",
-                                PackageReleaseDate = ms.PackageRelease != null && ms.PackageRelease.PReleaseDateP.HasValue
-                                    ? ms.PackageRelease.PReleaseDateP.Value.ToString("yyyy-MM-dd")
-                                    : "",
-                                VendorName = "", // Replace with actual vendor data 
-                                PONumber = "", // Replace with actual PO number 
-                                PODueDate = ms.PODueDate.ToString("yyyy-MM-dd"),
-                                DeliveryDate = ms.DeliveryDate.ToString("yyyy-MM-dd"),
-                                Media = ms.Media ? "Yes" : "No",
-                                SpareParts = ms.SpareParts ? "Yes" : "No",
-                                Base = ms.Base ? "Yes" : "No",
-                                AirSeal = ms.AirSeal ? "Yes" : "No",
-                                CoatingLining = ms.CoatingLining ? "Yes" : "No",
-                                Disassembly = ms.Dissembly ? "Yes" : "No",
-                            };
+            var schedules = _context.MachineSchedules
+                .Include(ms => ms.Machine)
+                .Include(ms => ms.PackageRelease)
+                .Include(ms => ms.Note)  // Include the related Note entity
+                .Include(ms => ms.SalesOrders)
+                    .ThenInclude(so => so.Customer)
+                .Include(ms => ms.SalesOrders)
+                    .ThenInclude(so => so.Vendor)
+                .OrderByDescending(ms => ms.StartDate)
+                .ToList() // Forces execution and materializes the data
+                .SelectMany(ms => ms.SalesOrders.DefaultIfEmpty(),
+                    (ms, so) => new
+                    {
+                        SalesOrder = so?.OrderNumber ?? "",
+                        CustomerName = so?.Customer?.CompanyName ?? "",
+                        MachineDescription = ms.Machine?.Description ?? "",
+                        SerialNumber = ms.Machine?.SerialNumber ?? "",
+                        PackageReleaseDate = ms.PackageRelease != null && ms.PackageRelease.PReleaseDateP.HasValue
+                            ? ms.PackageRelease.PReleaseDateP.Value.ToString("yyyy-MM-dd")
+                            : "",
+                        VendorName = so?.Vendor?.Name ?? "",
+                        PONumber = so?.PoNumber ?? "",
+                        PODueDate = ms.PODueDate.ToString("yyyy-MM-dd"), // Non-nullable DateTime
+                        DeliveryDate = ms.DeliveryDate.ToString("yyyy-MM-dd"), // Non-nullable DateTime
+                        Media = ms.Media ? "Yes" : "No",
+                        SpareParts = ms.SpareParts ? "Yes" : "No",
+                        Base = ms.Base ? "Yes" : "No",
+                        AirSeal = ms.AirSeal ? "Yes" : "No",
+                        CoatingLining = ms.CoatingLining ? "Yes" : "No",
+                        Disassembly = ms.Dissembly ? "Yes" : "No",
+
+                        // Fixed Note Information
+                        PreOrder = StripHtml(ms.Note?.PreOrder ?? ""),
+                        Scope = StripHtml(ms.Note?.Scope ?? ""),
+                        ActualHours = ms.Note != null
+                            ? $"Assembly: {ms.Note.AssemblyHours} hrs / Rework: {ms.Note.ReworkHours} hrs"
+                            : "",
+                        BudgetHours = ms.Note?.BudgetHours != null
+                            ? $"{ms.Note.BudgetHours} hrs per machine"
+                            : "",
+                        NamePlate = ms.Note?.NamePlate != null ? ms.Note.NamePlate.ToString() : "" // Enum conversion outside query
+                    });
 
             int numRows = schedules.Count();
 
@@ -265,23 +279,9 @@ namespace haver.Controllers
                 {
                     var workSheet = excel.Workbook.Worksheets.Add("Machine Schedules");
 
-                    workSheet.Cells[3, 1].LoadFromCollection(schedules, true);
-
-                    workSheet.Column(7).Style.Numberformat.Format = "yyyy-MM-dd";
-                    workSheet.Column(8).Style.Numberformat.Format = "yyyy-MM-dd";
-                    workSheet.Column(9).Style.Numberformat.Format = "yyyy-MM-dd";
-
-                    using (ExcelRange headings = workSheet.Cells[3, 1, 3, 15])
-                    {
-                        headings.Style.Font.Bold = true;
-                        headings.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        headings.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
-                    }
-
-                    workSheet.Cells.AutoFitColumns();
-
+                    // Add the main header
                     workSheet.Cells[1, 1].Value = "Machine Schedule Report";
-                    using (ExcelRange title = workSheet.Cells[1, 1, 1, 15])
+                    using (ExcelRange title = workSheet.Cells[1, 1, 1, 16])
                     {
                         title.Merge = true;
                         title.Style.Font.Bold = true;
@@ -289,15 +289,71 @@ namespace haver.Controllers
                         title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     }
 
+                    // Add the timestamp
                     DateTime utcDate = DateTime.UtcNow;
                     TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                     DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(utcDate, localTimeZone);
-                    using (ExcelRange timestamp = workSheet.Cells[2, 15])
+                    using (ExcelRange timestamp = workSheet.Cells[2, 20])
                     {
                         timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
                         timestamp.Style.Font.Bold = true;
                         timestamp.Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                     }
+
+                    // Add the column headers for the main data
+                    string[] mainHeaders = {
+                "Sales Order", "Customer Name", "Machine Description", "Serial Number", "Package Release Date",
+                "Vendor Name", "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base", "Air Seal",
+                "Coating Lining", "Disassembly"
+            };
+                    for (int i = 0; i < mainHeaders.Length; i++)
+                    {
+                        workSheet.Cells[3, i + 1].Value = mainHeaders[i];
+                    }
+
+                    // Add the "Notes/Comments" header spanning the last five columns
+                    using (ExcelRange notesHeader = workSheet.Cells[3, 16, 3, 20])
+                    {
+                        notesHeader.Value = "Notes/Comments";
+                        notesHeader.Merge = true;
+                        notesHeader.Style.Font.Bold = true;
+                        notesHeader.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        notesHeader.Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                        notesHeader.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
+
+                    // Add individual headers for the note-related columns starting from row 4
+                    string[] noteHeaders = { "PreOrder", "Scope", "Actual Hours", "Budget Hours", "NamePlate" };
+                    for (int i = 0; i < noteHeaders.Length; i++)
+                    {
+                        workSheet.Cells[4, 16 + i].Value = noteHeaders[i];
+                    }
+
+                    // Load the data starting from row 5
+                    workSheet.Cells[5, 1].LoadFromCollection(schedules, false);
+
+                    // Format date columns
+                    workSheet.Column(7).Style.Numberformat.Format = "yyyy-MM-dd";
+                    workSheet.Column(8).Style.Numberformat.Format = "yyyy-MM-dd";
+                    workSheet.Column(9).Style.Numberformat.Format = "yyyy-MM-dd";
+
+                    // Style the main headers
+                    using (ExcelRange headings = workSheet.Cells[3, 1, 3, 16])
+                    {
+                        headings.Style.Font.Bold = true;
+                        headings.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        headings.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+                    }
+
+                    // Style the note headers
+                    using (ExcelRange noteHeadings = workSheet.Cells[4, 16, 4, 20])
+                    {
+                        noteHeadings.Style.Font.Bold = true;
+                        noteHeadings.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        noteHeadings.Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                    }
+
+                    workSheet.Cells.AutoFitColumns();
 
                     try
                     {
@@ -639,5 +695,16 @@ namespace haver.Controllers
         {
             return _context.MachineSchedules.Any(e => e.ID == id);
         }
+
+public string StripHtml(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input; // Return the input as is if it's null or empty
+        }
+
+        return Regex.Replace(input, "<.*?>", string.Empty); // Remove HTML tags
     }
+
+}
 }
