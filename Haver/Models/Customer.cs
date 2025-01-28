@@ -72,6 +72,7 @@ namespace haver.Models
         //Phone Name Annotations
 
         //[Required(ErrorMessage = "Customers phone number is required and can not be left blank.")]
+        [Display(Name= "Phone")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number with no spaces.")]
         [DataType(DataType.PhoneNumber)]
         [MaxLength(10)]

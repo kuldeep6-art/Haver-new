@@ -30,7 +30,7 @@ namespace haver.Models
 
         //Size of machine Annotations
 
-        [Display(Name = "Size of Machine")]
+        [Display(Name = "Size")]
         [Required(ErrorMessage = "Size Is required")]
         public string Size { get; set; }
 

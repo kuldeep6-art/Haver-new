@@ -32,7 +32,7 @@ namespace haver.Models
 
         //ShippingTerms  Annotations
 
-        [Display(Name = "ShippingTerms")]
+        [Display(Name = "Shipping Terms")]
         [Required(ErrorMessage = "ShippingTerms is Required")]
         [MaxLength(800, ErrorMessage = "Shipping terms cannot exceed 800 characters")]
         public string? ShippingTerms { get; set; }

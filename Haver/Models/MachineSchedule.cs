@@ -80,7 +80,7 @@ namespace haver.Models
 
         //SpareParts Annotations
 
-        [Display(Name = "Spare parts")]
+        [Display(Name = "Spare Parts")]
         public bool SpareParts { get; set; }
 
         //SparePMedia Annotations
