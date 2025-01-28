@@ -11,14 +11,14 @@ using haver.Data;
 namespace haver.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250122064710_Initial")]
+    [Migration("20250128052049_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
