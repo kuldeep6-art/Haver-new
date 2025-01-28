@@ -1,61 +1,103 @@
 ﻿@model haver.Models.Vendor
 
-
 <div class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Vendor Detials
+            <h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Vendor Details
             </h4>
         </div>
     </div>
 
     <!-- Details Content -->
     <div class="row py-4">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-10 offset-md-1">
             <div class="card border shadow-sm">
                 <div class="card-body p-4">
-                    <dl class="row mb-0">
-                        <!-- Name -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Name)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Name)
-                        </dd>
+                    <!-- Section: Vendor Information -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Vendor Information
+                        </h5>
 
-                        <!-- Phone -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Phone)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.PhoneFormatted)
-                        </dd>
+                        <div class="row">
+                            <!-- Name -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            Name
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Name)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Email -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Email)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Email)
-                        </dd>
-                    </dl>
+                            <!-- Phone -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            Phone
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.PhoneFormatted)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Email -->
+                            <div class="col-md-12 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            Email
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Email)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary mx-3"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+
+                <!-- Action Buttons -->
+                <div class="mt-4 d-flex gap-3 mx-4 mb-3">
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
                     </a>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="mt-4 d-flex gap-3">
-                <div style="font-family: 'Avenir Roman', sans-serif;">
-                    <partial name="_BackToList" />
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Back to List Button -->
+<div class="mt-4 d-flex gap-3">
+    <div style="font-family: 'Avenir Roman', sans-serif;">
+        <partial name="_BackToList" />
+    </div>
+</div>
+
+<!-- Tooltip Initialization -->
+<script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+
+<style>
+    h6 {
+        font-weight: bold;
+    }
+</style>
