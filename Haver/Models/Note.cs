@@ -38,7 +38,7 @@ namespace haver.Models
 
         //NamePlate  Annotations
 
-        [Display(Name = "Name plate")]
+        [Display(Name = "Name Plate")]
         public NamePlate? NamePlate { get; set; }
 
         //Machine schedule annotation
