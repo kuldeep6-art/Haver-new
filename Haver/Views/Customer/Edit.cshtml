@@ -5,15 +5,15 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Edit Costumer
+                Edit Customer
             </h4>
         </div>
     </div>
 
     <!-- Centered Form -->
     <div class="row py-4">
-        <div class="col-md-6 offset-md-3">
-            <form asp-action="Edit" class="border p-4 shadow-sm">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Customer Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
 
@@ -22,6 +22,7 @@
                     <label asp-for="FirstName" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         First Name
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer's first name."></i>
                     </label>
                     <input asp-for="FirstName" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -33,6 +34,7 @@
                     <label asp-for="MiddleName" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Middle Name
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer's middle name (if applicable)."></i>
                     </label>
                     <input asp-for="MiddleName" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -44,16 +46,19 @@
                     <label asp-for="LastName" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Last Name
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer's last name."></i>
                     </label>
                     <input asp-for="LastName" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
+
                 <!-- Registration Date -->
                 <div class="form-group mb-3">
                     <label asp-for="Date" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Registration Date
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the registration date for the customer."></i>
                     </label>
                     <input asp-for="Date" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -65,22 +70,27 @@
                     <label asp-for="Phone" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Contact Number
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer's contact number."></i>
                     </label>
                     <input asp-for="Phone" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
-                </div> Name -->
+                </div>
+
+                <!-- Company Name -->
                 <div class="form-group mb-3">
                     <label asp-for="CompanyName" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Company Name
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer's company name (if applicable)."></i>
                     </label>
                     <input asp-for="CompanyName" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                     <span asp-validation-for="CompanyName" class="text-danger"></span>
                 </div>
+
                 <!-- Submit Button -->
-                <div class="form-group">
+                <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Save
@@ -89,8 +99,10 @@
             </form>
         </div>
     </div>
+
+    <!-- Back to List Link -->
     <div class="row">
-        <div class="col-md-6 offset-md-3 mt-3">
+        <div class="col-md-8 offset-md-2 mt-3">
             <partial name="_BackToList" />
         </div>
     </div>
@@ -100,4 +112,10 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 }

@@ -13,15 +13,16 @@
     <!-- Centered Form -->
     <div class="row py-4">
         <div class="col-md-6 offset-md-3">
-            <form asp-action="Edit" class="border p-4 shadow-sm">
+            <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Vendor Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
 
-                <!-- Name -->
+                <!-- Vendor Name -->
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Name
+                        Vendor Name
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the vendor's name."></i>
                     </label>
                     <input asp-for="Name" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -32,7 +33,8 @@
                 <div class="form-group mb-3">
                     <label asp-for="Phone" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Phone
+                        Contact Number
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the vendor's contact number."></i>
                     </label>
                     <input asp-for="Phone" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -43,7 +45,8 @@
                 <div class="form-group mb-3">
                     <label asp-for="Email" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Email
+                        Email Address
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the vendor's email address."></i>
                     </label>
                     <input asp-for="Email" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -51,7 +54,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <div class="form-group">
+                <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Save
@@ -61,7 +64,7 @@
         </div>
     </div>
 
-    <!-- Back to List -->
+    <!-- Back to List Link -->
     <div class="row">
         <div class="col-md-6 offset-md-3 mt-3">
             <partial name="_BackToList" />
@@ -73,4 +76,10 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 }
