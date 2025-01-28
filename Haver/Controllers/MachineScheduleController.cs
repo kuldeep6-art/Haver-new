@@ -37,7 +37,7 @@ namespace haver.Controllers
             string? actionButton, string sortDirection = "asc", string sortField = "Machine")
         {
             //List of sort options.
-            string[] sortOptions = new[] { "Machine", "StartDate", "DueDate", "EndDate","PackageRDate","PODueDate","DeliveryDate" };
+            string[] sortOptions = new[] { "Machine", "StartDate", "DueDate", "EndDate","PackageReleaseDate","PODueDate","DeliveryDate" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -161,7 +161,7 @@ namespace haver.Controllers
                          .OrderBy(p => p.EndDate);
                 }
             }
-            else if (sortField == "PackageRDate")
+            else if (sortField == "PackageReleaseDate")
             {
                 if (sortDirection == "asc")
                 {

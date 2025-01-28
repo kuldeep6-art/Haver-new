@@ -164,8 +164,44 @@
                                 }
                             }
                         </dd>
-                    </dl>
 
+                        <!-- Sales Orders -->
+                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.SalesOrders)
+                        </dt>
+                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @{
+                                int spedCount = Model.SalesOrders.Count;
+                                if (spedCount > 0)
+                                {
+                                    string firstSpec = Model.SalesOrders.FirstOrDefault().OrderNumber;
+                                    if (spedCount > 1)
+                                    {
+                                        string specList = "";
+                                        var s = Model.SalesOrders.ToList();
+                                        for (int i = 1; i < spedCount; i++)
+                                        {
+                                            specList += s[i].OrderNumber + " <br />";
+                                        }
+                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpcalty@(Model.ID)"
+                                           aria-expanded="false" aria-controls="collapseSecalty@(Model.ID)">
+                                            @firstSpec <span class="badge bg-info">@spedCount</span>
+                                        </a>
+                                        <div class="collapse" id="collapseSpcalty@(Model.ID)">
+                                            @Html.Raw(specList)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @firstSpec
+                                    }
+                                }
+                            }
+                        </dd>
+
+
+                    </dl>
+                
                     <!-- Notes Section -->
                     <h5 class="mt-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">Comments / Notes</h5>
                     @if (Model.Note != null)
@@ -211,6 +247,7 @@
                     {
                         <p style="font-family: 'Avenir Roman', sans-serif;">No notes available for this schedule.</p>
                     }
+
 
                     <!-- Package Release Section -->
                     <h5 class="mt-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">Package Release Information</h5>

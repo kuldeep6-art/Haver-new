@@ -81,7 +81,7 @@ namespace haver.Models
         //Company Name Annotations
 
         [Display(Name = "Company Name")]
-       // [Required(ErrorMessage = "Enter the name of the company this customer is related to")]
+       [Required(ErrorMessage = "Enter the name of the company this customer is related to")]
         [MaxLength(50, ErrorMessage = "Company name cannot be more than 50 characters long.")]
         [MinLength(2, ErrorMessage = "Company name cannot be less than 2 characters long.")]
         public string? CompanyName { get; set; }

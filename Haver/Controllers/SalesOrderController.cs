@@ -316,7 +316,7 @@ namespace haver.Controllers
 
         private void PopulateDropDownLists(SalesOrder? salesOrder = null)
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "Summary");
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
             ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
             ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Name");
         }
