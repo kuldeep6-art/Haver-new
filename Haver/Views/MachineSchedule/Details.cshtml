@@ -1,11 +1,10 @@
 ﻿@model haver.Models.MachineSchedule
 
-
 <div id="mPrint" class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+            <h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
                 Machine Schedule Details
             </h4>
         </div>
@@ -13,236 +12,319 @@
 
     <!-- Details Content -->
     <div class="row py-4">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-10 offset-md-1">
             <div class="card border shadow-sm">
                 <div class="card-body p-4">
-                    <dl class="row mb-0">
-                        <!-- Start Date -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.StartDate)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.StartDate)
-                        </dd>
+                    <!-- Section 1: Schedule Dates -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Schedule Dates
+                        </h5>
+                        <div class="row">
+                            <!-- Start Date -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The start date of the schedule">Start Date</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.StartDate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Due Date -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.DueDate)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.DueDate)
-                        </dd>
+                            <!-- Due Date -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The due date for the schedule">Due Date</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.DueDate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- End Date -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.EndDate)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.EndDate)
-                        </dd>
+                            <!-- End Date -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The end date of the schedule">End Date</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.EndDate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                        <!-- Package Release Date -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.PackageRDate)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.PackageRDate)
-                        </dd>
+                    <!-- Section 2: Package and Delivery Information -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Package and Delivery Information
+                        </h5>
+                        <div class="row">
+                            <!-- Package Release Date -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The package release date">Package Release Date</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.PackageRDate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- PO Due Date -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.PODueDate)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.PODueDate)
-                        </dd>
+                            <!-- PO Due Date -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The purchase order due date">PO Due Date</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.PODueDate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Delivery Date -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.DeliveryDate)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.DeliveryDate)
-                        </dd>
+                            <!-- Delivery Date -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The delivery date">Delivery Date</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.DeliveryDate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                        <!-- Media -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Media)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Media)
-                        </dd>
+                    <!-- Section 3: Additional Information -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Additional Information
+                        </h5>
+                        <div class="row">
+                            <!-- Media -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Media details">Media</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Media)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Spare Parts -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.SpareParts)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.SpareParts)
-                        </dd>
+                            <!-- Spare Parts -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Spare parts details">Spare Parts</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.SpareParts)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Spare Parts Media -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.SparePMedia)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.SparePMedia)
-                        </dd>
+                            <!-- Spare Parts Media -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Spare parts media details">Spare Parts Media</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.SparePMedia)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Base -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Base)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Base)
-                        </dd>
+                            <!-- Base -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Base details">Base</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Base)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Air Seal -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.AirSeal)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.AirSeal)
-                        </dd>
+                            <!-- Air Seal -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Air seal details">Air Seal</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.AirSeal)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Coating Lining -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.CoatingLining)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.CoatingLining)
-                        </dd>
+                            <!-- Coating Lining -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Coating and lining details">Coating Lining</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.CoatingLining)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Dissembly -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Dissembly)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Dissembly)
-                        </dd>
+                            <!-- Dissembly -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Dissembly details">Dissembly</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Dissembly)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Machine -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Machine)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Machine.Class)
-                        </dd>
+                            <!-- Machine -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Machine details">Machine</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Machine.Class)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                        <!-- Machine Schedule Engineers -->
-                        <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.MachineScheduleEngineers)
-                        </dt>
-                        <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @{
-                                int specCount = Model.MachineScheduleEngineers.Count;
-                                if (specCount > 0)
-                                {
-                                    string firstSpec = Model.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
-                                    if (specCount > 1)
-                                    {
-                                        string specList = "";
-                                        var s = Model.MachineScheduleEngineers.ToList();
-                                        for (int i = 1; i < specCount; i++)
-                                        {
-                                            specList += s[i].Engineer.EngineerInitials + " <br />";
-                                        }
-                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
-                                           aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
-                                            @firstSpec <span class="badge bg-info">@specCount</span>
-                                        </a>
-                                        <div class="collapse" id="collapseSpecalty@(Model.ID)">
-                                            @Html.Raw(specList)
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        @firstSpec
-                                    }
-                                }
-                            }
-                        </dd>
-
-                        <!-- Notes Section -->
-                        <p style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">Comments / Notes</p>
+                    <!-- Section 4: Notes and Comments -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Comments / Notes
+                        </h5>
                         @if (Model.Note != null)
                         {
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Note.PreOrder)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.Raw(Model.Note.PreOrder)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Note.Scope)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.Raw(Model.Note.Scope)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Note.AssemblyHours)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Note.AssemblyHours)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Note.ReworkHours)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Note.ReworkHours)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Note.BudgetHours)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Note.BudgetHours)
-                            </dd>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Pre-order notes">Pre-Order Notes</span>
+                                            </h6>
+                                            <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                                @Html.Raw(Model.Note.PreOrder)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Scope notes">Scope Notes</span>
+                                            </h6>
+                                            <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                                @Html.Raw(Model.Note.Scope)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
                         else
                         {
                             <p style="font-family: 'Avenir Roman', sans-serif;">No notes available for this schedule.</p>
                         }
+                    </div>
 
-                        <!-- Package Release Information -->
-                        <p style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">Package Release Information</p>
+                    <!-- Section 5: Package Release Information -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Package Release Information
+                        </h5>
                         @if (Model.PackageRelease != null)
                         {
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.PackageRelease.Name)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.PackageRelease.Name)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
-                            </dd>
-                            <dt class="col-sm-2" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.PackageRelease.Notes)
-                            </dt>
-                            <dd class="col-sm-10 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.Raw(Model.PackageRelease.Notes)
-                            </dd>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Package release name">Package Release Name</span>
+                                            </h6>
+                                            <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                                @Html.DisplayFor(model => model.PackageRelease.Name)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Package release notes">Package Release Notes</span>
+                                            </h6>
+                                            <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                                @Html.Raw(Model.PackageRelease.Notes)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
                         else
                         {
                             <p style="font-family: 'Avenir Roman', sans-serif;">No Package Release Information available for this schedule.</p>
                         }
-                    </dl>
+                    </div>
                 </div>
-                <div class="mt-4 d-flex gap-3 mx-4 mb-3">
+
+
+                <!-- Action Buttons -->
+                <div class="no-print mt-4 d-flex gap-3 mx-4 mb-3">
                     <button type="button" class="btn btn-primary" onclick="printPage()" style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Print
                     </button>
-                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-warning" style="font-family: 'Avenir Heavy', sans-serif;">
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
                     </a>
                     @if (!Model.IsCompleted)
@@ -257,37 +339,56 @@
                     {
                         <span class="text-success" style="font-family: 'Avenir Roman', sans-serif;">This schedule is marked as completed.</span>
                         <form asp-action="Unfinalize" asp-route-id="@Model.ID" method="post" class="d-inline">
-                            <button type="submit" class="btn" style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; color: white;">
+                            <button type="submit" class="btn btn-secondary" style="font-family: 'Avenir Heavy', sans-serif;">
                                 Unfinalize
                             </button>
                         </form>
                     }
-
                 </div>
-              
-            </div>
-               <div class="mt-4 d-flex gap-3">
-               
-                <div style="font-family: 'Avenir Roman', sans-serif;">
-                    <partial name="_BackToList" />
-                </div>
-            </div>
-        </div>
-       
-    </div>
-   
 </div>
 
-<!-- Action Buttons -->
+<!-- Back to List Button -->
+<div class="mt-4 d-flex gap-3">
+    <div style="font-family: 'Avenir Roman', sans-serif;">
+        <partial name="_BackToList" />
+    </div>
+</div>
 
+<!-- Tooltip Initialization -->
 
-<script>
-    function printPage() {
-        const pContent = document.getElementById('mPrint').innerHTML;
-        const originalContent = document.body.innerHTML;
-        document.body.innerHTML = `<div>${pContent}</div>`;
-        window.print();
-        document.body.innerHTML = originalContent;
-        location.reload();
-    }
-</script>
+            <script>
+                // Initialize tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+
+                // Print function
+                function printPage() {
+                    // Add a class to hide elements
+                    document.body.classList.add('print-mode');
+
+                    const pContent = document.getElementById('mPrint').innerHTML;
+                    const originalContent = document.body.innerHTML;
+                    document.body.innerHTML = `<div>${pContent}</div>`;
+
+                        // Trigger print
+                        window.print();
+
+                        // Restore original content and remove print class
+                        document.body.innerHTML = originalContent;
+                        document.body.classList.remove('print-mode');
+                        location.reload();
+                    }
+            </script>
+
+            <style>
+                h6 {
+                    font-weight: bold;
+                }
+
+                /* Hide elements dynamically during print */
+                .print-mode .no-print {
+                    display: none !important;
+                }
+            </style>

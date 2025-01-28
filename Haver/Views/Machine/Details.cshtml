@@ -1,10 +1,10 @@
 ﻿@model haver.Models.Machine
 
-<div class="container-fluid bg-light">
+<div id="mPrint" class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+            <h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
                 Machine Details
             </h4>
         </div>
@@ -12,74 +12,132 @@
 
     <!-- Details Content -->
     <div class="row py-4">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-10 offset-md-1">
             <div class="card border shadow-sm">
                 <div class="card-body p-4">
-                    <dl class="row mb-0">
-                        <!-- Description -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Description)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Description)
-                        </dd>
+                    <!-- Section: Machine Information -->
+                    <div class="mb-5">
+                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+                            Machine Information
+                        </h5>
+                        <div class="row">
+                            <!-- Description -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The machine's description">Description</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Description)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Serial Number -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.SerialNumber)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.SerialNumber)
-                        </dd>
+                            <!-- Serial Number -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The machine's serial number">Serial Number</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.SerialNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Quantity -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Quantity)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Quantity)
-                        </dd>
+                            <!-- Quantity -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The quantity of the machine">Quantity</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Quantity)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <!-- Size -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Size)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Size)
-                        </dd>
+                        <div class="row">
+                            <!-- Size -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The size of the machine">Size</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Size)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Class -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.Class)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.Class)
-                        </dd>
+                            <!-- Class -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The machine's class">Class</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.Class)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Size Deck -->
-                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.SizeDeck)
-                        </dt>
-                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.SizeDeck)
-                        </dd>
-                    </dl>
+                            <!-- Size Deck -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The machine's deck size">Size Deck</span>
+                                        </h6>
+                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                            @Html.DisplayFor(model => model.SizeDeck)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary mx-3"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+
+                <!-- Action Buttons -->
+                <div class="mt-4 d-flex gap-3 mx-4 mb-3">
+                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
                     </a>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="mt-4 d-flex gap-3">
-
-                <div style="font-family: 'Avenir Roman', sans-serif;">
-                    <partial name="_BackToList" />
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Back to List Button -->
+<div class="mt-4 d-flex gap-3">
+    <div style="font-family: 'Avenir Roman', sans-serif;">
+        <partial name="_BackToList" />
+    </div>
+</div>
+
+<!-- Tooltip Initialization -->
+<script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+<style>
+    h6 {
+        font-weight: bold;
+    }
+</style>

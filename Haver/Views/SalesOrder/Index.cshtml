@@ -52,7 +52,7 @@
                 </th>
                 <th>
                     <button class="btn btn-link bb text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="SoDate" aria-label="Sort by Sales Order Date" data-bs-toggle="tooltip" title="Sort by SO Date">
-                        SO Date
+                        Sales Order Date
                         @if (ViewData["sortField"]?.ToString() == "SoDate")
                         {
                             <i class="fa-solid @(ViewData["sortDirection"]?.ToString() == "asc" ? "fa-arrow-up" : "fa-arrow-down")"></i>
@@ -63,6 +63,15 @@
                     <button class="btn btn-link bb  text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="PoNumber" aria-label="Sort by PO Number" data-bs-toggle="tooltip" title="Sort by PO Number">
                         PO Number
                         @if (ViewData["sortField"]?.ToString() == "PoNumber")
+                        {
+                            <i class="fa-solid @(ViewData["sortDirection"]?.ToString() == "asc" ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                        }
+                    </button>
+                </th>
+                <th>
+                    <button class="btn btn-link bb  text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="Customer" aria-label="Sort by Customer" data-bs-toggle="tooltip" title="Sort by Customer">
+                       Customer
+                        @if (ViewData["sortField"]?.ToString() == "Customer")
                         {
                             <i class="fa-solid @(ViewData["sortDirection"]?.ToString() == "asc" ? "fa-arrow-up" : "fa-arrow-down")"></i>
                         }
@@ -87,6 +96,7 @@
                     <td>@Html.DisplayFor(modelItem => item.OrderNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.SoDate)</td>
                     <td>@Html.DisplayFor(modelItem => item.PoNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer.CompanyName)</td>
                     <td>@Html.DisplayFor(modelItem => item.MachineSchedule.Summary)</td>
                     <td class="text-center">
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Edit sales order">
