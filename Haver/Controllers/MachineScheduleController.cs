@@ -16,6 +16,9 @@ using haver.Utilities;
 using haver.CustomControllers;
 using Machine = haver.Models.Machine;
 using haver.ViewModels;
+using System.Drawing;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace haver.Controllers
 {
@@ -220,6 +223,96 @@ namespace haver.Controllers
             var pagedData = await PaginatedList<MachineSchedule>.CreateAsync(machineSchedules.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);
+        }
+
+        public IActionResult DownloadMachineSchedules()
+        {
+            var schedules = from ms in _context.MachineSchedules
+                            .Include(ms => ms.Machine)
+                            .Include(ms => ms.PackageRelease)
+                            .Include(ms => ms.Note)
+                            .OrderByDescending(ms => ms.StartDate)
+                            select new
+                            {
+                                SalesOrder = ms.SalesOrders.FirstOrDefault().OrderNumber ?? "",
+                                CustomerName = ms.SalesOrders.FirstOrDefault().Customer.CompanyName ?? "",
+                                MachineDescription = ms.Machine.Description ?? "",
+                                SerialNumber = ms.Machine.SerialNumber ?? "",
+                                Quantity = ms.Machine.Quantity,
+                                Size = ms.Machine.Size ?? "",
+                                Class = ms.Machine.Class ?? "",
+                                SizeDeck = ms.Machine.SizeDeck ?? "",
+                                PackageReleaseDate = ms.PackageRelease != null && ms.PackageRelease.PReleaseDateP.HasValue
+                                    ? ms.PackageRelease.PReleaseDateP.Value.ToString("yyyy-MM-dd")
+                                    : "",
+                                VendorName = "", // Replace with actual vendor data 
+                                PONumber = "", // Replace with actual PO number 
+                                PODueDate = ms.PODueDate.ToString("yyyy-MM-dd"),
+                                DeliveryDate = ms.DeliveryDate.ToString("yyyy-MM-dd"),
+                                Media = ms.Media ? "Yes" : "No",
+                                SpareParts = ms.SpareParts ? "Yes" : "No",
+                                Base = ms.Base ? "Yes" : "No",
+                                AirSeal = ms.AirSeal ? "Yes" : "No",
+                                CoatingLining = ms.CoatingLining ? "Yes" : "No",
+                                Disassembly = ms.Dissembly ? "Yes" : "No",
+                            };
+
+            int numRows = schedules.Count();
+
+            if (numRows > 0)
+            {
+                using (ExcelPackage excel = new ExcelPackage())
+                {
+                    var workSheet = excel.Workbook.Worksheets.Add("Machine Schedules");
+
+                    workSheet.Cells[3, 1].LoadFromCollection(schedules, true);
+
+                    workSheet.Column(7).Style.Numberformat.Format = "yyyy-MM-dd";
+                    workSheet.Column(8).Style.Numberformat.Format = "yyyy-MM-dd";
+                    workSheet.Column(9).Style.Numberformat.Format = "yyyy-MM-dd";
+
+                    using (ExcelRange headings = workSheet.Cells[3, 1, 3, 15])
+                    {
+                        headings.Style.Font.Bold = true;
+                        headings.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        headings.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+                    }
+
+                    workSheet.Cells.AutoFitColumns();
+
+                    workSheet.Cells[1, 1].Value = "Machine Schedule Report";
+                    using (ExcelRange title = workSheet.Cells[1, 1, 1, 15])
+                    {
+                        title.Merge = true;
+                        title.Style.Font.Bold = true;
+                        title.Style.Font.Size = 18;
+                        title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
+
+                    DateTime utcDate = DateTime.UtcNow;
+                    TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                    DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(utcDate, localTimeZone);
+                    using (ExcelRange timestamp = workSheet.Cells[2, 15])
+                    {
+                        timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
+                        timestamp.Style.Font.Bold = true;
+                        timestamp.Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    }
+
+                    try
+                    {
+                        Byte[] theData = excel.GetAsByteArray();
+                        string filename = "MachineSchedules.xlsx";
+                        string mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        return File(theData, mimeType, filename);
+                    }
+                    catch (Exception)
+                    {
+                        return BadRequest("Could not build and download the file.");
+                    }
+                }
+            }
+            return NotFound("No data available to export.");
         }
 
         // GET: MachineSchedule/Details/5
