@@ -317,7 +317,79 @@
                         }
                     </div>
                 </div>
+                <div class="col-md-6 mb-3 yy">
+                    <div class="card" style="border-radius: 8px;">
+                        <div class="card-body">
+                            <dl class="row">
+                                <!-- Machine Schedule Engineers -->
+                                <dt class="col-sm-3 text-center" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                    @Html.DisplayNameFor(model => model.MachineScheduleEngineers)
+                                </dt>
+                                <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif; text-align: center;">
+                                    @{
+                                        int specCount = Model.MachineScheduleEngineers.Count;
+                                        if (specCount > 0)
+                                        {
+                                            string firstSpec = Model.MachineScheduleEngineers.FirstOrDefault().Engineer.EngineerInitials;
+                                            if (specCount > 1)
+                                            {
+                                                string specList = "";
+                                                var s = Model.MachineScheduleEngineers.ToList();
+                                                for (int i = 1; i < specCount; i++)
+                                                {
+                                                    specList += s[i].Engineer.EngineerInitials + " <br />";
+                                                }
+                                                <a data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)" aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
+                                                    @firstSpec <span class="badge bg-info">@specCount</span>
+                                                </a>
+                                                <div class="collapse" id="collapseSpecalty@(Model.ID)">
+                                                    @Html.Raw(specList)
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                @firstSpec
+                                            }
+                                        }
+                                    }
+                                </dd>
 
+                                <!-- Sales Orders -->
+                                <dt class="col-sm-3 text-center" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                    @Html.DisplayNameFor(model => model.SalesOrders)
+                                </dt>
+                                <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif; text-align: center;">
+                                    @{
+                                        int spedCount = Model.SalesOrders.Count;
+                                        if (spedCount > 0)
+                                        {
+                                            string firstSpec = Model.SalesOrders.FirstOrDefault().OrderNumber;
+                                            if (spedCount > 1)
+                                            {
+                                                string specList = "";
+                                                var s = Model.SalesOrders.ToList();
+                                                for (int i = 1; i < spedCount; i++)
+                                                {
+                                                    specList += s[i].OrderNumber + " <br />";
+                                                }
+                                                <a role="button" data-bs-toggle="collapse" href="#collapseSpcalty@(Model.ID)" aria-expanded="false" aria-controls="collapseSpcalty@(Model.ID)">
+                                                    @firstSpec <span class="badge bg-info">@spedCount</span>
+                                                </a>
+                                                <div class="collapse" id="collapseSpcalty@(Model.ID)">
+                                                    @Html.Raw(specList)
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                @firstSpec
+                                            }
+                                        }
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Action Buttons -->
                 <div class="no-print mt-4 d-flex gap-3 mx-4 mb-3">
@@ -385,6 +457,9 @@
             <style>
                 h6 {
                     font-weight: bold;
+                }
+                .yy{
+                    margin-left:20px;
                 }
 
                 /* Hide elements dynamically during print */

@@ -11,7 +11,7 @@
         <thead class="thead-dark text-white bg-dark">
             <tr>
                 <th scope="col">@Html.DisplayNameFor(model => model.PreOrder)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.Scope)</th>
+     @*            <th scope="col">@Html.DisplayNameFor(model => model.Scope)</th> *@
                 <th scope="col">@Html.DisplayNameFor(model => model.NamePlate)</th>
                 <th scope="col">@Html.DisplayNameFor(model => model.MachineSchedule)</th>
                 <th scope="col">Actions</th>
@@ -22,7 +22,7 @@
             {
                 <tr>
                     <td>@Html.Raw(item.PreOrder)</td>
-                    <td>@Html.Raw(item.Scope)</td>
+@*                     <td>@Html.Raw(item.Scope)</td> *@
                     <td>@Html.DisplayFor(modelItem => item.NamePlate)</td>
                     <td>@Html.DisplayFor(modelItem => item.MachineSchedule.Summary)</td>
                     <td>

@@ -14,7 +14,7 @@ namespace haver.Models
         //Scope  Annotations
 
         [Display(Name = "Scope:")]
-        [MaxLength(200, ErrorMessage = "Limit of 200 characters for scope")]
+        [MaxLength(1000, ErrorMessage = "Limit of 200 characters for scope")]
         public string? Scope { get; set; }
 
         //AssemblyHours Annotations
@@ -34,7 +34,6 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Range(0, double.MaxValue, ErrorMessage = "Budget hours cannot be negative.")]
         public decimal BudgetHours { get; set; }
-
 
         //NamePlate  Annotations
 
