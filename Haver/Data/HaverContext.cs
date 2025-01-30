@@ -85,6 +85,11 @@ namespace haver.Data
                .HasIndex(c => c.Phone)
                .IsUnique();
 
+            modelBuilder.Entity<Engineer>()
+              .HasIndex(c => c.Phone)
+              .IsUnique();
+
+
             modelBuilder.Entity<SalesOrder>()
                 .HasIndex(so => so.OrderNumber)
                 .IsUnique();
