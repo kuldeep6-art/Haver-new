@@ -130,6 +130,10 @@
 
                 <!-- Action Buttons -->
                 <div class="mt-4 d-flex gap-3 mx-4 mb-3">
+                    <a href="@Url.Action("Index", "Note")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Note List
+                    </a>
                     <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-warning" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
                     </a>

@@ -206,6 +206,10 @@
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
+                    <a href="@Url.Action("Index", "MachineSchedule")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Machine Schedule List
+                    </a>
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Save Changes
@@ -215,12 +219,6 @@
         </div>
     </div>
 
-    <!-- Back to List Link -->
-    <div class="row">
-        <div class="col-md-8 offset-md-2 mt-3">
-            <partial name="_BackToList" />
-        </div>
-    </div>
 </div>
 
 @section Scripts {

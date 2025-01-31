@@ -86,14 +86,20 @@
                         Create Package Release
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
+                <div class="d-flex flex-column align-items-start gap-2">
+                    <!-- Back to Previous Page -->
+                    <button onclick="goBack()" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back To Previous Page
+                    </button>
 
-    <!-- Back to List Link -->
-    <div class="row">
-        <div class="col-md-6 offset-md-3 mt-3">
-            <partial name="_BackToList" />
+                    <!-- Back to Machine List -->
+                    <a href="@Url.Action("Index", "PackageRelease")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Package Release List
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
