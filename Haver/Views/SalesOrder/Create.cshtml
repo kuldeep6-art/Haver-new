@@ -13,7 +13,7 @@
     <!-- Centered Form -->
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
-            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order">
+            <form id="salesOrderForm" form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <!-- Row 1: Order Number and Sales Order Date -->
@@ -175,21 +175,33 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Submit/clear Button -->
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Create Sales Order
                     </button>
+
+                    <button type="button" class="btn btn-danger"
+                            onclick="clearForm()"
+                            style="margin-left: 10px; font-family: 'Avenir Heavy', sans-serif;">
+                        Clear Form
+                    </button>
+                </div>
+                <div class="d-flex flex-column align-items-start gap-2">
+                    <!-- Back to Previous Page -->
+                    <button onclick="goBack()" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back To Previous Page
+                    </button>
+
+                    <!-- Back to Machine List -->
+                    <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Sales Order List
+                    </a>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Back to List Link -->
-    <div class="row">
-        <div class="col-md-8 offset-md-2 mt-3">
-            <partial name="_BackToList" />
         </div>
     </div>
 </div>
@@ -203,5 +215,72 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to save form data in localStorage
+            function saveFormData() {
+                let formData = {
+                    orderNumber: document.getElementById("OrderNumber").value,
+                    soDate: document.getElementById("SoDate").value,
+                    price: document.getElementById("Price").value,
+                    shippingTerms: document.getElementById("ShippingTerms").value,
+                    appDwgRcd: document.getElementById("AppDwgRcd").value,
+                    dwgIsDt: document.getElementById("DwgIsDt").value,
+                    poNumber: document.getElementById("PoNumber").value,
+                    customerID: document.getElementById("CustomerID").value,
+                    vendorID: document.getElementById("VendorID").value,
+                    machineScheduleID: document.getElementById("MachineScheduleID").value
+                };
+                localStorage.setItem("salesOrderData", JSON.stringify(formData));
+            }
+
+            // Function to restore form data from localStorage
+            function restoreFormData() {
+                let savedData = localStorage.getItem("salesOrderData");
+                if (savedData) {
+                    savedData = JSON.parse(savedData);
+                    document.getElementById("OrderNumber").value = savedData.orderNumber || "";
+                    document.getElementById("SoDate").value = savedData.soDate || "";
+                    document.getElementById("Price").value = savedData.price || "";
+                    document.getElementById("ShippingTerms").value = savedData.shippingTerms || "";
+                    document.getElementById("AppDwgRcd").value = savedData.appDwgRcd || "";
+                    document.getElementById("DwgIsDt").value = savedData.dwgIsDt || "";
+                    document.getElementById("PoNumber").value = savedData.poNumber || "";
+                    document.getElementById("CustomerID").value = savedData.customerID || "";
+                    document.getElementById("VendorID").value = savedData.vendorID || "";
+                    document.getElementById("MachineScheduleID").value = savedData.machineScheduleID || "";
+                }
+            }
+
+            // Save data when user types or selects options
+            document.querySelectorAll("#salesOrderForm input, #salesOrderForm select").forEach(input => {
+                input.addEventListener("input", saveFormData);
+            });
+
+            // Restore data when page loads
+            restoreFormData();
+
+            // Clear saved data when form is submitted
+            document.getElementById("salesOrderForm").addEventListener("submit", function () {
+                localStorage.removeItem("salesOrderData");
+            });
+        });
+
+        function clearForm() {
+            // Clear all input and select fields
+            document.querySelectorAll("#salesOrderForm input, #salesOrderForm select").forEach(input => {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    input.checked = false;
+                } else {
+                    input.value = "";
+                }
+            });
+
+            // Clear saved form data from localStorage
+            localStorage.removeItem("salesOrderData");
+
+            // Optionally show an alert or confirmation
+            alert("Form Cleared");
+        }
     </script>
 }

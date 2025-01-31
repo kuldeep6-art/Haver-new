@@ -84,19 +84,16 @@
 
                 <!-- Action Buttons -->
                 <div class="mt-4 d-flex gap-3 mx-4 mb-3">
+                    <a href="@Url.Action("Index", "Customer")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Customer List
+                    </a>
                     <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
                     </a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Back to List Button -->
-<div class="mt-4 d-flex gap-3">
-    <div style="font-family: 'Avenir Roman', sans-serif;">
-        <partial name="_BackToList" />
     </div>
 </div>
 

@@ -68,20 +68,15 @@
                             </dd>
                         </dl>
                         <form asp-action="Delete" class="d-inline">
+                            <a href="@Url.Action("Index", "Machine")" class="btn btn-primary"
+                               style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                                ⬅ Back to Machine List
+                            </a>
                             <input type="hidden" asp-for="ID" />
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>
                 </div>
-
-               
-
-                    <div class="mt-4 d-flex gap-3">
-                        <div style="font-family: 'Avenir Roman', sans-serif;">
-                            <partial name="_BackToList" />
-                        </div>
-                    </div>
-               
             </div>
         </div>
     </div>
