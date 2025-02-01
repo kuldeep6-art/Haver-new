@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
-using haver.CustomControllers;
+using System.Reflection.PortableExecutable;
+using Machine = haver.Models.Machine;
 using haver.Utilities;
+using haver.CustomControllers;
 
 namespace haver.Controllers
 {
@@ -22,75 +24,113 @@ namespace haver.Controllers
         }
 
         // GET: Machine
-        public async Task<IActionResult> Index(int? page,int? pageSizeID,int? machineID,string? actionButton,string sortDirection = "asc",string sortField = "SerialNumber")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? DesString, string? PoString, string? SerString, string? ClString, 
+            string? actionButton, string sortDirection = "asc", string sortField = "Description")
         {
-            var machines = _context.Machines.AsNoTracking();
+            //List of sort options.
+            //NOTE: make sure this array has matching values to the column headings
+            string[] sortOptions = new[] { "Description", "ProductionOrderNumber" };
 
-            string[] sortOptions = new[] { "SerialNumber", "Description", "Quantity", "Size", "Class", "SizeDeck", "Description" };
+            //Count the number of filters applied - start by assuming no filters
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+            //Then in each "test" for filtering, add to the count of Filters applied
 
-            ViewData["MachineID"] = new SelectList(
-                await _context.Machines
-                    .OrderBy(m => m.SerialNumber)
-                    .Select(m => new { m.ID, m.SerialNumber })
-                    .ToListAsync(),
-                "ID",
-                "SerialNumber"
-            );
-            if (machineID.HasValue)
+            PopulateDropDownLists();
+
+            var machines = from s in _context.Machines
+                               .Include(s => s.SalesOrder)
+                               .AsNoTracking()
+                           select s;
+
+            //Add as many filters as needed
+
+            if (!String.IsNullOrEmpty(DesString))
             {
-                machines = machines.Where(m => m.ID == machineID.Value);
-                ViewData["Filtering"] = "btn-danger";
-                ViewData["numberFilters"] = "(1 Filter Applied)";
-                ViewData["ShowFilter"] = "show";
+                machines = machines.Where(p => p.Description.ToUpper().Contains(DesString.ToUpper()));
+                numberFilters++;
             }
+            if (!String.IsNullOrEmpty(PoString))
+            {
+                machines = machines.Where(p => p.ProductionOrderNumber.ToUpper().Contains(PoString.ToUpper()));
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(SerString))
+            {
+                machines = machines.Where(p => p.SerialNumber.Contains(SerString));
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(ClString))
+            {
+                machines = machines.Where(p => p.Class.ToUpper().Contains(ClString.ToUpper()));
+                numberFilters++;
+            }
+
+            //Give feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending on if we are filtering
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+
+            //Now we know which field and direction to sort by
+            if (sortField == "ProductionOrderNumber")
+            {
+                if (sortDirection == "asc")
+                {
+                    machines = machines
+                        .OrderByDescending(p => p.ProductionOrderNumber);
+                }
+                else
+                {
+                    machines = machines
+                        .OrderBy(p => p.ProductionOrderNumber);
+                }
+            }
+
             else
             {
-                ViewData["Filtering"] = "btn-outline-secondary";
-                ViewData["numberFilters"] = "";
-                ViewData["ShowFilter"] = "";
-            }
-            if (!string.IsNullOrEmpty(actionButton) && sortOptions.Contains(actionButton))
-            {
-                if (actionButton == sortField)
+                if (sortDirection == "asc")
                 {
-                    sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    machines = machines
+                        .OrderBy(p => p.Description);
                 }
-                sortField = actionButton;
+                else
+                {
+                    machines = machines
+                        .OrderByDescending(p => p.Description);
+                }
             }
-
-            machines = sortField switch
-            {
-                "SerialNumber" => sortDirection == "asc"
-                    ? machines.OrderBy(m => m.SerialNumber)
-                    : machines.OrderByDescending(m => m.SerialNumber),
-                "Description" => sortDirection == "asc"
-                    ? machines.OrderBy(m => m.Description)
-                    : machines.OrderByDescending(m => m.Description),
-                "Quantity" => sortDirection == "asc"
-                    ? machines.OrderBy(m => m.Quantity)
-                    : machines.OrderByDescending(m => m.Quantity),
-                "Size" => sortDirection == "asc"
-                    ? machines.OrderBy(m => m.Size)
-                    : machines.OrderByDescending(m => m.Size),
-                "Class" => sortDirection == "asc"
-                    ? machines.OrderBy(m => m.Class)
-                    : machines.OrderByDescending(m => m.Class),
-                "SizeDeck" => sortDirection == "asc"
-                    ? machines.OrderBy(m => m.SizeDeck)
-                    : machines.OrderByDescending(m => m.SizeDeck),
-                _ => machines.OrderBy(m => m.SerialNumber)
-            };
+            //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
-            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, nameof(Index));
-            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
 
-            var pagedData = await PaginatedList<Machine>.CreateAsync(machines, page ?? 1, pageSize);
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<Machine>.CreateAsync(machines.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);
+
         }
 
+        // GET: Machine/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -99,6 +139,7 @@ namespace haver.Controllers
             }
 
             var machine = await _context.Machines
+                .Include(m => m.SalesOrder)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machine == null)
             {
@@ -108,10 +149,10 @@ namespace haver.Controllers
             return View(machine);
         }
 
-
         // GET: Machine/Create
         public IActionResult Create()
         {
+            PopulateDropDownLists();
             return View();
         }
 
@@ -120,7 +161,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Description,SerialNumber,Quantity,Size,Class,SizeDeck")] Machine machine)
+        public async Task<IActionResult> Create([Bind("ID,Description,ProductionOrderNumber,SerialNumber,Quantity,Size,Class,SizeDeck,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID")] Machine machine)
         {
             try
             {
@@ -135,7 +176,11 @@ namespace haver.Controllers
             {
                 if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
                 {
-                    ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate serial numbers.");
+                    ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
+                }
+                else if(dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
+                {
+                    ModelState.AddModelError("ProductionOrderNumber", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
                 }
                 else
                 {
@@ -144,6 +189,7 @@ namespace haver.Controllers
             }
 
 
+          PopulateDropDownLists(machine);
             return View(machine);
         }
 
@@ -160,6 +206,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
+           PopulateDropDownLists(machine);
             return View(machine);
         }
 
@@ -170,48 +217,46 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
-            //Go get the machine to update
-            var machineToUpdate = await _context.Machines.FirstOrDefaultAsync(c => c.ID == id);
+            var machinesToUpdate = await _context.Machines.FirstOrDefaultAsync(p => p.ID == id);
 
-
-            if (machineToUpdate == null)
+            if (machinesToUpdate == null)
             {
                 return NotFound();
             }
 
-
-            if (await TryUpdateModelAsync<Machine>(machineToUpdate, "",
-                  p => p.Description, p => p.SerialNumber, p => p.Quantity, p => p.Size, p => p.Class, p => p.SizeDeck))
+            if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "",
+               p => p.Description, p => p.ProductionOrderNumber, p => p.SerialNumber, p => p.SerialNumber,
+               p => p.Quantity, p => p.Size, p => p.Class, p => p.SizeDeck, p => p.Media, p => p.SpareParts,
+               p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly,
+               p => p.BudgetedHours, p => p.ActualAssemblyHours,p => p.ReworkHours, p => p.Nameplate,
+               p => p.PreOrder, p => p.Scope, p => p.SalesOrderID))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { machineToUpdate.ID });
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MachineExists(machineToUpdate.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return RedirectToAction("Details", new { machinesToUpdate.ID });
+
                 }
                 catch (DbUpdateException dex)
                 {
                     if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
                     {
-                        ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate serial numbers.");
+                        ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
+                    }
+                    else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
+                    {
+                        ModelState.AddModelError("ProductionOrderNumber", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
                     }
                     else
                     {
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                     }
                 }
+
+
             }
-            return View(machineToUpdate);
+            PopulateDropDownLists(machinesToUpdate); 
+            return View(machinesToUpdate);
         }
 
         // GET: Machine/Delete/5
@@ -223,6 +268,7 @@ namespace haver.Controllers
             }
 
             var machine = await _context.Machines
+                .Include(m => m.SalesOrder)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machine == null)
             {
@@ -232,13 +278,14 @@ namespace haver.Controllers
             return View(machine);
         }
 
-
         // POST: Machine/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var machine = await _context.Machines.FindAsync(id);
+            var machine = await _context.Machines
+                 .Include(s => s.SalesOrder)
+                  .FirstOrDefaultAsync(m => m.ID == id);
 
             try
             {
@@ -255,29 +302,28 @@ namespace haver.Controllers
                 }
                 return Redirect(returnUrl);
             }
-            catch (DbUpdateException dex)
+            catch (DbUpdateException)
             {
-                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
-                {
-                    ModelState.AddModelError("", "Unable to Delete Machine. Remember, you cannot delete a machine attached to a Machine Schedule");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
+                //Note: there is really no reason a delete should fail if you can "talk" to the database.
+                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
             }
             return View(machine);
+
+
         }
 
-        private void PopulateDropDownLists(PackageRelease? packageRelease = null)
-        {
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
-        }
+  
 
         private bool MachineExists(int id)
         {
             return _context.Machines.Any(e => e.ID == id);
         }
 
+        private void PopulateDropDownLists(Machine? machine = null)
+        {
+            var dQuery = from d in _context.SalesOrders
+                         select d;
+            ViewData["SalesOrderID"] = new SelectList(dQuery, "ID", "OrderNumber", machine?.SalesOrderID);
+        }
     }
 }

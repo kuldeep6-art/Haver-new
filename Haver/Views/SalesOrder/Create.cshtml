@@ -1,5 +1,7 @@
 ﻿@model haver.Models.SalesOrder
 
+<partial name="_ViewHeading" />
+
 <div class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
@@ -13,189 +15,119 @@
     <!-- Centered Form -->
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
-            <form id="salesOrderForm" form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order">
+            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <!-- Row 1: Order Number and Sales Order Date -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="OrderNumber" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Order Number
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the unique order number for this sales order."></i>
-                            </label>
-                            <input asp-for="OrderNumber" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   aria-label="Order Number" />
-                            <span asp-validation-for="OrderNumber" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="SoDate" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Sales Order Date
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The date when the sales order was created."></i>
-                            </label>
-                            <input asp-for="SoDate" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   type="date" aria-label="Sales Order Date" />
-                            <span asp-validation-for="SoDate" class="text-danger"></span>
-                        </div>
-                    </div>
+                <!-- Order Number -->
+                <div class="form-group mb-3">
+                    <label asp-for="OrderNumber" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Order Number
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order number."></i>
+                    </label>
+                    <input asp-for="OrderNumber" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="1" />
+                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
                 </div>
 
-                <!-- Row 2: Price and Shipping Terms -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="Price" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Price
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for this sales order."></i>
-                            </label>
-                            <input asp-for="Price" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   type="number" step="0.01" aria-label="Price" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="ShippingTerms" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Shipping Terms
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for this order."></i>
-                            </label>
-                            <input asp-for="ShippingTerms" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   aria-label="Shipping Terms" />
-                            <span asp-validation-for="ShippingTerms" class="text-danger"></span>
-                        </div>
-                    </div>
+                <!-- Sales Order Date -->
+                <div class="form-group mb-3">
+                    <label asp-for="SoDate" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Sales Order Date
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order date."></i>
+                    </label>
+                    <input asp-for="SoDate" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="2" />
+                    <span asp-validation-for="SoDate" class="text-danger"></span>
                 </div>
 
-                <!-- Row 3: Approved Drawing Received and Drawing Issue Date -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="AppDwgRcd" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Approved Drawing Received
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The date when the approved drawing was received."></i>
-                            </label>
-                            <input asp-for="AppDwgRcd" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   type="date" aria-label="Approved Drawing Received" />
-                            <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="DwgIsDt" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Drawing Issue Date
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="The date when the drawing was issued."></i>
-                            </label>
-                            <input asp-for="DwgIsDt" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   type="date" aria-label="Drawing Issue Date" />
-                            <span asp-validation-for="DwgIsDt" class="text-danger"></span>
-                        </div>
-                    </div>
+                <!-- Price -->
+                <div class="form-group mb-3">
+                    <label asp-for="Price" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Price
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for the order."></i>
+                    </label>
+                    <input asp-for="Price" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="3" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
 
-                <!-- Row 4: PO Number and Customer Dropdown -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="PoNumber" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                PO Number
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the purchase order number associated with this sales order."></i>
-                            </label>
-                            <input asp-for="PoNumber" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                   aria-label="PO Number" />
-                            <span asp-validation-for="PoNumber" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="CustomerID" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Customer
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the customer associated with this sales order."></i>
-                            </label>
-                            <select asp-for="CustomerID" class="form-control"
-                                    asp-items="ViewBag.CustomerID"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    aria-label="Customer">
-                                <option value="">Select Customer</option>
-                            </select>
-                            <span asp-validation-for="CustomerID" class="text-danger"></span>
-                        </div>
-                    </div>
+                <!-- Shipping Terms -->
+                <div class="form-group mb-3">
+                    <label asp-for="ShippingTerms" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Shipping Terms
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for the order."></i>
+                    </label>
+                    <input asp-for="ShippingTerms" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="4" />
+                    <span asp-validation-for="ShippingTerms" class="text-danger"></span>
                 </div>
 
-                <!-- Row 5: Vendor Dropdown and Machine Schedule Dropdown -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="VendorID" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Vendor
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the vendor associated with this sales order."></i>
-                            </label>
-                            <select asp-for="VendorID" class="form-control"
-                                    asp-items="ViewBag.VendorID"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    aria-label="Vendor">
-                                <option value="">Select Vendor</option>
-                            </select>
-                            <span asp-validation-for="VendorID" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="MachineScheduleID" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Machine Schedule
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine schedule associated with this sales order."></i>
-                            </label>
-                            <select asp-for="MachineScheduleID" class="form-control"
-                                    asp-items="ViewBag.MachineScheduleID"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    aria-label="Machine Schedule">
-                                <option value="">Select Machine Schedule</option>
-                            </select>
-                            <span asp-validation-for="MachineScheduleID" class="text-danger"></span>
-                        </div>
-                    </div>
+                <!-- App Dwg Rcd -->
+                <div class="form-group mb-3">
+                    <label asp-for="AppDwgRcd" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Application Drawing Record
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the application drawing record number."></i>
+                    </label>
+                    <input asp-for="AppDwgRcd" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="5" />
+                    <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
                 </div>
 
-                <!-- Submit/clear Button -->
+                <!-- Dwg Is Dt -->
+                <div class="form-group mb-3">
+                    <label asp-for="DwgIsDt" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Drawing Is Date
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the drawing is date."></i>
+                    </label>
+                    <input asp-for="DwgIsDt" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
+                    <span asp-validation-for="DwgIsDt" class="text-danger"></span>
+                </div>
+
+                <!-- Customer ID -->
+                <div class="form-group mb-3">
+                    <label asp-for="CustomerID" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Customer
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the customer for this order."></i>
+                    </label>
+                    <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" tabindex="7"></select>
+                </div>
+
+                <!-- Comments -->
+                <div class="form-group mb-3">
+                    <label asp-for="Comments" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Comments
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Add any comments related to the sales order."></i>
+                    </label>
+                    <input asp-for="Comments" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="8" />
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Create Sales Order
                     </button>
-
-                    <button type="button" class="btn btn-danger"
-                            onclick="clearForm()"
-                            style="margin-left: 10px; font-family: 'Avenir Heavy', sans-serif;">
-                        Clear Form
-                    </button>
                 </div>
+
+                <!-- Back to Previous Page -->
                 <div class="d-flex flex-column align-items-start gap-2">
-                    <!-- Back to Previous Page -->
                     <button onclick="goBack()" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
                         ⬅ Back To Previous Page
                     </button>
 
-                    <!-- Back to Machine List -->
+                    <!-- Back to Sales Order List -->
                     <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
                         ⬅ Back to Sales Order List
@@ -215,72 +147,5 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-
-        document.addEventListener("DOMContentLoaded", function () {
-            // Function to save form data in localStorage
-            function saveFormData() {
-                let formData = {
-                    orderNumber: document.getElementById("OrderNumber").value,
-                    soDate: document.getElementById("SoDate").value,
-                    price: document.getElementById("Price").value,
-                    shippingTerms: document.getElementById("ShippingTerms").value,
-                    appDwgRcd: document.getElementById("AppDwgRcd").value,
-                    dwgIsDt: document.getElementById("DwgIsDt").value,
-                    poNumber: document.getElementById("PoNumber").value,
-                    customerID: document.getElementById("CustomerID").value,
-                    vendorID: document.getElementById("VendorID").value,
-                    machineScheduleID: document.getElementById("MachineScheduleID").value
-                };
-                localStorage.setItem("salesOrderData", JSON.stringify(formData));
-            }
-
-            // Function to restore form data from localStorage
-            function restoreFormData() {
-                let savedData = localStorage.getItem("salesOrderData");
-                if (savedData) {
-                    savedData = JSON.parse(savedData);
-                    document.getElementById("OrderNumber").value = savedData.orderNumber || "";
-                    document.getElementById("SoDate").value = savedData.soDate || "";
-                    document.getElementById("Price").value = savedData.price || "";
-                    document.getElementById("ShippingTerms").value = savedData.shippingTerms || "";
-                    document.getElementById("AppDwgRcd").value = savedData.appDwgRcd || "";
-                    document.getElementById("DwgIsDt").value = savedData.dwgIsDt || "";
-                    document.getElementById("PoNumber").value = savedData.poNumber || "";
-                    document.getElementById("CustomerID").value = savedData.customerID || "";
-                    document.getElementById("VendorID").value = savedData.vendorID || "";
-                    document.getElementById("MachineScheduleID").value = savedData.machineScheduleID || "";
-                }
-            }
-
-            // Save data when user types or selects options
-            document.querySelectorAll("#salesOrderForm input, #salesOrderForm select").forEach(input => {
-                input.addEventListener("input", saveFormData);
-            });
-
-            // Restore data when page loads
-            restoreFormData();
-
-            // Clear saved data when form is submitted
-            document.getElementById("salesOrderForm").addEventListener("submit", function () {
-                localStorage.removeItem("salesOrderData");
-            });
-        });
-
-        function clearForm() {
-            // Clear all input and select fields
-            document.querySelectorAll("#salesOrderForm input, #salesOrderForm select").forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false;
-                } else {
-                    input.value = "";
-                }
-            });
-
-            // Clear saved form data from localStorage
-            localStorage.removeItem("salesOrderData");
-
-            // Optionally show an alert or confirmation
-            alert("Form Cleared");
-        }
     </script>
 }

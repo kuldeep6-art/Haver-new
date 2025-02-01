@@ -13,12 +13,12 @@ namespace haver.Models
         {
             get
             {
-              
+
                 if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
                 {
                     return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper();
                 }
-                return string.Empty; 
+                return string.Empty;
             }
         }
 
@@ -41,27 +41,17 @@ namespace haver.Models
         [MinLength(2, ErrorMessage = "Last name cannot be less than 2 characters long.")]
         public string? LastName { get; set; }
 
-        //Phone Annotations
-
-        // [Required(ErrorMessage = "Phone number is required.")]
-        [Display(Name = "Phone")]
-        [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number (no spaces).")]
-        [DataType(DataType.PhoneNumber)]
-        [MaxLength(10, ErrorMessage = "Phone number can be 10 digits only")]
-        public string? Phone { get; set; }
-
         //Email Annotations
 
         //[Required(ErrorMessage = "Email address is required.")]
-        [Display(Name= "Email")]
+        [Display(Name = "Email")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Please follow the correct email format test@email.com")]
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = "";
-        public ICollection<MachineScheduleEngineer> MachineScheduleEngineers { get; set; } = new HashSet<MachineScheduleEngineer>();
-        
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{ }
+        public ICollection<SalesOrderEngineer> SalesOrderEngineers { get; set; } = new HashSet<SalesOrderEngineer>();
+
+
 
 
     }

@@ -4,7 +4,7 @@
     <!-- Header -->
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+            <h4 class="text-white avenir-heavy" style="font-size: 19px;">
                 Create a Machine
             </h4>
         </div>
@@ -13,106 +13,244 @@
     <!-- Centered Form -->
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
-            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create a New Machine">
+            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Machine Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <!-- Machine Description -->
-                <div class="form-group mb-3">
-                    <label asp-for="Description" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Machine Description
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter description of the machine."></i>
-                    </label>
-                    <input asp-for="Description" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <!-- Description -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="control-label avenir-roman brand-color">
+                                Description
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the machine description"></i>
+                            </label>
+                            <input asp-for="Description" class="form-control avenir-roman brand-border" tabindex="1" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Production Order Number -->
+                        <div class="form-group mb-3">
+                            <label asp-for="ProductionOrderNumber" class="control-label avenir-roman brand-color">
+                                Production Order
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the production order number"></i>
+                            </label>
+                            <input asp-for="ProductionOrderNumber" class="form-control avenir-roman brand-border" tabindex="3" />
+                            <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
+                        </div>
+
+                        <!-- Serial Number -->
+                        <div class="form-group mb-3">
+                            <label asp-for="SerialNumber" class="control-label avenir-roman brand-color">
+                                Serial Number
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the machine's serial number"></i>
+                            </label>
+                            <input asp-for="SerialNumber" class="form-control avenir-roman brand-border" tabindex="5" />
+                            <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Quantity" class="control-label avenir-roman brand-color">
+                                Quantity
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity of machines"></i>
+                            </label>
+                            <input asp-for="Quantity" class="form-control avenir-roman brand-border" tabindex="7" />
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+
+                        <!-- Size -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Size" class="control-label avenir-roman brand-color">
+                                Size
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Specify the machine size"></i>
+                            </label>
+                            <input asp-for="Size" class="form-control avenir-roman brand-border" tabindex="9" />
+                            <span asp-validation-for="Size" class="text-danger"></span>
+                        </div>
+
+                        <!-- Class -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Class" class="control-label avenir-roman brand-color">
+                                Class
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the machine class"></i>
+                            </label>
+                            <input asp-for="Class" class="form-control avenir-roman brand-border" tabindex="11" />
+                            <span asp-validation-for="Class" class="text-danger"></span>
+                        </div>
+
+                        <!-- Size Deck -->
+                        <div class="form-group mb-3">
+                            <label asp-for="SizeDeck" class="control-label avenir-roman brand-color">
+                                Deck Size
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the deck size"></i>
+                            </label>
+                            <input asp-for="SizeDeck" class="form-control avenir-roman brand-border" tabindex="13" />
+                            <span asp-validation-for="SizeDeck" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <!-- Sales Order -->
+                        <div class="form-group mb-3">
+                            <label asp-for="SalesOrderID" class="control-label avenir-roman brand-color">
+                                Sales Order
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the sales order ID"></i>
+                            </label>
+                            <select asp-for="SalesOrderID" class="form-control avenir-roman brand-border" tabindex="2"
+                                    asp-items="ViewBag.SalesOrderID">
+                                <option value="">-- Select Sales Order --</option>
+                            </select>
+                            <span asp-validation-for="SalesOrderID" class="text-danger"></span>
+                        </div>
+
+                        <!-- Nameplate -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Nameplate" class="control-label avenir-roman brand-color">
+                                Nameplate
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the nameplate type"></i>
+                            </label>
+                            <select asp-for="Nameplate" class="form-control avenir-roman brand-border" tabindex="4"
+                                    asp-items="Html.GetEnumSelectList<NamePlate>()">
+                            </select>
+                            <span asp-validation-for="Nameplate" class="text-danger"></span>
+                        </div>
+
+                        <!-- Checkboxes -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="Media" tabindex="6" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.Media)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if media is included"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="SpareParts" tabindex="8" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.SpareParts)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if spare parts are included"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="SparePMedia" tabindex="10" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.SparePMedia)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if spare panel media is included"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="Base" tabindex="12" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.Base)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if base is included"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="AirSeal" tabindex="14" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.AirSeal)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if air seal is included"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="CoatingLining" tabindex="16" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.CoatingLining)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if coating or lining is required"></i>
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" asp-for="Disassembly" tabindex="18" />
+                            <label class="form-check-label avenir-roman brand-color">
+                                @Html.DisplayNameFor(m => m.Disassembly)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if disassembly is required"></i>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Serial Number -->
-                <div class="form-group mb-3">
-                    <label asp-for="SerialNumber" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Serial Number
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the machine's unique serial number."></i>
-                    </label>
-                    <input asp-for="SerialNumber" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                <!-- Lower Section -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <!-- Budgeted Hours -->
+                        <div class="form-group mb-3">
+                            <label asp-for="BudgetedHours" class="control-label avenir-roman brand-color">
+                                Budgeted Hours
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the budgeted hours for assembly"></i>
+                            </label>
+                            <input asp-for="BudgetedHours" class="form-control avenir-roman brand-border" tabindex="15" />
+                            <span asp-validation-for="BudgetedHours" class="text-danger"></span>
+                        </div>
+
+                        <!-- Actual Assembly Hours -->
+                        <div class="form-group mb-3">
+                            <label asp-for="ActualAssemblyHours" class="control-label avenir-roman brand-color">
+                                Actual Hours
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the actual assembly hours"></i>
+                            </label>
+                            <input asp-for="ActualAssemblyHours" class="form-control avenir-roman brand-border" tabindex="17" />
+                            <span asp-validation-for="ActualAssemblyHours" class="text-danger"></span>
+                        </div>
+
+                        <!-- Rework Hours -->
+                        <div class="form-group mb-3">
+                            <label asp-for="ReworkHours" class="control-label avenir-roman brand-color">
+                                Rework Hours
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the rework hours if applicable"></i>
+                            </label>
+                            <input asp-for="ReworkHours" class="form-control avenir-roman brand-border" tabindex="19" />
+                            <span asp-validation-for="ReworkHours" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <!-- Pre-Order -->
+                        <div class="form-group mb-3">
+                            <label asp-for="PreOrder" class="control-label avenir-roman brand-color">
+                                Pre-Order
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter pre-order details if applicable"></i>
+                            </label>
+                            <input asp-for="PreOrder" class="form-control avenir-roman brand-border" tabindex="20" />
+                            <span asp-validation-for="PreOrder" class="text-danger"></span>
+                        </div>
+
+                        <!-- Scope -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Scope" class="control-label avenir-roman brand-color">
+                                Scope
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Describe the project scope"></i>
+                            </label>
+                            <input asp-for="Scope" class="form-control avenir-roman brand-border" tabindex="21" />
+                            <span asp-validation-for="Scope" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Quantity -->
-                <div class="form-group mb-3">
-                    <label asp-for="Quantity" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Quantity
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the quantity"></i>
-                    </label>
-                    <input asp-for="Quantity" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" type="number" />
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
-                </div>
-
-                <!-- Machine Size -->
-                <div class="form-group mb-3">
-                    <label asp-for="Size" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Machine Size
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the machine's size specifications."></i>
-                    </label>
-                    <input asp-for="Size" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="Size" class="text-danger"></span>
-                </div>
-
-                <!-- Machine Class -->
-                <div class="form-group mb-3">
-                    <label asp-for="Class" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Machine Class
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the class or category of the machine."></i>
-                    </label>
-                    <input asp-for="Class" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="Class" class="text-danger"></span>
-                </div>
-
-                <!-- Deck Size -->
-                <div class="form-group mb-3">
-                    <label asp-for="SizeDeck" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Deck Size
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the deck size of the machine."></i>
-                    </label>
-                    <input asp-for="SizeDeck" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="SizeDeck" class="text-danger"></span>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                <!-- Buttons -->
+                <div class="form-group text-center mt-4">
+                    <button type="submit" class="btn btn-primary avenir-heavy brand-btn" tabindex="22">
                         Create Machine
                     </button>
                 </div>
-                <div class="d-flex flex-column align-items-start gap-2">
-                    <!-- Back to Previous Page -->
-                    <button onclick="goBack()" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+
+                <div class="d-flex flex-column align-items-start gap-2 mt-3">
+                    <button onclick="goBack()" class="btn btn-primary avenir-heavy brand-btn" style="width: 250px;" tabindex="23">
                         ⬅ Back To Previous Page
                     </button>
-
-                    <!-- Back to Machine List -->
-                    <a href="@Url.Action("Index", "Machine")" class="btn btn-primary"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                    <a href="@Url.Action("Index", "Machine")" class="btn btn-primary avenir-heavy brand-btn" style="width: 250px;" tabindex="24">
                         ⬅ Back to Machine List
                     </a>
                 </div>
-
             </form>
         </div>
     </div>
-
 </div>
 
 @section Scripts {
@@ -120,9 +258,15 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script type="text/javascript">
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
     </script>
 }

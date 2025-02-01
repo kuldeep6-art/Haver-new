@@ -43,11 +43,11 @@ namespace haver.Data
         public DbSet<SalesOrder> SalesOrders { get; set; }
         public DbSet<Machine> Machines { get; set; }
         public DbSet<Engineer> Engineers { get; set; }
-        public DbSet<MachineSchedule> MachineSchedules { get; set; }
         public DbSet<PackageRelease> PackageReleases { get; set; }
-        public DbSet<Note> Notes { get; set; }
-        public DbSet<MachineScheduleEngineer> MachineScheduleEngineers { get; set; }
+        public DbSet<SalesOrderEngineer> SalesOrderEngineers { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<Procurement> Procurements { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,23 +58,17 @@ namespace haver.Data
                 .HasForeignKey(so => so.CustomerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<SalesOrder>()
-                .HasOne<Vendor>(so => so.Vendor)
-                .WithMany(v => v.SalesOrders)
-                .HasForeignKey(so => so.VendorID)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<MachineSchedule>()
-               .HasOne<Machine>(so => so.Machine)
-               .WithMany(v => v.MachineSchedules)
-               .HasForeignKey(so => so.MachineID)
+            modelBuilder.Entity<Machine>()
+               .HasOne<SalesOrder>(so => so.SalesOrder)
+               .WithMany(v => v.Machines)
+               .HasForeignKey(so => so.SalesOrderID)
                .OnDelete(DeleteBehavior.Restrict);
 
 
-
-            modelBuilder.Entity<MachineScheduleEngineer>()
+            modelBuilder.Entity<SalesOrderEngineer>()
                 .HasOne<Engineer>(mse => mse.Engineer)
-                .WithMany(e => e.MachineScheduleEngineers)
+                .WithMany(e => e.SalesOrderEngineers)
                 .HasForeignKey(mse => mse.EngineerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -85,11 +79,6 @@ namespace haver.Data
                .HasIndex(c => c.Phone)
                .IsUnique();
 
-            modelBuilder.Entity<Engineer>()
-              .HasIndex(c => c.Phone)
-              .IsUnique();
-
-
             modelBuilder.Entity<SalesOrder>()
                 .HasIndex(so => so.OrderNumber)
                 .IsUnique();
@@ -98,19 +87,17 @@ namespace haver.Data
                 .HasIndex(m => m.SerialNumber)
                 .IsUnique();
 
-
-            modelBuilder.Entity<MachineScheduleEngineer>()
-                .HasIndex(mse => new { mse.MachineScheduleID, mse.EngineerID })
-                .IsUnique();
+            modelBuilder.Entity<Machine>()
+               .HasIndex(m => m.ProductionOrderNumber)
+               .IsUnique();
 
             modelBuilder.Entity<PackageRelease>()
-                .HasIndex(pr => new { pr.Name, pr.MachineScheduleID })
+                .HasIndex(pr => new { pr.Name, pr.SalesOrderID })
                 .IsUnique();
 
             //composite keys for many to many     
-
-           modelBuilder.Entity<MachineScheduleEngineer>()
-            .HasKey(mse => new { mse.MachineScheduleID, mse.EngineerID });
+            modelBuilder.Entity<SalesOrderEngineer>()
+             .HasKey(mse => new { mse.SalesOrderID, mse.EngineerID });
 
 
 

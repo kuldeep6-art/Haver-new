@@ -1,211 +1,62 @@
 ﻿@model haver.Models.SalesOrder
 
-<div id="sPrint" class="container-fluid bg-light">
-    <!-- Header -->
-    <div class="row">
-        <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Sales Order Details
-            </h4>
-        </div>
-    </div>
+<partial name="_ViewHeading" />
 
-    <!-- Details Content -->
-    <div class="row py-4">
-        <div class="col-md-10 offset-md-1">
-            <div class="card border shadow-sm">
-                <div class="card-body p-4">
-                    <!-- Section 1: Order Information -->
-                    <div class="mb-5">
-                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
-                            Order Information
-                        </h5>
-                        <div class="row">
-                            <!-- Order Number -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The unique order number">Order Number</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.OrderNumber)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Sales Order Date -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The date the sales order was created">Sales Order Date</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.SoDate)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Price -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The total price of the order">Price</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Price)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 2: Shipping and Documentation -->
-                    <div class="mb-5">
-                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
-                            Shipping and Documentation
-                        </h5>
-                        <div class="row">
-                            <!-- Shipping Terms -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The terms of shipping">Shipping Terms</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.ShippingTerms)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Approval Drawing Received -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Whether the approval drawing was received">Approval Drawing Received</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.AppDwgRcd)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Drawing Issue Date -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The date the drawing was issued">Drawing Issue Date</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.DwgIsDt)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 3: Customer and Vendor Information -->
-                    <div class="mb-5">
-                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
-                            Customer and Vendor Information
-                        </h5>
-                        <div class="row">
-                            <!-- Customer -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The customer associated with the order">Customer</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Customer.Summary)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Vendor -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The vendor associated with the order">Vendor</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Vendor.Name)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 4: Machine Schedule -->
-                    <div class="mb-5">
-                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
-                            Machine Schedule
-                        </h5>
-                        <div class="row">
-                            <!-- Machine Schedule -->
-                            <div class="col-md-12 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The machine schedule associated with the order">Machine Schedule</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.MachineSchedule.Summary)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="mt-4 d-flex gap-3 mx-4 mb-3">
-                    <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Sales Order List
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
-                        Edit
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div>
+    <h4>SalesOrder</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingTerms)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShippingTerms)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppDwgRcd)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppDwgRcd)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DwgIsDt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DwgIsDt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Customer.CompanyName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+    </dl>
 </div>
-
-<!-- Back to List Button -->
-<div class="mt-4 d-flex gap-3">
-    <div style="font-family: 'Avenir Roman', sans-serif;">
-        <partial name="_BackToList" />
-    </div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
+    <partial name="_BackToList" />
 </div>
-
-<!-- Tooltip Initialization -->
-<script>
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-</script>
-<style>
-    h6 {
-        font-weight: bold;
-    }
-  </style>
