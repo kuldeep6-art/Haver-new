@@ -71,6 +71,9 @@ namespace haver.Models
         [Display(Name = "Notes/Comments")]
         public string? Comments { get; set; }
 
+        [Display(Name = "Package Release Information")]
+        public PackageRelease? PackageRelease { get; set; } // Navigation property to PackageRelease
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (AppDwgRcd < DwgIsDt)

@@ -165,36 +165,46 @@ namespace haver.Controllers
         }
 
         // GET: PackageRelease/Create
-        public IActionResult Create()
+        public IActionResult Create(int? salesOrderId)
         {
-			PopulateDropDownLists();
-			return View();
+            var packageRelease = new PackageRelease();
+
+            // Pre-fill SalesOrderID if available
+            if (salesOrderId.HasValue)
+            {
+                packageRelease.SalesOrderID = salesOrderId.Value;
+
+                // Fetch Order Number for display
+                var salesOrder = _context.SalesOrders.FirstOrDefault(s => s.ID == salesOrderId.Value);
+                ViewBag.SalesOrderNumber = salesOrder?.OrderNumber;
+            }
+            PopulateDropDownLists(); // Ensure any dropdowns are populated
+            return View(packageRelease);
         }
 
         // POST: PackageRelease/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,PReleaseDateP,PReleaseDateA,Notes,SalesOrderID")] PackageRelease packageRelease)
         {
-			try
-			{
-				if (ModelState.IsValid)
-				{
-					_context.Add(packageRelease);
-					await _context.SaveChangesAsync();
-					return RedirectToAction("Details", new { packageRelease.ID });
-				}
-			}
-			catch (DbUpdateException)
-			{
-				ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-			}
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(packageRelease);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { id = packageRelease.ID });
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            }
 
-			PopulateDropDownLists(packageRelease);
-			return View(packageRelease);
-		}
+            PopulateDropDownLists(packageRelease);
+            return View(packageRelease);
+        }
+
 
         // GET: PackageRelease/Edit/5
         public async Task<IActionResult> Edit(int? id)

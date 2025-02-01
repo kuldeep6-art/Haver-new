@@ -65,19 +65,40 @@
                 </div>
 
                 <!-- Sales Order Dropdown -->
-                <div class="form-group mb-3">
-                    <label asp-for="SalesOrderID" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Machine Schedule
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the sales order related to this packagerelease nformation."></i>
-                    </label>
-                    <select asp-for="SalesOrderID" class="form-control"
-                            asp-items="ViewBag.MachineScheduleID"
-                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
-                        <option value="">Select Machine Schedule</option>
-                    </select>
-                    <span asp-validation-for="SalesOrderID" class="text-danger"></span>
-                </div>
+                @if (Model.SalesOrderID != 0)
+                {
+                    <!-- Read-only input if SalesOrderID is pre-filled -->
+                    <div class="form-group mb-3">
+                        <label asp-for="SalesOrderID" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Sales Order
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                               title="This sales order is automatically linked to this package release."></i>
+                        </label>
+                        <input type="text" class="form-control" value="@ViewBag.SalesOrderNumber" readonly
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <input type="hidden" asp-for="SalesOrderID" />
+                    </div>
+                }
+                else
+                {
+                    <!-- Dropdown for selecting SalesOrder if not pre-filled -->
+                    <div class="form-group mb-3">
+                        <label asp-for="SalesOrderID" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Sales Order
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                               title="Select the sales order related to this package release."></i>
+                        </label>
+                        <select asp-for="SalesOrderID" class="form-control"
+                                asp-items="ViewBag.SalesOrderID"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
+                            <option value="">Select Sales Order</option>
+                        </select>
+                        <span asp-validation-for="SalesOrderID" class="text-danger"></span>
+                    </div>
+                }
+
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
