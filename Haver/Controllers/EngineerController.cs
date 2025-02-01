@@ -85,19 +85,6 @@ namespace haver.Controllers
                         .OrderBy(p => p.FirstName);
                 }
             }
-            if (sortField == "Phone")
-            {
-                if (sortDirection == "asc")
-                {
-                    engineers = engineers
-                        .OrderByDescending(p => p.Phone);
-                }
-                else
-                {
-                    engineers = engineers
-                        .OrderBy(p => p.Phone);
-                }
-            }
             else if (sortField == "Email")
             {
                 if (sortDirection == "asc")
@@ -222,7 +209,7 @@ namespace haver.Controllers
             }
 
             if ((await TryUpdateModelAsync<Engineer>(engineerToUpdate, "", n=>n.FirstName,
-                n => n.LastName, n => n.Phone, n=> n.Email )))
+                n => n.LastName, n=> n.Email )))
             {
                 try
                 {

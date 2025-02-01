@@ -27,7 +27,7 @@ namespace haver.Models
         //Phone number  Annotations
 
         [Display(Name = "Phone Number")]
-       // [Required(ErrorMessage = "This vendor's phone number is required.")]
+        // [Required(ErrorMessage = "This vendor's phone number is required.")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number with no spacing.")]
         [DataType(DataType.PhoneNumber)]
         [MaxLength(10, ErrorMessage = "Phone can not be more than 10 digits.")]
@@ -36,12 +36,11 @@ namespace haver.Models
         //Email  Annotations
 
         [Display(Name = "Email")]
-       // [Required(ErrorMessage = "Email address is required.")]
+        // [Required(ErrorMessage = "Email address is required.")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Please follow the correct email format test@email.com")]
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
-
-        public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
+        public ICollection<Procurement>? Procurements { get; set; } = new HashSet<Procurement>();
     }
 }

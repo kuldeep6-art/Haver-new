@@ -9,6 +9,7 @@ using haver.Data;
 using haver.Models;
 using haver.CustomControllers;
 using haver.Utilities;
+using System.Reflection.PortableExecutable;
 
 namespace haver.Controllers
 {
@@ -22,30 +23,35 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, 
-            string? SearchOrder, string? SearchPO, string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, int? CustomerID,
+            string? actionButton, string sortDirection = "asc",  string sortField="OrderNumber")
         {
-            string[] sortOptions = new[] { "OrderNumber", "SoDate", "PoNumber" };
-
+            //List of sort options.
+            //NOTE: make sure this array has matching values to the column headings
+            string[] sortOptions = new[] { "OrderNumber", "Customer" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
+            //Then in each "test" for filtering, add to the count of Filters applied
 
-            var salesOrders =  from s in _context.SalesOrders
-                         .Include(s => s.Customer)
-                .Include(s => s.MachineSchedule)
-                .Include(s => s.Vendor)
-                select s;
 
-            if (!String.IsNullOrEmpty(SearchOrder))
+            PopulateDropDownLists();
+
+            var salesOrders = from s in _context.SalesOrders
+                              .Include(s => s.Customer)
+                              .AsNoTracking()
+                              select s;
+
+            //Add as many filters as needed
+            if (CustomerID.HasValue)
             {
-                salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchOrder));
+               salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
                 numberFilters++;
             }
-            if (!String.IsNullOrEmpty(SearchPO))
+            if (!String.IsNullOrEmpty(SearchString))
             {
-                salesOrders = salesOrders.Where(p => p.PoNumber.Contains(SearchPO));
+                salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
                 numberFilters++;
             }
 
@@ -57,8 +63,6 @@ namespace haver.Controllers
                 //Show how many filters have been applied
                 ViewData["numberFilters"] = "(" + numberFilters.ToString()
                     + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
-                //Keep the Bootstrap collapse open
-                @ViewData["ShowFilter"] = " show";
             }
 
             //Before we sort, see if we have called for a change of filtering or sorting
@@ -75,51 +79,37 @@ namespace haver.Controllers
             }
 
             //Now we know which field and direction to sort by
-            if (sortField == "SoDate")
+            if (sortField == "Customer")
             {
                 if (sortDirection == "asc")
                 {
                     salesOrders = salesOrders
-                        .OrderByDescending(p => p.SoDate);
+                        .OrderByDescending(p => p.Customer.CompanyName);
                 }
                 else
                 {
                     salesOrders = salesOrders
-                        .OrderBy(p => p.SoDate);
+                        .OrderBy(p => p.Customer.CompanyName);
                 }
             }
-            else   //Now we know which field and direction to sort by
-            if (sortField == "PoNumber")
+            
+            else //Sorting by Patient Name
             {
                 if (sortDirection == "asc")
-                {
-                    salesOrders = salesOrders
-                        .OrderByDescending(p => p.PoNumber);
-                }
-                else
-                {
-                    salesOrders = salesOrders
-                        .OrderBy(p => p.PoNumber);
-                }
-            }
-
-
-            else 
-            {
-                if (sortDirection == "asc")
-                {
-                    salesOrders = salesOrders
-                        .OrderByDescending(p => p.OrderNumber);
-                }
-                else
                 {
                     salesOrders = salesOrders
                         .OrderBy(p => p.OrderNumber);
+                }
+                else
+                {
+                    salesOrders = salesOrders
+                        .OrderByDescending(p => p.OrderNumber);
                 }
             }
             //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
+
 
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
@@ -138,8 +128,6 @@ namespace haver.Controllers
 
             var salesOrder = await _context.SalesOrders
                 .Include(s => s.Customer)
-                .Include(s => s.MachineSchedule)
-                .Include(s => s.Vendor)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (salesOrder == null)
             {
@@ -152,8 +140,7 @@ namespace haver.Controllers
         // GET: SalesOrder/Create
         public IActionResult Create()
         {
-           
-            PopulateDropDownLists();
+           PopulateDropDownLists();
             return View();
         }
 
@@ -162,31 +149,32 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,PoNumber,CustomerID,VendorID,MachineScheduleID")] SalesOrder salesOrder)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,CustomerID,Comments")] SalesOrder salesOrder)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(salesOrder);
-                    await _context.SaveChangesAsync();
+				if (ModelState.IsValid)
+				{
+					_context.Add(salesOrder);
+					await _context.SaveChangesAsync();
                     return RedirectToAction("Details", new { salesOrder.ID });
+
                 }
             }
-            catch (DbUpdateException dex)
-            {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-                {
-                    ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
-            }
-            PopulateDropDownLists(salesOrder);
-            return View(salesOrder);
-        }
+			catch (DbUpdateException dex)
+			{
+				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+				{
+					ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
+				}
+				else
+				{
+					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+				}
+			}
+			PopulateDropDownLists(salesOrder);
+			return View(salesOrder);
+		}
 
         // GET: SalesOrder/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -201,8 +189,8 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            PopulateDropDownLists(salesOrder);
-            return View(salesOrder);
+			PopulateDropDownLists(salesOrder);
+			return View(salesOrder);
         }
 
         // POST: SalesOrder/Edit/5
@@ -212,47 +200,35 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
-            //Go get the sales order to update
-            var salesOrderToUpdate = await _context.SalesOrders.FirstOrDefaultAsync(p => p.ID == id);
+			var salesOrderToUpdate = await _context.SalesOrders.FirstOrDefaultAsync(p => p.ID == id);
 
-            if (salesOrderToUpdate == null)
-            {
-                return NotFound();
-            }
+			if (salesOrderToUpdate == null)
+			{
+				return NotFound();
+			}
 
-            if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
-               p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.ShippingTerms, p => p.ShippingTerms,
-               p => p.AppDwgRcd, p => p.DwgIsDt, p => p.PoNumber, p => p.CustomerID, p => p.VendorID,p => p.MachineScheduleID))
-            {
-                try
+			if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
+			   p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.ShippingTerms,
+			   p => p.AppDwgRcd, p => p.DwgIsDt, p => p.CustomerID,p => p.Comments))
+			{
+				try
                 {
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", new { salesOrderToUpdate.ID });
-                } 
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SalesOrderExists(salesOrderToUpdate.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
                 }
-                catch (DbUpdateException dex)
-                {
-                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-                    {
-                        ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    }
-                }
+				catch (DbUpdateException dex)
+				{
+					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+					{
+						ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
+					}
+					else
+					{
+						ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+					}
+				}
 
-            }
+			}
             PopulateDropDownLists(salesOrderToUpdate);
             return View(salesOrderToUpdate);
         }
@@ -267,8 +243,7 @@ namespace haver.Controllers
 
             var salesOrder = await _context.SalesOrders
                 .Include(s => s.Customer)
-                .Include(s => s.MachineSchedule)
-                .Include(s => s.Vendor)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (salesOrder == null)
             {
@@ -278,24 +253,24 @@ namespace haver.Controllers
             return View(salesOrder);
         }
 
+
         // POST: SalesOrder/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var salesOrder = await _context.SalesOrders
-                .Include(s => s.Customer)
-                .Include(s => s.MachineSchedule)
-                .Include(s => s.Vendor)
-                .FirstOrDefaultAsync(m => m.ID == id);
+			var salesOrder = await _context.SalesOrders
+			  .Include(s => s.Customer)
+			  .FirstOrDefaultAsync(m => m.ID == id);
 
             try
             {
-                if (salesOrder != null)
-                {
-                    _context.SalesOrders.Remove(salesOrder);
-                }
-                await _context.SaveChangesAsync();
+				if (salesOrder != null)
+				{
+					_context.SalesOrders.Remove(salesOrder);
+				}
+
+				await _context.SaveChangesAsync();
                 var returnUrl = ViewData["returnURL"]?.ToString();
                 if (string.IsNullOrEmpty(returnUrl))
                 {
@@ -303,26 +278,23 @@ namespace haver.Controllers
                 }
                 return Redirect(returnUrl);
             }
-            catch (DbUpdateException)
-            {
-                //Note: there is really no reason a delete should fail if you can "talk" to the database.
-                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
-            }
-            return View(salesOrder);
+			catch (DbUpdateException)
+			{
+				//Note: there is really no reason a delete should fail if you can "talk" to the database.
+				ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
+			}
+			return View(salesOrder);
 
+		}
 
-        }
-
-
-        private void PopulateDropDownLists(SalesOrder? salesOrder = null)
-        {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "Name");
-        }
         private bool SalesOrderExists(int id)
         {
             return _context.SalesOrders.Any(e => e.ID == id);
         }
-    }
+
+		private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+		{
+			ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+		}
+	}
 }

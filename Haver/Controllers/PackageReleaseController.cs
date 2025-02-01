@@ -7,12 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
-using haver.CustomControllers;
-using haver.Utilities;
 
 namespace haver.Controllers
 {
-    public class PackageReleaseController : ElephantController
+    public class PackageReleaseController : Controller
     {
         private readonly HaverContext _context;
 
@@ -22,127 +20,10 @@ namespace haver.Controllers
         }
 
         // GET: PackageRelease
-        public async Task<IActionResult> Index(int? page, int? pageSizeID,string? SearchName,string? SearchNotes,int? MachineScheduleID, string? actionButton, string sortDirection = "asc", string sortField = "PReleaseDateP")
+        public async Task<IActionResult> Index()
         {
-            string[] sortOptions = new[] { "Name", "PReleaseDateP", "PReleaseDateA", "Notes", "MachineSchedule" };
-            var packageRelease = from m in _context.PackageReleases
-                         .Include(m => m.MachineSchedule)
-                         .AsNoTracking()
-                          select m;
-            ViewData["Filtering"] = "btn-outline-secondary";
-            int numberFilters = 0;
-            PopulateDropDownLists();
-
-            if (MachineScheduleID.HasValue)
-            {
-                packageRelease = packageRelease.Where(p => p.MachineScheduleID == MachineScheduleID);
-                numberFilters++;
-            }
-            if (!String.IsNullOrEmpty(SearchName))
-            {
-                packageRelease = packageRelease.Where(p => p.Name.ToUpper().Contains(SearchName.ToUpper()));
-                numberFilters++;
-            }
-            if (!String.IsNullOrEmpty(SearchNotes))
-            {
-                packageRelease = packageRelease.Where(p => p.Notes.ToUpper().Contains(SearchNotes.ToUpper()));
-                numberFilters++;
-            }
-
-
-            if (numberFilters != 0)
-            {
-                ViewData["Filtering"] = " btn-danger";
-                //Show how many filters have been applied
-                ViewData["numberFilters"] = "(" + numberFilters.ToString()
-                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
-                //Keep the Bootstrap collapse open
-                @ViewData["ShowFilter"] = " show";
-            }
-            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
-            {
-                page = 1;
-                if (sortOptions.Contains(actionButton))//Change of sort is requested
-                {
-                    if (actionButton == sortField) //Reverse order on same field
-                    {
-                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
-                    }
-                    sortField = actionButton;//Sort by the button clicked
-                }
-            }
-            if (sortField == "PReleaseDateP")
-            {
-                if (sortDirection == "asc")
-                {
-                    packageRelease = packageRelease
-                        .OrderByDescending(p => p.PReleaseDateP);
-                }
-                else
-                {
-                    packageRelease = packageRelease
-                         .OrderBy(p => p.PReleaseDateP);
-                }
-            }
-            else if(sortField=="Name")
-            {
-                if (sortDirection == "asc")
-                {
-                    packageRelease = packageRelease
-                        .OrderByDescending(p => p.Name);
-                }
-                else
-                {
-                    packageRelease = packageRelease
-                         .OrderBy(p => p.Name);
-                }
-            }
-            else if (sortField == "Notes")
-            {
-                if (sortDirection == "asc")
-                {
-                    packageRelease = packageRelease
-                        .OrderByDescending(p => p.Notes);
-                }
-                else
-                {
-                    packageRelease = packageRelease
-                         .OrderBy(p => p.Notes);
-                }
-            }
-            else if (sortField == "MachineSchedule")
-            {
-                if (sortDirection == "asc")
-                {
-                    packageRelease = packageRelease
-                        .OrderByDescending(p => p.MachineSchedule);
-                }
-                else
-                {
-                    packageRelease = packageRelease
-                         .OrderBy(p => p.MachineSchedule);
-                }
-            }
-            else
-            {
-                if (sortDirection == "asc")
-                {
-                    packageRelease = packageRelease
-                        .OrderByDescending(p => p.PReleaseDateA);
-                }
-                else
-                {
-                    packageRelease = packageRelease
-                         .OrderBy(p => p.PReleaseDateA);
-                }
-            }
-            ViewData["sortField"] = sortField;
-            ViewData["sortDirection"] = sortDirection;
-            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
-            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-            var pagedData = await PaginatedList<PackageRelease>.CreateAsync(packageRelease.AsNoTracking(), page ?? 1, pageSize);
-
-            return View(pagedData);
+            var haverContext = _context.PackageReleases.Include(p => p.SalesOrder);
+            return View(await haverContext.ToListAsync());
         }
 
         // GET: PackageRelease/Details/5
@@ -154,7 +35,7 @@ namespace haver.Controllers
             }
 
             var packageRelease = await _context.PackageReleases
-                .Include(p => p.MachineSchedule)
+                .Include(p => p.SalesOrder)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (packageRelease == null)
             {
@@ -167,7 +48,7 @@ namespace haver.Controllers
         // GET: PackageRelease/Create
         public IActionResult Create()
         {
-            PopulateDropDownLists();
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
             return View();
         }
 
@@ -176,24 +57,15 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,PReleaseDateP,PReleaseDateA,Notes,MachineScheduleID")] PackageRelease packageRelease)
+        public async Task<IActionResult> Create([Bind("ID,Name,PReleaseDateP,PReleaseDateA,Notes,SalesOrderID")] PackageRelease packageRelease)
         {
-
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(packageRelease);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { packageRelease.ID });
-                }
+                _context.Add(packageRelease);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-            }
-
-            PopulateDropDownLists(packageRelease);
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", packageRelease.SalesOrderID);
             return View(packageRelease);
         }
 
@@ -210,7 +82,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            PopulateDropDownLists(packageRelease);
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", packageRelease.SalesOrderID);
             return View(packageRelease);
         }
 
@@ -219,27 +91,23 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,PReleaseDateP,PReleaseDateA,Notes,SalesOrderID")] PackageRelease packageRelease)
         {
-            //Go get the packae to update
-            var packageToUpdate = await _context.PackageReleases.FirstOrDefaultAsync(c => c.ID == id);
-
-            if (packageToUpdate == null)
+            if (id != packageRelease.ID)
             {
                 return NotFound();
             }
 
-            if (await TryUpdateModelAsync<PackageRelease>(packageToUpdate, "",
-                p => p.Name, p => p.PReleaseDateP, p => p.PReleaseDateA, p => p.Notes, p => p.MachineScheduleID))
+            if (ModelState.IsValid)
             {
                 try
                 {
+                    _context.Update(packageRelease);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { packageToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PackageReleaseExists(packageToUpdate.ID))
+                    if (!PackageReleaseExists(packageRelease.ID))
                     {
                         return NotFound();
                     }
@@ -248,14 +116,10 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                catch (DbUpdateException)
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-
-                }
+                return RedirectToAction(nameof(Index));
             }
-            PopulateDropDownLists(packageToUpdate);
-            return View(packageToUpdate);
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", packageRelease.SalesOrderID);
+            return View(packageRelease);
         }
 
         // GET: PackageRelease/Delete/5
@@ -267,7 +131,7 @@ namespace haver.Controllers
             }
 
             var packageRelease = await _context.PackageReleases
-                .Include(p => p.MachineSchedule)
+                .Include(p => p.SalesOrder)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (packageRelease == null)
             {
@@ -282,39 +146,16 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
             var packageRelease = await _context.PackageReleases.FindAsync(id);
-
-            try
+            if (packageRelease != null)
             {
-                if (packageRelease != null)
-                {
-                    _context.PackageReleases.Remove(packageRelease);
-                }
-
-                await _context.SaveChangesAsync();
-                var returnUrl = ViewData["returnURL"]?.ToString();
-                if (string.IsNullOrEmpty(returnUrl))
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return Redirect(returnUrl);
+                _context.PackageReleases.Remove(packageRelease);
             }
-            catch (DbUpdateException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
 
-            }
-            return View(packageRelease);
-
-
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-
-        private void PopulateDropDownLists(PackageRelease? packageRelease = null)
-        {
-            ViewData["MachineScheduleID"] = new SelectList(_context.MachineSchedules, "ID", "Summary");
-        }
         private bool PackageReleaseExists(int id)
         {
             return _context.PackageReleases.Any(e => e.ID == id);

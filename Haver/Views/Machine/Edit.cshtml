@@ -1,118 +1,128 @@
 ﻿@model haver.Models.Machine
 
-<div class="container-fluid bg-light">
-	<!-- Header -->
-	<div class="row">
-		<div class="col-md-12 py-4" style="background-color:#0C2340;">
-			<h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-				Edit Machine
-			</h4>
-		</div>
-	</div>
+<partial name="_ViewHeading" />
 
-	<!-- Centered Form -->
-	<div class="row py-4">
-		<div class="col-md-8 offset-md-2">
-			<form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Machine Information">
-				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-				<input type="hidden" asp-for="ID" />
-
-				<!-- Description -->
-				<div class="form-group mb-3">
-					<label asp-for="Description" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Description
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's description."></i>
-					</label>
-					<input asp-for="Description" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-					<span asp-validation-for="Description" class="text-danger"></span>
-				</div>
-
-				<!-- Serial Number -->
-				<div class="form-group mb-3">
-					<label asp-for="SerialNumber" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Serial Number
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's serial number."></i>
-					</label>
-					<input asp-for="SerialNumber" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-					<span asp-validation-for="SerialNumber" class="text-danger"></span>
-				</div>
-
-				<!-- Quantity -->
-				<div class="form-group mb-3">
-					<label asp-for="Quantity" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Quantity
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the quantity"></i>
-					</label>
-					<input asp-for="Quantity" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-					<span asp-validation-for="Quantity" class="text-danger"></span>
-				</div>
-
-				<!-- Size -->
-				<div class="form-group mb-3">
-					<label asp-for="Size" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Size
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's size."></i>
-					</label>
-					<input asp-for="Size" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-					<span asp-validation-for="Size" class="text-danger"></span>
-				</div>
-
-				<!-- Class -->
-				<div class="form-group mb-3">
-					<label asp-for="Class" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Class
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine's class or category."></i>
-					</label>
-					<input asp-for="Class" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-					<span asp-validation-for="Class" class="text-danger"></span>
-				</div>
-
-				<!-- Size Deck -->
-				<div class="form-group mb-3">
-					<label asp-for="SizeDeck" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Size Deck
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the deck size of the machine."></i>
-					</label>
-					<input asp-for="SizeDeck" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-					<span asp-validation-for="SizeDeck" class="text-danger"></span>
-				</div>
-
-				<!-- Submit Button -->
-				<div class="form-group text-center">
-					<a href="@Url.Action("Index", "Machine")" class="btn btn-primary"
-					   style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-						⬅ Back to Machine List
-					</a>
-					<button type="submit" class="btn btn-primary"
-							style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-						Save
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
+<h4>Machine</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductionOrderNumber" class="control-label"></label>
+                <input asp-for="ProductionOrderNumber" class="form-control" />
+                <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SerialNumber" class="control-label"></label>
+                <input asp-for="SerialNumber" class="form-control" />
+                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Class" class="control-label"></label>
+                <input asp-for="Class" class="form-control" />
+                <span asp-validation-for="Class" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SizeDeck" class="control-label"></label>
+                <input asp-for="SizeDeck" class="form-control" />
+                <span asp-validation-for="SizeDeck" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Media" /> @Html.DisplayNameFor(model => model.Media)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SpareParts" /> @Html.DisplayNameFor(model => model.SpareParts)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SparePMedia" /> @Html.DisplayNameFor(model => model.SparePMedia)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Base" /> @Html.DisplayNameFor(model => model.Base)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AirSeal" /> @Html.DisplayNameFor(model => model.AirSeal)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CoatingLining" /> @Html.DisplayNameFor(model => model.CoatingLining)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Disassembly" /> @Html.DisplayNameFor(model => model.Disassembly)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="BudgetedHours" class="control-label"></label>
+                <input asp-for="BudgetedHours" class="form-control" />
+                <span asp-validation-for="BudgetedHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualAssemblyHours" class="control-label"></label>
+                <input asp-for="ActualAssemblyHours" class="form-control" />
+                <span asp-validation-for="ActualAssemblyHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReworkHours" class="control-label"></label>
+                <input asp-for="ReworkHours" class="form-control" />
+                <span asp-validation-for="ReworkHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nameplate" class="control-label"></label>
+                <select asp-for="Nameplate" class="form-control"
+                        asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
+                <span asp-validation-for="Nameplate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreOrder" class="control-label"></label>
+                <input asp-for="PreOrder" class="form-control" />
+                <span asp-validation-for="PreOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Scope" class="control-label"></label>
+                <input asp-for="Scope" class="form-control" />
+                <span asp-validation-for="Scope" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalesOrderID" class="control-label"></label>
+                <select asp-for="SalesOrderID" class="form-control" asp-items="ViewBag.SalesOrderID"></select>
+                <span asp-validation-for="SalesOrderID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
 
-@section Scripts {
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
-	<script type="text/javascript">
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-			return new bootstrap.Tooltip(tooltipTriggerEl)
-		})
-	</script>
-}
+<div>
+    <partial name="_BackToList" />
+</div>
+

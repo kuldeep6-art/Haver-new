@@ -2,15 +2,15 @@
 
 namespace haver.Models
 {
-    public class MachineScheduleEngineer : Auditable
+    public class SalesOrderEngineer : Auditable
     {
         public int ID { get; set; }
 
         [Display(Name = "Machine Schedule")]
         [Required(ErrorMessage = "Select the schedule related to this engineer.")]
-        public int MachineScheduleID { get; set; }
+        public int SalesOrderID { get; set; }
 
-        public MachineSchedule? Schedule { get; set; }
+        public SalesOrder? SalesOrder { get; set; }
 
         [Display(Name = "Engineer")]
         [Required(ErrorMessage = "Select the engineer related to this schedule.")]

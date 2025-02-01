@@ -9,16 +9,15 @@
 	<link rel="stylesheet" href="~/haver.styles.css" asp-append-version="true" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 	@await RenderSectionAsync("Head", required: false)
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-
 </head>
 <body>
 
+	<!-- Sidebar -->
 	<div class="sidebar">
-		<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver">
+		<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo">
 
-		<a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+		<a href="@Url.Action("Index", "Home")">Home</a>
 
 		<!-- Customer Dropdown -->
 		<div class="dropdown">
@@ -28,17 +27,6 @@
 			<div class="dropdown-content">
 				<a asp-area="" asp-controller="Customer" asp-action="Index">View Customers</a>
 				<a asp-area="" asp-controller="Customer" asp-action="Create">Create Customer</a>
-			</div>
-		</div>
-
-		<!-- Vendor Dropdown -->
-		<div class="dropdown">
-			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-				Vendor <i class="fa fa-chevron-down arrow-icon"></i>
-			</a>
-			<div class="dropdown-content">
-				<a asp-area="" asp-controller="Vendor" asp-action="Index">View Vendors</a>
-				<a asp-area="" asp-controller="Vendor" asp-action="Create">Create Vendor</a>
 			</div>
 		</div>
 
@@ -53,18 +41,6 @@
 			</div>
 		</div>
 
-		<!-- Machine Schedule Dropdown -->
-		<div class="dropdown">
-			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-				Machine Schedule <i class="fa fa-chevron-down arrow-icon"></i>
-			</a>
-			<div class="dropdown-content">
-				<a asp-area="" asp-controller="MachineSchedule" asp-action="Index">View Schedules</a>
-				<a asp-area="" asp-controller="MachineSchedule" asp-action="Create">Create Schedule</a>
-				<a asp-area="" asp-controller="MachineSchedule" asp-action="DownloadMachineSchedules">Download Schedules</a>
-			</div>
-		</div>
-
 		<!-- Sales Order Dropdown -->
 		<div class="dropdown">
 			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
@@ -75,6 +51,7 @@
 				<a asp-area="" asp-controller="SalesOrder" asp-action="Create">Create Sales Order</a>
 			</div>
 		</div>
+
 
 		<!-- Machine Dropdown -->
 		<div class="dropdown">
@@ -87,31 +64,12 @@
 			</div>
 		</div>
 
-		<!-- Package Release Dropdown -->
-		<div class="dropdown">
-			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-				Package Release <i class="fa fa-chevron-down arrow-icon"></i>
-			</a>
-			<div class="dropdown-content">
-				<a asp-area="" asp-controller="PackageRelease" asp-action="Index">View Releases</a>
-				<a asp-area="" asp-controller="PackageRelease" asp-action="Create">Create Release</a>
-			</div>
-		</div>
-
-		<!-- Notes Dropdown -->
-		<div class="dropdown">
-			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-				Notes <i class="fa fa-chevron-down arrow-icon"></i>
-			</a>
-			<div class="dropdown-content">
-				<a asp-area="" asp-controller="Note" asp-action="Index">View Notes</a>
-				<a asp-area="" asp-controller="Note" asp-action="Create">Create Note</a>
-			</div>
-		</div>
 	</div>
 
+	
 
 
+	<!-- Main Content -->
 	<div class="main-content">
 		<main role="main">
 			@RenderBody()
@@ -124,12 +82,30 @@
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<script>
+	function toggleDropdown(event) {
+		event.preventDefault();
+		let dropdown = event.target.closest('.dropdown');
+		dropdown.classList.toggle('active');
+
+		// Close all other dropdowns except the clicked one
+		document.querySelectorAll('.dropdown').forEach(d => {
+			if (d !== dropdown) {
+				d.classList.remove('active');
+			}
+		});
+	}
+</script>
+
 <style>
+	/* Sidebar Styles */
 	body {
 		display: flex;
 		margin: 0;
 		height: 100vh;
 		color: #001a3d;
+		font-family: Arial, sans-serif;
 	}
 
 	.sidebar {
@@ -145,44 +121,35 @@
 		text-align: center;
 	}
 
-		.sidebar img {
-			width: 200px;
-			margin-bottom: 20px;
+	.sidebar-logo {
+		width: 200px;
+		margin-bottom: 20px;
+	}
+
+	.sidebar a {
+		color: white;
+		text-decoration: none;
+		padding: 10px;
+		display: block;
+		font-weight: bold;
+		border-radius: 5px;
+		transition: background 0.3s;
+		width: 100%;
+		text-align: center;
+	}
+
+		.sidebar a:hover {
+			background: #2a497b;
 		}
 
-		.sidebar a {
-			color: white;
-			text-decoration: none;
-			padding: 10px;
-			display: block;
-			font-weight: bold;
-			border-radius: 5px;
-			transition: background 0.3s;
-			text-align: center;
-			width: 100%;
-		}
-
-			.sidebar a:hover {
-				background: #2a497b;
-			}
-
-			.sidebar a img {
-				pointer-events: none;
-			}
-
+	/* Main Content Styles */
 	.main-content {
 		margin-left: 270px;
 		padding: 20px;
 		width: calc(100% - 270px);
 	}
 
-	.footer {
-		margin-left: 270px;
-		padding: 10px;
-		background: #f8f9fa;
-		text-align: center;
-	}
-	
+	/* Dropdown Styles */
 	.dropdown {
 		width: 100%;
 		text-align: center;
@@ -231,52 +198,11 @@
 		display: block;
 		text-decoration: none;
 		font-weight: normal !important;
-		font-size: 16px; 
+		font-size: 16px;
 		text-align: center;
 	}
 
-	.dropdown-content a:hover {
-		background: rgba(255, 255, 255, 0.2);
-	}
-
-	.back-btn {
-		background-color: transparent;
-		color: #001a3d;
-		border: none;
-		padding: 8px 12px;
-		font-size: 16px;
-		font-weight: bold;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		gap: 5px; 
-	}
-
-		.back-btn i {
-			color: white;
+		.dropdown-content a:hover {
+			background: rgba(255, 255, 255, 0.2);
 		}
-
-		.back-btn:hover {
-			opacity: 0.8;
-		}
-
 </style>
-<script>
-	function toggleDropdown(event) {
-		event.preventDefault();
-		let dropdown = event.target.closest('.dropdown');
-		dropdown.classList.toggle('active');
-
-		document.querySelectorAll('.dropdown').forEach(d => {
-			if (d !== dropdown) {
-				d.classList.remove('active');
-			}
-		});
-	}
-
-	function goBack() {
-		window.history.back();
-	}
-
-</script>
-

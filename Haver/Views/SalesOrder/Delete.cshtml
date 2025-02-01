@@ -2,115 +2,63 @@
 
 <partial name="_ViewHeading" />
 
-<div class="container-fluid bg-light my-3">
-    <div class="row">
-        <!-- Header -->
-        <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                SalesOrder Details
-            </h4>
-        </div>
-
-        <!-- Details Content -->
-        <div class="row py-4">
-            <div class="col-md-8 offset-md-2">
-                <div class="card border shadow-sm">
-                    <div class="card-body p-4">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-                        <dl class="row mb-0">
-                            <!-- Order Number -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.OrderNumber)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.OrderNumber)
-                            </dd>
-
-                            <!-- SoDate -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.SoDate)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.SoDate)
-                            </dd>
-
-                            <!-- Price -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Price)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Price)
-                            </dd>
-
-                            <!-- Shipping Terms -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.ShippingTerms)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.ShippingTerms)
-                            </dd>
-
-                            <!-- AppDwgRcd -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.AppDwgRcd)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.AppDwgRcd)
-                            </dd>
-
-                            <!-- DwgIsDt -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.DwgIsDt)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.DwgIsDt)
-                            </dd>
-
-                            <!-- PoNumber -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.PoNumber)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.PoNumber)
-                            </dd>
-
-                            <!-- Customer -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Customer)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Customer.Summary)
-                            </dd>
-
-                            <!-- Vendor -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Vendor)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Vendor.Name)
-                            </dd>
-
-                            <!-- Machine Schedule -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.MachineSchedule)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.MachineSchedule.Summary)
-                            </dd>
-                        </dl>
-                        <form asp-action="Delete" class="d-inline">
-                            <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
-                               style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                                ⬅ Back to Sales Order List
-                            </a>
-                            <input type="hidden" asp-for="ID" />
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                            
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingTerms)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShippingTerms)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppDwgRcd)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppDwgRcd)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DwgIsDt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DwgIsDt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Customer.CompanyName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <partial name="_BackToList" />
+    </form>
 </div>

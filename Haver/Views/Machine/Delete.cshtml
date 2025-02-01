@@ -2,82 +2,141 @@
 
 <partial name="_ViewHeading" />
 
-<div class="container-fluid bg-light my-3">
-    <div class="row">
-        <!-- Header -->
-        <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Machine Details
-            </h4>
-        </div>
-
-        <!-- Details Content -->
-        <div class="row py-4">
-            <div class="col-md-8 offset-md-2">
-                <div class="card border shadow-sm">
-                    <div class="card-body p-4">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-                        <dl class="row mb-0">
-                            <!-- Description -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Description)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Description)
-                            </dd>
-
-                            <!-- Serial Number -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.SerialNumber)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.SerialNumber)
-                            </dd>
-
-                            <!-- Quantity -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Quantity)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Quantity)
-                            </dd>
-
-                            <!-- Size -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Size)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Size)
-                            </dd>
-
-                            <!-- Class -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.Class)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.Class)
-                            </dd>
-
-                            <!-- Size Deck -->
-                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                @Html.DisplayNameFor(model => model.SizeDeck)
-                            </dt>
-                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                                @Html.DisplayFor(model => model.SizeDeck)
-                            </dd>
-                        </dl>
-                        <form asp-action="Delete" class="d-inline">
-                            <a href="@Url.Action("Index", "Machine")" class="btn btn-primary"
-                               style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                                ⬅ Back to Machine List
-                            </a>
-                            <input type="hidden" asp-for="ID" />
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductionOrderNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductionOrderNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SerialNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SerialNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Class)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Class)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SizeDeck)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SizeDeck)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Media)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Media)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SpareParts)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpareParts)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SparePMedia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SparePMedia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Base)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Base)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AirSeal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AirSeal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CoatingLining)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CoatingLining)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Disassembly)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Disassembly)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BudgetedHours)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BudgetedHours)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ActualAssemblyHours)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ActualAssemblyHours)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReworkHours)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReworkHours)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nameplate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nameplate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PreOrder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PreOrder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Scope)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Scope)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SalesOrder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SalesOrder.OrderNumber)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <partial name="_BackToList" />
+    </form>
 </div>
