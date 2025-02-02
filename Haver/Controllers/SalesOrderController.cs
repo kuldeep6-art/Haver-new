@@ -133,6 +133,7 @@ namespace haver.Controllers
             var salesOrder = await _context.SalesOrders
                 .Include(s => s.Customer)
                 .Include(s => s.PackageRelease)
+                .Include(s => s.Machines)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (salesOrder == null)
             {
