@@ -72,11 +72,21 @@ namespace haver.Data
                 .HasForeignKey(mse => mse.EngineerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+			modelBuilder.Entity<Procurement>()
+			  .HasOne<Vendor>(mse => mse.Vendor)
+			  .WithMany(e => e.Procurements)
+			  .HasForeignKey(mse => mse.VendorID)
+			  .OnDelete(DeleteBehavior.Restrict);
 
-            //unique fields
 
-            modelBuilder.Entity<Customer>()
+			//unique fields
+
+			modelBuilder.Entity<Customer>()
                .HasIndex(c => c.Phone)
+               .IsUnique();
+
+            modelBuilder.Entity<Vendor>()
+               .HasIndex(c => c.Name)
                .IsUnique();
 
             modelBuilder.Entity<SalesOrder>()
