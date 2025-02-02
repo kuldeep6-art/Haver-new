@@ -1,0 +1,59 @@
+﻿@model haver.Models.Vendor
+
+<partial name="_ViewHeading" />
+
+<div class="container-fluid bg-light my-3">
+    <div class="row">
+        <!-- Header -->
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Vendor Details
+            </h4>
+        </div>
+
+        <!-- Details Content -->
+        <div class="row py-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card border shadow-sm">
+                    <div class="card-body p-4">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                        <dl class="row mb-0">
+                            <!-- Name -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Name)
+                            </dd>
+
+                            <!-- Phone -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Phone)
+                            </dd>
+
+                            <!-- Email -->
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                        </dl>
+                        <form asp-action="Delete" class="d-inline">
+                            <a href="@Url.Action("Index", "Vendor")" class="btn btn-primary"
+                               style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                                ⬅ Back to Vendor List
+                            </a>
+                            <input type="hidden" asp-for="ID" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

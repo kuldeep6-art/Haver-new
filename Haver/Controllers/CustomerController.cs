@@ -25,7 +25,7 @@ namespace haver.Controllers
         public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? SearchCname,
             string? actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
-            string[] sortOptions = new[] { "Customer", "Date", "Phone", "CompanyName" };
+            string[] sortOptions = new[] { "Company Name", "Date", "Phone", "Name" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -84,17 +84,17 @@ namespace haver.Controllers
                         .OrderBy(p => p.Date);
                 }
             }
-            if (sortField == "Phone")
+            if (sortField == "Company Name")
             {
                 if (sortDirection == "asc")
                 {
                     customers = customers
-                        .OrderByDescending(p => p.Phone);
+                        .OrderByDescending(p => p.CompanyName);
                 }
                 else
                 {
                     customers = customers
-                        .OrderBy(p => p.Phone);
+                        .OrderBy(p => p.CompanyName);
                 }
             }
             else

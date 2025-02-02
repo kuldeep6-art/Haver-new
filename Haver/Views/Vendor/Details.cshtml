@@ -1,11 +1,11 @@
-﻿@model haver.Models.Customer
+﻿@model haver.Models.Vendor
 
-<div id="cPrint" class="container-fluid bg-light">
+<div class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Customer Details
+                Vendor Details
             </h4>
         </div>
     </div>
@@ -15,46 +15,33 @@
         <div class="col-md-10 offset-md-1">
             <div class="card border shadow-sm">
                 <div class="card-body p-4">
-                    <!-- Section: Customer Information -->
+                    <!-- Section: Vendor Information -->
                     <div class="mb-5">
                         <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
-                            Customer Information
+                            Vendor Information
                         </h5>
-                        <div class="row">
-                            <!-- Summary -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Name of the customer">Name</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Summary)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Date -->
-                            <div class="col-md-4 mb-3">
+                        <div class="row">
+                            <!-- Name -->
+                            <div class="col-md-6 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The date associated with the customer">Date</span>
+                                            Name
                                         </h6>
                                         <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.DateSummary)
+                                            @Html.DisplayFor(model => model.Name)
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Phone -->
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Customer's phone number">Phone</span>
+                                            Phone
                                         </h6>
                                         <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
                                             @Html.DisplayFor(model => model.PhoneFormatted)
@@ -65,15 +52,15 @@
                         </div>
 
                         <div class="row">
-                            <!-- Company Name -->
-                            <div class="col-md-4 mb-3">
+                            <!-- Email -->
+                            <div class="col-md-12 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Customer's company name">Company Name</span>
+                                            Email
                                         </h6>
                                         <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.CompanyName)
+                                            @Html.DisplayFor(model => model.Email)
                                         </p>
                                     </div>
                                 </div>
@@ -84,9 +71,9 @@
 
                 <!-- Action Buttons -->
                 <div class="mt-4 d-flex gap-3 mx-4 mb-3">
-                    <a href="@Url.Action("Index", "Customer")" class="btn btn-primary"
+                    <a href="@Url.Action("Index", "Vendor")" class="btn btn-primary"
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Customer List
+                        ⬅ Back to Vendor List
                     </a>
                     <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
