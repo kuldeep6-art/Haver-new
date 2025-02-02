@@ -63,6 +63,7 @@ namespace haver.Models
         public ICollection<Machine> Machines { get; set; } = new HashSet<Machine>();
 
         // Many-to-Many: A Sales Order can have multiple Engineers
+        [Display(Name = "Engineers")]
         public ICollection<SalesOrderEngineer> SalesOrderEngineers { get; set; } = new HashSet<SalesOrderEngineer>();
 
         // One-to-Many: A Sales Order can have multiple Procurements

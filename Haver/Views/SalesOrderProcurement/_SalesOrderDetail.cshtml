@@ -1,51 +1,30 @@
 ﻿@model haver.Models.SalesOrder
 
 
-<div class="row">
-    <div class="col-6">
+<div class="info-container">
+    <div class="info-box">
         <dl class="row">
-            <dt class="col-md-4">
-                @Html.DisplayNameFor(model => Model.OrderNumber)
-            </dt>
-            <dd class="col-md-8">
-                @Html.DisplayFor(model => Model.OrderNumber)
-            </dd>
-            <dt class="col-md-4">
-                @Html.DisplayNameFor(model => Model.SoDate)
-            </dt>
-            <dd class="col-md-8">
-                @Html.DisplayFor(model => Model.SoDate)
-            </dd>
-            <dt class="col-md-4">
-                @Html.DisplayNameFor(model => Model.AppDwgRcd)
-            </dt>
-            <dd class="col-md-8">
-                @Html.DisplayFor(model => Model.AppDwgRcd)
-            </dd>
-            <dt class="col-md-4">
-                @Html.DisplayNameFor(model => Model.DwgIsDt)
-            </dt>
-            <dd class="col-md-8">
-                @Html.DisplayFor(model => Model.DwgIsDt)
-            </dd>
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.OrderNumber)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.OrderNumber)</dd>
+
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SoDate)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.SoDate)</dd>
+
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.AppDwgRcd)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.AppDwgRcd)</dd>
+
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.DwgIsDt)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.DwgIsDt)</dd>
         </dl>
     </div>
-    <div class="col-6">
+
+    <div class="info-box">
         <dl class="row">
-            <dt class="col-md-4">
-                @Html.DisplayNameFor(model => Model.Customer)
-            </dt>
-            <dd class="col-md-8">
-                @Html.DisplayFor(model => Model.Customer.CompanyName)
-            </dd>
-        </dl>
-    </div>
-    <div class="col-6">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SalesOrderEngineers)
-            </dt>
-            <dd class="col-sm-10">
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Customer)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.Customer.CompanyName)</dd>
+
+            <dt class="col-md-3">@Html.DisplayNameFor(model => model.SalesOrderEngineers)</dt>
+            <dd class="col-md-3">
                 @{
                     int specCount = Model.SalesOrderEngineers.Count;
                     if (specCount > 0)
@@ -53,13 +32,13 @@
                         string firstSpec = Model.SalesOrderEngineers.FirstOrDefault().Engineer.EngineerInitials;
                         if (specCount > 1)
                         {
-                            string specList = "";//Html string of specialty names separated by <br /> tags
+                            string specList = "";
                             var s = Model.SalesOrderEngineers.ToList();
-                            for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                            for (int i = 1; i < specCount; i++)
                             {
                                 specList += s[i].Engineer.EngineerInitials + " <br />";
                             }
-                            <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
+                            <a class="engineer-list" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
                                aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
                                 @firstSpec <span class="badge bg-info">@specCount</span>
                             </a>
@@ -74,63 +53,72 @@
                     }
                 }
             </dd>
-        </dl>
-    </div>
-
-    <div class="col-12">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PackageRelease)
-            </dt>
-            <dd class="col-sm-10">
-                @if (Model.PackageRelease != null)
-                {
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PackageRelease.Name)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PackageRelease.Notes)
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <a asp-controller="PackageRelease" asp-action="Details"
-                                       asp-route-id="@Model.PackageRelease.ID">@Html.DisplayFor(model => model.PackageRelease.Name)</a>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
-                                </td>
-                                <td>
-                                    @Html.Raw(Model.PackageRelease.Notes)
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                }
-                else
-                {
-                    <div class="alert alert-warning">
-                        <p>Package release information is not available. Please add a package release for this sales order.</p>
-                        <a asp-controller="PackageRelease" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="btn btn-primary">
-                            Create Package Release
-                        </a>
-                    </div>
+            <dt class="col-md-3">@Html.DisplayNameFor(model => model.Machines)</dt>
+            <dd class="col-md-3">
+                @{
+                    int spedCount = Model.Machines.Count;
+                    if (spedCount > 0)
+                    {
+                        string firstSpec = Model.Machines.FirstOrDefault().Description;
+                        if (spedCount > 1)
+                        {
+                            string specList = "";
+                            var s = Model.Machines.ToList();
+                            for (int i = 1; i < specCount; i++)
+                            {
+                                specList += s[i].Description + " <br />";
+                            }
+                            <a class="engineer-list" role="button" data-bs-toggle="collapse" href="#collapseSpealty@(Model.ID)"
+                               aria-expanded="false" aria-controls="collapseSpealty@(Model.ID)">
+                                @firstSpec <span class="badge bg-info">@spedCount</span>
+                            </a>
+                            <div class="collapse" id="collapseSpealty@(Model.ID)">
+                                @Html.Raw(specList)
+                            </div>
+                        }
+                        else
+                        {
+                            @firstSpec
+                        }
+                    }
                 }
             </dd>
         </dl>
     </div>
+
+<div>
+    <h4 class="section-header">Package Release Information</h4>
+    @if (Model.PackageRelease != null)
+    {
+        <table class="table package-table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PackageRelease.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)</th>
+                    <th>@Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)</th>
+                    <th>@Html.DisplayNameFor(model => model.PackageRelease.Notes)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a asp-controller="PackageRelease" asp-action="Details"
+                           asp-route-id="@Model.PackageRelease.ID">@Html.DisplayFor(model => model.PackageRelease.Name)</a>
+                    </td>
+                    <td>@Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)</td>
+                    <td>@Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)</td>
+                    <td>@Html.Raw(Model.PackageRelease.Notes)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <p>Package release information is not available. Please add a package release for this sales order.</p>
+            <a asp-controller="PackageRelease" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="btn btn-primary">
+                Create Package Release
+            </a>
+        </div>
+    }
 </div>
