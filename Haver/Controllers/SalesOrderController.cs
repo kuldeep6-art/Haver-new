@@ -10,6 +10,9 @@ using haver.Models;
 using haver.CustomControllers;
 using haver.Utilities;
 using System.Reflection.PortableExecutable;
+using haver.ViewModels;
+using System.Numerics;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace haver.Controllers
 {
@@ -40,6 +43,7 @@ namespace haver.Controllers
 
             var salesOrders = from s in _context.SalesOrders
                               .Include(s => s.Customer)
+                              .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
                               .AsNoTracking()
                               select s;
 
@@ -141,7 +145,9 @@ namespace haver.Controllers
         // GET: SalesOrder/Create
         public IActionResult Create()
         {
-           PopulateDropDownLists();
+            SalesOrder salesOrder = new SalesOrder();
+            PopulateAssignedSpecialtyData(salesOrder);
+            PopulateDropDownLists();
             return View();
         }
 
@@ -150,10 +156,12 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,CustomerID,Comments")] SalesOrder salesOrder)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,CustomerID,Comments")] SalesOrder salesOrder
+            ,string[] selectedOptions)
         {
             try
             {
+                UpdateSalesOrderEngineers(selectedOptions, salesOrder);
 				if (ModelState.IsValid)
 				{
 					_context.Add(salesOrder);
@@ -161,7 +169,11 @@ namespace haver.Controllers
                     return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrder.ID });
                 }
             }
-			catch (DbUpdateException dex)
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+            }
+            catch (DbUpdateException dex)
 			{
 				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
 				{
@@ -172,6 +184,7 @@ namespace haver.Controllers
 					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
 				}
 			}
+            PopulateAssignedSpecialtyData(salesOrder);
 			PopulateDropDownLists(salesOrder);
 			return View(salesOrder);
 		}
@@ -184,11 +197,15 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            var salesOrder = await _context.SalesOrders.FindAsync(id);
+            var salesOrder = await _context.SalesOrders
+                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
+                .FirstOrDefaultAsync(p => p.ID == id);
+
             if (salesOrder == null)
             {
                 return NotFound();
             }
+            PopulateAssignedSpecialtyData(salesOrder);
 			PopulateDropDownLists(salesOrder);
 			return View(salesOrder);
         }
@@ -198,37 +215,47 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions)
         {
-			var salesOrderToUpdate = await _context.SalesOrders.FirstOrDefaultAsync(p => p.ID == id);
+			var salesOrderToUpdate = await _context.SalesOrders
+                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
+                .FirstOrDefaultAsync(p => p.ID == id);
 
 			if (salesOrderToUpdate == null)
 			{
 				return NotFound();
 			}
 
+            UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
+
 			if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
 			   p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.ShippingTerms,
 			   p => p.AppDwgRcd, p => p.DwgIsDt, p => p.CustomerID,p => p.Comments))
 			{
-				try
+                try
                 {
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrderToUpdate.ID });
                 }
-				catch (DbUpdateException dex)
-				{
-					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-					{
-						ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
-					}
-					else
-					{
-						ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-					}
-				}
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                }
+
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+                    {
+                        ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
+                }
 
 			}
+            PopulateAssignedSpecialtyData(salesOrderToUpdate);
             PopulateDropDownLists(salesOrderToUpdate);
             return View(salesOrderToUpdate);
         }
@@ -243,6 +270,7 @@ namespace haver.Controllers
 
             var salesOrder = await _context.SalesOrders
                 .Include(s => s.Customer)
+                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (salesOrder == null)
@@ -261,6 +289,7 @@ namespace haver.Controllers
         {
 			var salesOrder = await _context.SalesOrders
 			  .Include(s => s.Customer)
+              .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
 			  .FirstOrDefaultAsync(m => m.ID == id);
 
             try
@@ -282,10 +311,79 @@ namespace haver.Controllers
 			{
 				//Note: there is really no reason a delete should fail if you can "talk" to the database.
 				ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
-			}
-			return View(salesOrder);
+            }
+            return View(salesOrder);
+        }
 
-		}
+
+        private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
+        {
+            //For this to work, you must have Included the child collection in the parent object
+            var allOptions = _context.Engineers;
+            var currentOptionsHS = new HashSet<int>(salesOrder.SalesOrderEngineers.Select(b => b.EngineerID));
+            //Instead of one list with a boolean, we will make two lists
+            var selected = new List<ListOptionVM>();
+            var available = new List<ListOptionVM>();
+            foreach (var s in allOptions)
+            {
+                if (currentOptionsHS.Contains(s.ID))
+                {
+                    selected.Add(new ListOptionVM
+                    {
+                        ID = s.ID,
+                        DisplayText = s.EngineerInitials
+                    });
+                }
+                else
+                {
+                    available.Add(new ListOptionVM
+                    {
+                        ID = s.ID,
+                        DisplayText = s.EngineerInitials
+                    });
+                }
+            }
+
+            ViewData["selOpts"] = new MultiSelectList(selected.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+            ViewData["availOpts"] = new MultiSelectList(available.OrderBy(s => s.DisplayText), "ID", "DisplayText");
+        }
+        private void UpdateSalesOrderEngineers(string[] selectedOptions, SalesOrder salesOrderToUpdate)
+        {
+            if (selectedOptions == null)
+            {
+                salesOrderToUpdate.SalesOrderEngineers = new List<SalesOrderEngineer>();
+                return;
+            }
+
+            var selectedOptionsHS = new HashSet<string>(selectedOptions);
+            var currentOptionsHS = new HashSet<int>(salesOrderToUpdate.SalesOrderEngineers.Select(b => b.EngineerID));
+            foreach (var s in _context.Engineers)
+            {
+                if (selectedOptionsHS.Contains(s.ID.ToString()))//it is selected
+                {
+                    if (!currentOptionsHS.Contains(s.ID))//but not currently in the Doctor's collection - Add it!
+                    {
+                        salesOrderToUpdate.SalesOrderEngineers.Add(new SalesOrderEngineer
+                        {
+                            EngineerID = s.ID,
+                            SalesOrderID = salesOrderToUpdate.ID
+                        });
+                    }
+                }
+                else //not selected
+                {
+                    if (currentOptionsHS.Contains(s.ID))//but is currently in the Doctor's collection - Remove it!
+                    {
+                        SalesOrderEngineer? specToRemove = salesOrderToUpdate.SalesOrderEngineers.FirstOrDefault(d => d.EngineerID == s.ID);
+                        if (specToRemove != null)
+                        {
+                            _context.Remove(specToRemove);
+                        }
+                    }
+                }
+            }
+        }
+
 
         private bool SalesOrderExists(int id)
         {
