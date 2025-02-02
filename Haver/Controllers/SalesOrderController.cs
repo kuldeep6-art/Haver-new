@@ -158,8 +158,7 @@ namespace haver.Controllers
 				{
 					_context.Add(salesOrder);
 					await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { salesOrder.ID });
-
+                    return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrder.ID });
                 }
             }
 			catch (DbUpdateException dex)
@@ -215,7 +214,7 @@ namespace haver.Controllers
 				try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { salesOrderToUpdate.ID });
+                    return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrderToUpdate.ID });
                 }
 				catch (DbUpdateException dex)
 				{

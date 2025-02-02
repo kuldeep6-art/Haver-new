@@ -1,0 +1,49 @@
+﻿@model haver.Models.Procurement
+
+@{
+    ViewData["Title"] = "Add Procuremen";
+}
+
+
+<h2>Add Procurement information for SalesOrder: @ViewData["OrderNumner"]</h2>
+<hr />
+<form asp-action="Add">
+    <input type="hidden" name="SalesOrderID" value="@Model.SalesOrderID" />
+    <input type="hidden" name="OrderNumber" value="@ViewData["OrderNumber"]" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="VendorID" class="control-label"></label>
+                <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PONumber" class="control-label"></label>
+                <input asp-for="PONumber" class="form-control" />
+                <span asp-validation-for="PONumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpDueDate" class="control-label"></label>
+                <input asp-for="ExpDueDate" class="form-control" />
+                <span asp-validation-for="ExpDueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDate" class="control-label"></label>
+                <input asp-for="DeliveryDate" class="form-control" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <partial name="_BackToList" />
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

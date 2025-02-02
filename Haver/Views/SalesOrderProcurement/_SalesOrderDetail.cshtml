@@ -1,0 +1,100 @@
+﻿@model haver.Models.SalesOrder
+
+
+<div class="row">
+    <div class="col-6">
+        <dl class="row">
+            <dt class="col-md-4">
+                @Html.DisplayNameFor(model => Model.OrderNumber)
+            </dt>
+            <dd class="col-md-8">
+                @Html.DisplayFor(model => Model.OrderNumber)
+            </dd>
+            <dt class="col-md-4">
+                @Html.DisplayNameFor(model => Model.SoDate)
+            </dt>
+            <dd class="col-md-8">
+                @Html.DisplayFor(model => Model.SoDate)
+            </dd>
+            <dt class="col-md-4">
+                @Html.DisplayNameFor(model => Model.AppDwgRcd)
+            </dt>
+            <dd class="col-md-8">
+                @Html.DisplayFor(model => Model.AppDwgRcd)
+            </dd>
+            <dt class="col-md-4">
+                @Html.DisplayNameFor(model => Model.DwgIsDt)
+            </dt>
+            <dd class="col-md-8">
+                @Html.DisplayFor(model => Model.DwgIsDt)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-6">
+        <dl class="row">
+            <dt class="col-md-4">
+                @Html.DisplayNameFor(model => Model.Customer)
+            </dt>
+            <dd class="col-md-8">
+                @Html.DisplayFor(model => Model.Customer.CompanyName)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="col-12">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PackageRelease)
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.PackageRelease != null)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PackageRelease.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PackageRelease.Notes)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a asp-controller="PackageRelease" asp-action="Details"
+                                       asp-route-id="@Model.PackageRelease.ID">@Html.DisplayFor(model => model.PackageRelease.Name)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
+                                </td>
+                                <td>
+                                    @Html.Raw(Model.PackageRelease.Notes)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <p>Package release information is not available. Please add a package release for this sales order.</p>
+                        <a asp-controller="PackageRelease" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="btn btn-primary">
+                            Create Package Release
+                        </a>
+                    </div>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
