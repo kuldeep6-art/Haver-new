@@ -31,7 +31,7 @@ namespace haver.Controllers
         {
             //List of sort options.
             //NOTE: make sure this array has matching values to the column headings
-            string[] sortOptions = new[] { "OrderNumber", "Customer" };
+            string[] sortOptions = new[] { "Order Number", "Customer" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -133,6 +133,7 @@ namespace haver.Controllers
             var salesOrder = await _context.SalesOrders
                 .Include(s => s.Customer)
                 .Include(s => s.PackageRelease)
+                .Include(s => s.Machines)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (salesOrder == null)
             {
@@ -157,18 +158,40 @@ namespace haver.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgRcd,DwgIsDt,CustomerID,Comments")] SalesOrder salesOrder
-            ,string[] selectedOptions)
+            ,string[] selectedOptions, string actionType)
         {
-            try
-            {
-                UpdateSalesOrderEngineers(selectedOptions, salesOrder);
-				if (ModelState.IsValid)
-				{
-					_context.Add(salesOrder);
-					await _context.SaveChangesAsync();
-                    return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrder.ID });
+			try
+			{
+                // Skip custom validation when saving as a draft
+                if (actionType == "save")
+                {
+                    // Clear ModelState to skip DataAnnotations validation
+                    ModelState.Clear();
+                    // Manually set a flag or custom validation status
+                    salesOrder.Status = Status.Draft;  // Set status to Draft when saving as draft
                 }
-            }
+
+                UpdateSalesOrderEngineers(selectedOptions, salesOrder);
+
+                if (ModelState.IsValid)
+                {
+                    if (actionType == "save")
+                    {
+                       // salesOrder.Status = Status.Draft; // Corrected: Assigning enum value
+                        _context.Add(salesOrder);
+                        await _context.SaveChangesAsync();
+                        TempData["Message"] = "Sales Order saved as Draft. You can continue later.";
+                        return RedirectToAction("Index"); // Redirect to index after saving
+                    }
+                    else if (actionType == "next")
+                    {
+                        salesOrder.Status = Status.InProgress; // Corrected: Assigning enum value
+                        _context.Add(salesOrder);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrder.ID });
+                    }
+                }
+			}
             catch (RetryLimitExceededException /* dex */)
             {
                 ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
@@ -228,13 +251,20 @@ namespace haver.Controllers
 
             UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
 
-			if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
+            // Check if status is Draft and update it to InProgress before saving
+            if (salesOrderToUpdate.Status == Status.Draft)
+            {
+                salesOrderToUpdate.Status = Status.InProgress;
+            }
+
+            if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
 			   p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.ShippingTerms,
 			   p => p.AppDwgRcd, p => p.DwgIsDt, p => p.CustomerID,p => p.Comments))
 			{
                 try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Sales Order updated and status set to 'In Progress'.";
                     return RedirectToAction("Index", "SalesOrderProcurement", new { SalesOrderID = salesOrderToUpdate.ID });
                 }
                 catch (RetryLimitExceededException /* dex */)

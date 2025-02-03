@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace haver.Models
 {
-    public class SalesOrder : Auditable, IValidatableObject
+    public class SalesOrder : Auditable
     {
         public int ID { get; set; }
 
@@ -63,6 +63,7 @@ namespace haver.Models
         public ICollection<Machine> Machines { get; set; } = new HashSet<Machine>();
 
         // Many-to-Many: A Sales Order can have multiple Engineers
+        [Display(Name = "Engineers")]
         public ICollection<SalesOrderEngineer> SalesOrderEngineers { get; set; } = new HashSet<SalesOrderEngineer>();
 
         // One-to-Many: A Sales Order can have multiple Procurements
@@ -74,12 +75,8 @@ namespace haver.Models
         [Display(Name = "Package Release Information")]
         public PackageRelease? PackageRelease { get; set; } // Navigation property to PackageRelease
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (AppDwgRcd < DwgIsDt)
-            {
-                yield return new ValidationResult("Approved Drawings Received date cannot be earlier than Order Drawings Sent date.", new[] { nameof(AppDwgRcd) });
-            }
-        }
+        public Status Status { get; set; } = Status.InProgress;
+
+     
     }
 }

@@ -124,6 +124,7 @@ namespace haver.Controllers
             SalesOrder? salesOrder = await _context.SalesOrders
                 .Include(s => s.Customer)
                 .Include(s => s.PackageRelease)
+                .Include(s => s.Machines)
                 .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
                 .Where(p => p.ID == SalesOrderID.GetValueOrDefault())
                 .AsNoTracking()

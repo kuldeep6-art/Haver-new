@@ -30,6 +30,16 @@
 			</div>
 		</div>
 
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Vendor <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="Vendor" asp-action="Index">View Vendors</a>
+				<a asp-area="" asp-controller="Vendor" asp-action="Create">Create Vendors</a>
+			</div>
+		</div>
+
 		<!-- Engineer Dropdown -->
 		<div class="dropdown">
 			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
