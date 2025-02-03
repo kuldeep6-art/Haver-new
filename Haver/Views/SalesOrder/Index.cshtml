@@ -49,6 +49,11 @@
             <div class="card card-body bg-light">
                 <div class="row">
                     <div class="form-group col-md-4">
+                        <label class="control-label">Select by Status:</label>
+                        @Html.DropDownList("StatusFilter", (SelectList)ViewBag.StatusSelectList,
+                                 "All Statuses", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
                         <label class="form-label fw-bold" for="CustomerID">Select by Customer:</label>
                         @Html.DropDownList("CustomerID", null, "All Customers", htmlAttributes: new { @class = "form-control", aria_label = "Select customer to filter orders" })
                     </div>
