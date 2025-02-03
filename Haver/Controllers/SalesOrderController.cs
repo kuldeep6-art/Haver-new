@@ -26,7 +26,7 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, int? CustomerID,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? StatusFilter, int? CustomerID,
             string? actionButton, string sortDirection = "asc",  string sortField="OrderNumber")
         {
             //List of sort options.
@@ -36,10 +36,19 @@ namespace haver.Controllers
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
-            //Then in each "test" for filtering, add to the count of Filters applied
+			//Then in each "test" for filtering, add to the count of Filters applied
 
+			if (Enum.TryParse(StatusFilter, out Status selectedStatus))
+			{
 
-            PopulateDropDownLists();
+				ViewBag.StatusSelectList = Status.Draft.ToSelectList(selectedStatus);
+			}
+			else
+			{
+				ViewBag.StatusSelectList = Status.Draft.ToSelectList(null);
+			}
+
+			PopulateDropDownLists();
 
             var salesOrders = from s in _context.SalesOrders
                               .Include(s => s.Customer)
@@ -58,9 +67,15 @@ namespace haver.Controllers
                 salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
                 numberFilters++;
             }
+			if (!String.IsNullOrEmpty(StatusFilter))
+			{
+			    salesOrders = salesOrders.Where(p => p.Status == selectedStatus);
+				numberFilters++;
+			}
 
-            //Give feedback about the state of the filters
-            if (numberFilters != 0)
+
+			//Give feedback about the state of the filters
+			if (numberFilters != 0)
             {
                 //Toggle the Open/Closed state of the collapse depending on if we are filtering
                 ViewData["Filtering"] = " btn-danger";
@@ -400,11 +415,11 @@ namespace haver.Controllers
 
             // Redirect back to the Index page after marking as completed
             return RedirectToAction(nameof(Index));
-        }
+		}
 
+  
 
-
-        private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
+private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
         {
             //For this to work, you must have Included the child collection in the parent object
             var allOptions = _context.Engineers;
@@ -476,9 +491,11 @@ namespace haver.Controllers
         private bool SalesOrderExists(int id)
         {
             return _context.SalesOrders.Any(e => e.ID == id);
-        }
+		}
 
-		private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+        
+
+private void PopulateDropDownLists(SalesOrder? salesOrder = null)
 		{
 			ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
 		}
