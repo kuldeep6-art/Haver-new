@@ -68,11 +68,18 @@
                     </button>
                 </th>
                 <th class="text-center">
+                    @if (salesOrder.Status != Status.Completed)
+    {
                     <a asp-controller="SalesOrderProcurement" asp-action="Add"
                        asp-route-SalesOrderID="@salesOrder.ID" asp-route-OrderNumber="@salesOrder.OrderNumber"
-                       class="btn btn-success" data-bs-toggle="tooltip" title="Add Procurement Information">
+                       class="btn" data-bs-toggle="tooltip" title="Add Procurement Information">
                         <i class="fa-solid fa-plus"></i> Add
                     </a>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">✅ Completed</span>
+                    }
                 </th>
             </tr>
         </thead>
@@ -85,16 +92,23 @@
                     <td>@Html.DisplayFor(modelItem => item.ExpDueDate)</td>
                     <td>@Html.DisplayFor(modelItem => item.DeliveryDate)</td>
                     <td class="text-center">
+                        @if (salesOrder.Status != Status.Completed)
+                        {
                         <a asp-controller="SalesOrderProcurement" asp-action="Update" asp-route-id="@item.ID"
-                           class="btn btn-sm btn-outline-warning" role="button"
+                           class="btn btn-sm " role="button"
                            data-bs-toggle="tooltip" title="Edit Procurement">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                         <a asp-controller="SalesOrderProcurement" asp-action="Remove" asp-route-id="@item.ID"
-                           class="btn btn-sm btn-outline-danger" role="button"
+                           class="btn btn-sm" role="button"
                            data-bs-toggle="tooltip" title="Delete Procurement">
                             <i class="fa-solid fa-trash"></i>
                         </a>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">✅ Completed</span>
+                        }
                     </td>
                 </tr>
             }
