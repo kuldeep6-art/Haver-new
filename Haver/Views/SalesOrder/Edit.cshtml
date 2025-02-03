@@ -1,84 +1,119 @@
 ﻿@model haver.Models.SalesOrder
-
-<partial name="_ViewHeading" />
-
-<h4>SalesOrder</h4>
-<hr />
-<form asp-action="Edit">
-<div class="row">
-    <div class="col-md-4">
+<div class="container-fluid bg-light">
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Edit a Sales Order
+            </h4>
+        </div>
+    </div>
+    <div class="row py-4">
+  <div class="col-md-8 offset-md-2">
+    <form asp-action="Edit" class="border p-4 shadow-sm">
+    <div class="row">
+   
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="OrderNumber" class="control-label"></label>
-                <input asp-for="OrderNumber" class="form-control" />
-                <span asp-validation-for="OrderNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SoDate" class="control-label"></label>
-                <input asp-for="SoDate" class="form-control" />
-                <span asp-validation-for="SoDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingTerms" class="control-label"></label>
-                <input asp-for="ShippingTerms" class="form-control" />
-                <span asp-validation-for="ShippingTerms" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppDwgRcd" class="control-label"></label>
-                <input asp-for="AppDwgRcd" class="form-control" />
-                <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DwgIsDt" class="control-label"></label>
-                <input asp-for="DwgIsDt" class="form-control" />
-                <span asp-validation-for="DwgIsDt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerID" class="control-label"></label>
-                <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID"></select>
-                <span asp-validation-for="CustomerID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Comments" class="control-label"></label>
-                <input asp-for="Comments" class="form-control" />
-                <span asp-validation-for="Comments" class="text-danger"></span>
-            </div>
 
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="control-label"> Engineers Assigned</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                            <strong>-</strong>
-                        </button>
-                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label class="control-label"> Choose Engineers</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                            <strong>+</strong>
-                        </button>
-                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
-                    </div>
+            <!-- First Row with two inputs -->
+            <div class="row">
+                <div class="col-md-6 form-group mb-4">
+                    <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <input asp-for="OrderNumber" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
                 </div>
 
-            <div class="form-group">
-                <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" />
+                <div class="col-md-6 form-group mb-4">
+                    <label asp-for="SoDate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <input asp-for="SoDate" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                    <span asp-validation-for="SoDate" class="text-danger"></span>
+                </div>
             </div>
-      </div>
-      </div>
-</div>
+
+            <!-- Second Row with two inputs -->
+            <div class="row">
+                <div class="col-md-6 form-group mb-4">
+                    <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <input asp-for="Price" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <input asp-for="ShippingTerms" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                    <span asp-validation-for="ShippingTerms" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Third Row with two inputs -->
+            <div class="row">
+                <div class="col-md-6 form-group mb-4">
+                    <label asp-for="AppDwgRcd" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <input asp-for="AppDwgRcd" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                    <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label asp-for="DwgIsDt" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <input asp-for="DwgIsDt" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                    <span asp-validation-for="DwgIsDt" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Customer ID Field -->
+            <div class="row">
+            <div class=" col-md-6 form-group mb-4">
+                <label asp-for="CustomerID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;"></select>
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+
+            <!-- Comments Field -->
+            <div class=" col-md-6 form-group mb-4">
+                <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                        <input asp-for="Comments" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+                    </div>
+
+        <!-- Engineers Assigned and Choose Engineers -->
+        
+            <div class="row">
+                <div class="col-md-6 form-group mb-4">
+                    <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Engineers Assigned</label>
+                    <button type="button" id="btnRight" class="btn btn-danger btn-sm" style="font-family: 'Avenir Heavy', sans-serif; color:#fff;">
+                        <strong>-</strong>
+                    </button>
+                    @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Choose Engineers</label>
+                    <button type="button" id="btnLeft" class="btn btn-success btn-sm" style="font-family: 'Avenir Heavy', sans-serif; color:#fff;">
+                        <strong>+</strong>
+                    </button>
+                    @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
+                </div>
+           
+
+            <!-- Submit Button -->
+            <div class="form-group text-center">
+                <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; font-size: 1rem;" />
+            </div>
+        </div>
+    </div>
+                <div class="d-flex flex-column align-items-start gap-2">
+                  
+                    <!-- Back to Sales Order List -->
+                    <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Sales Order List
+                    </a>
+                </div>
 </form>
-
-
-<div>
-    <partial name="_BackToList" />
 </div>
+    </div>
+    </div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

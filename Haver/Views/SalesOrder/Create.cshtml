@@ -1,13 +1,11 @@
 ﻿@model haver.Models.SalesOrder
 
-<partial name="_ViewHeading" />
-
 <div class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Create a Sales Order
+               Create a Sales Order
             </h4>
         </div>
     </div>
@@ -18,80 +16,90 @@
             <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <!-- Order Number -->
-                <div class="form-group mb-3">
-                    <label asp-for="OrderNumber" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Order Number
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order number."></i>
-                    </label>
-                    <input asp-for="OrderNumber" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="1" />
-                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
+                <!-- Row with two inputs side by side -->
+                <div class="row">
+                    <!-- Order Number -->
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="OrderNumber" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Order Number
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order number."></i>
+                        </label>
+                        <input asp-for="OrderNumber" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="1" />
+                        <span asp-validation-for="OrderNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Sales Order Date -->
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="SoDate" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Sales Order Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order date."></i>
+                        </label>
+                        <input asp-for="SoDate" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="2" />
+                        <span asp-validation-for="SoDate" class="text-danger"></span>
+                    </div>
                 </div>
 
-                <!-- Sales Order Date -->
-                <div class="form-group mb-3">
-                    <label asp-for="SoDate" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Sales Order Date
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order date."></i>
-                    </label>
-                    <input asp-for="SoDate" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="2" />
-                    <span asp-validation-for="SoDate" class="text-danger"></span>
+                <!-- Row with two more inputs side by side -->
+                <div class="row">
+                    <!-- Price -->
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="Price" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Price
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for the order."></i>
+                        </label>
+                        <input asp-for="Price" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="3" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <!-- Shipping Terms -->
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="ShippingTerms" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Shipping Terms
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for the order."></i>
+                        </label>
+                        <input asp-for="ShippingTerms" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="4" />
+                        <span asp-validation-for="ShippingTerms" class="text-danger"></span>
+                    </div>
                 </div>
 
-                <!-- Price -->
-                <div class="form-group mb-3">
-                    <label asp-for="Price" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Price
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for the order."></i>
-                    </label>
-                    <input asp-for="Price" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="3" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
+                <!-- Row with two more inputs side by side -->
+                <div class="row">
+                    <!-- App Dwg Rcd -->
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="AppDwgRcd" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Application Drawing Record
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the application drawing record number."></i>
+                        </label>
+                        <input asp-for="AppDwgRcd" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="5" />
+                        <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
+                    </div>
 
-                <!-- Shipping Terms -->
-                <div class="form-group mb-3">
-                    <label asp-for="ShippingTerms" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Shipping Terms
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for the order."></i>
-                    </label>
-                    <input asp-for="ShippingTerms" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="4" />
-                    <span asp-validation-for="ShippingTerms" class="text-danger"></span>
-                </div>
-
-                <!-- App Dwg Rcd -->
-                <div class="form-group mb-3">
-                    <label asp-for="AppDwgRcd" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Application Drawing Record
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the application drawing record number."></i>
-                    </label>
-                    <input asp-for="AppDwgRcd" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="5" />
-                    <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
-                </div>
-
-                <!-- Dwg Is Dt -->
-                <div class="form-group mb-3">
-                    <label asp-for="DwgIsDt" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Drawing Is Date
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the drawing is date."></i>
-                    </label>
-                    <input asp-for="DwgIsDt" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
-                    <span asp-validation-for="DwgIsDt" class="text-danger"></span>
+                    <!-- Dwg Is Dt -->
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="DwgIsDt" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Drawing Is Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the drawing is date."></i>
+                        </label>
+                        <input asp-for="DwgIsDt" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
+                        <span asp-validation-for="DwgIsDt" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <!-- Customer ID -->
-                <div class="form-group mb-3">
+                <div class="row">
+                <div class=" col-md-6 form-group mb-3">
                     <label asp-for="CustomerID" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Customer
@@ -101,7 +109,7 @@
                 </div>
 
                 <!-- Comments -->
-                <div class="form-group mb-3">
+                <div class="col-md-6 form-group mb-3">
                     <label asp-for="Comments" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Comments
@@ -111,22 +119,24 @@
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="8" />
                     <span asp-validation-for="Comments" class="text-danger"></span>
                 </div>
+                </div>
 
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="control-label"> Specialties Accredited</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                                <strong>-</strong>
-                            </button>
-                            @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
-                        </div>
+                <!-- Specialties -->
+                <div class="row">
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="control-label">Engineers Assigned</label>
+                        <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                            <strong>-</strong>
+                        </button>
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                    </div>
 
-                        <div class="form-group col-md-6">
-                            <label class="control-label"> Choose Specialties</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                                <strong>+</strong>
-                            </button>
-                            @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
-                        </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="control-label">Choose Engineers</label>
+                        <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                            <strong>+</strong>
+                        </button>
+                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
                     </div>
                 </div>
 
@@ -155,7 +165,6 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
