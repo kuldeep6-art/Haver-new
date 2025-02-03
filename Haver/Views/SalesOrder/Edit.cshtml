@@ -18,13 +18,17 @@
             <!-- First Row with two inputs -->
             <div class="row">
                 <div class="col-md-6 form-group mb-4">
-                    <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
-                    <input asp-for="OrderNumber" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
+                            <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Order Number <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the sales order number."></i></label>
+                    <input asp-for="OrderNumber" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;"/>
                     <span asp-validation-for="OrderNumber" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-group mb-4">
-                    <label asp-for="SoDate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <label asp-for="SoDate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Sales Order Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the sales order date."></i>
+                    </label>
                     <input asp-for="SoDate" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
                     <span asp-validation-for="SoDate" class="text-danger"></span>
                 </div>
@@ -33,13 +37,19 @@
             <!-- Second Row with two inputs -->
             <div class="row">
                 <div class="col-md-6 form-group mb-4">
-                    <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Price
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for the order."></i>
+                    </label>
                     <input asp-for="Price" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-group mb-4">
-                    <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Shipping Terms
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the shipping terms for the order."></i>
+                    </label>
                     <input asp-for="ShippingTerms" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
                     <span asp-validation-for="ShippingTerms" class="text-danger"></span>
                 </div>
@@ -48,13 +58,19 @@
             <!-- Third Row with two inputs -->
             <div class="row">
                 <div class="col-md-6 form-group mb-4">
-                    <label asp-for="AppDwgRcd" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <label asp-for="AppDwgRcd" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Application Drawing Record
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the application drawing record date."></i>
+                    </label>
                     <input asp-for="AppDwgRcd" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
                     <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-group mb-4">
-                    <label asp-for="DwgIsDt" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+                    <label asp-for="DwgIsDt" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Drawing Is Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the drawing is date."></i>
+                    </label>
                     <input asp-for="DwgIsDt" class="form-control" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" />
                     <span asp-validation-for="DwgIsDt" class="text-danger"></span>
                 </div>
@@ -62,15 +78,21 @@
 
             <!-- Customer ID Field -->
             <div class="row">
-            <div class=" col-md-6 form-group mb-4">
-                <label asp-for="CustomerID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+            <div class=" col-md-12 form-group mb-4">
+                <label asp-for="CustomerID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Customer
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer for this order."></i>
+                </label>
                 <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;"></select>
                 <span asp-validation-for="CustomerID" class="text-danger"></span>
             </div>
 
             <!-- Comments Field -->
-            <div class=" col-md-6 form-group mb-4">
-                <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"></label>
+            <div class=" col-md-12 form-group mb-4">
+                <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
+                                Comments
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit comments related to the sales order."></i>
+                </label>
                         <textarea asp-for="Comments" class="form-control summernote" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;"></textarea>
                 <span asp-validation-for="Comments" class="text-danger"></span>
             </div>
