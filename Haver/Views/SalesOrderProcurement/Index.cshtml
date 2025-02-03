@@ -104,11 +104,24 @@
     <partial name="_PagingNavBar" />
 
     <div class="mt-3">
-        <a asp-action="Edit" asp-controller="SalesOrder" asp-route-id="@salesOrder.ID" class="btn btn-outline-info">
-            Edit @salesOrder.OrderNumber
-        </a>
+        @if (salesOrder.Status != Status.Completed)
+        {
+            <a asp-action="Edit" asp-controller="SalesOrder" asp-route-id="@salesOrder.ID" class="btn btn-outline-info">
+                Edit Sales Order @salesOrder.OrderNumber
+            </a>
+        }
+
         <a href='@ViewData["returnURL"]' class="btn btn-outline-secondary">Back to Sales Order List</a>
+
+        @if (salesOrder.Status != Status.Completed && salesOrder.Status != Status.Archived)
+        {
+            <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@salesOrder.ID" class="btn btn-outline-success">
+                Mark as Completed
+            </a>
+        }
     </div>
+
+
 </form>
 
 @section Scripts {
