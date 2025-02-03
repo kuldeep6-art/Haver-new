@@ -1,253 +1,146 @@
 ﻿@model haver.Models.Machine
 
-<div id="machinePrint" class="container-fluid bg-light">
-    <div class="row">
-        <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Machine Details
-            </h4>
-        </div>
-    </div>
+<partial name="_ViewHeading" />
 
-    <div class="row py-4">
-        <div class="col-md-10 offset-md-1">
-            <div class="card border shadow-sm">
-                <div class="card-body p-4">
-                    <!--   note to group members : I took this styling from the details page of engineer as requested -->
-                    <div class="mb-5">
-                        <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
-                            Machine Information
-                        </h5>
-                        <div class="row">
-                            <!-- Description -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            Description
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Description)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Production Order Number -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            Production Order Number
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.ProductionOrderNumber)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <!-- Serial Number -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            Serial Number
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.SerialNumber)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Quantity -->
-                            <div class="col-md-6 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            Quantity
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Quantity)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="mt-4 d-flex gap-3 mx-4 mb-3">
-                    <a href="@Url.Action("Index", "Machine")" class="btn btn-primary"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Machine List
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
-                        Edit
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div>
+	<h4>Machine</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Description)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Description)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ProductionOrderNumber)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ProductionOrderNumber)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.SerialNumber)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.SerialNumber)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Quantity)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Quantity)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Size)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Size)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Class)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Class)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.SizeDeck)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.SizeDeck)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Media)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Media)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.SpareParts)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.SpareParts)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.SparePMedia)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.SparePMedia)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Base)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Base)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AirSeal)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AirSeal)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.CoatingLining)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.CoatingLining)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Disassembly)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Disassembly)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.BudgetedHours)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.BudgetedHours)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ActualAssemblyHours)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ActualAssemblyHours)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ReworkHours)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ReworkHours)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Nameplate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Nameplate)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.PreOrder)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.PreOrder)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Scope)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Scope)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.SalesOrder)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.SalesOrder.OrderNumber)
+		</dd>
+	</dl>
+</div>
+<div>
+	<a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
+	<partial name="_BackToList" />
 </div>
 
-<!-- Tooltip Initialization -->
-<script>
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-</script>
-
 <style>
-    h6 {
-        font-weight: bold;
-    }
+
+
 </style>
 
-
-@* @model haver.Models.Machine *@
-
-@* <partial name="_ViewHeading" /> *@
-
-@* <div> *@
-@*     <h4>Machine</h4> *@
-@*     <hr /> *@
-@*     <dl class="row"> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Description) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Description) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.ProductionOrderNumber) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.ProductionOrderNumber) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.SerialNumber) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.SerialNumber) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Quantity) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Quantity) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Size) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Size) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Class) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Class) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.SizeDeck) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.SizeDeck) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Media) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Media) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.SpareParts) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.SpareParts) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.SparePMedia) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.SparePMedia) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Base) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Base) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.AirSeal) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.AirSeal) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.CoatingLining) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.CoatingLining) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Disassembly) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Disassembly) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.BudgetedHours) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.BudgetedHours) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.ActualAssemblyHours) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.ActualAssemblyHours) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.ReworkHours) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.ReworkHours) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Nameplate) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Nameplate) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.PreOrder) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.PreOrder) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Scope) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Scope) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.SalesOrder) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.SalesOrder.OrderNumber) *@
-@*         </dd> *@
-@*     </dl> *@
-@* </div> *@
-@* <div> *@
-@*     <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> | *@
-@*     <partial name="_BackToList" /> *@
-@*     </div> *@
