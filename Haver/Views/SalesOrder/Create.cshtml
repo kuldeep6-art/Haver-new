@@ -153,6 +153,11 @@
             name="actionType" value="save">
         Save as Drafts
     </button>
+
+                    <button type="button" id="btnQuickFill" class="btn btn-info"
+                            style="background-color:#17a2b8; border-color:#17a2b8; font-family: 'Avenir Heavy', sans-serif;">
+                        Quick Fill
+                    </button>
 </div>
 
 
@@ -168,6 +173,9 @@
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
                         ⬅ Back to Sales Order List
                     </a>
+
+                    
+
                 </div>
             </form>
         </div>
@@ -217,6 +225,24 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
+    <script type="text/javascript">
+        // Function to quickly fill the form with sample data
+        document.getElementById('btnQuickFill').addEventListener('click', function () {
+            document.getElementById('OrderNumber').value = '10423454';
+            document.getElementById('SoDate').value = '2025-02-05'; // Update with desired date format
+            document.getElementById('Price').value = '15000.00';
+            document.getElementById('ShippingTerms').value = 'FOB Toronto';
+            document.getElementById('AppDwgRcd').value = '2025-02-01'; // Update with desired date
+            document.getElementById('DwgIsDt').value = '2025-02-02'; // Update with desired date
+            document.getElementById('CustomerID').value = '1'; // Assuming the customer ID is '1'
+            document.getElementById('Comments').value = 'Quick fill test comment for presentation.';
+
+            // For the ListBox (you can set selected options similarly)
+            $("#selectedOptions").val(['Option1', 'Option2']); // Assuming these options exist
+            $("#availOptions").val(['Option3', 'Option4']); // Assuming these options exist
+        });
+    </script>
+
 
 }
 
