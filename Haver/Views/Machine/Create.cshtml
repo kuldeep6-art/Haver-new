@@ -289,6 +289,10 @@
                         ⬅ Back to Machine List
                     </a>
                     <button type="submit" class="btn btn-lg avenir-heavy" tabindex="22">Save</button>
+                    <button type="button" id="btnQuickFill" class="btn btn-info"
+                            style="background-color:#17a2b8; border-color:#17a2b8; font-family: 'Avenir Heavy', sans-serif;">
+                        Quick Fill
+                    </button>
                 </div>
 
                
@@ -306,4 +310,36 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     </script>
+
+    <script type="text/javascript">
+        // Function to quickly fill the form with sample data
+        document.getElementById('btnQuickFill').addEventListener('click', function () {
+            document.getElementById('ProductionOrderNumber').value = '10423454';
+            document.getElementById('Description').value = "Vibrating Screen Model XYZ";
+            document.getElementById('ProductionOrderNumber').value = "PO123456";
+            document.getElementById('SerialNumber').value = "SN123456789";
+            document.getElementById('Quantity').value = "10";
+            document.getElementById('Size').value = "Large";
+            document.getElementById('Class').value = "A";
+            document.getElementById('SizeDeck').value = "10x5";
+            document.getElementById('SalesOrderID').value = "SO987654";
+            document.getElementById('Nameplate').value = "Standard";
+
+            document.getElementById('Media').checked = true;
+            document.getElementById('SpareParts').checked = true;
+            document.getElementById('SparePMedia').checked = false;
+            document.getElementById('Base').checked = true;
+            document.getElementById('AirSeal').checked = false;
+            document.getElementById('CoatingLining').checked = true;
+            document.getElementById('Disassembly').checked = false;
+
+            document.getElementById('BudgetedHours').value = "50";
+            document.getElementById('ReworkHours').value = "10";
+            document.getElementById('ActualAssemblyHours').value = "45";
+
+            document.getElementById('PreOrder').value = "Pre-order details...";
+            document.getElementById('Scope').value = "Scope of work for the machine.";
+        });
+    </script>
+
 }
