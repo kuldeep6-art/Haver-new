@@ -29,7 +29,7 @@ namespace haver.Controllers
         {
             //List of sort options.
             //NOTE: make sure this array has matching values to the column headings
-            string[] sortOptions = new[] { "Description", "ProductionOrderNumber" };
+            string[] sortOptions = new[] { "Description", "Production Order Number" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
