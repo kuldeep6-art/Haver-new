@@ -4,6 +4,18 @@
 
 <h1 class="text-center my-4" aria-label="Sales Order Index">Sales Orders</h1>
 
+@{
+    var message = TempData["Message"] as string;
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn" aria-label="Create a new sales order" data-bs-toggle="tooltip" title="Create a new sales order">
         <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
@@ -40,7 +52,7 @@
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="bg-dark text-white text-center">
             <tr>
-                @foreach (var field in new[] { "OrderNumber", "SoDate", "AppDwgRcd", "DwgIsDt", "Customer" , "Engineer"})
+                @foreach (var field in new[] { "Order Number", "Order Date", "AppDwgRcd", "DwgIsDt", "Customer" , "Engineer"})
                 {
                     <th class="align-middle">
                         <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
@@ -52,6 +64,7 @@
                         </button>
                     </th>
                 }
+                <th>Status</th>
                 <th class="align-middle">Actions</th>
             </tr>
         </thead>
@@ -93,17 +106,31 @@
                             }
                         }
                     </td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                
                     <td class="text-center">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Edit sales order">
-                            <i class="fa-solid fa-pen-to-square"></i> Edit
-                        </a>
-                        <a asp-controller="SalesOrderProcurement" asp-action="Index" asp-route-SalesOrderID="@item.ID" class= "btn btn-sm mx-1 text-white" aria-label="View details of sales order" data-bs-toggle="tooltip" title="View details">
-                            <i class="fa-solid fa-circle-info"></i> Details
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Delete sales order">
-                            <i class="fa-solid fa-delete-left"></i> Delete
-                        </a>
+                        @if (item.Status == Status.Draft)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Continue sales order @item.OrderNumber"
+                            data-bs-toggle="tooltip" title="Continue">Continue</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                               aria-label="Edit sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Edit sales order">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </a>
+                            <a asp-controller="SalesOrderProcurement" asp-action="Index" asp-route-SalesOrderID="@item.ID"
+                               class="btn btn-sm mx-1 text-white" aria-label="View details of sales order" data-bs-toggle="tooltip" title="View details">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                               aria-label="Delete sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Delete sales order">
+                                <i class="fa-solid fa-delete-left"></i> Delete
+                            </a>
+                        }
                     </td>
+
                 </tr>
             }
         </tbody>
