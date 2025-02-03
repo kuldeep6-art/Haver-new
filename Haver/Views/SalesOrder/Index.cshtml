@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<haver.Models.SalesOrder>
 
-<partial name="_ViewHeading" />
-
+@* <partial name="_ViewHeading" />
+ *@
 <h1 class="text-center my-4" aria-label="Sales Order Index">Sales Orders</h1>
 
 @{
@@ -14,6 +14,22 @@
         @message
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+}
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"]?.ToString()))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -107,12 +123,22 @@
                         }
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                
+
                     <td class="text-center">
                         @if (item.Status == Status.Draft)
                         {
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Continue sales order @item.OrderNumber"
-                            data-bs-toggle="tooltip" title="Continue">Continue</a>
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Continue sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Continue">Continue</a>
+                        }
+                        else if (item.Status == Status.Archived)
+                        {
+                            <span class="badge bg-secondary">Archived</span>
+                        }
+                        else if (item.Status == Status.Completed)
+                        {
+                            <span class="badge bg-success">Completed</span>  <!-- Display Completed status -->
+                            <a asp-controller="SalesOrderProcurement" asp-action="Index" asp-route-SalesOrderID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of sales order" data-bs-toggle="tooltip" title="View details">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
                         }
                         else
                         {
@@ -124,12 +150,14 @@
                                class="btn btn-sm mx-1 text-white" aria-label="View details of sales order" data-bs-toggle="tooltip" title="View details">
                                 <i class="fa-solid fa-circle-info"></i> Details
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Delete sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Delete sales order">
-                                <i class="fa-solid fa-delete-left"></i> Delete
+                            <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                               aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Archive sales order">
+                                <i class="fa-solid fa-box-archive"></i> Archive
                             </a>
                         }
                     </td>
+
+
 
                 </tr>
             }

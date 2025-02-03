@@ -346,6 +346,64 @@ namespace haver.Controllers
         }
 
 
+        // GET: SalesOrder/Archive/5
+        public async Task<IActionResult> Archive(int id)
+        {
+            var salesOrder = await _context.SalesOrders
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            salesOrder.Status = Status.Archived;
+            _context.Update(salesOrder);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Sales order has been archived successfully.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error archiving sales order. Please try again.";
+            }
+
+            return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
+        }
+
+        // GET: SalesOrder/Complete/5
+        public async Task<IActionResult> Complete(int id)
+        {
+            var salesOrder = await _context.SalesOrders
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            // Set the status to Completed
+            salesOrder.Status = Status.Completed;
+            _context.Update(salesOrder);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Sales order has been marked as completed.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error marking sales order as completed. Please try again.";
+            }
+
+            // Redirect back to the Index page after marking as completed
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
         {
             //For this to work, you must have Included the child collection in the parent object
