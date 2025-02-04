@@ -111,13 +111,7 @@
         <!-- Engineers Assigned and Choose Engineers -->
         
             <div class="row">
-                <div class="col-md-6 form-group mb-4">
-                    <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Engineers Assigned</label>
-                    <button type="button" id="btnRight" class="btn btn-danger btn-sm" style="font-family: 'Avenir Heavy', sans-serif; color:#fff;">
-                        <strong>-</strong>
-                    </button>
-                    @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
-                </div>
+               
 
                 <div class="col-md-6 form-group mb-4">
                     <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Choose Engineers</label>
@@ -126,6 +120,14 @@
                     </button>
                     @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
                 </div>
+
+                        <div class="col-md-6 form-group mb-4">
+                            <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Engineers Assigned</label>
+                            <button type="button" id="btnRight" class="btn btn-danger btn-sm" style="font-family: 'Avenir Heavy', sans-serif; color:#fff;">
+                                <strong>-</strong>
+                            </button>
+                            @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
+                        </div>
            
 
             <!-- Submit Button -->
