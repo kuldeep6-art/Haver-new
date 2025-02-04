@@ -490,6 +490,28 @@ private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
             }
         }
 
+        private SelectList EngineerSelectList(string skip)
+        {
+            var SpecialtyQuery = _context.Engineers
+                .AsNoTracking();
+
+            if (!String.IsNullOrEmpty(skip))
+            {
+                //Convert the string to an array of integers
+                //so we can make sure we leave them out of the data we download
+                string[] avoidStrings = skip.Split('|');
+                int[] skipKeys = Array.ConvertAll(avoidStrings, s => int.Parse(s));
+                SpecialtyQuery = SpecialtyQuery
+                    .Where(s => !skipKeys.Contains(s.ID));
+            }
+            return new SelectList(SpecialtyQuery.OrderBy(d => d.EngineerInitials), "ID", "EngineerInitials");
+        }
+        [HttpGet]
+        public JsonResult GetEngineers(string skip)
+        {
+            return Json(EngineerSelectList(skip));
+        }
+
 
         private bool SalesOrderExists(int id)
         {
@@ -574,7 +596,7 @@ private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
 					// Add the column headers for the main data
 					string[] mainHeaders = {
 				"Sales Order", "Customer Name", "Machine Description", "Serial Number", "Package Release",
-				"Vendor Name", "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base", "Air Seal",
+				"Vendor Name", "PO Number", "PO Due Date","Engineer Pacakage Release", "Delivery Date", "Media", "Spare Parts", "Base", "Air Seal",
 				"Coating Lining", "Disassembly"
 			};
 					for (int i = 0; i < mainHeaders.Length; i++)

@@ -1,0 +1,26 @@
+﻿@model haver.Models.Engineer
+<form asp-controller="Engineer" asp-action="Create" method="post" id="createEngineerForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-danger validation-summary-errors"><ul id="ErrorList"></ul></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submitEngineerCreate" value="Save" class="btn btn-outline-dark" />
+            </div>
+        </div>
+    </div>
+</form>
