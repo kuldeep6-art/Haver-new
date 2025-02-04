@@ -596,7 +596,7 @@ private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
 					// Add the column headers for the main data
 					string[] mainHeaders = {
 				"Sales Order", "Customer Name", "Machine Description", "Serial Number", "Package Release",
-				"Vendor Name", "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base", "Air Seal",
+				"Vendor Name", "PO Number", "PO Due Date","Engineer Pacakage Release", "Delivery Date", "Media", "Spare Parts", "Base", "Air Seal",
 				"Coating Lining", "Disassembly"
 			};
 					for (int i = 0; i < mainHeaders.Length; i++)
