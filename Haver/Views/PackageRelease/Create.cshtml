@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Create a Package Release related to a sales order
+                Add Package Information To An Order
             </h4>
         </div>
     </div>
@@ -20,7 +20,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Enter the Name
+                        Enter the Name of Package
                         <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the package release."></i>
                     </label>
                     <input asp-for="Name" class="form-control"
@@ -44,7 +44,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="PReleaseDateA" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Enter the scheduled date for approval drawings to be sent to the customer
+                        Enter the scheduled date for drawings to be sent to the customer
                         <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the actual release date."></i>
                     </label>
                     <input asp-for="PReleaseDateA" class="form-control"
@@ -86,7 +86,7 @@
                     <div class="form-group mb-3">
                         <label asp-for="SalesOrderID" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Sales Order
+                            Select the sales order number related to this package
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip"
                                title="Select the sales order number related to this package."></i>
                         </label>

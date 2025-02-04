@@ -30,7 +30,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order number."></i>
                         </label>
                         <input asp-for="OrderNumber" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="1" placeholder="Enter Order Number" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="1" placeholder="12345678" />
                         <span asp-validation-for="OrderNumber" class="text-danger"></span>
                     </div>
 
@@ -38,7 +38,7 @@
                     <div class="col-md-6 form-group mb-3">
                         <label asp-for="SoDate" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Sales Order Date
+                            Enter the date this order was placed
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order date."></i>
                         </label>
                         <input asp-for="SoDate" class="form-control"
@@ -57,7 +57,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for the order."></i>
                         </label>
                         <input asp-for="Price" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="3" placeholder="Enter Order Price" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="3" placeholder="2000" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
@@ -66,7 +66,7 @@
                         <label asp-for="ShippingTerms" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Shipping Terms
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for the order."></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for this order."></i>
                         </label>
                         <input asp-for="ShippingTerms" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="4" placeholder="Enter Shipping Terms" />
@@ -80,7 +80,7 @@
                     <div class="col-md-6 form-group mb-3">
                         <label asp-for="AppDwgRcd" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Application Drawing Record
+                            Drawings Recieved From Customer On
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the application drawing record date."></i>
                         </label>
                         <input asp-for="AppDwgRcd" class="form-control"
@@ -92,7 +92,7 @@
                     <div class="col-md-6 form-group mb-3">
                         <label asp-for="DwgIsDt" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Drawing Is Date
+                            Drawings Issued to Customer On
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the drawing is date."></i>
                         </label>
                         <input asp-for="DwgIsDt" class="form-control"
@@ -106,7 +106,7 @@
                     <div class=" col-md-6 form-group mb-3">
                         <label asp-for="CustomerID" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Customer
+                            Select the customer related to this order
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the customer for this order."></i>
                         </label>
                       @*   <div class="input-group-prepend">
@@ -119,7 +119,7 @@
                     <div class="col-md-6 form-group mb-3">
                         <label asp-for="PDate" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Eng. Package Release Date
+                            Actual Engineer Package Released On
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Release Date"></i>
                         </label>
                         <input asp-for="PDate" class="form-control"

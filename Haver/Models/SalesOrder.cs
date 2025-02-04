@@ -40,10 +40,12 @@ namespace haver.Models
         [Display(Name = "Order Date")]
         [Required(ErrorMessage = "Order date is required")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime SoDate { get; set; }
 
-        //[Required(ErrorMessage = "Price is Required")]
+        
         [Display(Name = "Price")]
+        [Required(ErrorMessage = "Enter the value of this order.")]
         [DataType(DataType.Currency)]
         [Range(0, double.MaxValue, ErrorMessage = "The price must be a positive value.")]
         public Decimal Price { get; set; }
@@ -54,20 +56,22 @@ namespace haver.Models
         public string? ShippingTerms { get; set; }
 
         [Display(Name = "Approved Drawings Received")]
-        [Required(ErrorMessage = "Enter the date approved drawings from the customer were received")]
+        //[Required(ErrorMessage = "Enter the date approved drawings from the customer were received")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime AppDwgRcd { get; set; }
 
         [Display(Name = "Order Drawings Sent")]
-        [Required(ErrorMessage = "Select the date drawings for this order were sent to the customer")]
+        //[Required(ErrorMessage = "Select the date drawings for this order were sent to the customer")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DwgIsDt { get; set; }
 
 		[Display(Name = "Eng Package Release")]
-		[Required(ErrorMessage = "Select the day engineering package was released.")]
+		//[Required(ErrorMessage = "Select the day engineering package was released.")]
 		[DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-		public DateTime PDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime PDate { get; set; }
 
 		[Display(Name = "Customer")]
         [Required(ErrorMessage = "Select the customer related to this order")]
