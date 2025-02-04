@@ -13,6 +13,9 @@
 </head>
 <body>
 
+	<!-- Hidden field to store sidebar state -->
+	<input type="hidden" id="sidebarState" value="active" />
+
 	<button class="hamburger-btn" onclick="toggleSidebar()">
 		<i class="fa fa-bars"></i>
 	</button>
@@ -275,42 +278,62 @@
 
 </style>
 <script>
-		// Toggle Sidebar
-		function toggleSidebar() {
+	// Toggle Sidebar
+	function toggleSidebar() {
 		var sidebar = document.getElementById("sidebar");
-		var hamburger = document.querySelector(".hamburger-btn");
+		var sidebarStateInput = document.getElementById("sidebarState");
+		var hamburgerBtn = document.querySelector(".hamburger-btn i"); // Select the hamburger icon
 
+		// Toggle the sidebar class
 		sidebar.classList.toggle("active");
 
-		// Toggle color manually if CSS is not applying
+		// Update hidden field value
+		sidebarStateInput.value = sidebar.classList.contains("active") ? "active" : "inactive";
+
+		// Change hamburger button color based on sidebar state
 		if (sidebar.classList.contains("active")) {
-			hamburger.style.color = "white";
+			hamburgerBtn.style.color = "white"; // White when sidebar is open
 		} else {
-			hamburger.style.color = "black";
+			hamburgerBtn.style.color = "#001a3d"; // Default color when collapsed
 		}
 	}
 
-		// Show/hide Scroll To Top Button
-		window.onscroll = function () {
-			var btn = document.getElementById("scrollToTopBtn");
-			btn.style.display = (document.documentElement.scrollTop > 300) ? "block" : "none";
-		};
+	// Restore Sidebar State on Page Load
+	document.addEventListener("DOMContentLoaded", function () {
+		var sidebarStateInput = document.getElementById("sidebarState");
+		var sidebar = document.getElementById("sidebar");
+		var hamburgerBtn = document.querySelector(".hamburger-btn i"); // Select the hamburger icon
 
-		// Scroll to Top
-		function scrollToTop() {
-			window.scrollTo({ top: 0, behavior: "smooth" });
+		// If the state was "active", make sure sidebar stays open
+		if (sidebarStateInput.value === "active") {
+			sidebar.classList.add("active");
+			hamburgerBtn.style.color = "white"; // Ensure white color when sidebar is active
 		}
+	});
 
-		// Toggle Dropdowns
-		function toggleDropdown(event) {
-			event.preventDefault();
-			let dropdown = event.target.closest('.dropdown');
-			dropdown.classList.toggle('active');
+	// Toggle Dropdowns
+	function toggleDropdown(event) {
+		event.preventDefault();
+		let dropdown = event.target.closest('.dropdown');
+		dropdown.classList.toggle('active');
 
-			document.querySelectorAll('.dropdown').forEach(d => {
-				if (d !== dropdown) {
-					d.classList.remove('active');
-				}
-			});
-		}
+		// Close other dropdowns
+		document.querySelectorAll('.dropdown').forEach(d => {
+			if (d !== dropdown) {
+				d.classList.remove('active');
+			}
+		});
+	}
+
+	// Show/hide Scroll To Top Button
+	window.onscroll = function () {
+		var btn = document.getElementById("scrollToTopBtn");
+		btn.style.display = (document.documentElement.scrollTop > 300) ? "block" : "none";
+	};
+
+	// Scroll to Top
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}
 </script>
+

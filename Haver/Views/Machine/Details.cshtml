@@ -1,6 +1,98 @@
 ﻿@model haver.Models.Machine
 
-<partial name="_ViewHeading" />
+
+
+<div id="machinePrint" class="container-fluid bg-light">
+	<div class="row">
+		<div class="col-md-12 py-4" style="background-color:#0C2340;">
+			<h4 class="text-white text-center" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+				Machine Details
+			</h4>
+		</div>
+	</div>
+
+	<div class="row py-4">
+		<div class="col-md-10 offset-md-1">
+			<div class="card border shadow-sm">
+				<div class="card-body p-4">
+					<!--   note to group members : I took this styling from the details page of engineer as requested -->
+					<div class="mb-5">
+						<h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
+							Machine Information
+						</h5>
+						<div class="row">
+							<!-- Description -->
+							<div class="col-md-6 mb-3">
+								<div class="card h-100">
+									<div class="card-body">
+										<h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+											Description
+										</h6>
+										<p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+											@Html.DisplayFor(model => model.Description)
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- Production Order Number -->
+							<div class="col-md-6 mb-3">
+								<div class="card h-100">
+									<div class="card-body">
+										<h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+											Production Order Number
+										</h6>
+										<p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+											@Html.DisplayFor(model => model.ProductionOrderNumber)
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<!-- Serial Number -->
+							<div class="col-md-6 mb-3">
+								<div class="card h-100">
+									<div class="card-body">
+										<h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+											Serial Number
+										</h6>
+										<p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+											@Html.DisplayFor(model => model.SerialNumber)
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- Quantity -->
+							<div class="col-md-6 mb-3">
+								<div class="card h-100">
+									<div class="card-body">
+										<h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+											Quantity
+										</h6>
+										<p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+											@Html.DisplayFor(model => model.Quantity)
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Action Buttons -->
+				<div class="mt-4 d-flex gap-3 mx-4 mb-3">
+					<a href="@Url.Action("Index", "Machine")" class="btn btn-primary"
+					   style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+						⬅ Back to Machine List
+					</a>
+					<a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
+						Edit
+					</a>
+				</div>
+			</div>
+		</div>
+
+
+@* <partial name="_ViewHeading" />
 
 <div>
 	<h4>Machine</h4>
@@ -136,7 +228,7 @@
 </div>
 <div>
 	<a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-	<partial name="_BackToList" />
+	<partial name="_BackToList" /> *@
 </div>
 
 <style>
