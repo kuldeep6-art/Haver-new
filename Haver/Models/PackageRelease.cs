@@ -6,9 +6,20 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
-        //Name Annotations
+		//Name Annotations
+		[Display(Name = "Package Release")]
+		public string Summary
+		{
+			get
+			{
+				return Name + "\n"
+					+ (PReleaseDateP.HasValue ? "P - " + PReleaseDateP.Value.ToString("M/d/yyyy") : "") + "\n"
+					+ (PReleaseDateA.HasValue ? "A - " + PReleaseDateA.Value.ToString("M/d/yyyy") : "");
+			}
+		}
 
-        [Display(Name = "Name")]
+
+		[Display(Name = "Name")]
         [Required(ErrorMessage = "Cannot leave the name blank.")]
         [MaxLength(50, ErrorMessage = "Name cannot be more than 50 characters long.")]
         [MinLength(2, ErrorMessage = "Name cannot be less then 2 characters")]

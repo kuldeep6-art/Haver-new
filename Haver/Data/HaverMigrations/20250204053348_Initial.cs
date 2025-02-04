@@ -85,6 +85,7 @@ namespace haver.Data.HaverMigrations
                     DwgIsDt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CustomerID = table.Column<int>(type: "INTEGER", nullable: false),
                     Comments = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -121,9 +122,9 @@ namespace haver.Data.HaverMigrations
                     AirSeal = table.Column<bool>(type: "INTEGER", nullable: false),
                     CoatingLining = table.Column<bool>(type: "INTEGER", nullable: false),
                     Disassembly = table.Column<bool>(type: "INTEGER", nullable: false),
-                    BudgetedHours = table.Column<int>(type: "INTEGER", nullable: false),
-                    ActualAssemblyHours = table.Column<int>(type: "INTEGER", nullable: true),
-                    ReworkHours = table.Column<int>(type: "INTEGER", nullable: true),
+                    BudgetedHours = table.Column<decimal>(type: "TEXT", nullable: false),
+                    ActualAssemblyHours = table.Column<decimal>(type: "TEXT", nullable: true),
+                    ReworkHours = table.Column<decimal>(type: "TEXT", nullable: true),
                     Nameplate = table.Column<int>(type: "INTEGER", nullable: false),
                     PreOrder = table.Column<string>(type: "TEXT", nullable: true),
                     Scope = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
@@ -196,7 +197,7 @@ namespace haver.Data.HaverMigrations
                         column: x => x.VendorID,
                         principalTable: "Vendors",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,7 +261,8 @@ namespace haver.Data.HaverMigrations
             migrationBuilder.CreateIndex(
                 name: "IX_PackageReleases_SalesOrderID",
                 table: "PackageReleases",
-                column: "SalesOrderID");
+                column: "SalesOrderID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Procurements_SalesOrderID",
@@ -286,6 +288,12 @@ namespace haver.Data.HaverMigrations
                 name: "IX_SalesOrders_OrderNumber",
                 table: "SalesOrders",
                 column: "OrderNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vendors_Name",
+                table: "Vendors",
+                column: "Name",
                 unique: true);
         }
 

@@ -13,91 +13,91 @@
 </head>
 <body>
 
-	<!-- Hidden field to store sidebar state -->
-	<input type="hidden" id="sidebarState" value="active" />
-
-	<button class="hamburger-btn" onclick="toggleSidebar()">
-		<i class="fa fa-bars"></i>
-	</button>
-
 	<!-- Sidebar -->
-	<div class="sidebar" id="sidebar">
+	<div class="sidebar">
+		<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo">
 
-		<div class="sidebar-menu">
-			<a href="@Url.Action("Index", "Home")">Home</a>
+		<a href="@Url.Action("Index", "Home")">Home</a>
 
-			<button onclick="scrollToTop()" id="scrollToTopBtn" class="btn btn-primary">
-				<i class="fa-solid fa-arrow-up"></i>
-			</button>
-
-			<!-- Customer Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Customer <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Customer" asp-action="Index">View Customers</a>
-					<a asp-area="" asp-controller="Customer" asp-action="Create">Create Customer</a>
-				</div>
-			</div>
-
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Vendor <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Vendor" asp-action="Index">View Vendors</a>
-					<a asp-area="" asp-controller="Vendor" asp-action="Create">Create Vendors</a>
-				</div>
-			</div>
-
-			<!-- Engineer Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Engineer <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Engineer" asp-action="Index">View Engineers</a>
-					<a asp-area="" asp-controller="Engineer" asp-action="Create">Create Engineer</a>
-				</div>
-			</div>
-
-			<!-- Sales Order Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Sales Order <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="SalesOrder" asp-action="Index">View Sales Orders</a>
-					<a asp-area="" asp-controller="SalesOrder" asp-action="Create">Create Sales Order</a>
-				</div>
-			</div>
+		<button onclick="scrollToTop()" id="scrollToTopBtn" class="btn btn-primary">
+			<i class="fa-solid fa-arrow-up"></i>
+		</button>
 
 
-			<!-- Machine Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Machine <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Machine" asp-action="Index">View Machines</a>
-					<a asp-area="" asp-controller="Machine" asp-action="Create">Create Machine</a>
-				</div>
-			</div>
-
-			<!-- Package Release Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Package Release <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="PackageRelease" asp-action="Index">View Package Release</a>
-					<a asp-area="" asp-controller="PackageRelease" asp-action="Create">Create Package Release</a>
-				</div>
+		<!-- Customer Dropdown -->
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Customer <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="Customer" asp-action="Index">View Customers</a>
+				<a asp-area="" asp-controller="Customer" asp-action="Create">Create Customer</a>
 			</div>
 		</div>
-		<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo">
+
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Vendor <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="Vendor" asp-action="Index">View Vendors</a>
+				<a asp-area="" asp-controller="Vendor" asp-action="Create">Create Vendors</a>
+			</div>
+		</div>
+
+		<!-- Engineer Dropdown -->
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Engineer <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="Engineer" asp-action="Index">View Engineers</a>
+				<a asp-area="" asp-controller="Engineer" asp-action="Create">Create Engineer</a>
+			</div>
+		</div>
+
+		<!-- Sales Order Dropdown -->
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Sales Order <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="SalesOrder" asp-action="Index">View Sales Orders</a>
+				<a asp-area="" asp-controller="SalesOrder" asp-action="Create">Create Sales Order</a>
+			</div>
+		</div>
+
+
+		<!-- Machine Dropdown -->
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Machine <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="Machine" asp-action="Index">View Machines</a>
+				<a asp-area="" asp-controller="Machine" asp-action="Create">Create Machine</a>
+			</div>
+		</div>
+
+		<!-- Package Release Dropdown -->
+		<div class="dropdown">
+			<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+				Package Release <i class="fa fa-chevron-down arrow-icon"></i>
+			</a>
+			<div class="dropdown-content">
+				<a asp-area="" asp-controller="PackageRelease" asp-action="Index">View Package Release</a>
+				<a asp-area="" asp-controller="PackageRelease" asp-action="Create">Create Package Release</a>
+			</div>
+		</div>
+
+		<a asp-area="" asp-controller="SalesOrder" asp-action="DownloadSchedules">Download Schedules</a>
+		
+			
+		
 	</div>
+
+	
+
 
 	<!-- Main Content -->
 	<div class="main-content">
@@ -113,20 +113,31 @@
 </body>
 </html>
 
+<script>
+	function toggleDropdown(event) {
+		event.preventDefault();
+		let dropdown = event.target.closest('.dropdown');
+		dropdown.classList.toggle('active');
+
+		// Close all other dropdowns except the clicked one
+		document.querySelectorAll('.dropdown').forEach(d => {
+			if (d !== dropdown) {
+				d.classList.remove('active');
+			}
+		});
+	}
+</script>
+
 <style>
-	/* General Styles */
+	/* Sidebar Styles */
 	body {
 		display: flex;
 		margin: 0;
 		height: 100vh;
-		padding-top: 40px; /* Adjust to required space */
-		padding-left: 40px; /* Adjust to required space */
-
 		color: #001a3d;
 		font-family: Arial, sans-serif;
 	}
 
-	/* Sidebar */
 	.sidebar {
 		width: 250px;
 		background-color: #001a3d;
@@ -136,95 +147,73 @@
 		flex-direction: column;
 		position: fixed;
 		height: 100vh;
-		left: -250px;
-		top: 0;
-		transition: left 0.3s ease-in-out;
-		z-index: 1000;
-	}
-
-		.sidebar.active {
-			left: 0;
-		}
-
-	.sidebar-menu {
-		display: flex;
-		flex-direction: column;
-		margin-top: 60px;
-	}
-
-	/* Sidebar Links */
-	.sidebar a,
-	.dropdown-btn {
-		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		width: 100%;
-		padding: 12px;
-		font-weight: bold;
-		text-align: left;
+		text-align: center;
+	}
+
+	.sidebar-logo {
+		width: 200px;
+		margin-bottom: 20px;
+	}
+
+	.sidebar a {
 		color: white;
 		text-decoration: none;
+		padding: 10px;
+		display: block;
+		font-weight: bold;
 		border-radius: 5px;
 		transition: background 0.3s;
+		width: 100%;
+		text-align: center;
 	}
 
 		.sidebar a:hover {
 			background: #2a497b;
 		}
 
-	/* Hamburger Button */
-	.hamburger-btn {
-		position: fixed;
-		top: 15px;
-		left: 25px;
-		background: none;
-		border: none;
-		font-size: 24px;
-		color: #001a3d;
-		cursor: pointer;
-		z-index: 1001;
-		transition: color 0.3s ease-in-out;
-	}
-
-	.sidebar.active ~ .hamburger-btn {
-		color: white !important;
-	}
-
-	/* Main Content */
+	/* Main Content Styles */
 	.main-content {
-		margin-left: 0;
+		margin-left: 270px;
 		padding: 20px;
-		width: 100%;
-		transition: margin-left 0.3s ease-in-out;
+		width: calc(100% - 270px);
 	}
 
-	.sidebar.active ~ .main-content {
-		margin-left: 250px;
-		width: calc(100% - 250px);
-	}
-
-	/* Dropdown */
+	/* Dropdown Styles */
 	.dropdown {
 		width: 100%;
-		position: relative;
 		text-align: center;
+		position: relative;
 	}
 
-	.dropdown-btn i {
-		transition: transform 0.3s ease;
-		flex-shrink: 0;
-		width: 20px;
-		text-align: right;
+	.dropdown-btn {
+		color: white;
+		text-decoration: none;
+		padding: 12px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-weight: bold;
+		border-radius: 5px;
+		width: 100%;
+		background: none;
+		border: none;
+		cursor: pointer;
+		gap: 5px;
 	}
+
+		.dropdown-btn i {
+			transition: transform 0.3s ease;
+		}
 
 	.dropdown.active .dropdown-btn i {
-		transform: rotate(90deg);
+		transform: rotate(180deg);
 	}
 
 	.dropdown-content {
 		display: none;
 		flex-direction: column;
-		background-color: #002b5e;
+		background-color: #001a3d;
 		width: 100%;
 		padding: 5px 0;
 	}
@@ -236,32 +225,25 @@
 	.dropdown-content a {
 		color: white;
 		padding: 10px;
-		font-size: 16px;
-		text-align: center;
 		display: block;
 		text-decoration: none;
+		font-weight: normal !important;
+		font-size: 16px;
+		text-align: center;
 	}
 
 		.dropdown-content a:hover {
 			background: rgba(255, 255, 255, 0.2);
 		}
 
-	/* Sidebar Logo */
-	.sidebar-logo {
-		width: 200px;
-		margin-top: auto;
-		text-align: center;
-		padding-top: 20px;
-	}
-
-	/* Scroll to Top Button */
 	#scrollToTopBtn {
 		position: fixed;
 		bottom: 20px;
 		right: 20px;
-		display: none;
+		display: none; /* Hidden by default */
 		z-index: 1000;
 		border: none;
+		outline: none;
 		background-color: #007bff;
 		color: white;
 		cursor: pointer;
@@ -278,62 +260,18 @@
 
 </style>
 <script>
-	// Toggle Sidebar
-	function toggleSidebar() {
-		var sidebar = document.getElementById("sidebar");
-		var sidebarStateInput = document.getElementById("sidebarState");
-		var hamburgerBtn = document.querySelector(".hamburger-btn i"); // Select the hamburger icon
-
-		// Toggle the sidebar class
-		sidebar.classList.toggle("active");
-
-		// Update hidden field value
-		sidebarStateInput.value = sidebar.classList.contains("active") ? "active" : "inactive";
-
-		// Change hamburger button color based on sidebar state
-		if (sidebar.classList.contains("active")) {
-			hamburgerBtn.style.color = "white"; // White when sidebar is open
-		} else {
-			hamburgerBtn.style.color = "#001a3d"; // Default color when collapsed
-		}
-	}
-
-	// Restore Sidebar State on Page Load
-	document.addEventListener("DOMContentLoaded", function () {
-		var sidebarStateInput = document.getElementById("sidebarState");
-		var sidebar = document.getElementById("sidebar");
-		var hamburgerBtn = document.querySelector(".hamburger-btn i"); // Select the hamburger icon
-
-		// If the state was "active", make sure sidebar stays open
-		if (sidebarStateInput.value === "active") {
-			sidebar.classList.add("active");
-			hamburgerBtn.style.color = "white"; // Ensure white color when sidebar is active
-		}
-	});
-
-	// Toggle Dropdowns
-	function toggleDropdown(event) {
-		event.preventDefault();
-		let dropdown = event.target.closest('.dropdown');
-		dropdown.classList.toggle('active');
-
-		// Close other dropdowns
-		document.querySelectorAll('.dropdown').forEach(d => {
-			if (d !== dropdown) {
-				d.classList.remove('active');
-			}
-		});
-	}
-
-	// Show/hide Scroll To Top Button
+	// Show/hide button on scroll
 	window.onscroll = function () {
 		var btn = document.getElementById("scrollToTopBtn");
-		btn.style.display = (document.documentElement.scrollTop > 300) ? "block" : "none";
+		if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+			btn.style.display = "block";
+		} else {
+			btn.style.display = "none";
+		}
 	};
 
-	// Scroll to Top
+	// Scroll to top when button is clicked
 	function scrollToTop() {
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	}
 </script>
-
