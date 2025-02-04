@@ -11,8 +11,8 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250201215413_upmode")]
-    partial class upmode
+    [Migration("20250204053348_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -340,6 +340,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime>("SoDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -424,6 +427,9 @@ namespace haver.Data.HaverMigrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Vendors");
                 });
 
@@ -458,7 +464,7 @@ namespace haver.Data.HaverMigrations
                     b.HasOne("haver.Models.Vendor", "Vendor")
                         .WithMany("Procurements")
                         .HasForeignKey("VendorID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("SalesOrder");

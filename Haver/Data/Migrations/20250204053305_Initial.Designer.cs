@@ -11,7 +11,7 @@ using haver.Data;
 namespace haver.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250201031903_Initial")]
+    [Migration("20250204053305_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -13,6 +13,9 @@ using System.Reflection.PortableExecutable;
 using haver.ViewModels;
 using System.Numerics;
 using Microsoft.EntityFrameworkCore.Storage;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
+using System.Drawing;
 
 namespace haver.Controllers
 {
@@ -493,9 +496,154 @@ private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
             return _context.SalesOrders.Any(e => e.ID == id);
 		}
 
-        
+		public IActionResult DownloadSchedules()
+		{
 
-private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+			var schedules = _context.SalesOrders
+		.Include(so => so.Customer)
+        .Include(so=>so.PackageRelease)// Include the related Customer entity
+		.Include(so => so.Procurements)              // Include Procurements from SalesOrder
+			.ThenInclude(p => p.Vendor)              // Include Vendor from Procurement
+		.Include(so => so.Machines)                  // Include Machines related to SalesOrder
+		.OrderByDescending(so => so.SoDate)         // Order by SalesOrder Date
+		.ToList()
+		.SelectMany(so => so.Machines, // Correcting this to iterate through Machines
+			(so, machine) => new {
+				// SalesOrder Specific Data
+				SalesOrderNumber = so.OrderNumber ?? "No Order Number",
+				CustomerName = so.Customer?.CompanyName ?? "No Customer",
+				MachineDescription = machine?.Description ?? "No Description",
+				SerialNumber = machine?.SerialNumber ?? "No Serial Number",
+				PackageRelease = so.PackageRelease?.Summary ?? "No Package Release",
+				// Procurement Data (Vendor & PO)
+				VendorName = so.Procurements?.FirstOrDefault()?.Vendor?.Name ?? "No Vendor",
+				PONumber = so.Procurements?.FirstOrDefault()?.PONumber ?? "No PO Number",
+				PODueDate = so.Procurements?.FirstOrDefault()?.ExpDueDate.ToString("yyyy-MM-dd") ?? "No Due Date",
+				DeliveryDate = so.Procurements?.FirstOrDefault()?.DeliveryDate.ToString("yyyy-MM-dd") ?? "No Delivery Date",
+				Media = machine?.Media == true ? "Yes" : "No",
+				SpareParts = machine?.SpareParts == true ? "Yes" : "No",
+				Base = machine?.Base == true ? "Yes" : "No",
+				AirSeal = machine?.AirSeal == true ? "Yes" : "No",
+				CoatingLining = machine?.CoatingLining == true ? "Yes" : "No",
+				Disassembly = machine?.Disassembly == true ? "Yes" : "No",
+
+				// Directly accessing properties from the first machine (no Note prefix)
+				PreOrder = machine?.PreOrder ?? "No PreOrder",
+				Scope = machine?.Scope ?? "No Scope",
+				ActualHours = machine?.ActualAssemblyHours != null
+					? $"Assembly: {machine.ActualAssemblyHours} hrs / Rework: {machine.ReworkHours} hrs"
+					: "No Hours Data",
+				BudgetHours = machine?.BudgetedHours != null
+					? $"{machine.BudgetedHours} hrs per machine"
+					: "No Budget Data",
+				NamePlate = machine?.Nameplate != null
+					? machine.Nameplate.ToString()
+					: "No Nameplate"
+			}).ToList();
+
+
+			int numRows = schedules.Count();
+
+			if (numRows > 0)
+			{
+				using (ExcelPackage excel = new ExcelPackage())
+				{
+					var workSheet = excel.Workbook.Worksheets.Add("Machine Schedules");
+
+					// Add the main header
+					workSheet.Cells[1, 1].Value = "Machine Schedule Report";
+					using (ExcelRange title = workSheet.Cells[1, 1, 1, 16])
+					{
+						title.Merge = true;
+						title.Style.Font.Bold = true;
+						title.Style.Font.Size = 18;
+						title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					}
+
+					// Add the timestamp
+					DateTime utcDate = DateTime.UtcNow;
+					TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+					DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(utcDate, localTimeZone);
+					using (ExcelRange timestamp = workSheet.Cells[2, 20])
+					{
+						timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
+						timestamp.Style.Font.Bold = true;
+						timestamp.Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+					}
+
+					// Add the column headers for the main data
+					string[] mainHeaders = {
+				"Sales Order", "Customer Name", "Machine Description", "Serial Number", "Package Release",
+				"Vendor Name", "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base", "Air Seal",
+				"Coating Lining", "Disassembly"
+			};
+					for (int i = 0; i < mainHeaders.Length; i++)
+					{
+						workSheet.Cells[3, i + 1].Value = mainHeaders[i];
+					}
+
+					// Add the "Notes/Comments" header spanning the last five columns
+					using (ExcelRange notesHeader = workSheet.Cells[3, 16, 3, 20])
+					{
+						notesHeader.Value = "Notes/Comments";
+						notesHeader.Merge = true;
+						notesHeader.Style.Font.Bold = true;
+						notesHeader.Style.Fill.PatternType = ExcelFillStyle.Solid;
+						notesHeader.Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+						notesHeader.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					}
+
+					// Add individual headers for the note-related columns starting from row 4
+					string[] noteHeaders = { "PreOrder", "Scope", "Actual Hours", "Budget Hours", "NamePlate" };
+					for (int i = 0; i < noteHeaders.Length; i++)
+					{
+						workSheet.Cells[4, 16 + i].Value = noteHeaders[i];
+					}
+
+					// Load the data starting from row 5
+					workSheet.Cells[5, 1].LoadFromCollection(schedules, false);
+
+					// Format date columns
+					workSheet.Column(7).Style.Numberformat.Format = "yyyy-MM-dd";
+					workSheet.Column(8).Style.Numberformat.Format = "yyyy-MM-dd";
+					workSheet.Column(9).Style.Numberformat.Format = "yyyy-MM-dd";
+
+					// Style the main headers
+					using (ExcelRange headings = workSheet.Cells[3, 1, 3, 16])
+					{
+						headings.Style.Font.Bold = true;
+						headings.Style.Fill.PatternType = ExcelFillStyle.Solid;
+						headings.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+					}
+
+					// Style the note headers
+					using (ExcelRange noteHeadings = workSheet.Cells[4, 16, 4, 20])
+					{
+						noteHeadings.Style.Font.Bold = true;
+						noteHeadings.Style.Fill.PatternType = ExcelFillStyle.Solid;
+						noteHeadings.Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+					}
+
+					workSheet.Cells.AutoFitColumns();
+
+					try
+					{
+						Byte[] theData = excel.GetAsByteArray();
+						string filename = "MachineSchedules.xlsx";
+						string mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+						return File(theData, mimeType, filename);
+					}
+					catch (Exception)
+					{
+						return BadRequest("Could not build and download the file.");
+					}
+				}
+			}
+			return NotFound("No data available to export.");
+		}
+
+
+		private void PopulateDropDownLists(SalesOrder? salesOrder = null)
 		{
 			ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
 		}
