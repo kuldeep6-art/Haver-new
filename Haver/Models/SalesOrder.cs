@@ -18,11 +18,20 @@ namespace haver.Models
         [Display(Name = "Order Drawings Sent")]
         public string DwgDte => DwgIsDt.ToString("MMM d, yyyy");
 
+		[Display(Name = "Date")]
+		public string DateSummary
+		{
+			get
+			{
+				return $"Rel {PDate:MMM-yy}";
+			}
+		}
 
 
-        #endregion
 
-        [Display(Name = "Order Number")]
+		#endregion
+
+		[Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
         [RegularExpression("^\\d{8}$", ErrorMessage = "The sales order number must be exactly 8 numeric digits.")]
         [StringLength(8, ErrorMessage = "Order number must be exactly 8 digits.")]
@@ -54,7 +63,13 @@ namespace haver.Models
         [DataType(DataType.Date)]
         public DateTime DwgIsDt { get; set; }
 
-        [Display(Name = "Customer")]
+		[Display(Name = "Eng Package Release")]
+		[Required(ErrorMessage = "Select the day engineering package was released.")]
+		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+		public DateTime PDate { get; set; }
+
+		[Display(Name = "Customer")]
         [Required(ErrorMessage = "Select the customer related to this order")]
         public int CustomerID { get; set; }
         public Customer? Customer { get; set; }

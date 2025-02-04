@@ -99,7 +99,7 @@
 
                 <!-- Customer ID -->
                 <div class="row">
-                <div class=" col-md-12 form-group mb-3">
+                <div class=" col-md-6 form-group mb-3">
                     <label asp-for="CustomerID" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Customer
@@ -107,6 +107,18 @@
                     </label>
                     <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" tabindex="7"></select>
                 </div>
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="PDate" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Eng. Package Release Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Release Date"></i>
+                        </label>
+                        <input asp-for="PDate" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
+                        <span asp-validation-for="PDate" class="text-danger"></span>
+                    </div>
+
 
                 <!-- Comments -->
                 <div class="col-md-12 form-group mb-3">
