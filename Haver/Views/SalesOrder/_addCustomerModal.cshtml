@@ -1,0 +1,17 @@
+﻿<!-- Modal-->
+<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="CustomerModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="CustomermyModalLabel">Add New Customer</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                @{
+                    var m = new haver.Models.Customer();
+                    <partial name="_CustomerCreate" model="m" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

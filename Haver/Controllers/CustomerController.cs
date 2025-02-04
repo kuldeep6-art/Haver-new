@@ -9,6 +9,7 @@ using haver.Data;
 using haver.Models;
 using haver.CustomControllers;
 using haver.Utilities;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace haver.Controllers
 {
@@ -163,7 +164,21 @@ namespace haver.Controllers
                 {
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
-            }
+            }//Decide if we need to send the Validaiton Errors directly to the client
+            //if (!ModelState.IsValid && Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            //{
+            //    //Was an AJAX request so build a message with all validation errors
+            //    string errorMessage = "";
+            //    foreach (var modelState in ViewData.ModelState.Values)
+            //    {
+            //        foreach (ModelError error in modelState.Errors)
+            //        {
+            //            errorMessage += error.ErrorMessage + "|";
+            //        }
+            //    }
+            //    //Note: returning a BadRequest results in HTTP Status code 400
+            //    return BadRequest(errorMessage);
+            //}
 
 
             return View(customer);

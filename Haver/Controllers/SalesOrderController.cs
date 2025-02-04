@@ -490,28 +490,43 @@ private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
             }
         }
 
-        private SelectList EngineerSelectList(string skip)
-        {
-            var SpecialtyQuery = _context.Engineers
-                .AsNoTracking();
+        //private SelectList EngineerSelectList(string skip)
+        //{
+        //    var EngineerQuery = _context.Engineers
+        //        .AsNoTracking();
 
-            if (!String.IsNullOrEmpty(skip))
-            {
-                //Convert the string to an array of integers
-                //so we can make sure we leave them out of the data we download
-                string[] avoidStrings = skip.Split('|');
-                int[] skipKeys = Array.ConvertAll(avoidStrings, s => int.Parse(s));
-                SpecialtyQuery = SpecialtyQuery
-                    .Where(s => !skipKeys.Contains(s.ID));
-            }
-            return new SelectList(SpecialtyQuery.OrderBy(d => d.EngineerInitials), "ID", "EngineerInitials");
+        //    if (!String.IsNullOrEmpty(skip))
+        //    {
+        //        //Convert the string to an array of integers
+        //        //so we can make sure we leave them out of the data we download
+        //        string[] avoidStrings = skip.Split('|');
+        //        int[] skipKeys = Array.ConvertAll(avoidStrings, s => int.Parse(s));
+        //        EngineerQuery = EngineerQuery
+        //            .Where(s => !skipKeys.Contains(s.ID));
+        //    }
+        //    return new SelectList(EngineerQuery.OrderBy(d => d.EngineerInitials), "ID", "EngineerInitials");
+        //}
+
+        //[HttpGet]
+        //public JsonResult GetEngineers(string skip)
+        //{
+        //    return Json(EngineerSelectList(skip));
+        //}
+
+
+        private SelectList CustomerList(int? selectedId)
+        {
+            return new SelectList(_context
+                .Customers
+                .OrderBy(c => c.CompanyName), "ID", "CompanyName", selectedId);
+                
         }
+
         [HttpGet]
-        public JsonResult GetEngineers(string skip)
+        public JsonResult GetCustomers(int? id)
         {
-            return Json(EngineerSelectList(skip));
+            return Json(CustomerList(id));
         }
-
 
         private bool SalesOrderExists(int id)
         {
