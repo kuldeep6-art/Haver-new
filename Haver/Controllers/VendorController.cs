@@ -124,6 +124,7 @@ namespace haver.Controllers
                 {
                     _context.Add(vendor);
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Vendor has been successfully Created";
                     return RedirectToAction("Details", new { vendor.ID });
                 }
             }
@@ -179,6 +180,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Vendor has been successfully Edited";
                     return RedirectToAction("Details", new { vendorToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
