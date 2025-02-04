@@ -21,14 +21,7 @@ namespace haver.Models
             }
         }
 
-        [Display(Name = "Date")]
-        public string DateSummary
-        {
-            get
-            {
-                return $"Rel {Date:MMM-yy}";
-            }
-        }
+    
 
         public string PhoneFormatted =>
        !string.IsNullOrEmpty(Phone) && Phone.Length == 10
@@ -61,13 +54,7 @@ namespace haver.Models
         [RegularExpression("^[a-zA-Z-]+$", ErrorMessage = "Last name can only contain letters and hyphens.")]
         public string? LastName { get; set; }
 
-        //Date Name Annotations
-
-        [Display(Name = "Date")]
-        [Required(ErrorMessage = "Select the day engineering package was released.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+     
 
         //Phone Name Annotations
 
