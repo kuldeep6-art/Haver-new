@@ -64,7 +64,7 @@ namespace haver.Models
         //Date Name Annotations
 
         [Display(Name = "Date")]
-        [Required(ErrorMessage = "Select the day engineering package was released.")]
+        [Required(ErrorMessage = "Select the day engineering package was released to procurement.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }

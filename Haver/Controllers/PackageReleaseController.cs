@@ -24,7 +24,7 @@ namespace haver.Controllers
         // GET: PackageRelease
         public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchName, string? SearchNotes, int? SalesOrderID, string? actionButton, string sortDirection = "asc", string sortField = "PReleaseDateP")
         {
-			string[] sortOptions = new[] { "Name", "P ReleaseDate P", "P ReleaseDate A", "Notes", "SalesOrder" };
+			string[] sortOptions = new[] { "Name", "Date Released", "Date Approved", "Notes", "Sales Order" };
 			var packageRelease = from m in _context.PackageReleases
 						 .Include(m => m.SalesOrder)
 						 .AsNoTracking()
