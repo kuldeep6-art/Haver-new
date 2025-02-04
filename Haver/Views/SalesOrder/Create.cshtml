@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-               Create a Sales Order
+                Create a Sales Order
             </h4>
         </div>
     </div>
@@ -99,37 +99,42 @@
 
                 <!-- Customer ID -->
                 <div class="row">
-                <div class=" col-md-12 form-group mb-3">
-                    <label asp-for="CustomerID" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Customer
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the customer for this order."></i>
-                    </label>
-                    <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" tabindex="7"></select>
-                </div>
-
-                <!-- Comments -->
-                <div class="col-md-12 form-group mb-3">
-                    <label asp-for="Comments" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Comments
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Add any comments related to the sales order."></i>
-                    </label>
-                    <textarea asp-for="Comments" class="form-control summernote"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="8"></textarea>
-                    <span asp-validation-for="Comments" class="text-danger"></span>
-                </div>
-                </div>
-
-                <!-- Specialties -->
-                <div class="row">
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="control-label">Engineers Assigned</label>
-                        <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                            <strong>-</strong>
-                        </button>
-                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                    <div class=" col-md-6 form-group mb-3">
+                        <label asp-for="CustomerID" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Customer
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the customer for this order."></i>
+                        </label>
+                        <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" tabindex="7"></select>
                     </div>
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="PDate" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Eng. Package Release Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Release Date"></i>
+                        </label>
+                        <input asp-for="PDate" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
+                        <span asp-validation-for="PDate" class="text-danger"></span>
+                    </div>
+
+
+                    <!-- Comments -->
+                    <div class="col-md-12 form-group mb-3">
+                        <label asp-for="Comments" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Comments
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Add any comments related to the sales order."></i>
+                        </label>
+                        <textarea asp-for="Comments" class="form-control summernote"
+                                  style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="8"></textarea>
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="row">
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="control-label">Choose Engineers</label>
@@ -138,36 +143,52 @@
                         </button>
                         @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
                     </div>
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="control-label">Engineers Assigned</label>
+                        <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                            <strong>-</strong>
+                        </button>
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                    </div>
                 </div>
 
                 <!-- Submit Button -->
-               <div class="form-group text-center">
-    <button type="submit" class="btn btn-primary" id="btnSubmit"
-            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;"
-            name="actionType" value="next">
-        Next
-    </button>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary" id="btnSubmit"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;"
+                            name="actionType" value="next">
+                        Next
+                    </button>
 
-    <button type="submit" class="btn btn-secondary" id="btnSave"
-            style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;"
-            name="actionType" value="save">
-        Save as Drafts
-    </button>
-</div>
+                    <button type="submit" class="btn btn-secondary" id="btnSave"
+                            style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;"
+                            name="actionType" value="save">
+                        Save as Drafts
+                    </button>
+
+                    <button type="button" id="btnQuickFill" class="btn btn-info"
+                            style="background-color:#17a2b8; border-color:#17a2b8; font-family: 'Avenir Heavy', sans-serif;">
+                        Quick Fill
+                    </button>
+                </div>
 
 
                 <!-- Back to Previous Page -->
                 <div class="d-flex flex-column align-items-start gap-2">
-                   @*  <button onclick="goBack()" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back To Previous Page
+                    @*  <button onclick="goBack()" class="btn btn-primary"
+                    style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                    ⬅ Back To Previous Page
                     </button>
- *@
+                    *@
                     <!-- Back to Sales Order List -->
                     <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
                         ⬅ Back to Sales Order List
                     </a>
+
+
+
                 </div>
             </form>
         </div>
@@ -217,6 +238,24 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
+    <script type="text/javascript">
+        // Function to quickly fill the form with sample data
+        document.getElementById('btnQuickFill').addEventListener('click', function () {
+            document.getElementById('OrderNumber').value = '10423454';
+            document.getElementById('SoDate').value = '2025-02-05'; // Update with desired date format
+            document.getElementById('Price').value = '15000.00';
+            document.getElementById('ShippingTerms').value = 'FOB Toronto';
+            document.getElementById('AppDwgRcd').value = '2025-02-01'; // Update with desired date
+            document.getElementById('DwgIsDt').value = '2025-02-02'; // Update with desired date
+            document.getElementById('CustomerID').value = '1'; // Assuming the customer ID is '1'
+            document.getElementById('Comments').value = 'Quick fill test comment for presentation.';
+
+            // For the ListBox (you can set selected options similarly)
+            $("#selectedOptions").val(['Option1', 'Option2']); // Assuming these options exist
+            $("#availOptions").val(['Option3', 'Option4']); // Assuming these options exist
+        });
+    </script>
+
 
 }
 

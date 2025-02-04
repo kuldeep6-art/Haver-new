@@ -50,6 +50,7 @@ namespace haver.Models
         [DataType(DataType.MultilineText)]
         public string? Notes { get; set; }
 
+        [Display(Name = "Sales Order")]
         public int SalesOrderID { get; set; }
         public SalesOrder? SalesOrder { get; set; }
 

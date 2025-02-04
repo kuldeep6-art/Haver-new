@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Create a Customer
+                Add A New Customer
             </h4>
         </div>
     </div>
@@ -25,7 +25,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer's first name."></i>
                         </label>
                         <input asp-for="FirstName" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter FirstName" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Lee" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
 
@@ -36,7 +36,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer's last name."></i>
                         </label>
                         <input asp-for="LastName" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter LastName" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Scott" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer's middle name (if applicable)."></i>
                         </label>
                         <input asp-for="MiddleName" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter MiddleName" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Marr" />
                         <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
 
@@ -58,35 +58,24 @@
                         <label asp-for="CompanyName" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Company Name
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer's company name (if applicable)."></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the company related to this customer."></i>
                         </label>
                         <input asp-for="CompanyName" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Company Name" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="ABC Ltd" />
                         <span asp-validation-for="CompanyName" class="text-danger"></span>
                     </div>
                 </div>
 
-                <!-- Registration Date -->
-                <div class="form-group mb-3">
-                    <label asp-for="Date" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Registration Date
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the registration date for the customer."></i>
-                    </label>
-                    <input asp-for="Date" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Date" />
-                    <span asp-validation-for="Date" class="text-danger"></span>
-                </div>
 
                 <!-- Contact Number -->
                 <div class="form-group mb-3">
                     <label asp-for="Phone" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Contact Number
+                        Phone
                         <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer's contact number."></i>
                     </label>
                     <input asp-for="Phone" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Contact Number" />
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="123456789" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
 
@@ -94,7 +83,7 @@
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-                        Create Customer
+                        Add Customer
                     </button>
                 </div>
 
