@@ -169,6 +169,7 @@ namespace haver.Controllers
                 {
                     _context.Add(machine);
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Machine has been successfully Created";
                     return RedirectToAction("Details", new { machine.ID });
                 }
             }
@@ -234,6 +235,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Machine has been successfully Edited";
                     return RedirectToAction("Details", new { machinesToUpdate.ID });
 
                 }
