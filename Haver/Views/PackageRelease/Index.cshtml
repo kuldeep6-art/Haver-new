@@ -71,7 +71,7 @@
                     <td>@Html.DisplayFor(modelItem => item.PReleaseDateP)</td>
                     <td>@Html.DisplayFor(modelItem => item.PReleaseDateA)</td>
                     <td>@Html.Raw(item.Notes)</td>
-                    <td>@Html.DisplayNameFor(modelItem => item.SalesOrder.OrderNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn" aria-label="Edit package release @item.Name" data-bs-toggle="tooltip" title="Edit package release">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
