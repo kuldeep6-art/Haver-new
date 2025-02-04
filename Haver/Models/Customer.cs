@@ -54,13 +54,13 @@ namespace haver.Models
         [RegularExpression("^[a-zA-Z-]+$", ErrorMessage = "Last name can only contain letters and hyphens.")]
         public string? LastName { get; set; }
 
-        //Date Name Annotations
+        ////Date Name Annotations
 
-        [Display(Name = "Date")]
-        [Required(ErrorMessage = "Select the day engineering package was released to procurement.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+        //[Display(Name = "Date")]
+        //[Required(ErrorMessage = "Select the day engineering package was released to procurement.")]
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        //public DateTime Date { get; set; }
 
 
         //Phone Name Annotations
