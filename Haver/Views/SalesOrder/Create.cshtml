@@ -133,15 +133,8 @@
                 </div>
                 </div>
 
-                <!-- Specialties -->
-                <div class="row">
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="control-label">Engineers Assigned</label>
-                        <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                            <strong>-</strong>
-                        </button>
-                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
-                    </div>
+
+                <div class="row">                
 
                     <div class="col-md-6 form-group mb-3">
                         <label class="control-label">Choose Engineers</label>
@@ -149,6 +142,14 @@
                             <strong>+</strong>
                         </button>
                         @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="control-label">Engineers Assigned</label>
+                        <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                            <strong>-</strong>
+                        </button>
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
                     </div>
                 </div>
 
