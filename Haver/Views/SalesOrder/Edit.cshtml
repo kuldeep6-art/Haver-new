@@ -78,7 +78,7 @@
 
             <!-- Customer ID Field -->
             <div class="row">
-            <div class=" col-md-12 form-group mb-4">
+            <div class=" col-md-6 form-group mb-4">
                 <label asp-for="CustomerID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;">
                                 Customer
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the customer for this order."></i>
@@ -86,6 +86,16 @@
                 <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;"></select>
                 <span asp-validation-for="CustomerID" class="text-danger"></span>
             </div>
+                        <div class="col-md-6 form-group mb-3">
+                            <label asp-for="PDate" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Eng. Package Release Date
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Release Date"></i>
+                            </label>
+                            <input asp-for="PDate" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
+                            <span asp-validation-for="PDate" class="text-danger"></span>
+                        </div>
 
             <!-- Comments Field -->
             <div class=" col-md-12 form-group mb-4">
@@ -101,13 +111,7 @@
         <!-- Engineers Assigned and Choose Engineers -->
         
             <div class="row">
-                <div class="col-md-6 form-group mb-4">
-                    <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Engineers Assigned</label>
-                    <button type="button" id="btnRight" class="btn btn-danger btn-sm" style="font-family: 'Avenir Heavy', sans-serif; color:#fff;">
-                        <strong>-</strong>
-                    </button>
-                    @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
-                </div>
+               
 
                 <div class="col-md-6 form-group mb-4">
                     <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Choose Engineers</label>
@@ -116,6 +120,14 @@
                     </button>
                     @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
                 </div>
+
+                        <div class="col-md-6 form-group mb-4">
+                            <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340; font-size: 1rem;"> Engineers Assigned</label>
+                            <button type="button" id="btnRight" class="btn btn-danger btn-sm" style="font-family: 'Avenir Heavy', sans-serif; color:#fff;">
+                                <strong>-</strong>
+                            </button>
+                            @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control", style = "border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; font-size: 1rem;" })
+                        </div>
            
 
             <!-- Submit Button -->

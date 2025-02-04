@@ -98,7 +98,7 @@
 
                 <!-- Customer ID -->
                 <div class="row">
-                <div class=" col-md-12 form-group mb-3">
+                <div class=" col-md-6 form-group mb-3">
                     <label asp-for="CustomerID" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Select the customer related to the customer
@@ -106,6 +106,18 @@
                     </label>
                     <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" tabindex="7"></select>
                 </div>
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="PDate" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Eng. Package Release Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Release Date"></i>
+                        </label>
+                        <input asp-for="PDate" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
+                        <span asp-validation-for="PDate" class="text-danger"></span>
+                    </div>
+
 
                 <!-- Comments -->
                 <div class="col-md-12 form-group mb-3">
@@ -120,23 +132,40 @@
                 </div>
                 </div>
 
+<<<<<<< HEAD
                 <!-- Specialties -->
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label class="control-label">Assign Engineers to this order</label>
+=======
+
+                <div class="row">                
+
+                    <div class="col-md-6 form-group mb-3">
+                        <label class="control-label">Choose Engineers</label>
+>>>>>>> 0800134799bae3e9af7db1961336b392785765e2
                         <button type="button" id="btnLeft" class="btn btn-success btn-sm">
                             <strong>+</strong>
                         </button>
                         @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+<<<<<<< HEAD
 
                     </div>
+=======
+                    </div>
+
+>>>>>>> 0800134799bae3e9af7db1961336b392785765e2
                     <div class="col-md-6 form-group mb-3">
                         <label class="control-label">Engineers Assigned</label>
                         <button type="button" id="btnRight" class="btn btn-danger btn-sm">
                             <strong>-</strong>
                         </button>
                         @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+<<<<<<< HEAD
                     </div>                   
+=======
+                    </div>
+>>>>>>> 0800134799bae3e9af7db1961336b392785765e2
                 </div>
 
                 <!-- Submit Button -->

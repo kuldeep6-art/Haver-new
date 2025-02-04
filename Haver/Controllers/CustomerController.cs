@@ -25,7 +25,7 @@ namespace haver.Controllers
         public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? SearchCname,
             string? actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
-            string[] sortOptions = new[] { "Company Name", "Date", "Phone", "Name" };
+            string[] sortOptions = new[] { "Company Name", "Phone", "Name" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -71,19 +71,7 @@ namespace haver.Controllers
                 }
             }
             //Now we know which field and direction to sort by
-            if (sortField == "Date")
-            {
-                if (sortDirection == "asc")
-                {
-                    customers = customers
-                        .OrderByDescending(p => p.Date);
-                }
-                else
-                {
-                    customers = customers
-                        .OrderBy(p => p.Date);
-                }
-            }
+
             if (sortField == "Company Name")
             {
                 if (sortDirection == "asc")
@@ -214,7 +202,7 @@ namespace haver.Controllers
 
 
             if (await TryUpdateModelAsync<Customer>(customerToUpdate, "",
-                  p => p.FirstName, p => p.MiddleName, p => p.LastName, p => p.Date,
+                  p => p.FirstName, p => p.MiddleName, p => p.LastName,
                  p => p.Phone, p => p.CompanyName))
             {
                 try
