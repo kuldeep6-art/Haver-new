@@ -1,13 +1,4 @@
-﻿//Reusable refresh routine for SelectLists - v1.0
-//Parameters: ddl_ID - ID of the Select to refresh
-// URI - /controller/action/... to call to get a new SelcectList as JSON
-// showNoDataMsg - Boolean if you want to clear all options and show NO DATA message
-//      if no data is returned.  Otherwise it leaves the original values in place.
-// noDataMsg - string value to display if no data returned
-// addDefault - Boolean indicating if you want to add a default/prompt 
-//      option at the top of the list.
-// defaultText - string value to display as the default/prompt value
-// fadeOutIn - Boolean for visual effect after refresh
+﻿
 function refreshDDL(ddl_ID, URI, showNoDataMsg, noDataMsg, addDefault, defaultText, fadeOutIn) {
     var theDDL = $("#" + ddl_ID);
     $(function () {
