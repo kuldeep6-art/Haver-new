@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace haver.Data.HaverMigrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,6 @@ namespace haver.Data.HaverMigrations
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     MiddleName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
                     CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -83,6 +82,7 @@ namespace haver.Data.HaverMigrations
                     ShippingTerms = table.Column<string>(type: "TEXT", maxLength: 800, nullable: true),
                     AppDwgRcd = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DwgIsDt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CustomerID = table.Column<int>(type: "INTEGER", nullable: false),
                     Comments = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),

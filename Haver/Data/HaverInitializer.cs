@@ -6,14 +6,39 @@ namespace haver.Data
 {
     public static class HaverInitializer
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static void Initialize(IServiceProvider serviceProvider, bool DeleteDatabase = false, bool UseMigrations = true)
         {
             using (var context = new HaverContext(
                 serviceProvider.GetRequiredService<DbContextOptions<HaverContext>>()))
             {
-                #region seed data
-                try
-                {
+				#region Prepare the Database
+				try
+				{
+					if (UseMigrations)
+					{
+						if (DeleteDatabase)
+						{
+							context.Database.EnsureDeleted(); //Delete the existing version 
+						}
+						context.Database.Migrate(); //Apply all migrations
+					}
+					else
+					{
+						if (DeleteDatabase)
+						{
+							context.Database.EnsureDeleted(); //Delete the existing version 
+							context.Database.EnsureCreated(); //Create and update the database as per the Model
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(ex.GetBaseException().Message);
+				}
+				#endregion
+				#region seed data
+				try
+				{
                     // 1. Seed Customers
                     if (!context.Customers.Any())
                     {

@@ -45,11 +45,11 @@ app.MapRazorPages();
 //To prepare database and seed data
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
+	var services = scope.ServiceProvider;
 
-    HaverInitializer.Initialize(services);
+	// Call Initialize with UseMigrations set to true
+	HaverInitializer.Initialize(services, DeleteDatabase: false, UseMigrations: true);
 }
-
 
 
 app.Run();

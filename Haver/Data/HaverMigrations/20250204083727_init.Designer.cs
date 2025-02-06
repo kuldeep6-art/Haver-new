@@ -11,8 +11,8 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250204003442_cusupp")]
-    partial class cusupp
+    [Migration("20250204083727_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
