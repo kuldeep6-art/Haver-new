@@ -11,8 +11,8 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    [Migration("20250204083727_init")]
-    partial class init
+    [Migration("20250208205620_UPM")]
+    partial class UPM
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,20 +36,6 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MiddleName")
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
@@ -126,7 +112,7 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("Base")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("BudgetedHours")
+                    b.Property<decimal?>("BudgetedHours")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Class")
@@ -143,18 +129,16 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("Disassembly")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MachineTypeID")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Media")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Nameplate")
+                    b.Property<int?>("Nameplate")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PreOrder")
@@ -164,8 +148,16 @@ namespace haver.Data.HaverMigrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("RToShipA")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RToShipExp")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal?>("ReworkHours")
                         .HasColumnType("TEXT");
@@ -174,7 +166,6 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Scope")
-                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SerialNumber")
@@ -204,6 +195,8 @@ namespace haver.Data.HaverMigrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("MachineTypeID");
+
                     b.HasIndex("ProductionOrderNumber")
                         .IsUnique();
 
@@ -213,6 +206,39 @@ namespace haver.Data.HaverMigrations
                         .IsUnique();
 
                     b.ToTable("Machines");
+                });
+
+            modelBuilder.Entity("haver.Models.MachineType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Description")
+                        .IsUnique();
+
+                    b.ToTable("MachineType");
                 });
 
             modelBuilder.Entity("haver.Models.PackageRelease", b =>
@@ -273,16 +299,26 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("ExpDueDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PONumber")
+                    b.Property<int?>("MachineID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("NcrRaised")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("PODueDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("SalesOrderID")
+                    b.Property<string>("PONumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("PORcd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("QualityICom")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("VendorID")
@@ -290,7 +326,7 @@ namespace haver.Data.HaverMigrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("SalesOrderID");
+                    b.HasIndex("MachineID");
 
                     b.HasIndex("VendorID");
 
@@ -303,7 +339,13 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("AppDwgRcd")
+                    b.Property<DateTime>("AppDwgExp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("AppDwgRel")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("AppDwgRet")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Comments")
@@ -319,7 +361,10 @@ namespace haver.Data.HaverMigrations
                     b.Property<int>("CustomerID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DwgIsDt")
+                    b.Property<DateTime>("EngPExp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EngPRel")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OrderNumber")
@@ -327,7 +372,10 @@ namespace haver.Data.HaverMigrations
                         .HasMaxLength(8)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("PDate")
+                    b.Property<DateTime>("PreOExp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("PreORel")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
@@ -435,11 +483,19 @@ namespace haver.Data.HaverMigrations
 
             modelBuilder.Entity("haver.Models.Machine", b =>
                 {
+                    b.HasOne("haver.Models.MachineType", "MachineType")
+                        .WithMany("Machines")
+                        .HasForeignKey("MachineTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("haver.Models.SalesOrder", "SalesOrder")
                         .WithMany("Machines")
                         .HasForeignKey("SalesOrderID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("MachineType");
 
                     b.Navigation("SalesOrder");
                 });
@@ -457,9 +513,9 @@ namespace haver.Data.HaverMigrations
 
             modelBuilder.Entity("haver.Models.Procurement", b =>
                 {
-                    b.HasOne("haver.Models.SalesOrder", "SalesOrder")
+                    b.HasOne("haver.Models.Machine", "Machine")
                         .WithMany("Procurements")
-                        .HasForeignKey("SalesOrderID");
+                        .HasForeignKey("MachineID");
 
                     b.HasOne("haver.Models.Vendor", "Vendor")
                         .WithMany("Procurements")
@@ -467,7 +523,7 @@ namespace haver.Data.HaverMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("SalesOrder");
+                    b.Navigation("Machine");
 
                     b.Navigation("Vendor");
                 });
@@ -512,13 +568,21 @@ namespace haver.Data.HaverMigrations
                     b.Navigation("SalesOrderEngineers");
                 });
 
+            modelBuilder.Entity("haver.Models.Machine", b =>
+                {
+                    b.Navigation("Procurements");
+                });
+
+            modelBuilder.Entity("haver.Models.MachineType", b =>
+                {
+                    b.Navigation("Machines");
+                });
+
             modelBuilder.Entity("haver.Models.SalesOrder", b =>
                 {
                     b.Navigation("Machines");
 
                     b.Navigation("PackageRelease");
-
-                    b.Navigation("Procurements");
 
                     b.Navigation("SalesOrderEngineers");
                 });

@@ -7,31 +7,36 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
-        #region Summary Properties
+        //#region Summary Properties
 
-        [Display(Name = "Order Date")]
-        public string SummaryDate => SoDate.ToString("MMM d, yyyy");
+        //[Display(Name = "Order Date")]
+        //public string SummaryDate => SoDate.ToString("MMM d, yyyy");
 
-        [Display(Name = "Approved Drawings Received")]
-        public string AppDate => AppDwgRcd.ToString("MMM d, yyyy");
+        //[Display(Name = "Approval Drawings Expected")]
+        //public string AppDExp => AppDwgExp.ToString("MMM d, yyyy");
 
-        [Display(Name = "Order Drawings Sent")]
-        public string DwgDte => DwgIsDt.ToString("MMM d, yyyy");
+        //[Display(Name = "Approval Drawings Released")]
+        //public string AppDRel => AppDwgRel.ToString("MMM d, yyyy");
 
-		[Display(Name = "Date")]
-		public string DateSummary
-		{
-			get
-			{
-				return $"Rel {PDate:MMM-yy}";
-			}
-		}
+        //[Display(Name = "Approval Drawings Returned")]
+        //public string AppDRet => AppDwgRet.ToString("MMM d, yyyy");
+
+        //[Display(Name = "Pre Orders Expected")]
+        //public string POExp => PreOExp.ToString("MMM d, yyyy");
+
+        //[Display(Name = "Pre Orders Released")]
+        //public string PORel => PreORel.ToString("MMM d, yyyy");
+
+        //[Display(Name = "Engineering Package Expected")]
+        //public string EPExp => EngPExp.ToString("MMM d, yyyy");
+
+        //[Display(Name = "Engineering Package Released")]
+        //public string EPRel => EngPRel.ToString("MMM d, yyyy");
 
 
+        //#endregion
 
-		#endregion
-
-		[Display(Name = "Order Number")]
+        [Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
         [RegularExpression("^\\d{8}$", ErrorMessage = "The sales order number must be exactly 8 numeric digits.")]
         [StringLength(8, ErrorMessage = "Order number must be exactly 8 digits.")]
@@ -40,38 +45,55 @@ namespace haver.Models
         [Display(Name = "Order Date")]
         [Required(ErrorMessage = "Order date is required")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime SoDate { get; set; }
 
         
         [Display(Name = "Price")]
-        [Required(ErrorMessage = "Enter the value of this order.")]
         [DataType(DataType.Currency)]
         [Range(0, double.MaxValue, ErrorMessage = "The price must be a positive value.")]
-        public Decimal Price { get; set; }
+        public Decimal? Price { get; set; }
 
-        //[Required(ErrorMessage = "Shipping Terms are Required")]
         [Display(Name = "Shipping Terms")]
         [MaxLength(800, ErrorMessage = "Shipping terms cannot exceed 800 characters")]
         public string? ShippingTerms { get; set; }
 
-        [Display(Name = "Approved Drawings Received")]
-        //[Required(ErrorMessage = "Enter the date approved drawings from the customer were received")]
+        [Display(Name = "Approved Drawings Expected")]
+        [Required(ErrorMessage = "Enter the approval drawings expected date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime AppDwgRcd { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? AppDwgExp { get; set; }
 
-        [Display(Name = "Order Drawings Sent")]
-        //[Required(ErrorMessage = "Select the date drawings for this order were sent to the customer")]
+        [Display(Name = "Approved Drawings Released")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DwgIsDt { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? AppDwgRel { get; set; }
 
-		[Display(Name = "Eng Package Release")]
-		//[Required(ErrorMessage = "Select the day engineering package was released.")]
-		[DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime PDate { get; set; }
+        [Display(Name = "Approved Drawings Returned")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? AppDwgRet { get; set; }
+
+        [Display(Name = "Pre Orders Expected")]
+        [Required(ErrorMessage = "Enter the date pre orders are expected")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? PreOExp { get; set; }
+
+        [Display(Name = "Pre Orders Released")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? PreORel { get; set; }
+
+        [Display(Name = "Engineering Package Expected")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? EngPExp { get; set; }
+
+        [Display(Name = "Engineering Package Released")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? EngPRel { get; set; }
 
 		[Display(Name = "Customer")]
         [Required(ErrorMessage = "Select the customer related to this order")]
@@ -84,10 +106,7 @@ namespace haver.Models
         // Many-to-Many: A Sales Order can have multiple Engineers
         [Display(Name = "Engineers")]
         public ICollection<SalesOrderEngineer> SalesOrderEngineers { get; set; } = new HashSet<SalesOrderEngineer>();
-
-        // One-to-Many: A Sales Order can have multiple Procurements
-        public ICollection<Procurement> Procurements { get; set; } = new HashSet<Procurement>();
-
+      
         [Display(Name = "Notes/Comments")]
         public string? Comments { get; set; }
 

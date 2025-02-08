@@ -7,28 +7,32 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
-        // Machine Description
-        [Display(Name = "Machine Description")]
-        [Required(ErrorMessage = "Machine description is required.")]
-        [MaxLength(100, ErrorMessage = "Description cannot exceed 100 characters.")]
-        [MinLength(10, ErrorMessage = "Description must be at least 10 characters.")]
-        public string? Description { get; set; }
 
-        // Production Order Number
-        [Display(Name = "Production Order Number")]
-        [Required(ErrorMessage = "Production order number is required.")]
-        public string? ProductionOrderNumber { get; set; }
+        #region SUMMARY PROPERTIES
+
+        //[Display(Name = "Readiness To Ship Expected")]
+        //public string RToSExp => RToShipExp.ToString("MMM d, yyyy");
+
+        //[Display(Name = "Readiness To Ship Actual ")]
+        //public string RToSAc => RToShipExp.ToString("MMM d, yyyy");
+
+        #endregion
 
         // Serial Number
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "Serial number is required.")]
         public string? SerialNumber { get; set; }
 
+        // Production Order Number
+        [Display(Name = "Production Order Number")]
+        [Required(ErrorMessage = "Production order number is required.")]
+        public string? ProductionOrderNumber { get; set; }
+
         // Quantity
         [Display(Name = "Quantity")]
         [Required(ErrorMessage = "Quantity is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
 
         // Machine Size
         [Display(Name = "Size")]
@@ -39,6 +43,18 @@ namespace haver.Models
         [Display(Name = "Class")]
         [Required(ErrorMessage = "Machine class is required.")]
         public string? Class { get; set; }
+
+        [Display(Name = "Readiness To Ship Expected")]
+        [Required(ErrorMessage = "Enter the Readiness to Ship Expected Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? RToShipExp { get; set; }
+
+
+        [Display(Name = "Readiness To Ship Actual")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        public DateTime? RToShipA { get; set; }
 
         // Number of Decks
         [Display(Name = "Size/Deck")]
@@ -58,19 +74,16 @@ namespace haver.Models
         //Base Annotations
 
         [Display(Name = "Base")]
-        [Required(ErrorMessage = "Base is required")]
         public bool Base { get; set; }
 
         //Air Seal Annotations
 
         [Display(Name = "Air Seal")]
-        [Required(ErrorMessage = "Air seal is required")]
         public bool AirSeal { get; set; }
 
         //Coating Lining Annotations
 
         [Display(Name = "Coating/Lining")]
-        [Required(ErrorMessage = "Coating Lining is required")]
         public bool CoatingLining { get; set; }
 
         //Dissembly Annotations
@@ -81,9 +94,8 @@ namespace haver.Models
 
         // Budgeted & Actual Assembly Hours
         [Display(Name = "Budgeted Hours")]
-        [Required(ErrorMessage = "Enter the budgeted hours for this machine.")]
         [Range(0, int.MaxValue, ErrorMessage = "Budgeted hours must be a positive number.")]
-        public Decimal BudgetedHours { get; set; }
+        public Decimal? BudgetedHours { get; set; }
 
         [Display(Name = "Actual Assembly Hours")]
         [Range(0, int.MaxValue, ErrorMessage = "Actual assembly hours must be a positive number.")]
@@ -95,21 +107,29 @@ namespace haver.Models
 
         // Nameplate Status
         [Display(Name = "Nameplate Status")]
-        [Required(ErrorMessage = "Select the nameplate status.")]
-        public NamePlate? Nameplate { get; set; } // Options: Ordered, Received
+        public NamePlate? Nameplate { get; set; } = NamePlate.Required;
 
         [Display(Name = "Pre-Order:")]
         public string? PreOrder { get; set; }
 
         //Scope  Annotations
         [Display(Name = "Scope:")]
-        [MaxLength(1000, ErrorMessage = "Limit of 200 characters for scope")]
         public string? Scope { get; set; }
 
         // Foreign Key to SalesOrder
         [Display(Name = "Sales Order")]
-        //[Required(ErrorMessage = "Select the Sales Order associated with this machine.")]
+        [Required(ErrorMessage = "Select the Sales Order associated with this machine.")]
         public int SalesOrderID { get; set; }
         public SalesOrder? SalesOrder { get; set; }
+
+        // Foreign Key to MachineType
+        [Display(Name = "Machine Type")]
+        [Required(ErrorMessage = "Select the Machine Type")]
+        public int MachineTypeID { get; set; }
+        public MachineType? MachineType { get; set; }
+
+        // One-to-Many: A Machine can have multiple Procurements
+        public ICollection<Procurement> Procurements { get; set; } = new HashSet<Procurement>();
+
     }
 }

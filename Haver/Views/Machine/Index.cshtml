@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<haver.Models.Machine>
 
-
 <h1 class="text-center my-4" aria-label="Machine Index">Machines</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -22,8 +21,8 @@
             <div class="card card-body bg-light">
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label class="form-label fw-bold" for="DesString">Search Machine Description:</label>
-                        @Html.TextBox("DesString", null, new { @class = "form-control", placeholder = "Enter machine description", aria_label = "Search by machine description" })
+                        <label class="form-label fw-bold" for="CustomerID">Select by Customer:</label>
+                        @Html.DropDownList("MachineTypeID", null, "All Machine Types", htmlAttributes: new { @class = "form-control", aria_label = "Select machinetypes to filter " })
                     </div>
                     <div class="form-group col-md-3">
                         <label class="form-label fw-bold" for="PoString">Search Production Order Number:</label>
@@ -49,7 +48,7 @@
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="bg-dark text-white text-center">
             <tr>
-                @foreach (var field in new[] { "Description", "Production Order Number", "Serial Number", "Quantity", "Size", "Class", "Sales Order" })
+                @foreach (var field in new[] { "Serial Number", "Production Order Number", "Class", "Sales Order","Machine Type" })
                 {
                     <th class="align-middle">
                         <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
@@ -61,38 +60,38 @@
                         </button>
                     </th>
                 }
+                <th class="align-middle">Readiness To Ship Expected</th>
                 <th class="align-middle">Actions</th>
             </tr>
         </thead>
+    <tbody>
         <tbody>
-            @foreach (var item in Model)
-            {
+                @foreach (var item in Model)
+                {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ProductionOrderNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.SerialNumber)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Size)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ProductionOrderNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.Class)</td>
                     <td>@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MachineType.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RToShipExp)</td>
                     <td class="text-center">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.Description" data-bs-toggle="tooltip" title="Edit machine">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.SerialNumber" data-bs-toggle="tooltip" title="Edit machine">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.Description" data-bs-toggle="tooltip" title="View details">
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.Description" data-bs-toggle="tooltip" title="Delete machine">
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.SerialNumber" data-bs-toggle="tooltip" title="Delete machine">
                             <i class="fa-solid fa-delete-left"></i> Delete
                         </a>
                     </td>
                 </tr>
-            }
+                }
         </tbody>
     </table>
     <partial name="_PagingNavBar" />
 </form>
-
 @section Scripts {
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

@@ -43,11 +43,11 @@ namespace haver.Data
                     if (!context.Customers.Any())
                     {
                         context.Customers.AddRange(
-                            new Customer { ID = 1, FirstName = "Greg", LastName = "Owenson", Phone = "4395509876", CompanyName = "Owens Corning" },
-                            new Customer { ID = 2, FirstName = "Phill", LastName = "Morgan", Phone = "4375509876", CompanyName = "Coloured Aggregates" },
-                            new Customer { ID = 3, FirstName = "Susan", LastName = "Bright", Phone = "4162235566", CompanyName = "Bright Mining" },
-                            new Customer { ID = 4, FirstName = "Tom", LastName = "Hardy", Phone = "9058873321", CompanyName = "Rock Solid Ltd" },
-                            new Customer { ID = 5, FirstName = "Emma", LastName = "Williams", Phone = "6479981123", CompanyName = "Granite Works" }
+                            new Customer { ID = 1,Phone = "4395509876", CompanyName = "Owens Corning" },
+                            new Customer { ID = 2,Phone = "4375509876", CompanyName = "Coloured Aggregates" },
+                            new Customer { ID = 3, Phone = "4162235566", CompanyName = "Bright Mining" },
+                            new Customer { ID = 4,  Phone = "9058873321", CompanyName = "Rock Solid Ltd" },
+                            new Customer { ID = 5, Phone = "6479981123", CompanyName = "Granite Works" }
                         );
                         context.SaveChanges();
                     }
@@ -83,12 +83,12 @@ namespace haver.Data
                     if (!context.Machines.Any())
                     {
                         context.Machines.AddRange(
-                            new Machine { ID = 1, Description = "T-330 4'x10' - 1D", ProductionOrderNumber = "3938472", SerialNumber = "HDCM-12345", Quantity = 2, Size = "Large", Class = "Industrial", SizeDeck = "1500x2000", SalesOrderID = 1 },
-                            new Machine { ID = 2, Description = "F-600 5'x10' - 1D", ProductionOrderNumber = "3933442", SerialNumber = "PM-54321", Quantity = 1, Size = "Medium", Class = "Fabrication", SizeDeck = "1000x1500", SalesOrderID = 2 },
-                            new Machine { ID = 3, Description = "X-800 6'x12' - 2D", ProductionOrderNumber = "3987472", SerialNumber = "MX-98765", Quantity = 3, Size = "Large", Class = "Heavy Duty", SizeDeck = "1800x2400", SalesOrderID = 3 },
-                            new Machine { ID = 4, Description = "G-900 4'x8' - 1D", ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", Quantity = 4, Size = "Small", Class = "Mining", SizeDeck = "1200x1800", SalesOrderID = 4 },
-                            new Machine { ID = 5, Description = "P-750 5'x12' - 2D", ProductionOrderNumber = "3975472", SerialNumber = "PR-11223", Quantity = 2, Size = "Medium", Class = "Processing", SizeDeck = "1400x2200", SalesOrderID = 5 },
-                            new Machine { ID = 6, Description = "B-400 3'x6' - 1D", ProductionOrderNumber = "3933472", SerialNumber = "BLK-33445", Quantity = 1, Size = "Compact", Class = "Screening", SizeDeck = "900x1200", SalesOrderID = 6 }
+                            new Machine { ID = 1,  ProductionOrderNumber = "3938472", SerialNumber = "HDCM-12345", Quantity = 2, Size = "Large", Class = "Industrial", SizeDeck = "1500x2000", SalesOrderID = 1 },
+                            new Machine { ID = 2,  ProductionOrderNumber = "3933442", SerialNumber = "PM-54321", Quantity = 1, Size = "Medium", Class = "Fabrication", SizeDeck = "1000x1500", SalesOrderID = 2 },
+                            new Machine { ID = 3,  ProductionOrderNumber = "3987472", SerialNumber = "MX-98765", Quantity = 3, Size = "Large", Class = "Heavy Duty", SizeDeck = "1800x2400", SalesOrderID = 3 },
+                            new Machine { ID = 4,  ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", Quantity = 4, Size = "Small", Class = "Mining", SizeDeck = "1200x1800", SalesOrderID = 4 },
+                            new Machine { ID = 5,  ProductionOrderNumber = "3975472", SerialNumber = "PR-11223", Quantity = 2, Size = "Medium", Class = "Processing", SizeDeck = "1400x2200", SalesOrderID = 5 },
+                            new Machine { ID = 6, ProductionOrderNumber = "3933472", SerialNumber = "BLK-33445", Quantity = 1, Size = "Compact", Class = "Screening", SizeDeck = "900x1200", SalesOrderID = 6 }
                         );
                         context.SaveChanges();
                     }

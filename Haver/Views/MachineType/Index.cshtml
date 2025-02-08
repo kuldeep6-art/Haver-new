@@ -1,0 +1,67 @@
+﻿@model IEnumerable<haver.Models.MachineType>
+
+@{
+    ViewData["Title"] = "Machine Types";
+}
+
+<h1 class="text-center my-4" aria-label="Machine Type Index">Machine Types</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn" aria-label="Create a new machine type" data-bs-toggle="tooltip" title="Create a new machine type">
+        <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
+    </a>
+</div>
+
+<table class="table table-striped table-bordered table-hover shadow-sm">
+    <thead class="bg-dark text-white text-center">
+        <tr>
+            <th class="align-middle">
+                <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="Description" aria-label="Sort by Description" data-bs-toggle="tooltip" title="Sort by Description">
+                    Description
+                    @if (ViewData["sortField"]?.ToString() == "Description")
+                    {
+                        <i class="fa-solid @(ViewData["sortDirection"]?.ToString() == "asc" ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                    }
+                </button>
+            </th>
+            <th class="align-middle">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine type @item.Description" data-bs-toggle="tooltip" title="Edit machine type">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine type @item.Description" data-bs-toggle="tooltip" title="View details">
+                        <i class="fa-solid fa-circle-info"></i> Details
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine type @item.Description" data-bs-toggle="tooltip" title="Delete machine type">
+                        <i class="fa-solid fa-delete-left"></i> Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="_PagingNavBar" />
+
+@section Scripts {
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
+
+<style>
+    .align-middle button {
+        background: none;
+        outline: none;
+    }
+</style>

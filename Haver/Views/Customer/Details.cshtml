@@ -33,16 +33,19 @@
                             Customer Information
                         </h5>
                         <div class="row">
-                            <!-- Summary -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Name of the customer">Name</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.Summary)
-                                        </p>
+
+                            <div class="row">
+                                <!-- Company Name -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Customer's company name">Company Name</span>
+                                            </h6>
+                                            <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
+                                                @Html.DisplayFor(model => model.CompanyName)
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -63,21 +66,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <!-- Company Name -->
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h6 class="card-title" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Customer's company name">Company Name</span>
-                                        </h6>
-                                        <p class="card-text" style="font-family: 'Avenir Roman', sans-serif;">
-                                            @Html.DisplayFor(model => model.CompanyName)
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      
                     </div>
                 </div>
 

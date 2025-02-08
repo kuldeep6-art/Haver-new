@@ -92,6 +92,18 @@
 				</div>
 			</div>
 
+			<!-- Machine Dropdown -->
+			<div class="dropdown">
+				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+					Machine Type<i class="fa fa-plus"></i>
+				</a>
+				<div class="dropdown-content">
+					<a asp-area="" asp-controller="MachineType" asp-action="Index">View Machines</a>
+					<a asp-area="" asp-controller="MachineType" asp-action="Create">Create Machine</a>
+				</div>
+			</div>
+
+
 			<!-- Engineer Dropdown -->
 			<div class="dropdown">
 				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">

@@ -1,340 +1,111 @@
 ﻿@model haver.Models.SalesOrder
 
+@{
+    ViewData["Title"] = "Create";
+}
 
+<h1>Create</h1>
 
-<div class="container-fluid bg-light">
-    <!-- Header -->
-    <div class="row">
-        <div class="col-md-12 py-4" style="background-color:#0C2340;">
-            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Create a Sales Order
-            </h4>
-        </div>
-    </div>
-
-  
-    <!-- Centered Form -->
-    <div class="row py-4">
-        <div class="col-md-8 offset-md-2">
-              @* <partial name="_addCustomerModal" /> *@
-            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order Information">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <!-- Row with two inputs side by side -->
+<h4>SalesOrder</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderNumber" class="control-label"></label>
+                <input asp-for="OrderNumber" class="form-control" />
+                <span asp-validation-for="OrderNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoDate" class="control-label"></label>
+                <input asp-for="SoDate" class="form-control" />
+                <span asp-validation-for="SoDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingTerms" class="control-label"></label>
+                <input asp-for="ShippingTerms" class="form-control" />
+                <span asp-validation-for="ShippingTerms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppDwgExp" class="control-label"></label>
+                <input asp-for="AppDwgExp" class="form-control" />
+                <span asp-validation-for="AppDwgExp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppDwgRel" class="control-label"></label>
+                <input asp-for="AppDwgRel" class="form-control" />
+                <span asp-validation-for="AppDwgRel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppDwgRet" class="control-label"></label>
+                <input asp-for="AppDwgRet" class="form-control" />
+                <span asp-validation-for="AppDwgRet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreOExp" class="control-label"></label>
+                <input asp-for="PreOExp" class="form-control" />
+                <span asp-validation-for="PreOExp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreORel" class="control-label"></label>
+                <input asp-for="PreORel" class="form-control" />
+                <span asp-validation-for="PreORel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngPExp" class="control-label"></label>
+                <input asp-for="EngPExp" class="form-control" />
+                <span asp-validation-for="EngPExp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngPRel" class="control-label"></label>
+                <input asp-for="EngPRel" class="form-control" />
+                <span asp-validation-for="EngPRel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <select asp-for="CustomerID" class ="form-control" asp-items="ViewBag.CustomerID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comments" class="control-label"></label>
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="col-md-8">
                 <div class="row">
-                    <!-- Order Number -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="OrderNumber" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Order Number
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order number."></i>
-                        </label>
-                        <input asp-for="OrderNumber" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="1" placeholder="12345678" />
-                        <span asp-validation-for="OrderNumber" class="text-danger"></span>
-                    </div>
-
-                    <!-- Sales Order Date -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="SoDate" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Enter the date this order was placed
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the sales order date."></i>
-                        </label>
-                        <input asp-for="SoDate" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="2" />
-                        <span asp-validation-for="SoDate" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Row with two more inputs side by side -->
-                <div class="row">
-                    <!-- Price -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="Price" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Price
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the total price for the order."></i>
-                        </label>
-                        <input asp-for="Price" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="3" placeholder="2000" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-
-                    <!-- Shipping Terms -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="ShippingTerms" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Shipping Terms
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the shipping terms for this order."></i>
-                        </label>
-                        <input asp-for="ShippingTerms" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="4" placeholder="Enter Shipping Terms" />
-                        <span asp-validation-for="ShippingTerms" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Row with two more inputs side by side -->
-                <div class="row">
-                    <!-- App Dwg Rcd -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="AppDwgRcd" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Drawings Recieved From Customer On
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the application drawing record date."></i>
-                        </label>
-                        <input asp-for="AppDwgRcd" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="5" />
-                        <span asp-validation-for="AppDwgRcd" class="text-danger"></span>
-                    </div>
-
-                    <!-- Dwg Is Dt -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="DwgIsDt" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Drawings Issued to Customer On
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the drawing is date."></i>
-                        </label>
-                        <input asp-for="DwgIsDt" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
-                        <span asp-validation-for="DwgIsDt" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Customer ID -->
-                <div class="row">
-                    <div class=" col-md-6 form-group mb-3">
-                        <label asp-for="CustomerID" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Select the customer related to this order
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the customer for this order."></i>
-                        </label>
-                      @*   <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" id="nowAddCustomer" data-bs-toggle="modal" data-bs-target="#addCustomerModal" type="button">&#x2795;</button>
-                    </div> *@
-                        <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID" tabindex="7">
-                    </select>
-                    </div>
-
-                    <div class="col-md-6 form-group mb-3">
-                        <label asp-for="PDate" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Actual Engineer Package Released On
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Release Date"></i>
-                        </label>
-                        <input asp-for="PDate" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="6" />
-                        <span asp-validation-for="PDate" class="text-danger"></span>
-                    </div>
-
-
-                    <!-- Comments -->
-                    <div class="col-md-12 form-group mb-3">
-                        <label asp-for="Comments" class="control-label"
-                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Comments
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Add any comments related to the sales order."></i>
-                        </label>
-                        <textarea asp-for="Comments" class="form-control summernote"
-                                  style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" tabindex="8"></textarea>
-                        <span asp-validation-for="Comments" class="text-danger"></span>
-                    </div>
-                </div>
-
-
-                <div class="row">
-
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="control-label">Choose Engineers</label>
-                        <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                            <strong>+</strong>
-                        </button>  @* &nbsp;&nbsp;
-
-                                           <button class="btn btn-sm btn-outline-secondary" id="nowAddEngineer"
-                                data-bs-toggle="modal" data-bs-target="#addEngineerModal"
-                                type="button">
-                            <strong>Add Engineer</strong>
-                        </button> *@
-                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control", @style = "margin-top: 0.5rem;" })
-                    </div>
-
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="control-label">Engineers Assigned</label>
-                        <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                    <div class="form-group col-md-6">
+                        <label class="control-label"> Engineers Assigned</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
                             <strong>-</strong>
                         </button>
-                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control", @style = "margin-top: 0.5rem;" })
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label"> Choose Engineers</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                            <strong>+</strong>
+                        </button>
+                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
                     </div>
                 </div>
-
-                <!-- Submit Button -->
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary" id="btnSubmit"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;"
-                            name="actionType" value="next">
-                        Next
-                    </button>
-
-                    <button type="submit" class="btn btn-secondary" id="btnSave"
-                            style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;"
-                            name="actionType" value="save">
-                        Save as Drafts
-                    </button>
-
-                    <button type="button" id="btnQuickFill" class="btn btn-info"
-                            style="background-color:#17a2b8; border-color:#17a2b8; font-family: 'Avenir Heavy', sans-serif;">
-                        Quick Fill
-                    </button>
-                </div>
-
-
-                <!-- Back to Previous Page -->
-                <div class="d-flex flex-column align-items-start gap-2">
-                    @*  <button onclick="goBack()" class="btn btn-primary"
-                    style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                    ⬅ Back To Previous Page
-                    </button>
-                    *@
-                    <!-- Back to Sales Order List -->
-                    <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-primary"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Sales Order List
-                    </a>
-
-
-
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
-@section Head {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-}
 
-@section Scripts {
-       @{
-          @await Html.PartialAsync("_ValidationScriptsPartial")
-      }
-    <script src="~/js/multiselect.js"></script>
-  @*   <script src="~/js/refreshDDL.js"></script>
-
-     <script type="text/javascript">
-        $('#submitCustomerCreate').click(function (event) {
-            event.preventDefault();
-            ClearErrors();
-            var form = $('#createCustomerForm');
-            if (form.valid()) {
-                $.ajax({
-                    type: "POST",
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function () {
-                        $('#addCustomerModal').modal('hide');
-                    },
-                    error: function (xhr) { //Note: xhr is the XMLHttpRequest
-                        var errorMessages = []; 
-                        switch (xhr.status) {
-                            case 401:
-                                errorMessages.push("You must be logged in first.");
-                                break;
-                            case 403:
-                                errorMessages.push("You are not authorized for this action.");
-                                break;
-                            default:
-                                //Messages coming from the Model State Errors
-                                //We split on the | delimeter and the .slice removes the last one
-                                errorMessages = xhr.responseText.split("|").slice(0, -1);
-                        }
-                        //This checks if there are any elements with some content
-                        //and if not then it provides a default feedback message.
-                        if (!errorMessages.some((str) => str !== "")) {
-                          errorMessages.push("Error: Unable to complete operation");
-                        }
-                        //Put the messages in the ErrorList ul contained in the 'ValidaitonSummary' div.
-                        var ul = document.getElementById("ErrorList");
-                        for (var i = 0; i < errorMessages.length; i++) {
-                          var errorMessage = errorMessages[i];
-                          var li = document.createElement("li");
-                          li.innerHTML = errorMessage;
-                          ul.appendChild(li);
-                        }
-                    }
-                });
-            }
-            return false;
-        });
-        $('#addCustomerModal').on('hide.bs.modal', function () {
-            document.getElementById("createCustomerForm").reset();//to clear the data in the popup form
-            ClearErrors();
-            var selectedOption = $('#CustomerID').val();//Return to the current selected value
-            refreshDDL('CustomerID', '/SalesOrder/GetCustomers/' + selectedOption, false, null, true, 'None', true);
-        });
-        function ClearErrors() {
-            //Empty out the list of validation errors if there are any
-            var ul = document.getElementById("ErrorList");
-            while (ul.firstChild) {
-              ul.removeChild(ul.firstChild);
-            }
-        }
-    </script>
- *@
-   
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
-    <!-- Summernote JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.summernote').summernote({
-                height: 150, // Set height for the editor
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']], // Text styles
-                    ['font', ['color']], // Add color picker for text and background colors
-                    ['para', ['ul', 'ol', 'paragraph']], // List and paragraph options
-                    ['insert', ['link', 'picture', 'video']], // Insert options
-                    ['view', ['fullscreen', 'codeview', 'help']] // View options
-                ],
-                colors: [
-                    // Define a full range of colors
-                    ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF'],
-                    ['#FF0000', '#FF9C00', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#9C00FF', '#FF00FF'],
-                    ['#F4CCCC', '#FCE5CD', '#FFF2CC', '#D9EAD3', '#D0E0E3', '#C9DAF8', '#CFE2F3', '#D9D2E9'],
-                    ['#EA9999', '#F9CB9C', '#FFE599', '#B6D7A8', '#A2C4C9', '#A4C2F4', '#9FC5E8', '#B4A7D6'],
-                    ['#E06666', '#F6B26B', '#FFD966', '#93C47D', '#76A5AF', '#6D9EEB', '#6FA8DC', '#8E7CC3'],
-                    ['#CC0000', '#E69138', '#F1C232', '#6AA84F', '#45818E', '#3C78D8', '#3D85C6', '#674EA7'],
-                    ['#990000', '#B45F06', '#BF9000', '#38761D', '#134F5C', '#1155CC', '#0B5394', '#351C75'],
-                    ['#660000', '#783F04', '#7F6000', '#274E13', '#0C343D', '#1C4587', '#073763', '#20124D']
-                ] // Custom color palette
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    </script>
-    <script type="text/javascript">
-        // Function to quickly fill the form with sample data
-        document.getElementById('btnQuickFill').addEventListener('click', function () {
-            document.getElementById('OrderNumber').value = '10423454';
-            document.getElementById('SoDate').value = '2025-02-05'; // Update with desired date format
-            document.getElementById('Price').value = '15000.00';
-            document.getElementById('ShippingTerms').value = 'FOB Toronto';
-            document.getElementById('AppDwgRcd').value = '2025-02-01'; // Update with desired date
-            document.getElementById('DwgIsDt').value = '2025-02-02'; // Update with desired date
-            document.getElementById('CustomerID').value = '1'; // Assuming the customer ID is '1'
-            document.getElementById('Comments').value = 'Quick fill test comment for presentation.';
-
-            // For the ListBox (you can set selected options similarly)
-            $("#selectedOptions").val(['Option1', 'Option2']); // Assuming these options exist
-            $("#availOptions").val(['Option3', 'Option4']); // Assuming these options exist
-        });
-    </script>
-
-
-}
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="~/js/multiselect.js"></script>
