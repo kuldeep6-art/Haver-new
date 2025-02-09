@@ -120,9 +120,6 @@ namespace haver.Models
         [Display(Name = "Sales Order")]
         [Required(ErrorMessage = "Select the Sales Order associated with this machine.")]
         public int SalesOrderID { get; set; }
-
-        [Display(Name = "Sales Order")]
-        [Required(ErrorMessage = "Select the Sales Order associated with this machine.")]
         public SalesOrder? SalesOrder { get; set; }
 
         // Foreign Key to MachineType
