@@ -231,12 +231,12 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id, [Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement)
+        public async Task<IActionResult> Update(int id)
         {
             var procurementToUpdate = await _context.Procurements
-                 .Include(a => a.Vendor)
-                 .Include(a => a.Machine)
-                 .FirstOrDefaultAsync(m => m.ID == id);
+                .Include(a => a.Vendor)
+                .Include(a => a.Machine)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             //Check that you got it or exit with a not found error
             if (procurementToUpdate == null)
@@ -246,8 +246,8 @@ namespace haver.Controllers
 
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Procurement>(procurementToUpdate, "",
-                a => a.VendorID, a => a.MachineID, a => a.PONumber, a => a.ExpDueDate,
-                a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
+              a => a.VendorID, a => a.MachineID, a => a.PONumber, a => a.ExpDueDate,
+                 a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
             {
                 try
                 {
@@ -255,6 +255,7 @@ namespace haver.Controllers
                     await _context.SaveChangesAsync();
                     return Redirect(ViewData["returnURL"].ToString());
                 }
+
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ProcurementExists(procurementToUpdate.ID))
@@ -271,7 +272,6 @@ namespace haver.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
                         "persists see your system administrator.");
                 }
-
             }
             PopulateDropDownLists(procurementToUpdate);
             return View(procurementToUpdate);
