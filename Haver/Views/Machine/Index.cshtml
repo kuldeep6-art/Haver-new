@@ -32,10 +32,6 @@
                         <label class="form-label fw-bold" for="SerString">Search Serial Number:</label>
                         @Html.TextBox("SerString", null, new { @class = "form-control", placeholder = "Enter serial number", aria_label = "Search by serial number" })
                     </div>
-                    <div class="form-group col-md-3">
-                        <label class="form-label fw-bold" for="ClString">Search Machine Class:</label>
-                        @Html.TextBox("ClString", null, new { @class = "form-control", placeholder = "Enter machine class", aria_label = "Search by machine class" })
-                    </div>
                     <div class="form-group col-md-12 text-end mt-3">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
                         <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
@@ -48,7 +44,7 @@
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="bg-dark text-white text-center">
             <tr>
-                @foreach (var field in new[] { "Serial Number", "Production Order Number", "Class", "Sales Order","Machine Type" })
+                @foreach (var field in new[] { "Serial Number", "Production Order Number", "Sales Order","Machine Type" })
                 {
                     <th class="align-middle">
                         <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
@@ -71,7 +67,6 @@
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.SerialNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.ProductionOrderNumber)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Class)</td>
                     <td>@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.MachineType.Description)</td>
                     <td>@Html.DisplayFor(modelItem => item.RToShipExp)</td>

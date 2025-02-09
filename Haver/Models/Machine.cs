@@ -8,16 +8,6 @@ namespace haver.Models
         public int ID { get; set; }
 
 
-        #region SUMMARY PROPERTIES
-
-        //[Display(Name = "Readiness To Ship Expected")]
-        //public string RToSExp => RToShipExp.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Readiness To Ship Actual ")]
-        //public string RToSAc => RToShipExp.ToString("MMM d, yyyy");
-
-        #endregion
-
         // Serial Number
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "Serial number is required.")]
@@ -28,21 +18,6 @@ namespace haver.Models
         [Required(ErrorMessage = "Production order number is required.")]
         public string? ProductionOrderNumber { get; set; }
 
-        // Quantity
-        [Display(Name = "Quantity")]
-        [Required(ErrorMessage = "Quantity is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
-        public int? Quantity { get; set; }
-
-        // Machine Size
-        [Display(Name = "Size")]
-        [Required(ErrorMessage = "Machine size is required.")]
-        public string? Size { get; set; }
-
-        // Machine Class
-        [Display(Name = "Class")]
-        [Required(ErrorMessage = "Machine class is required.")]
-        public string? Class { get; set; }
 
         [Display(Name = "Readiness To Ship Expected")]
         [Required(ErrorMessage = "Enter the Readiness to Ship Expected Date")]
@@ -56,19 +31,15 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? RToShipA { get; set; }
 
-        // Number of Decks
-        [Display(Name = "Size/Deck")]
-        [Required(ErrorMessage = "Size Deck is required.")]
-        public string? SizeDeck { get; set; }
 
         // Checkbox Options
-        [Display(Name = "Media")]
+        [Display(Name = "Installed Media")]
         public bool Media { get; set; }
 
         [Display(Name = "Spare Parts")]
         public bool SpareParts { get; set; }
 
-        [Display(Name = "Spare Parts/Media")]
+        [Display(Name = "Spare Media")]
         public bool SparePMedia { get; set; }
 
         //Base Annotations

@@ -22,12 +22,12 @@ namespace haver.Controllers
         }
 
         // GET: Machine
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MachineTypeID, string? PoString, string? SerString, string? ClString,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MachineTypeID, string? PoString, string? SerString,
             string? actionButton, string sortDirection = "asc", string sortField = "Serial Number")
         {
             //List of sort options.
             //NOTE: make sure this array has matching values to the column headings
-            string[] sortOptions = new[] { "Serial Number","Production Order Number","Class","Sales Order","Machine Type" };
+            string[] sortOptions = new[] { "Serial Number","Production Order Number","Sales Order","Machine Type" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -57,11 +57,7 @@ namespace haver.Controllers
                 machines = machines.Where(p => p.SerialNumber.Contains(SerString));
                 numberFilters++;
             }
-            if (!String.IsNullOrEmpty(ClString))
-            {
-                machines = machines.Where(p => p.Class.ToUpper().Contains(ClString.ToUpper()));
-                numberFilters++;
-            }
+          
 
             //Give feedback about the state of the filters
             if (numberFilters != 0)
@@ -98,19 +94,6 @@ namespace haver.Controllers
                 {
                     machines = machines
                         .OrderBy(p => p.ProductionOrderNumber);
-                }
-            }
-            else if (sortField == "Class")
-            {
-                if (sortDirection == "asc")
-                {
-                    machines = machines
-                        .OrderByDescending(p => p.Class);
-                }
-                else
-                {
-                    machines = machines
-                        .OrderBy(p => p.Class);
                 }
             }
             else if (sortField == "Sales Order")
@@ -198,7 +181,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SerialNumber,ProductionOrderNumber,Quantity,Size,Class,RToShipExp,RToShipA,SizeDeck,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
+        public async Task<IActionResult> Create([Bind("ID,SerialNumber,ProductionOrderNumber,RToShipExp,RToShipA,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
         {
             try
             {
@@ -261,8 +244,7 @@ namespace haver.Controllers
 
             if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "",
                   p => p.SerialNumber, p => p.ProductionOrderNumber,
-              p => p.Quantity, p => p.Size, p => p.Class, p => p.RToShipExp, p => p.RToShipA,
-              p => p.SizeDeck, p => p.Media, p => p.SpareParts,
+              p => p.RToShipExp, p => p.RToShipA, p => p.Media, p => p.SpareParts,
               p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly,
               p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,
               p => p.PreOrder, p => p.Scope, p => p.SalesOrderID, p => p.MachineTypeID))

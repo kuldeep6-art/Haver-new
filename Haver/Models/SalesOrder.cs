@@ -3,39 +3,11 @@ using System.Collections.Generic;
 
 namespace haver.Models
 {
-    public class SalesOrder : Auditable
+    public class SalesOrder : Auditable, IValidatableObject
     {
         public int ID { get; set; }
 
-        //#region Summary Properties
-
-        //[Display(Name = "Order Date")]
-        //public string SummaryDate => SoDate.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Approval Drawings Expected")]
-        //public string AppDExp => AppDwgExp.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Approval Drawings Released")]
-        //public string AppDRel => AppDwgRel.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Approval Drawings Returned")]
-        //public string AppDRet => AppDwgRet.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Pre Orders Expected")]
-        //public string POExp => PreOExp.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Pre Orders Released")]
-        //public string PORel => PreORel.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Engineering Package Expected")]
-        //public string EPExp => EngPExp.ToString("MMM d, yyyy");
-
-        //[Display(Name = "Engineering Package Released")]
-        //public string EPRel => EngPRel.ToString("MMM d, yyyy");
-
-
-        //#endregion
-
+       
         [Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
         [RegularExpression("^\\d{8}$", ErrorMessage = "The sales order number must be exactly 8 numeric digits.")]
@@ -115,6 +87,15 @@ namespace haver.Models
 
         public Status Status { get; set; } = Status.InProgress;
 
-     
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (AppDwgRel != null && AppDwgRet != null && AppDwgRet < AppDwgRel)
+            {
+                yield return new ValidationResult(
+                    "Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.",
+                    new[] { nameof(AppDwgRet) }
+                );
+            }
+        }
     }
 }
