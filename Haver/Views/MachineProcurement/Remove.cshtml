@@ -1,0 +1,94 @@
+﻿@model haver.Models.Procurement
+
+@{
+    ViewData["Title"] = "Remove Procurement";
+}
+
+<div class="container-fluid bg-light my-3">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Remove Procurement Information for Machine: @Model.Machine.SerialNumber
+            </h4>
+        </div>
+    </div>
+
+    <!-- Details Content -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border shadow-sm">
+                <div class="card-body p-4">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                    <dl class="row mb-0">
+                        <!-- Vendor -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.Vendor)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.Vendor.Name)
+                        </dd>
+
+                        <!-- PO Number -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PONumber)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PONumber)
+                        </dd>
+
+                        <!-- Expected Due Date -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.ExpDueDate)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.ExpDueDate)
+                        </dd>
+
+                        <!-- Delivery Date -->
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PODueDate)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PODueDate)
+                        </dd>
+
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PORcd)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PORcd)
+                        </dd>
+
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.QualityICom)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.QualityICom)
+                        </dd>
+
+
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.NcrRaised)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.NcrRaised)
+                        </dd>
+                    </dl>
+
+                    <!-- Buttons -->
+                    <form asp-action="Remove">
+                        <input type="hidden" asp-for="ID" />
+
+                        <partial name="_BackToList" />
+
+                        <button type="submit" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
+                            Remove Procurement
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

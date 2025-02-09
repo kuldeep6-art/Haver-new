@@ -159,10 +159,21 @@ namespace haver.Controllers
         }
 
         // GET: MachineProcurement/Create
-        public IActionResult Create()
+        public IActionResult Add(int? MachineID, string SerialNumber)
         {
-           PopulateDropDownLists();
-            return View();
+
+            if (!MachineID.HasValue)
+            {
+                return Redirect(ViewData["returnURL"].ToString());
+            }
+
+            ViewData["SerialNumber"] = SerialNumber;
+            Procurement a = new Procurement()
+            {
+                MachineID = MachineID.GetValueOrDefault()
+            };
+            PopulateDropDownLists();
+            return View(a);
         }
 
         // POST: MachineProcurement/Create
@@ -170,27 +181,43 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement)
+        public async Task<IActionResult> Add([Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement, string SerialNumber)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(procurement);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(procurement);
+                    await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
+                }
             }
-           PopulateDropDownLists(procurement);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
+                    "persists see your system administrator.");
+            }
+
+            PopulateDropDownLists(procurement);
+            ViewData["SerialNumber"] = SerialNumber;
             return View(procurement);
         }
 
         // GET: MachineProcurement/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var procurement = await _context.Procurements.FindAsync(id);
+            var procurement = await _context.Procurements
+              .Include(a => a.Vendor)
+              .Include(a => a.Machine)
+              .AsNoTracking()
+              .FirstOrDefaultAsync(m => m.ID == id);
+
             if (procurement == null)
             {
                 return NotFound();
@@ -204,23 +231,33 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement)
+        public async Task<IActionResult> Update(int id, [Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement)
         {
-            if (id != procurement.ID)
+            var procurementToUpdate = await _context.Procurements
+                 .Include(a => a.Vendor)
+                 .Include(a => a.Machine)
+                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            //Check that you got it or exit with a not found error
+            if (procurementToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //Try updating it with the values posted
+            if (await TryUpdateModelAsync<Procurement>(procurementToUpdate, "",
+                a => a.VendorID, a => a.MachineID, a => a.PONumber, a => a.ExpDueDate,
+                a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
             {
                 try
                 {
-                    _context.Update(procurement);
+                    _context.Update(procurementToUpdate);
                     await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProcurementExists(procurement.ID))
+                    if (!ProcurementExists(procurementToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -229,14 +266,19 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
+                        "persists see your system administrator.");
+                }
+
             }
-            PopulateDropDownLists(procurement);
-            return View(procurement);
+            PopulateDropDownLists(procurementToUpdate);
+            return View(procurementToUpdate);
         }
 
         // GET: MachineProcurement/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
@@ -256,18 +298,27 @@ namespace haver.Controllers
         }
 
         // POST: MachineProcurement/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> RemoveConfirmed(int id)
         {
-            var procurement = await _context.Procurements.FindAsync(id);
-            if (procurement != null)
+            var procurement = await _context.Procurements
+                  .Include(p => p.Machine)
+                  .Include(p => p.Vendor)
+                  .FirstOrDefaultAsync(m => m.ID == id);
+
+            try
             {
                 _context.Procurements.Remove(procurement);
+                await _context.SaveChangesAsync();
+                return Redirect(ViewData["returnURL"].ToString());
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
+                    "persists see your system administrator.");
+            }
+            return View(procurement);
         }
 
         private SelectList VendorSelectList(int? id)
