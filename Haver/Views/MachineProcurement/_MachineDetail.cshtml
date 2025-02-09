@@ -4,20 +4,14 @@
 <div class="info-container">
     <div class="info-box">
         <dl class="row">
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.MachineType)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.MachineType.Description)</dd>
+
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SerialNumber)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.SerialNumber)</dd>
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.ProductionOrderNumber)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.ProductionOrderNumber)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Quantity)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.Quantity)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Size)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.Size)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Class)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.Class)</dd>
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.RToShipExp)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.RToShipExp)</dd>
@@ -36,9 +30,6 @@
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Nameplate)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.Nameplate)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SizeDeck)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.SizeDeck)</dd>
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.PreOrder)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.PreOrder)</dd>
@@ -74,11 +65,7 @@
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SalesOrder)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.SalesOrder.OrderNumber)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.MachineType)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.MachineType.Description)</dd>
-
-            
+        
         </dl>
     </div>
     </div>

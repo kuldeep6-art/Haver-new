@@ -83,12 +83,12 @@ namespace haver.Data
                     if (!context.Machines.Any())
                     {
                         context.Machines.AddRange(
-                            new Machine { ID = 1,  ProductionOrderNumber = "3938472", SerialNumber = "HDCM-12345", Quantity = 2, Size = "Large", Class = "Industrial", SizeDeck = "1500x2000", SalesOrderID = 1 },
-                            new Machine { ID = 2,  ProductionOrderNumber = "3933442", SerialNumber = "PM-54321", Quantity = 1, Size = "Medium", Class = "Fabrication", SizeDeck = "1000x1500", SalesOrderID = 2 },
-                            new Machine { ID = 3,  ProductionOrderNumber = "3987472", SerialNumber = "MX-98765", Quantity = 3, Size = "Large", Class = "Heavy Duty", SizeDeck = "1800x2400", SalesOrderID = 3 },
-                            new Machine { ID = 4,  ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", Quantity = 4, Size = "Small", Class = "Mining", SizeDeck = "1200x1800", SalesOrderID = 4 },
-                            new Machine { ID = 5,  ProductionOrderNumber = "3975472", SerialNumber = "PR-11223", Quantity = 2, Size = "Medium", Class = "Processing", SizeDeck = "1400x2200", SalesOrderID = 5 },
-                            new Machine { ID = 6, ProductionOrderNumber = "3933472", SerialNumber = "BLK-33445", Quantity = 1, Size = "Compact", Class = "Screening", SizeDeck = "900x1200", SalesOrderID = 6 }
+                            new Machine { ID = 1,  ProductionOrderNumber = "3938472", SerialNumber = "HDCM-12345", SalesOrderID = 1 },
+                            new Machine { ID = 2,  ProductionOrderNumber = "3933442", SerialNumber = "PM-54321",  SalesOrderID = 2 },
+                            new Machine { ID = 3,  ProductionOrderNumber = "3987472", SerialNumber = "MX-98765",  SalesOrderID = 3 },
+                            new Machine { ID = 4,  ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", SalesOrderID = 4 },
+                            new Machine { ID = 5,  ProductionOrderNumber = "3975472", SerialNumber = "PR-11223",  SalesOrderID = 5 },
+                            new Machine { ID = 6, ProductionOrderNumber = "3933472", SerialNumber = "BLK-33445", SalesOrderID = 6 }
                         );
                         context.SaveChanges();
                     }
