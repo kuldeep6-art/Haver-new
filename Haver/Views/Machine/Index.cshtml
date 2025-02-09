@@ -79,7 +79,7 @@
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.SerialNumber" data-bs-toggle="tooltip" title="Edit machine">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" title="View details">
+                        <a  asp-controller="MachineProcurement" asp-action="Index" asp-route-MachineID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
                         </a>
                         <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.SerialNumber" data-bs-toggle="tooltip" title="Delete machine">

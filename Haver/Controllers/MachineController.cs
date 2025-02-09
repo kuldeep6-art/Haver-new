@@ -206,7 +206,7 @@ namespace haver.Controllers
 				{
 					_context.Add(machine);
 					await _context.SaveChangesAsync();
-					return RedirectToAction("Details", new { machine.ID });
+					return RedirectToAction("Index", "MachineProcurement", new { MachineID =  machine.ID });
 				}
 			}
 			catch (DbUpdateException dex)
@@ -270,7 +270,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { machinesToUpdate.ID });
+                    return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machinesToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
