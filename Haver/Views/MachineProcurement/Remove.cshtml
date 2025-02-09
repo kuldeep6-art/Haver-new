@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Remove Procurement Information for Sales Order: @Model.SalesOrder.OrderNumber
+                Remove Procurement Information for Machine: @Model.Machine.SerialNumber
             </h4>
         </div>
     </div>
@@ -48,10 +48,32 @@
 
                         <!-- Delivery Date -->
                         <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
-                            @Html.DisplayNameFor(model => model.DeliveryDate)
+                            @Html.DisplayNameFor(model => model.PODueDate)
                         </dt>
                         <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
-                            @Html.DisplayFor(model => model.DeliveryDate)
+                            @Html.DisplayFor(model => model.PODueDate)
+                        </dd>
+
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.PORcd)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.PORcd)
+                        </dd>
+
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.QualityICom)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.QualityICom)
+                        </dd>
+
+
+                        <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                            @Html.DisplayNameFor(model => model.NcrRaised)
+                        </dt>
+                        <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                            @Html.DisplayFor(model => model.NcrRaised)
                         </dd>
                     </dl>
 
@@ -62,7 +84,7 @@
                         <partial name="_BackToList" />
 
                         <button type="submit" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
-                             Remove Procurement
+                            Remove Procurement
                         </button>
                     </form>
                 </div>

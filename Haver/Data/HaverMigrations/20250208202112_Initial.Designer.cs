@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250208202112_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -109,7 +112,7 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("Base")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal?>("BudgetedHours")
+                    b.Property<decimal>("BudgetedHours")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Class")
@@ -145,15 +148,13 @@ namespace haver.Data.HaverMigrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Quantity")
-                        .IsRequired()
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("RToShipA")
+                    b.Property<DateTime>("RToShipA")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("RToShipExp")
-                        .IsRequired()
+                    b.Property<DateTime>("RToShipExp")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal?>("ReworkHours")
@@ -336,14 +337,13 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("AppDwgExp")
-                        .IsRequired()
+                    b.Property<DateTime>("AppDwgExp")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("AppDwgRel")
+                    b.Property<DateTime>("AppDwgRel")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("AppDwgRet")
+                    b.Property<DateTime>("AppDwgRet")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Comments")
@@ -359,10 +359,10 @@ namespace haver.Data.HaverMigrations
                     b.Property<int>("CustomerID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("EngPExp")
+                    b.Property<DateTime>("EngPExp")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("EngPRel")
+                    b.Property<DateTime>("EngPRel")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OrderNumber")
@@ -370,14 +370,13 @@ namespace haver.Data.HaverMigrations
                         .HasMaxLength(8)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PreOExp")
-                        .IsRequired()
+                    b.Property<DateTime>("PreOExp")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PreORel")
+                    b.Property<DateTime>("PreORel")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ShippingTerms")
@@ -485,7 +484,7 @@ namespace haver.Data.HaverMigrations
                     b.HasOne("haver.Models.MachineType", "MachineType")
                         .WithMany("Machines")
                         .HasForeignKey("MachineTypeID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("haver.Models.SalesOrder", "SalesOrder")

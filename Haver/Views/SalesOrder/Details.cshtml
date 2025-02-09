@@ -1,6 +1,10 @@
 ﻿@model haver.Models.SalesOrder
 
-<partial name="_ViewHeading" />
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
 
 <div>
     <h4>SalesOrder</h4>
@@ -31,16 +35,46 @@
             @Html.DisplayFor(model => model.ShippingTerms)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppDwgRcd)
+            @Html.DisplayNameFor(model => model.AppDwgExp)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppDwgRcd)
+            @Html.DisplayFor(model => model.AppDwgExp)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DwgIsDt)
+            @Html.DisplayNameFor(model => model.AppDwgRel)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DwgIsDt)
+            @Html.DisplayFor(model => model.AppDwgRel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppDwgRet)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppDwgRet)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PreOExp)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PreOExp)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PreORel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PreORel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EngPExp)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EngPExp)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EngPRel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EngPRel)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Customer)
@@ -54,94 +88,44 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Comments)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PackageRelease)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
         </dt>
-       @*  <dd class="col-sm-10">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PackageRelease.Name)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PackageRelease.Notes)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <a asp-controller="PackageRelease" asp-action="Details"
-                               asp-route-id="@Model.PackageRelease.ID">@Html.DisplayFor(model => model.PackageRelease.Name)</a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
-                        </td>
-                        <td>
-                            @Html.Raw(Model.PackageRelease.Notes)
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </dd> *@
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SalesOrderEngineers)</dt>
         <dd class="col-sm-10">
-            @if (Model.PackageRelease != null)
-            {
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PackageRelease.Name)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateP)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PackageRelease.PReleaseDateA)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PackageRelease.Notes)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a asp-controller="PackageRelease" asp-action="Details"
-                                   asp-route-id="@Model.PackageRelease.ID">@Html.DisplayFor(model => model.PackageRelease.Name)</a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateP)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.PackageRelease.PReleaseDateA)
-                            </td>
-                            <td>
-                                @Html.Raw(Model.PackageRelease.Notes)
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="alert alert-warning">
-                    <p>Package release information is not available. Please add a package release for this sales order.</p>
-                    <a asp-controller="PackageRelease" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="btn btn-primary">
-                        Create Package Release
-                    </a>
-                </div>
+            @{
+                int specCount = Model.SalesOrderEngineers.Count;
+                if (specCount > 0)
+                {
+                    string firstSpec = Model.SalesOrderEngineers.FirstOrDefault().Engineer.EngineerInitials;
+                    if (specCount > 1)
+                    {
+                        string specList = "";
+                        var s = Model.SalesOrderEngineers.ToList();
+                        for (int i = 1; i < specCount; i++)
+                        {
+                            specList += s[i].Engineer.EngineerInitials + " <br />";
+                        }
+                        <a class="engineer-list" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
+                           aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
+                            @firstSpec <span class="badge bg-info">@specCount</span>
+                        </a>
+                        <div class="collapse" id="collapseSpecalty@(Model.ID)">
+                            @Html.Raw(specList)
+                        </div>
+                    }
+                    else
+                    {
+                        @firstSpec
+                    }
+                }
+                else
+                {
+                    <span class="text-muted">None assigned to this Sales Order</span>
+                }
             }
         </dd>
 
@@ -149,5 +133,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <partial name="_BackToList" />
+    <a asp-action="Index">Back to List</a>
 </div>

@@ -1,9 +1,14 @@
 ﻿@model haver.Models.SalesOrder
 
-<partial name="_ViewHeading" />
+@{
+    ViewData["Title"] = "Delete";
+}
 
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
 <div>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <h4>SalesOrder</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,16 +36,46 @@
             @Html.DisplayFor(model => model.ShippingTerms)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppDwgRcd)
+            @Html.DisplayNameFor(model => model.AppDwgExp)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppDwgRcd)
+            @Html.DisplayFor(model => model.AppDwgExp)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DwgIsDt)
+            @Html.DisplayNameFor(model => model.AppDwgRel)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DwgIsDt)
+            @Html.DisplayFor(model => model.AppDwgRel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppDwgRet)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppDwgRet)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PreOExp)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PreOExp)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PreORel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PreORel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EngPExp)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EngPExp)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EngPRel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EngPRel)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Customer)
@@ -54,43 +89,17 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Comments)
         </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SalesOrderEngineers)
-            </dt>
-            <dd class="col-sm-10">
-                @{
-                    int specCount = Model.SalesOrderEngineers.Count;
-                    if (specCount > 0)
-                    {
-                        string firstSpec = Model.SalesOrderEngineers.FirstOrDefault().Engineer.EngineerInitials;
-                        if (specCount > 1)
-                        {
-                            string specList = "";//Html string of specialty names separated by <br /> tags
-                            var s = Model.SalesOrderEngineers.ToList();
-                            for (int i = 1; i < specCount; i++)//Skip the first because we have it already
-                            {
-                                specList += s[i].Engineer.EngineerInitials + " <br />";
-                            }
-                            <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)"
-                               aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
-                                @firstSpec <span class="badge bg-info">@specCount</span>
-                            </a>
-                            <div class="collapse" id="collapseSpecalty@(Model.ID)">
-                                @Html.Raw(specList)
-                            </div>
-                        }
-                        else
-                        {
-                            @firstSpec
-                        }
-                    }
-                }
-            </dd>
-        </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <partial name="_BackToList" />
+        <a asp-action="Index">Back to List</a>
     </form>
 </div>

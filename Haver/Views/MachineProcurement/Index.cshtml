@@ -1,20 +1,20 @@
 ﻿@model IEnumerable<haver.Models.Procurement>
 
-      <div id="contentToPrint">
-@{
-    haver.Models.SalesOrder salesOrder = (haver.Models.SalesOrder)ViewBag.SalesOrder;
-    <partial name="_SalesOrderDetail" model="salesOrder" />
-    ViewData["Title"] = ViewData["ControllerFriendlyName"];
-}
+<div id="contentToPrint">
+    @{
+        haver.Models.Machine machine = (haver.Models.Machine)ViewBag.Machine;
+        <partial name="_MachineDetail" model="machine" />
+        ViewData["Title"] = ViewData["ControllerFriendlyName"];
+    }
 
-<h1 class="text-center my-4">Procurement Section</h1>
+    <h1 class="text-center my-4">Procurement Section</h1>
 
-<form asp-action="Index" method="get" class="mb-4">
-    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
-    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
-    <input type="hidden" name="SalesOrderID" value="@salesOrder.ID" />
+    <form asp-action="Index" method="get" class="mb-4">
+        <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+        <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+        <input type="hidden" name="MachineID" value="@machine.ID" />
 
-  
+
         <button class="btn btn-outline-primary mb-3 no-print" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="form-group col-md-4 align-self-end">
                         <input type="submit" name="actionButton" value="Apply" class="btn btn-outline-primary no-print" />
-                        <a asp-action="Index" asp-route-SalesOrderID="@salesOrder.ID" class="btn btn-outline-secondary no-print">Clear</a>
+                        <a asp-action="Index" asp-route-MachineID="@machine.ID" class="btn btn-outline-secondary no-print">Clear</a>
                     </div>
                 </div>
             </div>
@@ -65,23 +65,32 @@
                         </button>
                     </th>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="DeliveryDate">
-                            Delivery Date
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="PODueDate">
+                            PO Due Date
+                        </button>
+                    </th>
+                    <th>
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="PORcd">
+                            PO Received
+                        </button>
+                    </th>
+                    <th>
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="QualityICom">
+                           Quality is Completed
+                        </button>
+                    </th>
+                    <th>
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="NcrRaised">
+                            NCR Raised
                         </button>
                     </th>
                     <th class="text-center">
-                        @if (salesOrder.Status != Status.Completed)
-                        {
-                            <a asp-controller="SalesOrderProcurement" asp-action="Add"
-                               asp-route-SalesOrderID="@salesOrder.ID" asp-route-OrderNumber="@salesOrder.OrderNumber"
+                      
+                            <a asp-controller="MachineProcurement" asp-action="Add"
+                               asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
                                class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information">
                                 <i class="fa-solid fa-plus"></i> Add
                             </a>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">✅ Completed</span>
-                        }
                     </th>
                 </tr>
             </thead>
@@ -92,25 +101,23 @@
                         <td>@Html.DisplayFor(modelItem => item.Vendor.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.PONumber)</td>
                         <td>@Html.DisplayFor(modelItem => item.ExpDueDate)</td>
-                        <td>@Html.DisplayFor(modelItem => item.DeliveryDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PODueDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PORcd)</td>
+                        <td>@Html.DisplayFor(modelItem => item.QualityICom)</td>
+                        <td>@Html.DisplayFor(modelItem => item.NcrRaised)</td>
                         <td class="text-center">
-                            @if (salesOrder.Status != Status.Completed)
-                            {
-                                <a asp-controller="SalesOrderProcurement" asp-action="Update" asp-route-id="@item.ID"
+             
+                                <a asp-controller="MachineProcurement" asp-action="Update" asp-route-id="@item.ID"
                                    class="btn btn-sm no-print" role="button"
                                    data-bs-toggle="tooltip" title="Edit Procurement">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <a asp-controller="SalesOrderProcurement" asp-action="Remove" asp-route-id="@item.ID"
+                                <a asp-controller="MachineProcurement" asp-action="Remove" asp-route-id="@item.ID"
                                    class="btn btn-sm no-print" role="button"
                                    data-bs-toggle="tooltip" title="Delete Procurement">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">✅ Completed</span>
-                            }
+                          
                         </td>
                     </tr>
                 }
@@ -120,27 +127,19 @@
         <partial name="_PagingNavBar" />
 
         <div class="mt-3">
-            @if (salesOrder.Status != Status.Completed)
-            {
-                <a asp-action="Edit" asp-controller="SalesOrder" asp-route-id="@salesOrder.ID" class="btn btn-outline-info no-print">
-                    Edit Sales Order @salesOrder.OrderNumber
+   
+                <a asp-action="Edit" asp-controller="Machine" asp-route-id="@machine.ID" class="btn btn-outline-info no-print">
+                    Edit Machine @machine.SerialNumber
                 </a>
-            }
 
-            <a href='@ViewData["returnURL"]' class="btn btn-outline-secondary no-print">Back to Sales Order List</a>
+            <a href='@ViewData["returnURL"]' class="btn btn-outline-secondary no-print">Back to Machine List</a>
 
-            @if (salesOrder.Status != Status.Completed && salesOrder.Status != Status.Archived)
-            {
-                <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@salesOrder.ID" class="btn no-print">
-                    Mark as Completed
-                </a>
-            }
 
             <button type="button" class="btn no-print" onclick="window.print();">
                 <i class="fa-solid fa-print"></i> Print
             </button>
         </div>
-</form>
+    </form>
 </div>
 
 @section Scripts {

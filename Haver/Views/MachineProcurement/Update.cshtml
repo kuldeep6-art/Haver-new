@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-12 py-4" style="background-color:#0C2340;">
             <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-                Update Procurement Information for Sales Order: @Model.SalesOrder.OrderNumber
+                Update Procurement Information for Machine: @ViewData["SerialNumber"]
             </h4>
         </div>
     </div>
@@ -17,9 +17,9 @@
     <!-- Centered Form -->
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
-            <form asp-action="Update" class="border p-4 shadow-sm" aria-label="Update Procurement">
-                <input type="hidden" asp-for="ID" />
-                <input type="hidden" name="SalesOrderID" value="@Model.SalesOrderID" />
+            <form asp-action="Add" class="border p-4 shadow-sm" aria-label="Add Procurement">
+                <input type="hidden" name="MachineID" value="@Model.MachineID" />
+                <input type="hidden" name="SerialNumber" value="@ViewData["SerialNumber"]" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <!-- Vendor & PO Number (Same Row) -->
@@ -33,7 +33,6 @@
                         <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"
                                 style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
                         </select>
-                        <span asp-validation-for="VendorID" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
@@ -63,32 +62,70 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="DeliveryDate" class="control-label"
+                        <label asp-for="PODueDate" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Delivery Date
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery date (if known)."></i>
+                            PO Due Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the PO due date for the procurement."></i>
                         </label>
-                        <input asp-for="DeliveryDate" type="date" class="form-control"
+                        <input asp-for="PODueDate" type="date" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+                        <span asp-validation-for="PODueDate" class="text-danger"></span>
                     </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PORcd" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            PO Received Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the PO Received date for the procurement."></i>
+                        </label>
+                        <input asp-for="PORcd" type="date" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="PORcd" class="text-danger"></span>
+                    </div>
+
+
                 </div>
 
-                <!-- Save Button -->
+
+                <div class="form-group mb-3 row">
+                    <div class="col-md-6">
+                        <label asp-for="QualityICom" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Quality Is Completed
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if Quality is Completed"></i>
+                        </label>
+                        <input class="form-check-input" asp-for="QualityICom" /> @Html.DisplayNameFor(model => model.QualityICom)
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="NcrRaised" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Is NCR Raised
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Check if NCR is Raised"></i>
+                        </label>
+                        <input class="form-check-input" asp-for="NcrRaised" /> @Html.DisplayNameFor(model => model.NcrRaised)
+                    </div>
+
+
+                </div>
+
+                <!-- Submit Button -->
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-                        Save Changes
-                    </button>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary"
+                                style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                            Save Changes
+                        </button>
+                    </div>
                 </div>
 
                 <div class="d-flex flex-column align-items-start gap-2">
                     <!-- Back to Previous Page -->
-                  @*   <button onclick="goBack()" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back To Previous Page
-                    </button>
- *@
+                    @* <button onclick="goBack()" class="btn btn-primary"
+                    style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                    ⬅ Back To Previous Page
+                    </button> *@
+
                     <!-- Back to Procurement List -->
                     <partial name="_BackToList" />
                 </div>

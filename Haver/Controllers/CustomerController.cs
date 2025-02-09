@@ -36,12 +36,6 @@ namespace haver.Controllers
                         .AsNoTracking()
                          select m;
 
-            if (!String.IsNullOrEmpty(SearchString))
-            {
-                customers = customers.Where(p => p.LastName.ToUpper().Contains(SearchString.ToUpper())
-                                       || p.FirstName.ToUpper().Contains(SearchString.ToUpper()));
-                numberFilters++;
-            }
             if (!String.IsNullOrEmpty(SearchCname))
             {
                 customers = customers.Where(p => p.CompanyName.ToUpper().Contains(SearchCname.ToUpper()));
@@ -86,21 +80,6 @@ namespace haver.Controllers
                         .OrderBy(p => p.CompanyName);
                 }
             }
-            else
-            {
-                if (sortDirection == "asc")
-                {
-                    customers = customers
-                        .OrderBy(p => p.LastName)
-                        .ThenBy(p => p.FirstName);
-                }
-                else
-                {
-                    customers = customers
-                        .OrderByDescending(p => p.LastName)
-                        .ThenByDescending(p => p.FirstName);
-                }
-            }
 
             //Set sort for next time
             ViewData["sortField"] = sortField;
@@ -142,7 +121,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,MiddleName,LastName,Date,Phone,CompanyName")] Customer customer)
+        public async Task<IActionResult> Create([Bind("ID,CompanyName,Phone")] Customer customer)
         {
             try
             {
@@ -164,22 +143,7 @@ namespace haver.Controllers
                 {
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
-            }//Decide if we need to send the Validaiton Errors directly to the client
-            //if (!ModelState.IsValid && Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            //{
-            //    //Was an AJAX request so build a message with all validation errors
-            //    string errorMessage = "";
-            //    foreach (var modelState in ViewData.ModelState.Values)
-            //    {
-            //        foreach (ModelError error in modelState.Errors)
-            //        {
-            //            errorMessage += error.ErrorMessage + "|";
-            //        }
-            //    }
-            //    //Note: returning a BadRequest results in HTTP Status code 400
-            //    return BadRequest(errorMessage);
-            //}
-
+            }
 
             return View(customer);
         }
@@ -218,8 +182,7 @@ namespace haver.Controllers
 
 
             if (await TryUpdateModelAsync<Customer>(customerToUpdate, "",
-                  p => p.FirstName, p => p.MiddleName, p => p.LastName,
-                 p => p.Phone, p => p.CompanyName))
+                  p => p.CompanyName, p => p.Phone))
             {
                 try
                 {

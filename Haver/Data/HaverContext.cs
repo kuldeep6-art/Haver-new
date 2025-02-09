@@ -48,8 +48,10 @@ namespace haver.Data
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Procurement> Procurements { get; set; }
 
+		public DbSet<MachineType> MachineTypes { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Relationships with Cascade Delete Restriction
             modelBuilder.Entity<SalesOrder>()
@@ -79,6 +81,13 @@ namespace haver.Data
 			  .OnDelete(DeleteBehavior.Restrict);
 
 
+
+			modelBuilder.Entity<Machine>()
+			  .HasOne<MachineType>(mse => mse.MachineType)
+			  .WithMany(e => e.Machines)
+			  .HasForeignKey(mse => mse.MachineTypeID)
+			  .OnDelete(DeleteBehavior.Restrict);
+
 			//unique fields
 
 			modelBuilder.Entity<Customer>()
@@ -101,7 +110,11 @@ namespace haver.Data
                .HasIndex(m => m.ProductionOrderNumber)
                .IsUnique();
 
-            modelBuilder.Entity<PackageRelease>()
+			modelBuilder.Entity<MachineType>()
+			 .HasIndex(m => m.Description)
+			 .IsUnique();
+
+			modelBuilder.Entity<PackageRelease>()
                 .HasIndex(pr => new { pr.Name, pr.SalesOrderID })
                 .IsUnique();
 
@@ -150,6 +163,7 @@ namespace haver.Data
                 }
             }
         }
+        public DbSet<haver.Models.MachineType> MachineType { get; set; } = default!;
     }
 
 }

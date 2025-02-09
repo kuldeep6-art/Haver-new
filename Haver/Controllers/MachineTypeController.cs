@@ -1,0 +1,219 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using haver.Data;
+using haver.Models;
+using haver.Utilities;
+using haver.CustomControllers;
+
+namespace haver.Controllers
+{
+    public class MachineTypeController : ElephantController
+    {
+        private readonly HaverContext _context;
+
+        public MachineTypeController(HaverContext context)
+        {
+            _context = context;
+        }
+
+        // GET: MachineType
+        public async Task<IActionResult> Index(int? page, int? pageSizeID)
+        {
+            var machinetypes = from m in _context.MachineTypes
+                        .AsNoTracking()
+                            select m;
+
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<MachineType>.CreateAsync(machinetypes.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
+        }
+
+        // GET: MachineType/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var machineType = await _context.MachineType
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (machineType == null)
+            {
+                return NotFound();
+            }
+
+            return View(machineType);
+        }
+
+        // GET: MachineType/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: MachineType/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ID,Description")] MachineType machineType)
+        {
+            try
+            {
+				if (ModelState.IsValid)
+				{
+					_context.Add(machineType);
+					await _context.SaveChangesAsync();
+					return RedirectToAction(nameof(Index));
+				}
+			}
+			catch (DbUpdateException dex)
+			{
+				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: MachineTypes.Description"))
+				{
+					ModelState.AddModelError("Description", "Unable to save changes. Remember, you cannot have duplicate Machine Types.");
+				}
+				else
+				{
+					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+				}
+			}
+
+
+			return View(machineType);
+        }
+
+        // GET: MachineType/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var machineType = await _context.MachineType.FindAsync(id);
+            if (machineType == null)
+            {
+                return NotFound();
+            }
+            return View(machineType);
+        }
+
+        // POST: MachineType/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id)
+        {
+			var machinetypeToUpdate = await _context.MachineTypes.FirstOrDefaultAsync(c => c.ID == id);
+
+
+			if (machinetypeToUpdate == null)
+			{
+				return NotFound();
+			}
+			if (await TryUpdateModelAsync<MachineType>(machinetypeToUpdate, "",
+						p => p.Description))
+			{
+				try
+                {
+                    await _context.SaveChangesAsync();
+					return RedirectToAction(nameof(Index));
+				}
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MachineTypeExists(machinetypeToUpdate.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+				catch (DbUpdateException dex)
+				{
+					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: MachineTypes.Description"))
+					{
+						ModelState.AddModelError("Description", "Unable to save changes. Remember, you cannot have duplicate Machine Type.");
+					}
+					else
+					{
+						ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+					}
+				}
+
+
+			}
+			return View(machinetypeToUpdate);
+        }
+
+        // GET: MachineType/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var machineType = await _context.MachineType
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (machineType == null)
+            {
+                return NotFound();
+            }
+
+            return View(machineType);
+        }
+
+        // POST: MachineType/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var machineType = await _context.MachineType.FindAsync(id);
+
+            try
+            {
+				if (machineType != null)
+				{
+					_context.MachineType.Remove(machineType);
+				}
+
+				await _context.SaveChangesAsync();
+				var returnUrl = ViewData["returnURL"]?.ToString();
+				if (string.IsNullOrEmpty(returnUrl))
+				{
+					return RedirectToAction(nameof(Index));
+				}
+				return Redirect(returnUrl);
+			}
+			catch (DbUpdateException dex)
+			{
+				if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+				{
+					ModelState.AddModelError("", "Unable to Delete Machine Type.  Remember, you cannot delete a MachineType attached to a Machine");
+				}
+				else
+				{
+					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+				}
+			}
+            return View(machineType);
+        }
+
+        private bool MachineTypeExists(int id)
+        {
+            return _context.MachineType.Any(e => e.ID == id);
+        }
+    }
+}

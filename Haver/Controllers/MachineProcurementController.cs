@@ -13,24 +13,23 @@ using haver.Utilities;
 
 namespace haver.Controllers
 {
-    public class SalesOrderProcurementController : ElephantController
+    public class MachineProcurementController : ElephantController
     {
         private readonly HaverContext _context;
 
-        public SalesOrderProcurementController(HaverContext context)
+        public MachineProcurementController(HaverContext context)
         {
             _context = context;
         }
 
-        // GET: SalesOrderProcurement
-        public async Task<IActionResult> Index(int? SalesOrderID, int? VendorID, int? page, int? pageSizeID, string actionButton,
+        // GET: MachineProcurement
+        public async Task<IActionResult> Index(int? MachineID, int? VendorID, int? page, int? pageSizeID, string actionButton,
             string SearchString, string sortDirection = "desc", string sortField = "PoNumber")
         {
-
             //Get the URL with the last filter, sort and page parameters from THE PATIENTS Index View
-            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "SalesOrder");
+            ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Machine");
 
-            if (!SalesOrderID.HasValue)
+            if (!MachineID.HasValue)
             {
                 //Go back to the proper return URL for the Patients controller
                 return Redirect(ViewData["returnURL"].ToString());
@@ -44,12 +43,12 @@ namespace haver.Controllers
             //Then in each "test" for filtering, add to the count of Filters applied
 
             //NOTE: make sure this array has matching values to the column headings
-            string[] sortOptions = new[] { "PoNumber", "Vendor"};
+            string[] sortOptions = new[] { "PoNumber", "Vendor" };
 
             var appts = from a in _context.Procurements
                         .Include(a => a.Vendor)
-                        .Include(a => a.SalesOrder)
-                        where a.SalesOrderID == SalesOrderID.GetValueOrDefault()
+                        .Include(a => a.Machine)
+                        where a.MachineID == MachineID.GetValueOrDefault()
                         select a;
 
             if (VendorID.HasValue)
@@ -121,16 +120,14 @@ namespace haver.Controllers
             ViewData["sortDirection"] = sortDirection;
 
             //Now get the MASTER record, the patient, so it can be displayed at the top of the screen
-            SalesOrder? salesOrder = await _context.SalesOrders
-                .Include(s => s.Customer)
-                .Include(s => s.PackageRelease)
-                .Include(s => s.Machines)
-                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
-                .Where(p => p.ID == SalesOrderID.GetValueOrDefault())
+            Machine? machine = await _context.Machines
+                .Include(s => s.MachineType)
+                .Include(s => s.SalesOrder)
+                .Where(p => p.ID == MachineID.GetValueOrDefault())
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
 
-            ViewBag.SalesOrder = salesOrder;
+            ViewBag.Machine = machine;
 
             //Handle Paging
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
@@ -141,7 +138,7 @@ namespace haver.Controllers
             return View(pagedData);
         }
 
-        // GET: SalesOrderProcurement/Details/5
+        // GET: MachineProcurement/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -150,7 +147,7 @@ namespace haver.Controllers
             }
 
             var procurement = await _context.Procurements
-                .Include(p => p.SalesOrder)
+                .Include(p => p.Machine)
                 .Include(p => p.Vendor)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (procurement == null)
@@ -161,29 +158,30 @@ namespace haver.Controllers
             return View(procurement);
         }
 
-        // GET: SalesOrderProcurement/Create
-        public IActionResult Add(int? SalesOrderID, string OrderNumber)
+        // GET: MachineProcurement/Create
+        public IActionResult Add(int? MachineID, string SerialNumber)
         {
-            if (!SalesOrderID.HasValue)
+
+            if (!MachineID.HasValue)
             {
                 return Redirect(ViewData["returnURL"].ToString());
             }
 
-            ViewData["OrderNumber"] = OrderNumber;
+            ViewData["SerialNumber"] = SerialNumber;
             Procurement a = new Procurement()
             {
-                SalesOrderID = SalesOrderID.GetValueOrDefault()
+                MachineID = MachineID.GetValueOrDefault()
             };
             PopulateDropDownLists();
             return View(a);
         }
 
-        // POST: SalesOrderProcurement/Create
+        // POST: MachineProcurement/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("ID,VendorID,SalesOrderID,PONumber,ExpDueDate,DeliveryDate")] Procurement procurement, string OrderNumber)
+        public async Task<IActionResult> Add([Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement, string SerialNumber)
         {
             try
             {
@@ -202,43 +200,43 @@ namespace haver.Controllers
             }
 
             PopulateDropDownLists(procurement);
-            ViewData["OrderNumber"] = OrderNumber;
+            ViewData["SerialNumber"] = SerialNumber;
             return View(procurement);
         }
 
-        // GET: SalesOrderProcurement/Edit/5
+        // GET: MachineProcurement/Edit/5
         public async Task<IActionResult> Update(int? id)
         {
-            if (id == null || _context.Procurements == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var procurement = await _context.Procurements
-               .Include(a => a.Vendor)
-               .Include(a => a.SalesOrder)
-               .AsNoTracking()
-               .FirstOrDefaultAsync(m => m.ID == id);
+              .Include(a => a.Vendor)
+              .Include(a => a.Machine)
+              .AsNoTracking()
+              .FirstOrDefaultAsync(m => m.ID == id);
+
             if (procurement == null)
             {
                 return NotFound();
             }
-
             PopulateDropDownLists(procurement);
             return View(procurement);
         }
 
-        // POST: SalesOrderProcurement/Edit/5
+        // POST: MachineProcurement/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Update(int id, [Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement)
         {
             var procurementToUpdate = await _context.Procurements
-                .Include(a => a.Vendor)
-                .Include(a => a.SalesOrder)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                 .Include(a => a.Vendor)
+                 .Include(a => a.Machine)
+                 .FirstOrDefaultAsync(m => m.ID == id);
 
             //Check that you got it or exit with a not found error
             if (procurementToUpdate == null)
@@ -248,8 +246,8 @@ namespace haver.Controllers
 
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Procurement>(procurementToUpdate, "",
-                a => a.VendorID, a => a.SalesOrderID, a => a.PONumber, a => a.ExpDueDate,
-                a => a.DeliveryDate))
+                a => a.VendorID, a => a.MachineID, a => a.PONumber, a => a.ExpDueDate,
+                a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
             {
                 try
                 {
@@ -279,16 +277,16 @@ namespace haver.Controllers
             return View(procurementToUpdate);
         }
 
-        // GET: SalesOrderProcurement/Delete/5
+        // GET: MachineProcurement/Delete/5
         public async Task<IActionResult> Remove(int? id)
         {
-            if (id == null || _context.Procurements == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var procurement = await _context.Procurements
-                .Include(p => p.SalesOrder)
+                .Include(p => p.Machine)
                 .Include(p => p.Vendor)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (procurement == null)
@@ -299,15 +297,15 @@ namespace haver.Controllers
             return View(procurement);
         }
 
-        // POST: SalesOrderProcurement/Delete/5
+        // POST: MachineProcurement/Delete/5
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)
         {
             var procurement = await _context.Procurements
-                 .Include(p => p.SalesOrder)
-                 .Include(p => p.Vendor)
-                 .FirstOrDefaultAsync(m => m.ID == id);
+                  .Include(p => p.Machine)
+                  .Include(p => p.Vendor)
+                  .FirstOrDefaultAsync(m => m.ID == id);
 
             try
             {
@@ -335,7 +333,6 @@ namespace haver.Controllers
         {
             ViewData["VendorID"] = VendorSelectList(procurement?.VendorID);
         }
-
         private bool ProcurementExists(int id)
         {
             return _context.Procurements.Any(e => e.ID == id);

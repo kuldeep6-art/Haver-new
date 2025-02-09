@@ -1,36 +1,6 @@
 ﻿@model IEnumerable<haver.Models.SalesOrder>
 
-@* <partial name="_ViewHeading" />
- *@
-<h1 class="text-center my-4" aria-label="Sales Order Index">Sales Orders</h1>
-
-@{
-    var message = TempData["Message"] as string;
-}
-
-@if (!string.IsNullOrEmpty(message))
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @message
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
-@if (!string.IsNullOrEmpty(TempData["SuccessMessage"]?.ToString()))
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-
-}
+<h1 class="text-center my-4" aria-label="Machine Index">Sales Orders</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn" aria-label="Create a new sales order" data-bs-toggle="tooltip" title="Create a new sales order">
@@ -49,11 +19,6 @@
             <div class="card card-body bg-light">
                 <div class="row">
                     <div class="form-group col-md-4">
-                        <label class="control-label">Select by Status:</label>
-                        @Html.DropDownList("StatusFilter", (SelectList)ViewBag.StatusSelectList,
-                                 "All Statuses", htmlAttributes: new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-4">
                         <label class="form-label fw-bold" for="CustomerID">Select by Customer:</label>
                         @Html.DropDownList("CustomerID", null, "All Customers", htmlAttributes: new { @class = "form-control", aria_label = "Select customer to filter orders" })
                     </div>
@@ -70,6 +35,7 @@
         </div>
     </div>
 
+
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="bg-dark text-white text-center">
             <tr>
@@ -85,23 +51,22 @@
                         </button>
                     </th>
                 }
-                <th data-bs-toggle="tooltip" title="Application Drawing Received">App Drw Rcvd</th>
-                <th data-bs-toggle="tooltip" title="Order Drawing Sent">Order Drw Sent</th>
-                <th data-bs-toggle="tooltip" title="Assigned Engineers">Engineer</th>
-                <th data-bs-toggle="tooltip" title="Current Status">Status</th>
+                <th class="align-middle">Engineers</th>
                 <th class="align-middle">Actions</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.OrderNumber)</td>
-                    <td>@Html.DisplayFor(modelItem => item.SummaryDate)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Customer.CompanyName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.AppDate)</td>
-                    <td>@Html.DisplayFor(modelItem => item.DwgDte)</td>
-                    
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CompanyName)
+            </td>
                     <td>
                         @{
                             int specCount = item.SalesOrderEngineers.Count;
@@ -131,50 +96,24 @@
                             }
                         }
                     </td>
-                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
-
                     <td class="text-center">
-                        @if (item.Status == Status.Draft)
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Continue sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Continue">Continue</a>
-                        }
-                        else if (item.Status == Status.Archived)
-                        {
-                            <span class="badge bg-secondary">Archived</span>
-                        }
-                        else if (item.Status == Status.Completed)
-                        {
-                            <span class="badge bg-success">Completed</span>  <!-- Display Completed status -->
-                            <a asp-controller="SalesOrderProcurement" asp-action="Index" asp-route-SalesOrderID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of sales order" data-bs-toggle="tooltip" title="View details">
-                                <i class="fa-solid fa-circle-info"></i> Details
-                            </a>
-                        }
-                        else
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Edit sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Edit sales order">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit
-                            </a>
-                            <a asp-controller="SalesOrderProcurement" asp-action="Index" asp-route-SalesOrderID="@item.ID"
-                               class="btn btn-sm mx-1 text-white" aria-label="View details of sales order" data-bs-toggle="tooltip" title="View details">
-                                <i class="fa-solid fa-circle-info"></i> Details
-                            </a>
-                            <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Archive sales order">
-                                <i class="fa-solid fa-box-archive"></i> Archive
-                            </a>
-                        }
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.OrderNumber" data-bs-toggle="tooltip" title="Edit machine">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                            <i class="fa-solid fa-circle-info"></i> Details
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.OrderNumber" data-bs-toggle="tooltip" title="Delete machine">
+                            <i class="fa-solid fa-delete-left"></i> Delete
+                        </a>
                     </td>
-
-
-
-                </tr>
-            }
-        </tbody>
-    </table>
+                   
+        </tr>
+}
+    </tbody>
+</table>
     <partial name="_PagingNavBar" />
 </form>
-
 @section Scripts {
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
