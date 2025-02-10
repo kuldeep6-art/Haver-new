@@ -14,6 +14,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
+                <label asp-for="MachineTypeID" class="control-label"></label>
+                <select asp-for="MachineTypeID" class="form-control" asp-items="ViewBag.MachineTypeID"></select>
+                <span asp-validation-for="MachineTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalesOrderID" class="control-label"></label>
+                <select asp-for="SalesOrderID" class="form-control" asp-items="ViewBag.SalesOrderID"></select>
+                <span asp-validation-for="SalesOrderID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="SerialNumber" class="control-label"></label>
                 <input asp-for="SerialNumber" class="form-control" />
                 <span asp-validation-for="SerialNumber" class="text-danger"></span>
@@ -85,29 +95,23 @@
             </div>
             <div class="form-group">
                 <label asp-for="Nameplate" class="control-label"></label>
-                <input asp-for="Nameplate" class="form-control" />
+                <select asp-for="Nameplate" class="form-control"
+                        asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
                 <span asp-validation-for="Nameplate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PreOrder" class="control-label"></label>
-                <input asp-for="PreOrder" class="form-control" />
+                <textarea asp-for="PreOrder" class="form-control summernote"></textarea>
                 <span asp-validation-for="PreOrder" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Scope" class="control-label"></label>
-                <input asp-for="Scope" class="form-control" />
+                <textarea asp-for="Scope" class="form-control summernote"></textarea>
                 <span asp-validation-for="Scope" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SalesOrderID" class="control-label"></label>
-                <select asp-for="SalesOrderID" class="form-control" asp-items="ViewBag.SalesOrderID"></select>
-                <span asp-validation-for="SalesOrderID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MachineTypeID" class="control-label"></label>
-                <select asp-for="MachineTypeID" class="form-control" asp-items="ViewBag.MachineTypeID"></select>
-                <span asp-validation-for="MachineTypeID" class="text-danger"></span>
-            </div>
+
+
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -118,4 +122,54 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+@section Head {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+}
+
+@section Scripts {
+    @{
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+    <script src="~/js/multiselect.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 150, // Set height for the editor
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']], // Text styles
+                    ['font', ['color']], // Add color picker for text and background colors
+                    ['para', ['ul', 'ol', 'paragraph']], // List and paragraph options
+                    ['insert', ['link', 'picture', 'video']], // Insert options
+                    ['view', ['fullscreen', 'codeview', 'help']] // View options
+                ],
+                colors: [
+                    // Define a full range of colors
+                    ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF'],
+                    ['#FF0000', '#FF9C00', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#9C00FF', '#FF00FF'],
+                    ['#F4CCCC', '#FCE5CD', '#FFF2CC', '#D9EAD3', '#D0E0E3', '#C9DAF8', '#CFE2F3', '#D9D2E9'],
+                    ['#EA9999', '#F9CB9C', '#FFE599', '#B6D7A8', '#A2C4C9', '#A4C2F4', '#9FC5E8', '#B4A7D6'],
+                    ['#E06666', '#F6B26B', '#FFD966', '#93C47D', '#76A5AF', '#6D9EEB', '#6FA8DC', '#8E7CC3'],
+                    ['#CC0000', '#E69138', '#F1C232', '#6AA84F', '#45818E', '#3C78D8', '#3D85C6', '#674EA7'],
+                    ['#990000', '#B45F06', '#BF9000', '#38761D', '#134F5C', '#1155CC', '#0B5394', '#351C75'],
+                    ['#660000', '#783F04', '#7F6000', '#274E13', '#0C343D', '#1C4587', '#073763', '#20124D']
+                ] // Custom color palette
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+    
+
+}
 
