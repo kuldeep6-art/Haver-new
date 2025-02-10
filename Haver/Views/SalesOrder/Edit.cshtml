@@ -29,6 +29,17 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Currency" class="control-label"></label>
+                <select asp-for="Currency" class="form-control" id="currencyDropdown">
+                    <option value="">-- Select Currency --</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="CAD">CAD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                </select>
+                <span asp-validation-for="Currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="ShippingTerms" class="control-label"></label>
                 <input asp-for="ShippingTerms" class="form-control" />
                 <span asp-validation-for="ShippingTerms" class="text-danger"></span>

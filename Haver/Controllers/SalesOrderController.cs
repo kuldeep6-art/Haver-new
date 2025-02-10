@@ -154,7 +154,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,CustomerID,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,CustomerID,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace haver.Controllers
             UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
 
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
-			p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.ShippingTerms,
+			p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
 			p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
 			p => p.EngPRel, p => p.CustomerID, p => p.Comments))
 			{

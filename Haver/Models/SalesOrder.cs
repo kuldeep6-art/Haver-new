@@ -18,13 +18,15 @@ namespace haver.Models
         [Required(ErrorMessage = "Order date is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime SoDate { get; set; }
+        public DateTime? SoDate { get; set; }
 
         
         [Display(Name = "Price")]
-        [DataType(DataType.Currency)]
         [Range(0, double.MaxValue, ErrorMessage = "The price must be a positive value.")]
         public Decimal? Price { get; set; }
+
+        [Display(Name = "Currency")]
+        public string? Currency { get; set; }
 
         [Display(Name = "Shipping Terms")]
         [MaxLength(800, ErrorMessage = "Shipping terms cannot exceed 800 characters")]
@@ -95,6 +97,11 @@ namespace haver.Models
                     "Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.",
                     new[] { nameof(AppDwgRet) }
                 );
+            }
+
+            if (Price.HasValue && string.IsNullOrEmpty(Currency))
+            {
+                yield return new ValidationResult("Currency is required if a price is entered.", new[] { "Currency" });
             }
         }
     }
