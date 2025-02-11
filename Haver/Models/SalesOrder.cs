@@ -89,6 +89,7 @@ namespace haver.Models
 
         public Status Status { get; set; } = Status.InProgress;
 
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (AppDwgRel != null && AppDwgRet != null && AppDwgRet < AppDwgRel)

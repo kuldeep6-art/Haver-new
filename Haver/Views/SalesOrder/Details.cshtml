@@ -2,6 +2,7 @@
 
 <h1>Sales Order details</h1>
     <hr />
+
     <div class="info-container">
         <div class="info-box">
             <dl class="row">
@@ -184,9 +185,31 @@
             </tbody>
         </table>
     </div>
-
+    </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (Model?.Status == Status.Completed)
+    {
+        <span class="badge bg-success">Completed</span>
+        <a asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        @if (Model?.Status != Status.Archived)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a>
+        }
+
+        <a asp-action="Index">Back to List</a>
+
+        @if (Model?.Status != Status.Completed && Model?.Status != Status.Archived)
+        {
+            <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@Model?.ID" class="btn no-print">
+                Mark as Completed
+            </a>
+        }
+    }
+
+
+
 </div>
