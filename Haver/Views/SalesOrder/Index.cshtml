@@ -97,17 +97,36 @@
                         }
                     </td>
                     <td class="text-center">
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.OrderNumber" data-bs-toggle="tooltip" title="Edit machine">
-                            <i class="fa-solid fa-pen-to-square"></i> Edit
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
-                            <i class="fa-solid fa-circle-info"></i> Details
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.OrderNumber" data-bs-toggle="tooltip" title="Delete machine">
-                            <i class="fa-solid fa-delete-left"></i> Delete
-                        </a>
+                        @if (item.Status == Status.Completed)
+                        {
+                            <span class="badge bg-success">Completed</span>
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                        }
+                        else if (item.Status == Status.Archived)
+                        {
+                            <span class="badge bg-secondary">Archived</span>
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.OrderNumber" data-bs-toggle="tooltip" title="Edit machine">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                            <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Archive sales order" onclick="return confirm('Are you sure you want to archive this sales order?');">
+                                <i class="fa-solid fa-box-archive"></i> Archive
+                            </a>
+
+                        }
                     </td>
-                   
+
+
         </tr>
 }
     </tbody>
