@@ -15,7 +15,7 @@ namespace haver.Models
         {
             get
             {
-                return (MachineType != null ? MachineType.Description : "Unknown Type") + " " +  "|" + SerialNumber;
+                return (MachineType != null ? MachineType.Description : "Unknown Type") + " " +  "|" + " "+ SerialNumber;
             }
         }
 
