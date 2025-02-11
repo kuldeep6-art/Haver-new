@@ -89,11 +89,11 @@ namespace haver.Models
         //[Required(ErrorMessage = "Enter the customer related to this order")]
         //public string? CompanyName { get; set; }
 
-        [Display(Name = "Customer")]
-        [Required(ErrorMessage = "Select the customer related to this order")]
-        public int CustomerID { get; set; }
+        //[Display(Name = "Customer")]
+        //[Required(ErrorMessage = "Select the customer related to this order")]
+        //public int CustomerID { get; set; }
 
-        public Customer? Customer { get; set; }
+        //public Customer? Customer { get; set; }
 
         // One-to-Many: A Sales Order has multiple Machines
         public ICollection<Machine> Machines { get; set; } = new HashSet<Machine>();

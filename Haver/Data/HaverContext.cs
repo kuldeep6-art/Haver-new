@@ -54,11 +54,6 @@ namespace haver.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Relationships with Cascade Delete Restriction
-            modelBuilder.Entity<SalesOrder>()
-                .HasOne<Customer>(so => so.Customer)
-                .WithMany(c => c.SalesOrders)
-                .HasForeignKey(so => so.CustomerID)
-                .OnDelete(DeleteBehavior.Restrict);
 
 
             modelBuilder.Entity<Machine>()
