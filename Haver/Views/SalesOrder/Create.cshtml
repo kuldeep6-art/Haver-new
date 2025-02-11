@@ -18,6 +18,12 @@
                 <span asp-validation-for="OrderNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CompanyName" class="control-label"></label>
+                <input id="companyNameInput" asp-for="CompanyName" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="SoDate" class="control-label"></label>
                 <input asp-for="SoDate" class="form-control" />
                 <span asp-validation-for="SoDate" class="text-danger"></span>
@@ -186,5 +192,19 @@
         });
     </script>
 
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script>
+        //Adds autocomplete for entering company name
+        $(document).ready(function () {
+            $("#companyNameInput").autocomplete({
+                source: '/SalesOrder/GetCompanyName',
+                minLength: 2
+            });
+        });
+    </script>
 
 }
