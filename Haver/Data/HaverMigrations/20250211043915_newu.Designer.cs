@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250211043915_newu")]
+    partial class newu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -347,7 +350,7 @@ namespace haver.Data.HaverMigrations
                     b.Property<string>("Currency")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("CustomerID")
+                    b.Property<int>("CustomerID")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("EngPExp")
@@ -521,9 +524,13 @@ namespace haver.Data.HaverMigrations
 
             modelBuilder.Entity("haver.Models.SalesOrder", b =>
                 {
-                    b.HasOne("haver.Models.Customer", null)
+                    b.HasOne("haver.Models.Customer", "Customer")
                         .WithMany("SalesOrders")
-                        .HasForeignKey("CustomerID");
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("haver.Models.SalesOrderEngineer", b =>

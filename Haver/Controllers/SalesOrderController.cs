@@ -24,7 +24,7 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, int? CustomerID,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString,
             string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
             //List of sort options.
@@ -35,20 +35,20 @@ namespace haver.Controllers
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
 
-            PopulateDropDownLists();
+           // PopulateDropDownLists();
 
             var salesOrders = from s in _context.SalesOrders
-                        .Include(s => s.Customer)
+                        //.Include(s => s.Customer)
                         .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
                         .AsNoTracking()
                               select s;
 
-            //Add as many filters as needed
-            if (CustomerID.HasValue)
-            {
-                salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
-                numberFilters++;
-            }
+            ////Add as many filters as needed
+            //if (CustomerID.HasValue)
+            //{
+            //    salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
+            //    numberFilters++;
+            //}
             if (!String.IsNullOrEmpty(SearchString))
             {
                 salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
@@ -84,12 +84,12 @@ namespace haver.Controllers
                 if (sortDirection == "asc")
                 {
                     salesOrders = salesOrders
-                        .OrderByDescending(p => p.Customer.CompanyName);
+                        .OrderByDescending(p => p.CompanyName);
                 }
                 else
                 {
                     salesOrders = salesOrders
-                        .OrderBy(p => p.Customer.CompanyName);
+                        .OrderBy(p => p.CompanyName);
                 }
             }
 
@@ -127,7 +127,7 @@ namespace haver.Controllers
             }
 
             var salesOrder = await _context.SalesOrders
-                .Include(s => s.Customer)
+                //.Include(s => s.Customer)
                 .Include(s => s.PackageRelease)
                 .Include(s => s.Machines)
                     .ThenInclude(m => m.MachineType) // ✅ Include MachineType to prevent null issues
@@ -150,7 +150,7 @@ namespace haver.Controllers
         {
             SalesOrder salesOrder = new SalesOrder();
             PopulateAssignedSpecialtyData(salesOrder);
-            PopulateDropDownLists();
+           // PopulateDropDownLists();
 
             //Fetch available engineers from the database
             ViewBag.EngineersList = new MultiSelectList(_context.Engineers, "ID", "EngineerInitials");
@@ -162,7 +162,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,CustomerID,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace haver.Controllers
                     _context.Customers.Add(customer);
                     await _context.SaveChangesAsync();
                 }
-                salesOrder.CustomerID = customer.ID;
+               // salesOrder.CustomerID = customer.ID;
                 UpdateSalesOrderEngineers(selectedOptions, salesOrder);
                 if (ModelState.IsValid)
 				{
@@ -199,7 +199,7 @@ namespace haver.Controllers
                 
             }
             PopulateAssignedSpecialtyData(salesOrder);
-            PopulateDropDownLists(salesOrder);          
+           // PopulateDropDownLists(salesOrder);          
             return View(salesOrder);
         }
 
@@ -221,7 +221,7 @@ namespace haver.Controllers
                 return NotFound();
             }
             PopulateAssignedSpecialtyData(salesOrder);
-            PopulateDropDownLists(salesOrder);
+            //PopulateDropDownLists(salesOrder);
 			return View(salesOrder);
 		}
 
@@ -246,7 +246,7 @@ namespace haver.Controllers
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
 			p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
 			p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
-			p => p.EngPRel, p => p.CustomerID, p => p.Comments))
+			p => p.EngPRel, p => p.CompanyName, p => p.Comments))
 			{
 				try
                 {
@@ -278,7 +278,7 @@ namespace haver.Controllers
 
 			}
             PopulateAssignedSpecialtyData(salesOrderToUpdate);
-            PopulateDropDownLists(salesOrderToUpdate);
+            //PopulateDropDownLists(salesOrderToUpdate);
 			return View(salesOrderToUpdate);
 		}
 
@@ -291,7 +291,7 @@ namespace haver.Controllers
             }
 
             var salesOrder = await _context.SalesOrders
-                .Include(s => s.Customer)
+                //.Include(s => s.Customer)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (salesOrder == null)
             {
@@ -317,10 +317,10 @@ namespace haver.Controllers
         }
 
 
-		private void PopulateDropDownLists(SalesOrder? salesOrder = null)
-		{
-			ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-		}
+		//private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+		//{
+		//	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+		//}
 
         // GET: SalesOrder/Archive/5
         public async Task<IActionResult> Archive(int id)
