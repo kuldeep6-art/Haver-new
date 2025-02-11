@@ -126,20 +126,24 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-			var salesOrder = await _context.SalesOrders
-			   .Include(s => s.Customer)
-			   .Include(s => s.PackageRelease)
-			   .Include(s => s.Machines).ThenInclude(m => m.Procurements) // Include Procurements
-            .ThenInclude(p => p.Vendor) // Include Vendor details
-               .FirstOrDefaultAsync(m => m.ID == id);
+            var salesOrder = await _context.SalesOrders
+                .Include(s => s.Customer)
+                .Include(s => s.PackageRelease)
+                .Include(s => s.Machines)
+                    .ThenInclude(m => m.MachineType) // ✅ Include MachineType to prevent null issues
+                .Include(s => s.Machines)
+                    .ThenInclude(m => m.Procurements) // Include Procurements
+                        .ThenInclude(p => p.Vendor) // Include Vendor details
+                .FirstOrDefaultAsync(m => m.ID == id);
 
-			if (salesOrder == null)
+            if (salesOrder == null)
             {
                 return NotFound();
             }
 
             return View(salesOrder);
         }
+
 
         // GET: SalesOrder/Create
         public IActionResult Create()
