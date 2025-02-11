@@ -25,7 +25,7 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? CString,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID,string status, string? SearchString, string? CString,
             string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
             //List of sort options.
@@ -44,12 +44,29 @@ namespace haver.Controllers
                         .AsNoTracking()
                               select s;
 
+            // Handle status filtering
+            switch (status)
+            {
+                case "Archived":
+                    salesOrders = salesOrders.Where(so => so.Status == Status.Archived);
+                    break;
+                case "Completed":
+                    salesOrders = salesOrders.Where(so => so.Status == Status.Completed);
+                    break;
+                default:
+                    // Active tab shows non-archived and non-completed
+                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed);
+                    break;
+            }
+
+
             ////Add as many filters as needed
             //if (CustomerID.HasValue)
             //{
             //    salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
             //    numberFilters++;
             //}
+
             if (!String.IsNullOrEmpty(SearchString))
             {
                 salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
@@ -120,6 +137,8 @@ namespace haver.Controllers
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<SalesOrder>.CreateAsync(salesOrders.AsNoTracking(), page ?? 1, pageSize);
+
+            ViewBag.Status = status;
 
             return View(pagedData);
         }
