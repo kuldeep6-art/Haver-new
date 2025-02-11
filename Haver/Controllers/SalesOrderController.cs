@@ -24,7 +24,7 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? CString,
             string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
             //List of sort options.
@@ -52,6 +52,11 @@ namespace haver.Controllers
             if (!String.IsNullOrEmpty(SearchString))
             {
                 salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(CString))
+            {
+                salesOrders = salesOrders.Where(p => p.CompanyName.Contains(CString));
                 numberFilters++;
             }
 
