@@ -11,6 +11,7 @@ using haver.CustomControllers;
 using haver.Utilities;
 using haver.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.VisualStudio.TextTemplating;
 
 namespace haver.Controllers
 {
@@ -184,8 +185,8 @@ namespace haver.Controllers
 				{
 					_context.Add(salesOrder);
 					await _context.SaveChangesAsync();
-					return RedirectToAction(nameof(Index));
-				}
+                    return RedirectToAction("Details", new { salesOrder.ID });
+                }
             }
             catch (RetryLimitExceededException)
             {
@@ -256,8 +257,8 @@ namespace haver.Controllers
 				try
                 {
                     await _context.SaveChangesAsync();
-					return RedirectToAction(nameof(Index));
-				}
+                    return RedirectToAction("Details", new { salesOrderToUpdate.ID });
+                }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!SalesOrderExists(salesOrderToUpdate.ID))
