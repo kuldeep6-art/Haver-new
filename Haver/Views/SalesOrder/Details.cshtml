@@ -131,7 +131,7 @@
                                 @if (firstRow)
                                 {
                                     <td rowspan="@machine.Procurements.Count">
-                                        <a asp-controller="MachineProcurement" asp-action="Index"
+                                        <a asp-controller="Machine" asp-action="Details"
                                            asp-route-id="@machine.ID" data-bs-toggle="tooltip"
                                            title="View procurement details for @machine.Description">
                                             @Html.DisplayFor(m => machine.Description)
