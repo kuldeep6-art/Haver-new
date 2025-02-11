@@ -21,8 +21,13 @@
                 Mark as Completed
             </a>
         }
+        <button href="#" onclick="printPrintableArea()" return false;" class="ms-3 btn btn-sm ">Print</button>
+    
     }
 </div>
+
+<div id="printableArea">
+
 
 <div class="info-container mb-4">
     <div class="info-box p-3 bg-light border rounded mb-3">
@@ -131,7 +136,7 @@
                                 @if (firstRow)
                                 {
                                     <td rowspan="@machine.Procurements.Count">
-                                        <a asp-controller="MachineProcurement" asp-action="Index"
+                                        <a asp-controller="Machine" asp-action="Details"
                                            asp-route-id="@machine.ID" data-bs-toggle="tooltip"
                                            title="View procurement details for @machine.Description">
                                             @Html.DisplayFor(m => machine.Description)
@@ -162,6 +167,7 @@
 
     </div>
 
+    </div>
 
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -169,3 +175,85 @@
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 </script>
+<script>
+    function printPrintableArea() {
+        window.print();
+    }
+</script>
+
+ @* <style>
+     @@media print {
+         /* Hide action buttons */
+         .text-end.mb-3 {
+             display: none;
+         }
+         /* Improve table appearance */
+         .procurement-table {
+             width: 100% !important;
+             font-size: 12px;
+         }
+         /* Remove background colors */
+         .bg-light, .bg-success, .bg-dark {
+             background-color: #fff !important;
+         }
+     }
+ </style> *@
+
+<style>
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printableArea, #printableArea * {
+            visibility: visible;
+        }
+
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+
+        .info-box dt {
+            width: 30%;
+            float: left;
+            clear: both;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box dd {
+            width: 70%;
+            float: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .procurement-table {
+            width: 100% !important;
+            font-size: 12px;
+        }
+
+        .section-header {
+            font-size: 18px !important;
+            margin: 15px 0;
+        }
+
+        .badge, .btn {
+            display: none !important;
+        }
+
+        .bg-light, .bg-dark {
+            background-color: #fff !important;
+        }
+
+        table {
+            page-break-inside: auto !important;
+        }
+
+        tr {
+            page-break-inside: avoid !important;
+        }
+
+    }
+</style>
