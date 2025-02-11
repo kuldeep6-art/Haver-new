@@ -136,41 +136,42 @@
         <table class="table procurement-table">
             <thead>
                 <tr>
-                    <th>Machine Description</th>
+                    <th>Machine Serial Number</th>
                     <th>Vendor</th>
                     <th>PO Number</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var machine in Model.Machines) 
+                @foreach (var machine in Model.Machines)
                 {
-                    @if (machine.Procurements.Any()) 
+                    @if (machine.Procurements != null && machine.Procurements.Any())
                     {
-                        bool firstRow = true; 
+                        bool firstRow = true;
 
                         foreach (var procurement in machine.Procurements)
                         {
                             <tr>
-                                @if (firstRow) 
+                                @if (firstRow)
                                 {
                                     <td rowspan="@machine.Procurements.Count">
                                         <a asp-controller="MachineProcurement" asp-action="Index"
-                                           asp-route-id="@machine.ID">   @Html.DisplayFor(m => machine.SerialNumber)</a>
+                                           asp-route-id="@machine.ID">
+                                            @Html.DisplayFor(m => machine.SerialNumber)
+                                        </a>
                                     </td>
                                     firstRow = false;
                                 }
 
                                 <td>@Html.DisplayFor(m => procurement.Vendor.Name)</td>
                                 <td>@Html.DisplayFor(m => procurement.PONumber)</td>
-                            
                             </tr>
                         }
                     }
-                    else 
+                    else
                     {
                         <tr>
                             <td>@Html.DisplayFor(m => machine.SerialNumber)</td>
-                            <td colspan="5" class="text-center">No Procurement Details</td>
+                            <td colspan="2" class="text-center">No Procurement Details</td>
                         </tr>
                     }
                 }
