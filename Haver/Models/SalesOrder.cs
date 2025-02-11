@@ -7,7 +7,19 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
-       
+        #region SUMMARY PROPERTIES
+
+        public string allprice
+        {
+            get
+            {
+                return Currency + " " + Price;
+            }
+        }
+
+        #endregion
+
+
         [Display(Name = "Order Number")]
         [Required(ErrorMessage = "Order Number cannot be blank")]
         [RegularExpression("^\\d{8}$", ErrorMessage = "The sales order number must be exactly 8 numeric digits.")]

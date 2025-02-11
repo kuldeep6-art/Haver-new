@@ -1,7 +1,30 @@
 ﻿@model haver.Models.SalesOrder
 
-<h1>Sales Order details</h1>
-    <hr />
+<div class="text-end">
+    @if (Model?.Status == Status.Completed)
+    {
+        <span class="badge bg-success">Completed</span>
+        <a asp-action="Index" class="ms-3">Back to List</a>
+    }
+    else
+    {
+        @if (Model?.Status != Status.Archived)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.ID" class="ms-3">Edit</a>
+        }
+
+        <a asp-action="Index" class="ms-3">Back to List</a>
+
+        @if (Model?.Status != Status.Completed && Model?.Status != Status.Archived)
+        {
+            <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@Model?.ID" class="btn no-print ms-3" onclick="return confirm('Are you sure you want to mark this sales order as completed?');">
+                Mark as Completed
+            </a>
+
+        }
+    }
+</div>
+
 
     <div class="info-container">
         <div class="info-box">
@@ -22,13 +45,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class = "col-md-3">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-md-3">
-            @Html.DisplayNameFor(model => model.Currency)
-        </dt>
-        <dd class="col-md-3">
-            @Html.DisplayFor(model => model.Currency)
+            @Html.DisplayFor(model => model.allprice)
         </dd>
         <dt class = "col-md-3">
             @Html.DisplayNameFor(model => model.ShippingTerms)
@@ -187,29 +204,3 @@
     </div>
     </div>
 
-<div>
-    @if (Model?.Status == Status.Completed)
-    {
-        <span class="badge bg-success">Completed</span>
-        <a asp-action="Index">Back to List</a>
-    }
-    else
-    {
-        @if (Model?.Status != Status.Archived)
-        {
-            <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a>
-        }
-
-        <a asp-action="Index">Back to List</a>
-
-        @if (Model?.Status != Status.Completed && Model?.Status != Status.Archived)
-        {
-            <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@Model?.ID" class="btn no-print">
-                Mark as Completed
-            </a>
-        }
-    }
-
-
-
-</div>
