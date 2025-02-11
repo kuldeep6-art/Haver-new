@@ -136,9 +136,12 @@
         <table class="table procurement-table">
             <thead>
                 <tr>
-                    <th>Machine Serial Number</th>
+                    <th>Machine Type & Serial Number</th>
                     <th>Vendor</th>
                     <th>PO Number</th>
+                     <th>Exp Due Date</th>
+                    <th>PO Due Date</th>
+                    <th>PO Received Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -156,7 +159,7 @@
                                     <td rowspan="@machine.Procurements.Count">
                                         <a asp-controller="MachineProcurement" asp-action="Index"
                                            asp-route-id="@machine.ID">
-                                            @Html.DisplayFor(m => machine.SerialNumber)
+                                            @Html.DisplayFor(m => machine.Description)
                                         </a>
                                     </td>
                                     firstRow = false;
@@ -164,13 +167,16 @@
 
                                 <td>@Html.DisplayFor(m => procurement.Vendor.Name)</td>
                                 <td>@Html.DisplayFor(m => procurement.PONumber)</td>
+                                <td>@Html.DisplayFor(m => procurement.ExpDueDate)</td>
+                                <td>@Html.DisplayFor(m => procurement.PODueDate)</td>
+                                <td>@Html.DisplayFor(m => procurement.PORcd)</td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td>@Html.DisplayFor(m => machine.SerialNumber)</td>
+                            <td>@Html.DisplayFor(m => machine.Description)</td>
                             <td colspan="2" class="text-center">No Procurement Details</td>
                         </tr>
                     }

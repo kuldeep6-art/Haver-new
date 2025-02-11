@@ -8,6 +8,20 @@ namespace haver.Models
         public int ID { get; set; }
 
 
+        #region SUMMARY PROPERTIES
+
+        [Display(Name = "Machine Type & Serial Number")]
+        public string Description
+        {
+            get
+            {
+                return (MachineType != null ? MachineType.Description : "Unknown Type") + " " +  "|" + " "+ SerialNumber;
+            }
+        }
+
+
+        #endregion
+
         // Serial Number
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "Serial number is required.")]
