@@ -26,6 +26,10 @@ namespace haver.Models
         [StringLength(8, ErrorMessage = "Order number must be exactly 8 digits.")]
         public string? OrderNumber { get; set; }
 
+        [Display(Name = "Customer")]
+        [Required(ErrorMessage = "Enter the name of the customer related to this order")]
+        public string? CompanyName { get; set; }
+
         [Display(Name = "Order Date")]
         [Required(ErrorMessage = "Order date is required")]
         [DataType(DataType.Date)]
@@ -88,6 +92,7 @@ namespace haver.Models
         [Display(Name = "Customer")]
         [Required(ErrorMessage = "Select the customer related to this order")]
         public int CustomerID { get; set; }
+
         public Customer? Customer { get; set; }
 
         // One-to-Many: A Sales Order has multiple Machines

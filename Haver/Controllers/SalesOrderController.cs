@@ -25,98 +25,98 @@ namespace haver.Controllers
 
         // GET: SalesOrder
         public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, int? CustomerID,
-			string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
-		{
+            string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
+        {
             //List of sort options.
-		 //NOTE: make sure this array has matching values to the column headings
-			string[] sortOptions = new[] { "Order Number", "Customer" };
+            //NOTE: make sure this array has matching values to the column headings
+            string[] sortOptions = new[] { "Order Number", "Customer" };
 
-			//Count the number of filters applied - start by assuming no filters
-			ViewData["Filtering"] = "btn-outline-secondary";
-			int numberFilters = 0;
+            //Count the number of filters applied - start by assuming no filters
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
 
-			PopulateDropDownLists();
+            PopulateDropDownLists();
 
-			var salesOrders = from s in _context.SalesOrders
-						.Include(s => s.Customer)
-						.Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
-						.AsNoTracking()
-							  select s;
+            var salesOrders = from s in _context.SalesOrders
+                        .Include(s => s.Customer)
+                        .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
+                        .AsNoTracking()
+                              select s;
 
-			//Add as many filters as needed
-			if (CustomerID.HasValue)
-			{
-				salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
-				numberFilters++;
-			}
-			if (!String.IsNullOrEmpty(SearchString))
-			{
-				salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
-				numberFilters++;
-			}
+            //Add as many filters as needed
+            if (CustomerID.HasValue)
+            {
+                salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
+                numberFilters++;
+            }
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
+                numberFilters++;
+            }
 
-			//Give feedback about the state of the filters
-			if (numberFilters != 0)
-			{
-				//Toggle the Open/Closed state of the collapse depending on if we are filtering
-				ViewData["Filtering"] = " btn-danger";
-				//Show how many filters have been applied
-				ViewData["numberFilters"] = "(" + numberFilters.ToString()
-					+ " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
-			}
+            //Give feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending on if we are filtering
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+            }
 
-			//Before we sort, see if we have called for a change of filtering or sorting
-			if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
-			{
-				if (sortOptions.Contains(actionButton))//Change of sort is requested
-				{
-					if (actionButton == sortField) //Reverse order on same field
-					{
-						sortDirection = sortDirection == "asc" ? "desc" : "asc";
-					}
-					sortField = actionButton;//Sort by the button clicked
-				}
-			}
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
 
-			//Now we know which field and direction to sort by
-			if (sortField == "Customer")
-			{
-				if (sortDirection == "asc")
-				{
-					salesOrders = salesOrders
-						.OrderByDescending(p => p.Customer.CompanyName);
-				}
-				else
-				{
-					salesOrders = salesOrders
-						.OrderBy(p => p.Customer.CompanyName);
-				}
-			}
+            //Now we know which field and direction to sort by
+            if (sortField == "Customer")
+            {
+                if (sortDirection == "asc")
+                {
+                    salesOrders = salesOrders
+                        .OrderByDescending(p => p.Customer.CompanyName);
+                }
+                else
+                {
+                    salesOrders = salesOrders
+                        .OrderBy(p => p.Customer.CompanyName);
+                }
+            }
 
-			else //Sorting by Patient Name
-			{
-				if (sortDirection == "asc")
-				{
-					salesOrders = salesOrders
-						.OrderBy(p => p.OrderNumber);
-				}
-				else
-				{
-					salesOrders = salesOrders
-						.OrderByDescending(p => p.OrderNumber);
-				}
-			}
-			//Set sort for next time
-			ViewData["sortField"] = sortField;
-			ViewData["sortDirection"] = sortDirection;
+            else //Sorting by Patient Name
+            {
+                if (sortDirection == "asc")
+                {
+                    salesOrders = salesOrders
+                        .OrderBy(p => p.OrderNumber);
+                }
+                else
+                {
+                    salesOrders = salesOrders
+                        .OrderByDescending(p => p.OrderNumber);
+                }
+            }
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
 
 
-			int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
-			ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-			var pagedData = await PaginatedList<SalesOrder>.CreateAsync(salesOrders.AsNoTracking(), page ?? 1, pageSize);
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<SalesOrder>.CreateAsync(salesOrders.AsNoTracking(), page ?? 1, pageSize);
 
-			return View(pagedData);
-		}
+            return View(pagedData);
+        }
 
         // GET: SalesOrder/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -151,6 +151,9 @@ namespace haver.Controllers
             SalesOrder salesOrder = new SalesOrder();
             PopulateAssignedSpecialtyData(salesOrder);
             PopulateDropDownLists();
+
+            //Fetch available engineers from the database
+            ViewBag.EngineersList = new MultiSelectList(_context.Engineers, "ID", "EngineerInitials");
             return View();
         }
 
@@ -159,10 +162,18 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,CustomerID,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,CustomerID,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
         {
             try
             {
+                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CompanyName == salesOrder.CompanyName);
+                if (customer == null)
+                {
+                    customer = new Customer { CompanyName = salesOrder.CompanyName };
+                    _context.Customers.Add(customer);
+                    await _context.SaveChangesAsync();
+                }
+                salesOrder.CustomerID = customer.ID;
                 UpdateSalesOrderEngineers(selectedOptions, salesOrder);
                 if (ModelState.IsValid)
 				{
@@ -171,7 +182,7 @@ namespace haver.Controllers
 					return RedirectToAction(nameof(Index));
 				}
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
             }
@@ -185,9 +196,10 @@ namespace haver.Controllers
 				{
 					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
 				}
-			}
+                
+            }
             PopulateAssignedSpecialtyData(salesOrder);
-            PopulateDropDownLists(salesOrder);
+            PopulateDropDownLists(salesOrder);          
             return View(salesOrder);
         }
 
@@ -335,6 +347,17 @@ namespace haver.Controllers
             }
 
             return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
+        }
+
+        //Return customer name suggestions
+        public async Task<JsonResult> GetCompanyName(string term)
+        {
+            var companyNames = await _context.Customers
+                .Where(c => c.CompanyName.Contains(term))
+                .Select(c => c.CompanyName)
+                .Take(10)
+                .ToListAsync();
+            return Json(companyNames);
         }
 
         public async Task<IActionResult> Complete(int id)
