@@ -1,17 +1,17 @@
 ﻿@model haver.Models.Engineer
 
-@{
-    var message = TempData["Message"] as string;
-}
-
-@if (!string.IsNullOrEmpty(message))
+@if (TempData["Message"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @message
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+      <div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fas fa-check-circle"></i>
+        @TempData["Message"]
 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+      
 }
+
 
 <div id="ePrint" class="container-fluid bg-light">
     <!-- Header -->
@@ -106,8 +106,15 @@
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 </script>
+
 <style>
     h6 {
         font-weight: bold;
     }
+.success-message {
+  padding: 10px;
+  background: #f0fff4;
+  border-left: 4px solid #48bb78;
+  border-radius: 4px;
+}
 </style>

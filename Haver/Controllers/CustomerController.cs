@@ -129,7 +129,6 @@ namespace haver.Controllers
                 {
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Customer has been successfully created";
                     return RedirectToAction("Details", new { customer.ID });
                 }
             }
