@@ -163,6 +163,10 @@ namespace haver.Controllers
                     ModelState.AddModelError("LastName", "An engineer with the same First Name and Last Name already exists.");
                     ModelState.AddModelError("FirstName", "This combination must be unique.");
                 }
+                else if (baseExceptionMessage.Contains("UNIQUE constraint failed: Engineers.Email"))
+                {
+                    ModelState.AddModelError("Email", "An engineer with the same Email already exists.");
+                }
                 else
                 {
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");

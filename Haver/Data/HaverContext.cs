@@ -105,9 +105,9 @@ namespace haver.Data
                .HasIndex(m => m.ProductionOrderNumber)
                .IsUnique();
 
-            //modelBuilder.Entity<Engineer>()
-            // .HasIndex(m => m.Email)
-            // .IsUnique();
+            modelBuilder.Entity<Engineer>()
+             .HasIndex(m => m.Email)
+             .IsUnique();
 
             modelBuilder.Entity<MachineType>()
 			 .HasIndex(m => m.Description)
