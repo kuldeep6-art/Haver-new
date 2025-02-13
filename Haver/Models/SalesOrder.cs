@@ -28,13 +28,13 @@ namespace haver.Models
 
         [Display(Name = "Customer")]
         [Required(ErrorMessage = "Enter the name of the customer related to this order")]
-        public string? CompanyName { get; set; }
+        public string CompanyName { get; set; } = "";
 
         [Display(Name = "Order Date")]
         [Required(ErrorMessage = "Order date is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime? SoDate { get; set; }
+        public DateTime SoDate { get; set; } = DateTime.Now;
 
         
         [Display(Name = "Price")]
@@ -52,7 +52,7 @@ namespace haver.Models
         [Required(ErrorMessage = "Enter the approval drawings expected date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime? AppDwgExp { get; set; }
+        public DateTime AppDwgExp { get; set; } = DateTime.Now;
 
         [Display(Name = "Approved Drawings Released")]
         [DataType(DataType.Date)]
@@ -68,7 +68,7 @@ namespace haver.Models
         [Required(ErrorMessage = "Enter the date pre orders are expected")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime? PreOExp { get; set; }
+        public DateTime PreOExp { get; set; } = DateTime.Now; //check the view 
 
         [Display(Name = "Pre Orders Released")]
         [DataType(DataType.Date)]

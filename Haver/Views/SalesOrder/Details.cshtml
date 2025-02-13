@@ -135,12 +135,8 @@
                             <tr>
                                 @if (firstRow)
                                 {
-                                    <td rowspan="@machine.Procurements.Count">
-                                        <a asp-controller="Machine" asp-action="Details"
-                                           asp-route-id="@machine.ID" data-bs-toggle="tooltip"
-                                           title="View procurement details for @machine.Description">
+                                    <td rowspan="@machine.Procurements.Count">                                       
                                             @Html.DisplayFor(m => machine.Description)
-                                        </a>
                                     </td>
                                     firstRow = false;
                                 }
