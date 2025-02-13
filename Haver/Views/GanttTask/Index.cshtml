@@ -1,0 +1,83 @@
+﻿@model IEnumerable<haver.Models.GanttTask>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SalesOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalesOrder.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div id="gantt-chart"></div>
+
+@section stylesheets {
+    @* stylesheet for Gantt charts *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.css" />
+}
+
+@section Scripts {
+    @* Script for Gantt charts *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/GanttTask/GetGanttData')
+                .then(response => response.json())
+                .then(data => {
+                    const gantt = new Gantt("#gantt-chart", data, {
+                        on_click: (task) => console.log(task),
+                        on_date_change: (task, start, end) => console.log(task, start, end),
+                        on_progress_change: (task, progress) => console.log(task, progress),
+                        on_view_change: (mode) => console.log(mode)
+                    });
+                })
+                .catch(error => console.error('Error loading Gantt data:', error));
+        });
+    </script>
+
+}

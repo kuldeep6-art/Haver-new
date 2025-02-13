@@ -50,8 +50,11 @@ namespace haver.Data
 
 		public DbSet<MachineType> MachineTypes { get; set; }
 
+        public DbSet<GanttTask> GanttTasks { get; set; }
+        public DbSet<GanttMilestone> GanttMilestones { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Relationships with Cascade Delete Restriction
 
