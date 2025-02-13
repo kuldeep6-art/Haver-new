@@ -16,7 +16,7 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
-
+	@await RenderSectionAsync("Stylesheets", required: false)
 
 
 </head>
@@ -115,6 +115,16 @@
 				<div class="dropdown-content">
 					<a asp-area="" asp-controller="Engineer" asp-action="Index">View Engineers</a>
 					<a asp-area="" asp-controller="Engineer" asp-action="Create">Create Engineer</a>
+				</div>
+			</div>
+
+			<div class="dropdown">
+				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+					Gantt <i class="fa fa-plus"></i>
+				</a>
+				<div class="dropdown-content">
+					<a asp-area="" asp-controller="GanttTask" asp-action="Index">Gantt Task</a>
+					<a asp-area="" asp-controller="GanttMilestone" asp-action="Index">Gantt Milestone</a>
 				</div>
 			</div>
 
