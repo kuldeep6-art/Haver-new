@@ -204,6 +204,7 @@ namespace haver.Controllers
 				{
 					_context.Add(salesOrder);
 					await _context.SaveChangesAsync();
+                    TempData["Message"] = "Sales Order has been successfully created";
                     return RedirectToAction("Details", new { salesOrder.ID });
                 }
             }
@@ -276,6 +277,7 @@ namespace haver.Controllers
 				try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Engineer has been successfully edited";
                     return RedirectToAction("Details", new { salesOrderToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
@@ -364,11 +366,11 @@ namespace haver.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Sales order has been archived successfully.";
+                TempData["Message"] = "Sales Order has been successfully archived";
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Error archiving sales order. Please try again.";
+                TempData["Message"] = "An error occured";
             }
 
             return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
@@ -402,11 +404,11 @@ namespace haver.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Sales order has been marked as completed.";
+                TempData["Message"] = "Sales Order has been marked as completed";
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Error marking sales order as completed. Please try again.";
+                TempData["Message"] = "An Error Occured";
             }
 
             // Redirect back to the Index page after marking as completed

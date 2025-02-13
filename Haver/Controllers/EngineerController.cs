@@ -211,7 +211,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Engineer has been successfully deleted";
+                    TempData["Message"] = "Engineer has been successfully Edited";
                     return RedirectToAction("Details", new { engineerToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)

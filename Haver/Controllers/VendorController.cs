@@ -124,7 +124,7 @@ namespace haver.Controllers
                 {
                     _context.Add(vendor);
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vendor has been successfully Created";
+                    TempData["Message"] = "Vendor has been successfully created";
                     return RedirectToAction("Details", new { vendor.ID });
                 }
             }
@@ -242,6 +242,7 @@ namespace haver.Controllers
                 }
 
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Vendor has been successfully deleted";
                 var returnUrl = ViewData["returnURL"]?.ToString();
                 if (string.IsNullOrEmpty(returnUrl))
                 {

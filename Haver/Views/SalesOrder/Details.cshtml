@@ -1,5 +1,17 @@
 ﻿@model haver.Models.SalesOrder
 
+@if (TempData["Message"] != null)
+{
+    <div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fas fa-check-circle"></i>
+        @TempData["Message"]
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+}
+
 <div class="text-end mb-3">
     @if (Model?.Status == Status.Completed)
     {
