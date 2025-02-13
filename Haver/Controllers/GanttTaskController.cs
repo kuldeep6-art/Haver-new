@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
+using System.Globalization;
 
 namespace haver.Controllers
 {
@@ -173,6 +174,38 @@ namespace haver.Controllers
                 .ToListAsync();
 
             return Json(tasks);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTask([FromBody] GanttTaskUpdateModel model)
+        {
+            if (model == null) return BadRequest("Invalid data.");
+
+            var task = await _context.GanttTasks
+                .Include(a => a.SalesOrder)
+                .Include(g => g.GanttMilestones) // Include milestones
+                .FirstOrDefaultAsync(g => g.ID == model.Id);
+
+            if (task == null) return NotFound("Task not found.");
+
+            try
+            {
+                task.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                task.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                // Update milestones' progress
+                foreach (var milestone in task.GanttMilestones)
+                {
+                    milestone.Progress = model.Progress;
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Task updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal error: {ex.Message}");
+            }
         }
 
         private bool GanttTaskExists(int id)

@@ -52,7 +52,7 @@
     </tbody>
 </table>
 
-<div id="gantt-chart"></div>
+<div id="gantt"></div> <!-- Match the selector in JS -->
 
 @section stylesheets {
     @* stylesheet for Gantt charts *@
@@ -61,22 +61,66 @@
 
 @section Scripts {
     @* Script for Gantt charts *@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.js"></script>
 
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Fetch tasks from the correct endpoint
             fetch('/GanttTask/GetGanttData')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load tasks');
+                    return response.json();
+                })
                 .then(data => {
-                    const gantt = new Gantt("#gantt-chart", data, {
-                        on_click: (task) => console.log(task),
-                        on_date_change: (task, start, end) => console.log(task, start, end),
-                        on_progress_change: (task, progress) => console.log(task, progress),
-                        on_view_change: (mode) => console.log(mode)
+                    // Map data to Gantt-compatible format
+                    const tasks = data.map(task => ({
+                        id: task.id.toString(),
+                        name: task.name,
+                        start: task.start,
+                        end: task.end,
+                        progress: task.progress,
+                        dependencies: task.dependencies || ""
+                    }));
+
+                    // Initialize Gantt chart
+                    const gantt = new Gantt("#gantt", tasks, {
+                        on_click: task => console.log("Task clicked:", task),
+                        on_date_change: (task, start, end) => {
+                            updateTask(
+                                task.id,
+                                start.toISOString().split('T')[0], // Format as YYYY-MM-DD
+                                end.toISOString().split('T')[0],
+                                task.progress
+                            );
+                        },
+                        on_progress_change: (task, progress) => {
+                            updateTask(task.id, task.start, task.end, progress);
+                        },
+                        view_mode: 'Week',
+                        language: 'en'
                     });
                 })
-                .catch(error => console.error('Error loading Gantt data:', error));
+                .catch(error => console.error('Error:', error));
+
+            // Update task function
+            function updateTask(id, start, end, progress) {
+                fetch('/GanttTask/UpdateTask', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        id: parseInt(id), // Ensure ID is numeric
+                        startDate: start,
+                        endDate: end,
+                        progress: progress
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Update failed');
+                        console.log("Task updated successfully.");
+                    })
+                    .catch(error => console.error("Error updating task:", error));
+            }
         });
     </script>
 
