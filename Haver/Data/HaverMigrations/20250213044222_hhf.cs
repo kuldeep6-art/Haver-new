@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace haver.Data.HaverMigrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class hhf : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -91,19 +91,21 @@ namespace haver.Data.HaverMigrations
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     OrderNumber = table.Column<string>(type: "TEXT", maxLength: 8, nullable: false),
+                    CompanyName = table.Column<string>(type: "TEXT", nullable: false),
                     SoDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Price = table.Column<decimal>(type: "TEXT", nullable: true),
+                    Currency = table.Column<string>(type: "TEXT", nullable: true),
                     ShippingTerms = table.Column<string>(type: "TEXT", maxLength: 800, nullable: true),
                     AppDwgExp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    AppDwgRel = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    AppDwgRet = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    AppDwgRel = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    AppDwgRet = table.Column<DateTime>(type: "TEXT", nullable: true),
                     PreOExp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    PreORel = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EngPExp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EngPRel = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CustomerID = table.Column<int>(type: "INTEGER", nullable: false),
+                    PreORel = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EngPExp = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EngPRel = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Comments = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    CustomerID = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -116,8 +118,7 @@ namespace haver.Data.HaverMigrations
                         name: "FK_SalesOrders_Customers_CustomerID",
                         column: x => x.CustomerID,
                         principalTable: "Customers",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -128,12 +129,8 @@ namespace haver.Data.HaverMigrations
                         .Annotation("Sqlite:Autoincrement", true),
                     SerialNumber = table.Column<string>(type: "TEXT", nullable: false),
                     ProductionOrderNumber = table.Column<string>(type: "TEXT", nullable: false),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    Size = table.Column<string>(type: "TEXT", nullable: false),
-                    Class = table.Column<string>(type: "TEXT", nullable: false),
                     RToShipExp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    RToShipA = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    SizeDeck = table.Column<string>(type: "TEXT", nullable: false),
+                    RToShipA = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Media = table.Column<bool>(type: "INTEGER", nullable: false),
                     SpareParts = table.Column<bool>(type: "INTEGER", nullable: false),
                     SparePMedia = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -141,7 +138,7 @@ namespace haver.Data.HaverMigrations
                     AirSeal = table.Column<bool>(type: "INTEGER", nullable: false),
                     CoatingLining = table.Column<bool>(type: "INTEGER", nullable: false),
                     Disassembly = table.Column<bool>(type: "INTEGER", nullable: false),
-                    BudgetedHours = table.Column<decimal>(type: "TEXT", nullable: false),
+                    BudgetedHours = table.Column<decimal>(type: "TEXT", nullable: true),
                     ActualAssemblyHours = table.Column<decimal>(type: "TEXT", nullable: true),
                     ReworkHours = table.Column<decimal>(type: "TEXT", nullable: true),
                     Nameplate = table.Column<int>(type: "INTEGER", nullable: true),
@@ -162,7 +159,7 @@ namespace haver.Data.HaverMigrations
                         column: x => x.MachineTypeID,
                         principalTable: "MachineType",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Machines_SalesOrders_SalesOrderID",
                         column: x => x.SalesOrderID,
@@ -262,6 +259,12 @@ namespace haver.Data.HaverMigrations
                 name: "IX_Customers_Phone",
                 table: "Customers",
                 column: "Phone",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Engineers_FirstName_LastName",
+                table: "Engineers",
+                columns: new[] { "FirstName", "LastName" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

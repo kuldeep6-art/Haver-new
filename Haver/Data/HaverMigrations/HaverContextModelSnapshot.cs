@@ -91,6 +91,9 @@ namespace haver.Data.HaverMigrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("FirstName", "LastName")
+                        .IsUnique();
+
                     b.ToTable("Engineers");
                 });
 

@@ -156,30 +156,19 @@ namespace haver.Controllers
             }
             catch (DbUpdateException dex)
             {
-                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Engineers.Phone"))
+                var baseExceptionMessage = dex.GetBaseException().Message;
+                // Check for the composite unique constraint failure
+                if (baseExceptionMessage.Contains("UNIQUE constraint failed: Engineers.FirstName, Engineers.LastName"))
                 {
-                    ModelState.AddModelError("Phone", "Unable to save changes. Remember, you cannot have duplicate Phone numbers.");
+                    ModelState.AddModelError("LastName", "An engineer with the same First Name and Last Name already exists.");
+                    ModelState.AddModelError("FirstName", "This combination must be unique.");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                 }
             }
-            ////Decide if we need to send the Validaiton Errors directly to the client
-            //if (!ModelState.IsValid && Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            //{
-            //    //Was an AJAX request so build a message with all validation errors
-            //    string errorMessage = "";
-            //    foreach (var modelState in ViewData.ModelState.Values)
-            //    {
-            //        foreach (ModelError error in modelState.Errors)
-            //        {
-            //            errorMessage += error.ErrorMessage + "|";
-            //        }
-            //    }
-            //    //Note: returning a BadRequest results in HTTP Status code 400
-            //    return BadRequest(errorMessage);
-            //}
+
             return View(engineer);
         }
 
@@ -232,15 +221,19 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                catch (DbUpdateException)
+                catch (DbUpdateException dex)
                 {
-                   
-                    
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Engineers.LastName"))
+                    {
+                        ModelState.AddModelError("LastName", "Unable to save changes. Remember, you cannot have duplicate Names");
+                    }
+                    else
+                    {
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    
+                    }
                 }
                 //Dont know if this line is needed
-                
+
             }
             return View(engineerToUpdate);
         }
