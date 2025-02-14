@@ -165,7 +165,7 @@ namespace haver.Controllers
                 .Select(g => new
                 {
                     id = g.ID,
-                    name = g.SalesOrderID.ToString(), // Sales Order as task name
+                    name = g.SalesOrder.OrderNumber, // Sales Order as task name
                     start = g.StartDate.ToString("yyyy-MM-dd"),
                     end = g.EndDate.ToString("yyyy-MM-dd"),
                     progress = g.OverallProgress,
