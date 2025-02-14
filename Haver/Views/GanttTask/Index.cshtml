@@ -1,49 +1,55 @@
 ﻿@model IEnumerable<haver.Models.GanttTask>
 
 @{
-    ViewData["Title"] = "Gantt Chart Index";
+    ViewData["Title"] = "Gantt Chart";
 }
 
-<h1>Gantt Chart Index</h1>
+<h1>Gantt Chart</h1>
 
-<p>
+<div>
     <a asp-action="Create" class="btn btn-primary">Create New Task</a>
-</p>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.SalesOrder)</th>
-            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.Notes)</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
-                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.Notes)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning btn-sm">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info btn-sm">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Task List Table -->
+        <div class="col-3 col-lg-2 task-table-wrapper">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sales Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="d-flex justify-content-between align-items-center">
+                                <span>@item.SalesOrder.OrderNumber</span>
+                                <div class="action-icons">
+                                    <a asp-action="Edit" asp-route-id="@item.ID" class="icon-link">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.ID" class="icon-link">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-<!-- Gantt Chart Container -->
-<h2>Gantt Chart</h2>
-<div id="gantt"></div>
+        <!-- Gantt Chart -->
+        <div class="col-9 col-lg-10 gantt-chart-wrapper">
+            <div id="gantt_chart" class="gantt-chart"></div>
+        </div>
+    </div>
+</div>
 
 @section stylesheets {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.css">
 }
 
 @section Scripts {
@@ -51,52 +57,52 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch('/GanttTask/GetGanttData')
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to load tasks');
-                    return response.json();
-                })
-                .then(data => {
-                    const tasks = data.map(task => ({
-                        id: task.id.toString(),
-                        name: task.name,
-                        start: task.start,
-                        end: task.end,
-                        progress: task.progress,
-                        dependencies: task.dependencies || ""
+
+            // Fetch task data from the server
+            fetch("@Url.Action("GetGanttData", "GanttTask")")
+                .then(response => response.json())
+                .then(tasks => {
+                    if (!tasks || tasks.length === 0) {
+                        console.error("No tasks found.");
+                        return;
+                    }
+
+                    // Normalize task progress
+                    tasks = tasks.map(task => ({
+                        ...task,
+                        progress: task.progress === 0 ? 0.1 : task.progress
                     }));
 
-                    const gantt = new Gantt("#gantt", tasks, {
-                        on_click: task => console.log("Task clicked:", task),
-                        on_date_change: (task, start, end) => {
-                            updateTask(task.id, start.toISOString().split('T')[0], end.toISOString().split('T')[0], task.progress);
-                        },
-                        on_progress_change: (task, progress) => {
-                            updateTask(task.id, task.start, task.end, progress);
-                        },
-                        view_mode: 'Week',
-                        language: 'en'
+                    // Initialize the Gantt chart
+                    let gantt = new Gantt("#gantt_chart", tasks, {
+                        view_mode: 'Day',
+                        on_click: task => console.log("Clicked:", task),
+                        on_date_change: (task, start, end) => updateTask(task, start, end),
+                        on_progress_change: (task, progress) => updateTask(task, null, null, progress),
+                        custom_popup_html: task => `<b>${task.name}</b> - ${task.progress}%`
                     });
-                })
-                .catch(error => console.error('Error:', error));
 
-            function updateTask(id, start, end, progress) {
-                fetch('/GanttTask/UpdateTask', {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        id: parseInt(id),
-                        startDate: start,
-                        endDate: end,
-                        progress: progress
-                    })
+                    // Update task details on the server
+                    function updateTask(task, start = null, end = null, progress = null) {
+                        let updatedTask = {
+                            ID: task.id,
+                            Name: task.name,
+                            StartDate: start ? start.toISOString().split('T')[0] : task.start,
+                            EndDate: end ? end.toISOString().split('T')[0] : task.end,
+                            Progress: progress !== null ? progress / 100 : task.progress / 100
+                        };
+
+                        fetch("@Url.Action("UpdateTask", "GanttTask")", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(updatedTask)
+                        })
+                            .then(response => response.json())
+                            .then(data => console.log("Task Updated:", data))
+                            .catch(error => console.error("Error updating task:", error));
+                    }
                 })
-                    .then(response => {
-                        if (!response.ok) throw new Error('Update failed');
-                        console.log("Task updated successfully.");
-                    })
-                    .catch(error => console.error("Error updating task:", error));
-            }
+                .catch(error => console.error("Error fetching tasks:", error));
         });
     </script>
 }
