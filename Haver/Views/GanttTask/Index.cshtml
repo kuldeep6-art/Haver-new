@@ -1,79 +1,62 @@
 ﻿@model IEnumerable<haver.Models.GanttTask>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gantt Chart Index";
 }
 
-<h1>Index</h1>
+<h1>Gantt Chart Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New Task</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SalesOrder)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.SalesOrder)</th>
+            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Notes)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SalesOrder.CompanyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Notes)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning btn-sm">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
-<div id="gantt"></div> <!-- Match the selector in JS -->
+<!-- Gantt Chart Container -->
+<h2>Gantt Chart</h2>
+<div id="gantt"></div>
 
 @section stylesheets {
-    @* stylesheet for Gantt charts *@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.css" />
 }
 
 @section Scripts {
-    @* Script for Gantt charts *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.js"></script>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Fetch tasks from the correct endpoint
             fetch('/GanttTask/GetGanttData')
                 .then(response => {
                     if (!response.ok) throw new Error('Failed to load tasks');
                     return response.json();
                 })
                 .then(data => {
-                    // Map data to Gantt-compatible format
                     const tasks = data.map(task => ({
                         id: task.id.toString(),
                         name: task.name,
@@ -83,16 +66,10 @@
                         dependencies: task.dependencies || ""
                     }));
 
-                    // Initialize Gantt chart
                     const gantt = new Gantt("#gantt", tasks, {
                         on_click: task => console.log("Task clicked:", task),
                         on_date_change: (task, start, end) => {
-                            updateTask(
-                                task.id,
-                                start.toISOString().split('T')[0], // Format as YYYY-MM-DD
-                                end.toISOString().split('T')[0],
-                                task.progress
-                            );
+                            updateTask(task.id, start.toISOString().split('T')[0], end.toISOString().split('T')[0], task.progress);
                         },
                         on_progress_change: (task, progress) => {
                             updateTask(task.id, task.start, task.end, progress);
@@ -103,13 +80,12 @@
                 })
                 .catch(error => console.error('Error:', error));
 
-            // Update task function
             function updateTask(id, start, end, progress) {
                 fetch('/GanttTask/UpdateTask', {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        id: parseInt(id), // Ensure ID is numeric
+                        id: parseInt(id),
                         startDate: start,
                         endDate: end,
                         progress: progress
@@ -123,5 +99,4 @@
             }
         });
     </script>
-
 }
