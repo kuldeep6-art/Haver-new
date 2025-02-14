@@ -6,13 +6,13 @@
 
 <h1>Gantt Chart</h1>
 
-<div>
+<div class="mb-3">
     <a asp-action="Create" class="btn btn-primary">Create New Task</a>
 </div>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Task List Table -->
+        <!-- Sales Order List -->
         <div class="col-3 col-lg-2 task-table-wrapper">
             <table class="table table-bordered">
                 <thead class="table-light">
@@ -25,12 +25,12 @@
                     {
                         <tr>
                             <td class="d-flex justify-content-between align-items-center">
-                                <span>@item.SalesOrder.OrderNumber</span>
+                                <span>@item.SalesOrder?.OrderNumber</span>
                                 <div class="action-icons">
                                     <a asp-action="Edit" asp-route-id="@item.ID" class="icon-link">
                                         <i class="bi bi-pencil-fill"></i>
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@item.ID" class="icon-link">
+                                    <a asp-action="Delete" asp-route-id="@item.ID" class="icon-link text-danger">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>
                                 </div>
@@ -50,6 +50,51 @@
 
 @section stylesheets {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.css">
+    <style>
+        /* Ensure both columns align properly */
+        .task-table-wrapper {
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Ensure the Gantt chart is flush with the table */
+        .gantt-chart-wrapper {
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        /* Style action icons */
+        .icon-link {
+            text-decoration: none;
+            margin-left: 8px;
+            font-size: 16px;
+        }
+
+        .icon-link i {
+            color: #007bff;
+        }
+
+        .icon-link.text-danger i {
+            color: #dc3545;
+        }
+
+        /* Improve table styling */
+        .table th, .table td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        /* Remove space between table and Gantt chart */
+        .row {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 }
 
 @section Scripts {
@@ -57,7 +102,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
             // Fetch task data from the server
             fetch("@Url.Action("GetGanttData", "GanttTask")")
                 .then(response => response.json())
