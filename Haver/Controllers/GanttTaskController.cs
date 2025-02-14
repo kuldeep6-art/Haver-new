@@ -49,7 +49,7 @@ namespace haver.Controllers
         // GET: GanttTask/Create
         public IActionResult Create()
         {
-            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "CompanyName");
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace haver.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "CompanyName", ganttTask.SalesOrderID);
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", ganttTask.SalesOrderID);
             return View(ganttTask);
         }
 
@@ -83,7 +83,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "CompanyName", ganttTask.SalesOrderID);
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", ganttTask.SalesOrderID);
             return View(ganttTask);
         }
 
@@ -119,7 +119,7 @@ namespace haver.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "CompanyName", ganttTask.SalesOrderID);
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", ganttTask.SalesOrderID);
             return View(ganttTask);
         }
 
