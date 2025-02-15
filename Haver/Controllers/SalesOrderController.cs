@@ -392,11 +392,21 @@ namespace haver.Controllers
          MachineDescriptions = so.Machines.Select(m => m.Description).ToList(),
          SerialNumbers = so.Machines.Select(m => m.SerialNumber).ToList(),
          PackageReleaseSummary = so.PackageRelease.Summary ?? "N/A",
-         VendorNames = so.Machines.Select(m=>m.Procurements.Select(p=>p.Vendor.Name).ToList()).ToList(),
+         VendorNames = so.Machines.Select(m => m.Procurements.Select(p => p.Vendor.Name).ToList()).ToList(),
          PoNumbers = so.Machines.Select(m => m.Procurements.Select(p => p.PONumber).ToList()).ToList(),
          // Handle nullable dates without using HasValue
-         PoDueDates = so.Machines.Select(m=>m.Procurements.Select(p => p.PODueDate.ToString("yyyy-MM-dd") ?? "N/A")).ToList(),
-         DeliveryDates = so.Machines.Select(m => m.Procurements.Select(p => p.ExpDueDate.ToString("yyyy-MM-dd") ?? "N/A")).ToList(),
+         PoDueDates = so.Machines
+    .Select(m => m.Procurements
+        .AsEnumerable() // Forces in-memory evaluation
+        .Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
+    .ToList(),
+
+         DeliveryDates = so.Machines
+    .Select(m => m.Procurements
+        .AsEnumerable() // Forces in-memory evaluation
+        .Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
+    .ToList(),
+
          Media = so.Machines.Select(m => m.Media ? "Yes" : "No").ToList(),
          SpareParts = so.Machines.Select(m => m.SpareParts ? "Yes" : "No").ToList(),
          SparePMedia = so.Machines.Select(m => m.SparePMedia ? "Yes" : "No").ToList(),

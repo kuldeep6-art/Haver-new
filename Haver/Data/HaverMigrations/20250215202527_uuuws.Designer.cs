@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250215202527_uuuws")]
+    partial class uuuws
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -347,14 +350,14 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("NcrRaised")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("PODueDate")
+                    b.Property<DateTime>("PODueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PONumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PORcd")
+                    b.Property<DateTime>("PORcd")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("QualityICom")

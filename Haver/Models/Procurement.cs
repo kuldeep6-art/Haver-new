@@ -22,23 +22,23 @@ namespace haver.Models
 
         [Display(Name = "Purchase Order Number")]
         [Required(ErrorMessage = "Please Enter the Purchase Order Number")]
-        public string? PONumber { get; set; }
+        public string PONumber { get; set; } = "";
 
         [Display(Name = "Purchase Orders Expected")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime ExpDueDate { get; set; }
+        public DateTime? ExpDueDate { get; set; }
 
 
         [Display(Name = "Purchase Orders Due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime PODueDate { get; set; }
+        public DateTime? PODueDate { get; set; }
 
         [Display(Name = "Purchase Orders Received")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime PORcd { get; set; }
+        public DateTime? PORcd { get; set; }
 
         // Checkbox Options
         [Display(Name = "Quality Inspection Completed")]
