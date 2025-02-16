@@ -96,18 +96,33 @@
             </div>
             <div class="col-md-8">
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="control-label"> Engineers Assigned</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                            <strong>-</strong>
-                        </button>
-                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
-                    </div>
+                     @* <div class="form-group col-md-6">
+                         <label class="control-label"> Engineers Assigned</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
+                             <strong>-</strong>
+                         </button>
+                         @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
+                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="control-label"> Choose Engineers</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                            <strong>+</strong>
-                        </button>
-                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                     <div class="form-group col-md-6">
+                         <label class="control-label"> Choose Engineers</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
+                             <strong>+</strong>
+                         </button>
+                         @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                     </div> *@
+
+                    <div class="form-group">
+                        <label class="control-label">Assign Engineers</label>
+                        <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
+                                multiple data-live-search="true" data-actions-box="true">
+                            @foreach (var item in (MultiSelectList)ViewBag.availOpts)
+                            {
+                                var isSelected = ((MultiSelectList)ViewBag.selOpts).Items
+                                .Cast<SelectListItem>()
+                                .Any(x => x.Value == item.Value);
+
+                                <option value="@item.Value" selected="@isSelected">@item.Text</option>
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -176,6 +191,12 @@
                 source: '/SalesOrder/GetCompanyName',
                 minLength: 2
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
         });
     </script>
 
