@@ -157,6 +157,7 @@ namespace haver.Controllers
             var salesOrder = await _context.SalesOrders
                 //.Include(s => s.Customer)
                 .Include(s => s.PackageRelease)
+                .Include(s => s.SalesOrderEngineers).ThenInclude(s => s.Engineer)
                 .Include(s => s.Machines)
                     .ThenInclude(m => m.MachineType) // ✅ Include MachineType to prevent null issues
                 .Include(s => s.Machines)

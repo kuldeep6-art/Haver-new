@@ -2,8 +2,11 @@
 
 
 <div class="info-container">
-    <div class="info-box">
+    <div class="info-box p-3 bg-light border rounded mb-3">
         <dl class="row">
+            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SalesOrder)</dt>
+            <dd class="col-md-3">@Html.DisplayFor(model => Model.SalesOrder.OrderNumber)</dd>
+
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.MachineType)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.MachineType.Description)</dd>
 
@@ -30,41 +33,37 @@
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Nameplate)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.Nameplate)</dd>
+            </dl>
+
+        <p class="fw-bold" style="text-align:center;font-size:20px;">Preferences, Pre-order, and Scope Information</p>
+
+    <dl class="row">
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Media)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.Media)</dd>
+
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.SpareParts)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.SpareParts)</dd>
+
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.SparePMedia)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.SparePMedia)</dd>
+
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.CoatingLining)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.CoatingLining)</dd>
+
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Base)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.Base)</dd>
+
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.AirSeal)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.AirSeal)</dd>
+
+            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Disassembly)</dt>
+            <dd class="col-md-2">@Html.DisplayFor(model => Model.Disassembly)</dd>
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.PreOrder)</dt>
             <dd class="col-md-3">@Html.Raw(Model.PreOrder)</dd>
 
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Scope)</dt>
             <dd class="col-md-3">@Html.Raw(Model.Scope)</dd>
-        </dl>
-    </div>
-
-    <div class="info-box">
-        <dl class="row">
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Media)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.Media)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SpareParts)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.SpareParts)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SparePMedia)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.SparePMedia)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.CoatingLining)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.CoatingLining)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Base)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.Base)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.AirSeal)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.AirSeal)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Disassembly)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.Disassembly)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SalesOrder)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.SalesOrder.OrderNumber)</dd>
         
         </dl>
     </div>
