@@ -7,6 +7,7 @@
 <h1>Edit</h1>
 
 <h4>Machine</h4>
+<h6>Fields marked with * are required</h6>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,30 +15,41 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
-                <label asp-for="MachineTypeID" class="control-label"></label>
+                <label asp-for="MachineTypeID" class="control-label">
+                    <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
+                </label>
                 <select asp-for="MachineTypeID" class="form-control" asp-items="ViewBag.MachineTypeID"></select>
                 <span asp-validation-for="MachineTypeID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SalesOrderID" class="control-label"></label>
+                <label asp-for="SalesOrderID" class="control-label">
+                    <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.SalesOrderID)
+                </label>
                 <select asp-for="SalesOrderID" class="form-control" asp-items="ViewBag.SalesOrderID"></select>
                 <span asp-validation-for="SalesOrderID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SerialNumber" class="control-label"></label>
+                <label asp-for="SerialNumber" class="control-label">
+                    <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.SerialNumber)
+                </label>
                 <input asp-for="SerialNumber" class="form-control" />
                 <span asp-validation-for="SerialNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProductionOrderNumber" class="control-label"></label>
+                <label asp-for="ProductionOrderNumber" class="control-label">
+                    <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.ProductionOrderNumber)
+                </label>
                 <input asp-for="ProductionOrderNumber" class="form-control" />
                 <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RToShipExp" class="control-label"></label>
+                <label asp-for="RToShipExp" class="control-label">
+                    <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.RToShipExp)
+                </label>
                 <input asp-for="RToShipExp" class="form-control" />
                 <span asp-validation-for="RToShipExp" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="RToShipA" class="control-label"></label>
                 <input asp-for="RToShipA" class="form-control" />
