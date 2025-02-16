@@ -97,7 +97,7 @@
             </div>
             <div class="col-md-8">
                 <div class="row">
-                    <div class="form-group col-md-6">
+                   @*  <div class="form-group col-md-6">
                         <label class="control-label"> Engineers Assigned</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
                             <strong>-</strong>
                         </button>
@@ -109,7 +109,32 @@
                             <strong>+</strong>
                         </button>
                         @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
+                    </div> *@
+                    <div class="form-group">
+                        <label class="control-label">Assign Engineers</label>
+                        <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
+                                multiple data-live-search="true" data-actions-box="true">
+                            @if (ViewBag.availOpts != null && ViewBag.selOpts != null)
+                            {
+                                // Merge selected and available engineers into a single list
+                                var allEngineers = ((MultiSelectList)ViewBag.availOpts).Items.Cast<haver.ViewModels.ListOptionVM>()
+                                .Union(((MultiSelectList)ViewBag.selOpts).Items.Cast<haver.ViewModels.ListOptionVM>())
+                                .OrderBy(e => e.DisplayText)
+                                .ToList();
+
+                                var selectedEngineers = ((MultiSelectList)ViewBag.selOpts).Items.Cast<haver.ViewModels.ListOptionVM>().Select(x => x.ID).ToHashSet();
+
+                                foreach (var item in allEngineers)
+                                {
+                                    var isSelected = selectedEngineers.Contains(item.ID);
+                                    <option value="@item.ID" selected="@(isSelected ? "selected" : null)">@item.DisplayText</option>
+                                }
+                            }
+                        </select>
                     </div>
+
+                    
+
                 </div>
             </div>
             <div class="form-group">
@@ -167,6 +192,12 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
+        });
     </script>
 
 }
