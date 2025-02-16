@@ -125,6 +125,7 @@
                          @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
                      </div> *@
 
+                     <p>Press the ctrl key down to select multiple engineers</p>
                     <div class="form-group">
                         <label class="control-label">Assign Engineers</label>
                         <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
@@ -139,6 +140,7 @@
                             }
                         </select>
                     </div>
+
                 </div>
             </div>
             <div class="form-group">
