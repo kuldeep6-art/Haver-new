@@ -7,27 +7,36 @@
 <h1>Create</h1>
 
 <h4>SalesOrder</h4>
+<h6>Fields marked with * are required</h6>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="OrderNumber" class="control-label"></label>
+                <label asp-for="OrderNumber" class="control-label">
+                    Order Number <span class="text-danger">*</span>
+                </label>
                 <input asp-for="OrderNumber" class="form-control" placeholder="Enter Order Number" />
                 <span asp-validation-for="OrderNumber" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
-                <input id="companyNameInput" asp-for="CompanyName" class="form-control" placeholder="Enter Company Name"/>
+                <label asp-for="CompanyName" class="control-label">
+                    Company Name <span class="text-danger">*</span>
+                </label>
+                <input id="companyNameInput" asp-for="CompanyName" class="form-control" placeholder="Enter Company Name" />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="SoDate" class="control-label"></label>
+                <label asp-for="SoDate" class="control-label">
+                    SO Date <span class="text-danger">*</span>
+                </label>
                 <input asp-for="SoDate" class="form-control" />
                 <span asp-validation-for="SoDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" placeholder="Enter Sales Order Price"/>
@@ -61,15 +70,21 @@
                 <span asp-validation-for="AppDwgRet" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AppDwgExp" class="control-label"></label>
+                <label asp-for="AppDwgExp" class="control-label">
+                    @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
+                </label>
                 <input asp-for="AppDwgExp" class="form-control" />
                 <span asp-validation-for="AppDwgExp" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="PreOExp" class="control-label"></label>
+                <label asp-for="PreOExp" class="control-label">
+                    @Html.DisplayNameFor(model => model.PreOExp) <span class="text-danger">*</span>
+                </label>
                 <input asp-for="PreOExp" class="form-control" />
                 <span asp-validation-for="PreOExp" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PreORel" class="control-label"></label>
                 <input asp-for="PreORel" class="form-control" />
