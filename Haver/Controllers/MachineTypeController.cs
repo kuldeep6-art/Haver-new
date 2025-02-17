@@ -9,6 +9,7 @@ using haver.Data;
 using haver.Models;
 using haver.Utilities;
 using haver.CustomControllers;
+using System.Reflection.PortableExecutable;
 
 namespace haver.Controllers
 {
@@ -22,11 +23,47 @@ namespace haver.Controllers
         }
 
         // GET: MachineType
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? actionButton,
+            string sortDirection = "asc",string sortField = "Serial Number")
         {
+            string[] sortOptions = new[] { "Description" };
+
+
             var machinetypes = from m in _context.MachineTypes
                         .AsNoTracking()
                             select m;
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+
+            //Now we know which field and direction to sort by
+            if (sortField == "Description")
+            {
+                if (sortDirection == "asc")
+                {
+                    machinetypes = machinetypes
+                        .OrderByDescending(p => p.Description);
+                }
+                else
+                {
+                    machinetypes = machinetypes
+                        .OrderBy(p => p.Description);
+                }
+            }
+
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
 
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
