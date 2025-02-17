@@ -331,10 +331,16 @@ namespace haver.Controllers
                 }
                 return Redirect(returnUrl);
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dex)
             {
-                //Note: there is really no reason a delete should fail if you can "talk" to the database.
-                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete Machine.  Remember, you cannot delete a Machine attached to a Sales Order");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
             return View(machine);
         }
