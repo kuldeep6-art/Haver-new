@@ -192,7 +192,7 @@ namespace haver.Controllers
 
             var task = await _context.GanttTasks
                 .Include(a => a.SalesOrder)
-                .Include(g => g.GanttMilestones) // Include milestones
+                .Include(g => g.GanttMilestones)
                 .FirstOrDefaultAsync(g => g.ID == model.Id);
 
             if (task == null) return NotFound("Task not found.");
@@ -202,10 +202,13 @@ namespace haver.Controllers
                 task.StartDate = DateTime.ParseExact(model.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                 task.EndDate = DateTime.ParseExact(model.EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-                // Update milestones' progress
-                foreach (var milestone in task.GanttMilestones)
+                // ✅ Ensure we only update milestones if progress is provided
+                if (model.Progress.HasValue)
                 {
-                    milestone.Progress = model.Progress;
+                    foreach (var milestone in task.GanttMilestones)
+                    {
+                        milestone.Progress = model.Progress.Value;  // ✅ Now works!
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -216,6 +219,7 @@ namespace haver.Controllers
                 return StatusCode(500, $"Internal error: {ex.Message}");
             }
         }
+
 
         private bool GanttTaskExists(int id)
         {

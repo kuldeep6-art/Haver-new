@@ -30,7 +30,7 @@ namespace haver.Models
 
         // Computed progress based on milestones
         [NotMapped]
-        public int OverallProgress => GanttMilestones.Any()
+        public int? OverallProgress => GanttMilestones.Any()
             ? (int)(GanttMilestones.Average(m => m.Progress))
             : 0;
     }
