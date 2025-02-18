@@ -165,16 +165,25 @@ namespace haver.Controllers
                 .Select(g => new
                 {
                     id = g.ID,
-                    name = g.SalesOrder.OrderNumber, // Sales Order as task name
+                    name = g.SalesOrder.OrderNumber,
                     start = g.StartDate.ToString("yyyy-MM-dd"),
                     end = g.EndDate.ToString("yyyy-MM-dd"),
                     progress = g.OverallProgress,
-                    dependencies = ""  // Add dependencies if needed
+                    dependencies = "",
+                    milestones = g.GanttMilestones.Select(m => new
+                    {
+                        name = m.MilestoneName,
+                        progress = m.Progress,
+                        date = m.DateCompleted.HasValue ? m.DateCompleted.Value.ToString("yyyy-MM-dd") : null
+                    }).ToList()
                 })
                 .ToListAsync();
 
             return Json(tasks);
         }
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> UpdateTask([FromBody] GanttTaskUpdateModel model)

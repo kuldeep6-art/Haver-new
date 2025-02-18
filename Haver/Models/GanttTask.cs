@@ -13,10 +13,12 @@ namespace haver.Models
         public SalesOrder? SalesOrder { get; set; }
 
         [Required(ErrorMessage ="Start Date is Required")]
+        [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "End Date is Required")]
+        [DataType(DataType.Date)]
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
