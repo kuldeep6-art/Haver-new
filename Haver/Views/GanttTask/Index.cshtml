@@ -198,6 +198,12 @@
             text-decoration: none;
             padding: 0 5px;
         }
+
+        .bar-wrapper rect {
+            stroke: white;
+            stroke-width: 1px;
+        }
+
     </style>
 }
 
@@ -207,7 +213,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Fetch task data from the server
             fetch("@Url.Action("GetGanttData", "GanttTask")")
                 .then(response => response.json())
                 .then(tasks => {
@@ -216,7 +221,6 @@
                         return;
                     }
 
-                    // Normalize task progress
                     tasks = tasks.map(task => ({
                         ...task,
                         progress: task.progress === 0 ? 0.1 : task.progress
@@ -231,7 +235,44 @@
                         custom_popup_html: task => `<b>${task.name}</b> - ${task.progress}%`
                     });
 
-                    // Update task details on the server
+                    // Wait for Gantt chart to load, then modify progress bars
+                    setTimeout(() => {
+                        tasks.forEach(task => {
+                            if (task.milestones.length > 0) {
+                                drawMilestoneProgress(task);
+                            }
+                        });
+                    }, 500);
+
+                    // Function to add milestone colors inside task progress bars
+                    function drawMilestoneProgress(task) {
+                        let taskBar = document.querySelector(`.bar-wrapper[data-id="${task.id}"] .bar`);
+                        if (!taskBar) return;
+
+                        let taskWidth = taskBar.getBBox().width;
+                        let taskStartX = taskBar.getBBox().x;
+                        let taskHeight = taskBar.getBBox().height;
+                        let milestoneContainer = taskBar.parentElement;
+
+                        task.milestones.forEach((milestone, index) => {
+                            let milestoneX = taskStartX + (milestone.progress / 100) * taskWidth;
+
+                            //Set any custom colors
+                            let milestoneColor = ["#FF5733", "#FFC300", "#DAF7A6"][index % 3];
+
+                            let milestoneRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                            milestoneRect.setAttribute("x", milestoneX);
+                            milestoneRect.setAttribute("y", taskBar.getBBox().y);
+                            milestoneRect.setAttribute("width", 5);
+                            milestoneRect.setAttribute("height", taskHeight);
+                            milestoneRect.setAttribute("fill", milestoneColor);
+                            milestoneRect.setAttribute("rx", "2");
+                            milestoneRect.setAttribute("ry", "2");
+
+                            milestoneContainer.appendChild(milestoneRect);
+                        });
+                    }
+
                     function updateTask(task, start = null, end = null, progress = null) {
                         let updatedTask = {
                             ID: task.id,
@@ -253,5 +294,6 @@
                 })
                 .catch(error => console.error("Error fetching tasks:", error));
         });
+
     </script>
 }
