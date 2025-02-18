@@ -65,13 +65,6 @@ namespace haver.Data
                .HasForeignKey(so => so.SalesOrderID)
                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<SalesOrder>()
-       .HasMany(so => so.Machines)
-       .WithOne(m => m.SalesOrder)
-       .HasForeignKey(m => m.SalesOrderID)
-       .OnDelete(DeleteBehavior.Restrict); 
-
-
 
             modelBuilder.Entity<SalesOrderEngineer>()
                 .HasOne<Engineer>(mse => mse.Engineer)
