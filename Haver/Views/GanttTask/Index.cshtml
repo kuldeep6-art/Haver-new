@@ -242,6 +242,7 @@
                                 drawMilestoneProgress(task);
                             }
                         });
+                        filterGanttDates();
                     }, 500);
 
                     // Function to add milestone colors inside task progress bars
@@ -257,7 +258,7 @@
                         task.milestones.forEach((milestone, index) => {
                             let milestoneX = taskStartX + (milestone.progress / 100) * taskWidth;
 
-                            //Set any custom colors
+                            // Set custom milestone colors
                             let milestoneColor = ["#FF5733", "#FFC300", "#DAF7A6"][index % 3];
 
                             let milestoneRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -291,9 +292,24 @@
                             .then(data => console.log("Task Updated:", data))
                             .catch(error => console.error("Error updating task:", error));
                     }
+
+
+                    //function for dates
+                    function filterGanttDates() {
+                        let allDateLabels = document.querySelectorAll(".tick text"); // Selects all date labels
+                        allDateLabels.forEach(label => {
+                            let dateText = label.textContent.trim();
+                            let date = new Date(dateText);
+
+                            // Hide any date that is NOT a Monday
+                            if (date.getDay() !== 1) {
+                                label.style.display = "none";
+                            }
+                        });
+                    }
                 })
                 .catch(error => console.error("Error fetching tasks:", error));
         });
-
     </script>
+
 }
