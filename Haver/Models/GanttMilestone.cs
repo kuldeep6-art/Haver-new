@@ -14,7 +14,7 @@ namespace haver.Models
 
         [Required(ErrorMessage = "You must select the milestone")]
         [Display(Name = "Milestone Name")]
-        public string MilestoneName { get; set; }  
+        public miledates? MilestoneName { get; set; }  
 
         [Required(ErrorMessage = "You must enter progress.")]
         [Range(0, 100, ErrorMessage = "Progress must be between 0 and 100.")]

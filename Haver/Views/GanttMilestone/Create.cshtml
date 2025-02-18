@@ -18,7 +18,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="MilestoneName" class="control-label"></label>
-                <input asp-for="MilestoneName" class="form-control" />
+                <select asp-for="MilestoneName" class="form-control"
+                        asp-items="Html.GetEnumSelectList<miledates>()"></select>
                 <span asp-validation-for="MilestoneName" class="text-danger"></span>
             </div>
             <div class="form-group">
