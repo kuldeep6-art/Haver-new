@@ -1,158 +1,238 @@
 ﻿@model haver.Models.SalesOrder
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Sales Order";
 }
 
-<h1>Create</h1>
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Create New Sales Order
+            </h4>
+        </div>
+    </div>
 
-<h4>SalesOrder</h4>
-<h6>Fields marked with * are required</h6>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrderNumber" class="control-label">
-                    Order Number <span class="text-danger">*</span>
-                </label>
-                <input asp-for="OrderNumber" class="form-control" placeholder="Enter Order Number" />
-                <span asp-validation-for="OrderNumber" class="text-danger"></span>
-            </div>
+    <!-- Centered Form -->
+    <div class="row py-4">
+        <div class="col-md-10 offset-md-1">
+            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Sales Order">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h6 class="mb-4" style="color: #0C2340;">Fields marked with <span class="text-danger">*</span> are required</h6>
 
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label">
-                    Company Name <span class="text-danger">*</span>
-                </label>
-                <input id="companyNameInput" asp-for="CompanyName" class="form-control" placeholder="Enter Company Name" />
-                <span asp-validation-for="CompanyName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="SoDate" class="control-label">
-                    SO Date <span class="text-danger">*</span>
-                </label>
-                <input asp-for="SoDate" class="form-control" />
-                <span asp-validation-for="SoDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" placeholder="Enter Sales Order Price"/>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Currency" class="control-label"></label>
-                <select asp-for="Currency" class="form-control" id="currencyDropdown">
-                    <option value="">-- Select Currency --</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="CAD">CAD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                </select>
-                <span asp-validation-for="Currency" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingTerms" class="control-label"></label>
-                <input asp-for="ShippingTerms" class="form-control" placeholder="Enter Shipping Terms" />
-                <span asp-validation-for="ShippingTerms" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="AppDwgRel" class="control-label"></label>
-                <input asp-for="AppDwgRel" class="form-control" />
-                <span asp-validation-for="AppDwgRel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppDwgRet" class="control-label"></label>
-                <input asp-for="AppDwgRet" class="form-control" />
-                <span asp-validation-for="AppDwgRet" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppDwgExp" class="control-label">
-                    @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
-                </label>
-                <input asp-for="AppDwgExp" class="form-control" />
-                <span asp-validation-for="AppDwgExp" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PreOExp" class="control-label">
-                    @Html.DisplayNameFor(model => model.PreOExp) <span class="text-danger">*</span>
-                </label>
-                <input asp-for="PreOExp" class="form-control" />
-                <span asp-validation-for="PreOExp" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PreORel" class="control-label"></label>
-                <input asp-for="PreORel" class="form-control" />
-                <span asp-validation-for="PreORel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EngPExp" class="control-label"></label>
-                <input asp-for="EngPExp" class="form-control" />
-                <span asp-validation-for="EngPExp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EngPRel" class="control-label"></label>
-                <input asp-for="EngPRel" class="form-control" />
-                <span asp-validation-for="EngPRel" class="text-danger"></span>
-            </div>
-@*              <div class="form-group">
-                 <label asp-for="CustomerID" class="control-label"></label>
-                 <select asp-for="CustomerID" class ="form-control" asp-items="ViewBag.CustomerID"></select>
-             </div> *@
-            <div class="form-group">
-                <label asp-for="Comments" class="control-label"></label>
-                <textarea asp-for="Comments" class="form-control summernote"></textarea>
-                <span asp-validation-for="Comments" class="text-danger"></span>
-            </div>
-            <div class="col-md-8">
+                <!-- First Row -->
                 <div class="row">
-                     @* <div class="form-group col-md-6">
-                         <label class="control-label"> Engineers Assigned</label> <button type="button" id="btnRight" class="btn btn-danger btn-sm">
-                             <strong>-</strong>
-                         </button>
-                         @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @size = 10, @class = "form-control" })
-                     </div>
-
-                     <div class="form-group col-md-6">
-                         <label class="control-label"> Choose Engineers</label> <button type="button" id="btnLeft" class="btn btn-success btn-sm">
-                             <strong>+</strong>
-                         </button>
-                         @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @size = 10, @class = "form-control" })
-                     </div> *@
-
-                     <p>Press the ctrl key down to select multiple engineers</p>
-                    <div class="form-group">
-                        <label class="control-label">Assign Engineers</label>
-                        <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
-                                multiple data-live-search="true" data-actions-box="true">
-                            @foreach (var item in (MultiSelectList)ViewBag.availOpts)
-                            {
-                                var isSelected = ((MultiSelectList)ViewBag.selOpts).Items
-                                .Cast<SelectListItem>()
-                                .Any(x => x.Value == item.Value);
-
-                                <option value="@item.Value" selected="@isSelected">@item.Text</option>
-                            }
-                        </select>
+                    <!-- Order Number -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Order Number <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Unique identifier for the sales order"></i>
+                        </label>
+                        <input asp-for="OrderNumber" class="form-control" placeholder="Enter Order Number"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="OrderNumber" class="text-danger"></span>
                     </div>
 
+                    <!-- Company Name -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="CompanyName" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Company Name <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the purchasing company"></i>
+                        </label>
+                        <input asp-for="CompanyName" class="form-control" placeholder="Enter Company Name"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                    </div>
+
+                    <!-- SO Date -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="SoDate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            SO Date <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Date when the sales order was created"></i>
+                        </label>
+                        <input asp-for="SoDate" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="SoDate" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+                <!-- Second Row -->
+                <div class="row">
+                    <!-- Price -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Price
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Total value of the sales order"></i>
+                        </label>
+                        <input asp-for="Price" class="form-control" placeholder="Enter Sales Order Price"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <!-- Currency -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="Currency" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Currency
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the transaction currency"></i>
+                        </label>
+                        <select asp-for="Currency" class="form-control" id="currencyDropdown"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
+                            <option value="">-- Select Currency --</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                        </select>
+                        <span asp-validation-for="Currency" class="text-danger"></span>
+                    </div>
+
+                    <!-- Shipping Terms -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Shipping Terms
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Agreed terms for product delivery"></i>
+                        </label>
+                        <input asp-for="ShippingTerms" class="form-control" placeholder="Enter Shipping Terms"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="ShippingTerms" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Third Row -->
+                <div class="row">
+                    <!-- AppDwgRel -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AppDwgRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Approved Drawing Release
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Date when drawings were released"></i>
+                        </label>
+                        <input asp-for="AppDwgRel" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AppDwgRel" class="text-danger"></span>
+                    </div>
+
+                    <!-- AppDwgRet -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AppDwgRet" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Approved Drawing Return
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Date when drawings were returned"></i>
+                        </label>
+                        <input asp-for="AppDwgRet" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AppDwgRet" class="text-danger"></span>
+                    </div>
+
+                    <!-- AppDwgExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing expiration date"></i>
+                        </label>
+                        <input asp-for="AppDwgExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Fourth Row -->
+                <div class="row">
+                    <!-- PreOExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="PreOExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.PreOExp) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Pre-order expiration date"></i>
+                        </label>
+                        <input asp-for="PreOExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="PreOExp" class="text-danger"></span>
+                    </div>
+
+                    <!-- PreORel -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="PreORel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Pre-Order Release
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Date of pre-order release"></i>
+                        </label>
+                        <input asp-for="PreORel" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="PreORel" class="text-danger"></span>
+                    </div>
+
+                    <!-- EngPExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Engineering Package Expected
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package expected Date"></i>
+                        </label>
+                        <input asp-for="EngPExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="EngPExp" class="text-danger"></span>
+                    </div>
+                    <!-- EngPRel -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Engineering Package Released
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package release Date"></i>
+                        </label>
+                        <input asp-for="EngPRel" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="EngPRel" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                <!-- Comments Section -->
+                <div class="form-group col-md-6 mb-4">
+                    <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Comments
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Additional notes or comments"></i>
+                    </label>
+                    <textarea asp-for="Comments" class="form-control summernote"
+                                  style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
+
+                <!-- Engineers Assignment -->
+                <div class="form-group col-md-6 mb-4">
+                    <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Assign Engineers
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select multiple engineers using CTRL/CMD click"></i>
+                    </label>
+                    <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
+                            multiple data-live-search="true" data-actions-box="true"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; height:237px;">
+                        @foreach (var item in (MultiSelectList)ViewBag.availOpts)
+                        {
+                            var isSelected = ((MultiSelectList)ViewBag.selOpts).Items
+                            .Cast<SelectListItem>()
+                            .Any(x => x.Value == item.Value);
+
+                            <option value="@item.Value" selected="@isSelected">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary mr-2"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Create Sales Order
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary"
+                       style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
+                        Back to List
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 @section Head {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
 }
