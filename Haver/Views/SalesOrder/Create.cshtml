@@ -162,12 +162,22 @@
                     <!-- EngPExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Engineering Project Expiration
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering project expiration date"></i>
+                            Engineering Package Expected
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package expected Date"></i>
                         </label>
                         <input asp-for="EngPExp" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPExp" class="text-danger"></span>
+                    </div>
+                    <!-- EngPRel -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Engineering Package Released
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package release Date"></i>
+                        </label>
+                        <input asp-for="EngPRel" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
                 </div>
 
