@@ -231,104 +231,118 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("@Url.Action("GetGanttData", "GanttTask")")
-                .then(response => response.json())
-                .then(tasks => {
-                    if (!tasks || tasks.length === 0) {
-                        console.error("No tasks found.");
-                        return;
+      document.addEventListener("DOMContentLoaded", function () {
+    fetch('@Url.Action("GetGanttData", "GanttTask")')
+        .then(response => response.json())
+        .then(tasks => {
+            if (!Array.isArray(tasks) || tasks.length === 0) {
+                console.error("No tasks found.");
+                return;
+            }
+
+            tasks = tasks.map(task => ({
+                ...task,
+                progress: task.progress === 0 ? 0.1 : task.progress
+            }));
+
+            if (typeof Gantt === "undefined") {
+                console.error("Frappe Gantt library not loaded.");
+                return;
+            }
+
+            let gantt = new Gantt("#gantt_chart", tasks, {
+                view_mode: 'Week',
+                on_click: task => console.log("Clicked:", task),
+                on_date_change: (task, start, end) => updateTask(task, start, end),
+                on_progress_change: (task, progress) => updateTask(task, null, null, progress),
+                custom_popup_html: task => `<b>${task.name}</b> - ${task.progress}%`
+            });
+
+            setTimeout(() => {
+                tasks.forEach(task => {
+                    if (task.milestones?.length > 0) {
+                        drawMilestoneProgress(task);
                     }
+                });
 
-                    tasks = tasks.map(task => ({
-                        ...task,
-                        progress: task.progress === 0 ? 0.1 : task.progress
-                    }));
+                applyTaskStyling();
+                filterGanttDates();
+            }, 500);
+        })
+        .catch(error => console.error("Error fetching tasks:", error));
 
-                    // Initialize the Gantt chart
-                    let gantt = new Gantt("#gantt_chart", tasks, {
-                        view_mode: 'Day',
-                        on_click: task => console.log("Clicked:", task),
-                        on_date_change: (task, start, end) => updateTask(task, start, end),
-                        on_progress_change: (task, progress) => updateTask(task, null, null, progress),
-                        custom_popup_html: task => `<b>${task.name}</b> - ${task.progress}%`
-                    });
+    function drawMilestoneProgress(task) {
+        let taskBar = document.querySelector(`.bar-wrapper[data-id="${task.id}"] .bar`);
+        if (!taskBar) return;
 
-                    // Wait for Gantt chart to load, then modify progress bars
-                    setTimeout(() => {
-                        tasks.forEach(task => {
-                            if (task.milestones.length > 0) {
-                                drawMilestoneProgress(task);
-                            }
-                        });
-                        filterGanttDates();
-                    }, 500);
+        let taskWidth = taskBar.getBBox().width;
+        let taskStartX = taskBar.getBBox().x;
+        let taskHeight = taskBar.getBBox().height;
+        let milestoneContainer = taskBar.parentElement;
 
-                    // Function to add milestone colors inside task progress bars
-                    function drawMilestoneProgress(task) {
-                        let taskBar = document.querySelector(`.bar-wrapper[data-id="${task.id}"] .bar`);
-                        if (!taskBar) return;
+        task.milestones.forEach((milestone, index) => {
+            let milestoneX = taskStartX + (milestone.progress / 100) * taskWidth;
 
-                        let taskWidth = taskBar.getBBox().width;
-                        let taskStartX = taskBar.getBBox().x;
-                        let taskHeight = taskBar.getBBox().height;
-                        let milestoneContainer = taskBar.parentElement;
+            let milestoneColors = ["#FF5733", "#FFC300", "#DAF7A6"];
+            let milestoneColor = milestoneColors[index % milestoneColors.length];
 
-                        task.milestones.forEach((milestone, index) => {
-                            let milestoneX = taskStartX + (milestone.progress / 100) * taskWidth;
+            let milestoneRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            milestoneRect.setAttribute("x", milestoneX);
+            milestoneRect.setAttribute("y", taskBar.getBBox().y);
+            milestoneRect.setAttribute("width", 5);
+            milestoneRect.setAttribute("height", taskHeight);
+            milestoneRect.setAttribute("fill", milestoneColor);
+            milestoneRect.setAttribute("rx", "2");
+            milestoneRect.setAttribute("ry", "2");
 
-                            // Set custom milestone colors
-                            let milestoneColor = ["#FF5733", "#FFC300", "#DAF7A6"][index % 3];
-
-                            let milestoneRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                            milestoneRect.setAttribute("x", milestoneX);
-                            milestoneRect.setAttribute("y", taskBar.getBBox().y);
-                            milestoneRect.setAttribute("width", 5);
-                            milestoneRect.setAttribute("height", taskHeight);
-                            milestoneRect.setAttribute("fill", milestoneColor);
-                            milestoneRect.setAttribute("rx", "2");
-                            milestoneRect.setAttribute("ry", "2");
-
-                            milestoneContainer.appendChild(milestoneRect);
-                        });
-                    }
-
-                    function updateTask(task, start = null, end = null, progress = null) {
-                        let updatedTask = {
-                            ID: task.id,
-                            Name: task.name,
-                            StartDate: start ? start.toISOString().split('T')[0] : task.start,
-                            EndDate: end ? end.toISOString().split('T')[0] : task.end,
-                            Progress: progress !== null ? progress / 100 : task.progress / 100
-                        };
-
-                        fetch("@Url.Action("UpdateTask", "GanttTask")", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(updatedTask)
-                        })
-                            .then(response => response.json())
-                            .then(data => console.log("Task Updated:", data))
-                            .catch(error => console.error("Error updating task:", error));
-                    }
-
-
-                    //function for dates
-                    function filterGanttDates() {
-                        let allDateLabels = document.querySelectorAll(".tick text"); // Selects all date labels
-                        allDateLabels.forEach(label => {
-                            let dateText = label.textContent.trim();
-                            let date = new Date(dateText);
-
-                            // Hide any date that is NOT a Monday
-                            if (date.getDay() !== 1) {
-                                label.style.display = "none";
-                            }
-                        });
-                    }
-                })
-                .catch(error => console.error("Error fetching tasks:", error));
+            milestoneContainer.appendChild(milestoneRect);
         });
+    }
+
+    function applyTaskStyling() {
+        document.querySelectorAll(".bar-wrapper").forEach(taskWrapper => {
+            let taskId = taskWrapper.getAttribute("data-id");
+            if (taskId) {
+                let formattedId = taskId.replace(/\s+/g, "-").toLowerCase();
+                taskWrapper.classList.add(formattedId);
+            }
+        });
+    }
+
+    function updateTask(task, start = null, end = null, progress = null) {
+        let updatedTask = {
+            ID: task.id,
+            Name: task.name,
+            StartDate: start ? start.toISOString().split('T')[0] : task.start,
+            EndDate: end ? end.toISOString().split('T')[0] : task.end,
+            Progress: progress !== null ? progress / 100 : task.progress / 100
+        };
+
+        fetch('@Url.Action("UpdateTask", "GanttTask")', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedTask)
+        })
+            .then(response => response.json())
+            .then(data => console.log("Task Updated:", data))
+            .catch(error => console.error("Error updating task:", error));
+    }
+
+    function filterGanttDates() {
+        document.querySelectorAll(".tick text").forEach(label => {
+            let dateText = label.textContent.trim();
+            let date = new Date(dateText);
+
+            if (isNaN(date.getTime())) return;
+
+            // Hide any date that is NOT a Monday
+            if (date.getDay() !== 1) {
+                label.style.display = "none";
+            }
+        });
+    }
+});
+
     </script>
 
 }
