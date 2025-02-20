@@ -191,7 +191,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers, bool saveAsDraft)
         {
             try
             {
@@ -206,9 +206,10 @@ namespace haver.Controllers
                 UpdateSalesOrderEngineers(selectedOptions, salesOrder);
                 if (ModelState.IsValid)
 				{
-					_context.Add(salesOrder);
+                    salesOrder.Status = saveAsDraft ? Status.Draft : Status.InProgress;
+                    _context.Add(salesOrder);
 					await _context.SaveChangesAsync();
-                    TempData["Message"] = "Sales Order has been successfully created";
+                    TempData["Message"] = saveAsDraft ? "Sales Order saved as draft" : "Sales Order created successfully";
                     return RedirectToAction("Details", new { salesOrder.ID });
                 }
             }
@@ -348,10 +349,32 @@ namespace haver.Controllers
         }
 
 
-		//private void PopulateDropDownLists(SalesOrder? salesOrder = null)
-		//{
-		//	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-		//}
+        //private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+        //{
+        //	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+        //}
+
+
+        public async Task<IActionResult> Continue(int id)
+        {
+            var salesOrder = await _context.SalesOrders.FindAsync(id);
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            // Change status from Draft to InProgress
+            if (salesOrder.Status == Status.Draft)
+            {
+                salesOrder.Status = Status.InProgress;
+                _context.Update(salesOrder);
+                await _context.SaveChangesAsync();
+            }
+
+            // Redirect directly to Edit page
+            return RedirectToAction("Edit", new { id = salesOrder.ID });
+        }
+
 
         // GET: SalesOrder/Archive/5
         public async Task<IActionResult> Archive(int id)

@@ -181,6 +181,13 @@
                                 <i class="fa-solid fa-circle-info"></i> Details
                             </a>
                         }
+                        else if (item.Status == Status.Draft)
+                        {
+                            <span class="badge bg-warning text-dark">Draft</span>
+                            <a asp-action="Continue" asp-route-id="@item.ID" class="btn btn-sm btn-primary mx-1" aria-label="Continue editing sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Continue editing">
+                                <i class="fa-solid fa-play"></i> Continue
+                            </a>
+                        }
                         else
                         {
                             <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.OrderNumber" data-bs-toggle="tooltip" title="Edit machine">
@@ -192,9 +199,9 @@
                             <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Archive sales order" onclick="return confirm('Are you sure you want to archive this sales order?');">
                                 <i class="fa-solid fa-box-archive"></i> Archive
                             </a>
-
                         }
                     </td>
+
 
 
         </tr>
