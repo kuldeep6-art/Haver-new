@@ -154,17 +154,19 @@
                             </label>
                         </div>
 
-                    <!-- Nameplate -->
-                    <div class="form-group col-md-4 mb-4">
-                        <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.Nameplate)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Machine identification plate"></i>
-                        </label>
-                        <select asp-for="Nameplate" class="form-control"
-                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
-                        <span asp-validation-for="Nameplate" class="text-danger"></span>
-                    </div>
+                   
+                </div>
+
+                <!-- Nameplate -->
+                <div class="form-group  mb-4">
+                    <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        @Html.DisplayNameFor(model => model.Nameplate)
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Machine identification plate"></i>
+                    </label>
+                    <select asp-for="Nameplate" class="form-control"
+                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                            asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
+                    <span asp-validation-for="Nameplate" class="text-danger"></span>
                 </div>
 
                 <!-- Third Row -->
