@@ -264,7 +264,23 @@ namespace haver.Controllers
             return View(vendor);
         }
 
-        private bool VendorExists(int id)
+		public async Task<IActionResult> ToggleStatus(int id)
+		{
+			var vendor = await _context.Vendors.FindAsync(id);
+			if (vendor == null)
+			{
+				return NotFound();
+			}
+
+			vendor.IsActive = !vendor.IsActive; // Toggle status
+			_context.Update(vendor);
+			await _context.SaveChangesAsync();
+
+			return RedirectToAction(nameof(Index));
+		}
+
+
+		private bool VendorExists(int id)
         {
             return _context.Vendors.Any(e => e.ID == id);
         }
