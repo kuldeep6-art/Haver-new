@@ -54,6 +54,10 @@ namespace haver.Data
         public DbSet<GanttMilestone> GanttMilestones { get; set; }
 
 
+        public DbSet<GanttData> GanttDatas { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Relationships with Cascade Delete Restriction
