@@ -189,7 +189,7 @@
                             </a>
                             <a asp-action="Restore" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="Restore @item.OrderNumber" data-bs-toggle="tooltip" title="Restore"
                                onclick="return confirm('Are you sure you want to restore this sales order?');">
-                                <i class="fa-solid fa-circle-info"></i> Restore
+                                <i class="fas fa-trash-restore"></i> Restore
                             </a>
                         }
                         else if (item.Status == Status.Draft)
