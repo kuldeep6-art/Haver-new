@@ -20,7 +20,8 @@
             {
                 ["Active"] = new Dictionary<string, string>(),
                 ["Archived"] = new Dictionary<string, string> { ["status"] = "Archived" },
-                ["Completed"] = new Dictionary<string, string> { ["status"] = "Completed" }
+                ["Completed"] = new Dictionary<string, string> { ["status"] = "Completed" },
+                ["Draft"] = new Dictionary<string, string> { ["status"] = "Draft" }
             };
 
     // Preserve existing query parameters
@@ -43,19 +44,25 @@
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == null ? "active" : "")"
            href="@Url.Action("Index", routeValues["Active"])">
-            Active
+            Active Sales Orders
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == "Completed" ? "active" : "")"
            href="@Url.Action("Index", routeValues["Completed"])">
-            Completed
+            Completed Sales Orders
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == "Archived" ? "active" : "")"
            href="@Url.Action("Index", routeValues["Archived"])">
-            Archived
+            Archived Sales Orders
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Status == "Draft" ? "active" : "")"
+           href="@Url.Action("Index", routeValues["Draft"])">
+            Drafts
         </a>
     </li>
 </ul>
@@ -170,15 +177,26 @@
                         @if (item.Status == Status.Completed)
                         {
                             <span class="badge bg-success">Completed</span>
-                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of  @item.OrderNumber" data-bs-toggle="tooltip" title="Complete">
                                 <i class="fa-solid fa-circle-info"></i> Details
                             </a>
                         }
                         else if (item.Status == Status.Archived)
                         {
                             <span class="badge bg-secondary">Archived</span>
-                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
                                 <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                            <a asp-action="Restore" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="Restore @item.OrderNumber" data-bs-toggle="tooltip" title="Restore"
+                               onclick="return confirm('Are you sure you want to restore this sales order?');">
+                                <i class="fas fa-trash-restore"></i> Restore
+                            </a>
+                        }
+                        else if (item.Status == Status.Draft)
+                        {
+                            <span class="badge bg-warning text-dark">Draft</span>
+                            <a asp-action="Continue" asp-route-id="@item.ID" class="btn btn-sm  mx-1" aria-label="Continue editing sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Continue editing">
+                                <i class="fa-solid fa-play"></i> Continue
                             </a>
                         }
                         else
@@ -192,9 +210,9 @@
                             <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Archive sales order" onclick="return confirm('Are you sure you want to archive this sales order?');">
                                 <i class="fa-solid fa-box-archive"></i> Archive
                             </a>
-
                         }
                     </td>
+
 
 
         </tr>

@@ -218,15 +218,23 @@
 
                 <!-- Form Actions -->
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary mr-2"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-                        Create Sales Order
+                    <button type="submit" name="saveAsDraft" value="true" class="btn mr-2"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;"
+                            onclick="return confirm('All required fields must be inputed before saving as draft. Are you sure you want to continue?');">
+                        <i class="fa-solid fa-floppy-disk"></i> Save as Draft
                     </button>
+
+                    <button type="submit" name="saveAsDraft" value="false" class="btn  mr-2"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        <i class="fa-solid fa-check"></i> Create Sales Order
+                    </button>
+
                     <a asp-action="Index" class="btn btn-secondary"
                        style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
-                        Back to List
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
                     </a>
                 </div>
+
             </form>
         </div>
     </div>

@@ -56,9 +56,12 @@ namespace haver.Controllers
                 case "Completed":
                     salesOrders = salesOrders.Where(so => so.Status == Status.Completed);
                     break;
+                case "Draft":
+                    salesOrders = salesOrders.Where(so => so.Status == Status.Draft);
+                    break;
                 default:
                     // Active tab shows non-archived and non-completed
-                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed);
+                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed && so.Status!= Status.Draft);
                     break;
             }
 
@@ -191,7 +194,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers, bool saveAsDraft)
         {
             try
             {
@@ -206,10 +209,14 @@ namespace haver.Controllers
                 UpdateSalesOrderEngineers(selectedOptions, salesOrder);
                 if (ModelState.IsValid)
 				{
-					_context.Add(salesOrder);
+                    salesOrder.Status = saveAsDraft ? Status.Draft : Status.InProgress;
+                    _context.Add(salesOrder);
 					await _context.SaveChangesAsync();
-                    TempData["Message"] = "Sales Order has been successfully created";
-                    return RedirectToAction("Details", new { salesOrder.ID });
+                    TempData["Message"] = saveAsDraft ? "Sales Order saved as draft" : "Sales Order created successfully";
+                    // Redirect to Index if saved as Draft, otherwise go to Details
+                    return saveAsDraft
+                        ? RedirectToAction(nameof(Index))
+                        : RedirectToAction("Details", new { id = salesOrder.ID });
                 }
             }
             catch (RetryLimitExceededException)
@@ -348,10 +355,32 @@ namespace haver.Controllers
         }
 
 
-		//private void PopulateDropDownLists(SalesOrder? salesOrder = null)
-		//{
-		//	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-		//}
+        //private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+        //{
+        //	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+        //}
+
+
+        public async Task<IActionResult> Continue(int id)
+        {
+            var salesOrder = await _context.SalesOrders.FindAsync(id);
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            // Change status from Draft to InProgress
+            if (salesOrder.Status == Status.Draft)
+            {
+                salesOrder.Status = Status.InProgress;
+                _context.Update(salesOrder);
+                await _context.SaveChangesAsync();
+            }
+
+            // Redirect directly to Edit page
+            return RedirectToAction("Edit", new { id = salesOrder.ID });
+        }
+
 
         // GET: SalesOrder/Archive/5
         public async Task<IActionResult> Archive(int id)
@@ -379,6 +408,33 @@ namespace haver.Controllers
 
             return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
         }
+
+        public async Task<IActionResult> Restore(int id)
+        {
+            var salesOrder = await _context.SalesOrders
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            salesOrder.Status = Status.InProgress;
+            _context.Update(salesOrder);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Sales Order has been successfully restored and status set to active";
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "An error occured";
+            }
+
+            return RedirectToAction(nameof(Index));  // Redirect back to the Index page after restoring.
+        }
+
 
         public IActionResult DownloadMachineSchedules()
         {
