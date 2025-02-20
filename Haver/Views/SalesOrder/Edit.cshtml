@@ -184,50 +184,54 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
-
-                    <!-- Spacer Columns -->
-                    <div class="col-md-8"></div>
                 </div>
 
-                <!-- Comments Section -->
-                <div class="form-group mb-4">
-                    <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        @Html.DisplayNameFor(model => model.Comments)
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Additional order comments"></i>
-                    </label>
-                    <textarea asp-for="Comments" class="form-control summernote"
-                              style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
-                    <span asp-validation-for="Comments" class="text-danger"></span>
-                </div>
+                <div class="row">
+                    <!-- Comments Section -->
+                    <div class="form-group col-md-6 mb-4">
+                        <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Comments
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Additional notes or comments"></i>
+                        </label>
+                        <textarea asp-for="Comments" class="form-control summernote"
+                                  style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+                    </div>
 
-                <!-- Engineers Assignment -->
-                <div class="form-group mb-4">
-                    <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Assign Engineers
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="CTRL/CMD click to select multiple"></i>
-                    </label>
-                    <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
-                            multiple data-live-search="true" data-actions-box="true"
-                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
-                        @if (ViewBag.availOpts != null && ViewBag.selOpts != null)
-                        {
-                            var allEngineers = ((MultiSelectList)ViewBag.availOpts).Items.Cast<haver.ViewModels.ListOptionVM>()
-                            .Union(((MultiSelectList)ViewBag.selOpts).Items.Cast<haver.ViewModels.ListOptionVM>())
-                            .OrderBy(e => e.DisplayText)
-                            .ToList();
-
-                            var selectedEngineers = ((MultiSelectList)ViewBag.selOpts).Items.Cast<haver.ViewModels.ListOptionVM>()
-                            .Select(x => x.ID).ToHashSet();
-
-                            foreach (var item in allEngineers)
+                    <!-- Engineers Assignment -->
+                    <div class="form-group col-md-6 mb-4">
+                        <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Assign Engineers
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select multiple engineers using CTRL/CMD click"></i>
+                        </label>
+                        <select id="engineersDropdown" name="selectedOptions" class="form-control selectpicker"
+                                multiple data-live-search="true" data-actions-box="true"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif; height:237px;">
+                            @if (ViewBag.availOpts != null && ViewBag.selOpts != null)
                             {
-                                var isSelected = selectedEngineers.Contains(item.ID);
-                                <option value="@item.ID" selected="@(isSelected ? "selected" : null)">@item.DisplayText</option>
+                                var allEngineers = ((MultiSelectList)ViewBag.availOpts).Items.Cast<haver.ViewModels.ListOptionVM>()
+                                .Union(((MultiSelectList)ViewBag.selOpts).Items.Cast<haver.ViewModels.ListOptionVM>())
+                                .OrderBy(e => e.DisplayText)
+                                .ToList();
+
+                                var selectedEngineers = ((MultiSelectList)ViewBag.selOpts).Items.Cast<haver.ViewModels.ListOptionVM>()
+                                .Select(x => x.ID).ToHashSet();
+
+                                foreach (var item in allEngineers)
+                                {
+                                    var isSelected = selectedEngineers.Contains(item.ID);
+                                    <option value="@item.ID" selected="@(isSelected ? "selected" : null)">@item.DisplayText</option>
+                                }
                             }
-                        }
-                    </select>
+                        </select>
+
+                    </div>
+
                 </div>
 
+
+
+                
                 <!-- Form Actions -->
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary mr-2"
