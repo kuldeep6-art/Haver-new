@@ -409,6 +409,33 @@ namespace haver.Controllers
             return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
         }
 
+        public async Task<IActionResult> Restore(int id)
+        {
+            var salesOrder = await _context.SalesOrders
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            salesOrder.Status = Status.InProgress;
+            _context.Update(salesOrder);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Sales Order has been successfully restored and status set to active";
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "An error occured";
+            }
+
+            return RedirectToAction(nameof(Index));  // Redirect back to the Index page after restoring.
+        }
+
+
         public IActionResult DownloadMachineSchedules()
         {
             var schedules = _context.SalesOrders
