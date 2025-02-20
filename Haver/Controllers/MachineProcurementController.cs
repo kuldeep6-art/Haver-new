@@ -321,15 +321,17 @@ namespace haver.Controllers
             return View(procurement);
         }
 
-        private SelectList VendorSelectList(int? id)
-        {
-            var dQuery = from d in _context.Vendors
-                         orderby d.Name
-                         select d;
-            return new SelectList(dQuery, "ID", "Name", id);
-        }
+		private SelectList VendorSelectList(int? id)
+		{
+			var dQuery = from d in _context.Vendors
+						 where d.IsActive // Only include active vendors
+						 orderby d.Name
+						 select d;
 
-        private void PopulateDropDownLists(Procurement? procurement = null)
+			return new SelectList(dQuery, "ID", "Name", id);
+		}
+
+		private void PopulateDropDownLists(Procurement? procurement = null)
         {
             ViewData["VendorID"] = VendorSelectList(procurement?.VendorID);
         }

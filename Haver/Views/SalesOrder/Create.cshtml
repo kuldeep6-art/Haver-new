@@ -101,6 +101,18 @@
 
                 <!-- Third Row -->
                 <div class="row">
+
+                    <!-- AppDwgExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing expected date"></i>
+                        </label>
+                        <input asp-for="AppDwgExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
+                    </div>
+
                     <!-- AppDwgRel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -123,16 +135,7 @@
                         <span asp-validation-for="AppDwgRet" class="text-danger"></span>
                     </div>
 
-                    <!-- AppDwgExp -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing expected date"></i>
-                        </label>
-                        <input asp-for="AppDwgExp" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
-                    </div>
+                    
                 </div>
 
                 <!-- Fourth Row -->

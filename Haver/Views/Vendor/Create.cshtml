@@ -15,12 +15,13 @@
 		<div class="col-md-8 offset-md-2">
 			<form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Vendor Information">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
 				<!-- Vendor Name -->
 				<div class="form-group mb-3">
 					<label asp-for="Name" class="control-label"
 						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Vendor Name
+						Vendor Name <span class="text-danger">*</span>
 						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the vendor."></i>
 					</label>
 					<input asp-for="Name" class="form-control"
@@ -56,7 +57,7 @@
 				<div class="form-group text-center">
 					<button type="submit" class="btn btn-primary"
 							style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-						Create Vendor
+						<i class="fa-solid fa-plus"></i> Create Vendor
 					</button>
 
 

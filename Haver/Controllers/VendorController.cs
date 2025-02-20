@@ -22,7 +22,7 @@ namespace haver.Controllers
         }
 
         // GET: Vendor
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Name")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Name",bool? isActive = null)
         {
             string[] sortOptions = new[] { "Name", "Phone", "Email" };
 
@@ -31,7 +31,16 @@ namespace haver.Controllers
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
 
-            if (!string.IsNullOrEmpty(SearchCname))
+			// Default to Active Vendors if isActive is null
+			if (!isActive.HasValue)
+			{
+				isActive = true;
+			}
+
+			vendors = vendors.Where(v => v.IsActive == isActive.Value);
+			ViewBag.Status = isActive.Value ? "Active" : "Inactive";
+
+			if (!string.IsNullOrEmpty(SearchCname))
             {
                 vendors = vendors.Where(v => v.Name.ToUpper().Contains(SearchCname.ToUpper()));
                 numberFilters++;
@@ -264,7 +273,23 @@ namespace haver.Controllers
             return View(vendor);
         }
 
-        private bool VendorExists(int id)
+		public async Task<IActionResult> ToggleStatus(int id)
+		{
+			var vendor = await _context.Vendors.FindAsync(id);
+			if (vendor == null)
+			{
+				return NotFound();
+			}
+
+			vendor.IsActive = !vendor.IsActive; // Toggle status
+			_context.Update(vendor);
+			await _context.SaveChangesAsync();
+
+			return RedirectToAction(nameof(Index));
+		}
+
+
+		private bool VendorExists(int id)
         {
             return _context.Vendors.Any(e => e.ID == id);
         }

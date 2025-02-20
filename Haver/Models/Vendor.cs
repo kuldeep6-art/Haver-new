@@ -39,6 +39,7 @@ namespace haver.Models
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
+        public bool IsActive { get; set; } = true;
         public ICollection<Procurement>? Procurements { get; set; } = new HashSet<Procurement>();
     }
 }

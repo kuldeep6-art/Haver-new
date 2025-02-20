@@ -1,6 +1,47 @@
 ﻿@model IEnumerable<haver.Models.Vendor>
 
 <h1 class="text-center my-4">Vendor</h1>
+
+@{
+	// Create route value dictionaries for each tab
+	var routeValues = new Dictionary<string, Dictionary<string, string>>
+			{
+				["Active"] = new Dictionary<string, string> { ["isActive"] = "true" },
+				["Inactive"] = new Dictionary<string, string> { ["isActive"] = "false" }
+			};
+
+	// Preserve existing query parameters (except 'isActive' and 'page')
+	foreach (var key in Context.Request.Query.Keys.Where(k => k != "isActive" && k != "page"))
+	{
+		foreach (var dict in routeValues.Values)
+		{
+			dict[key] = Context.Request.Query[key];
+		}
+	}
+
+	// Reset page number to 1 when switching tabs
+	foreach (var dict in routeValues.Values)
+	{
+		dict["page"] = "1";
+	}
+}
+
+<ul class="nav nav-tabs mb-3">
+	<li class="nav-item">
+		<a class="nav-link @(ViewBag.Status == "Active" ? "active" : "")"
+		   href="@Url.Action("Index", routeValues["Active"])">
+			Active Vendors
+		</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link @(ViewBag.Status == "Inactive" ? "active" : "")"
+		   href="@Url.Action("Index", routeValues["Inactive"])">
+			Inactive Vendors
+		</a>
+	</li>
+</ul>
+
+
 <div class="d-flex justify-content-between align-items-center mb-3">
 	<a asp-action="Create" class="btn" aria-label="Create a new vendor" data-bs-toggle="tooltip" title="Create a new vendor">
 		<i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
@@ -63,16 +104,32 @@
 						<td>@Html.DisplayFor(modelItem => item.Phone)</td>
 						<td>@Html.DisplayFor(modelItem => item.Email)</td>
 						<td class="text-center">
+							@if (item.IsActive)
+							{
 							<a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit vendor @item.Name" data-bs-toggle="tooltip" title="Edit vendor">
 								<i class="fa-solid fa-pen-to-square"></i> Edit
 							</a>
 							<a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of vendor @item.Name" data-bs-toggle="tooltip" title="View details">
 								<i class="fa-solid fa-circle-info"></i> Details
 							</a>
-							<a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete vendor @item.Name" data-bs-toggle="tooltip" title="Delete vendor">
-								<i class="fa-solid fa-delete-left"></i> Delete
-							</a>
+
+							
+								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Deactivate @item.Name" data-bs-toggle="tooltip" title="Deactivate vendor">
+									<i class="fa-solid fa-power-off"></i> Deactivate
+								</a>
+							}
+							else
+							{
+
+								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Activate @item.Name" data-bs-toggle="tooltip" title="Activate vendor">
+									<i class="fa-solid fa-power-off"></i> Activate
+								</a>
+							}
 						</td>
+
+						@* <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete vendor @item.Name" data-bs-toggle="tooltip" title="Delete vendor">
+					<i class="fa-solid fa-delete-left"></i> Delete
+					</a> *@
 					</tr>
 				}
 			</tbody>
