@@ -67,6 +67,7 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+
     </div>
 </div>
 
@@ -75,29 +76,42 @@
 </div>
 
 @section Scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            // Trigger when MachineID is changed
             $('#MachineID').change(function () {
                 var machineID = $(this).val();
+                console.log('Selected MachineID: ', machineID); // Log the selected machineID
+
                 if (machineID) {
                     $.ajax({
                         url: '@Url.Action("GetMachineData", "GanttData")/' + machineID,
                         type: 'GET',
                         success: function (data) {
-                            // Populate the date fields with data returned from the server
-                            $('#EngExpected').val(data.EngExpected);
-                            $('#EngReleased').val(data.EngReleased);
-                            $('#CustomerApproval').val(data.CustomerApproval);
-                            $('#PackageReleased').val(data.PackageReleased);
-                            $('#ShipExpected').val(data.ShipExpected);
-                            $('#ShipActual').val(data.ShipActual);
-                            $('#DeliveryExpected').val(data.DeliveryExpected);
-                            $('#DeliveryActual').val(data.DeliveryActual);
+                            console.log(data); // Log the response data
+                            if (data.success === false) {
+                                alert(data.message); // Alert if no machine is found
+                            } else {
+                                // Populate the date fields with data returned from the server
+                                $('#EngExpected').val(data.EngExpected);
+                                $('#EngReleased').val(data.EngReleased);
+                                $('#CustomerApproval').val(data.CustomerApproval);
+                                $('#PackageReleased').val(data.PackageReleased);
+                                $('#ShipExpected').val(data.ShipExpected);
+                                $('#ShipActual').val(data.ShipActual);
+                                $('#DeliveryExpected').val(data.DeliveryExpected);
+                                $('#DeliveryActual').val(data.DeliveryActual);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error: " + error);
                         }
                     });
                 }
             });
+
         });
     </script>
 }
+

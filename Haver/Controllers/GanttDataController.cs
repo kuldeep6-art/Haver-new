@@ -50,8 +50,8 @@ namespace haver.Controllers
         public IActionResult GetMachineData(int machineID)
         {
             var machine = _context.Machines
-                                  .Include(m => m.SalesOrder) // Ensure SalesOrder is included
-                                  .FirstOrDefault(m => m.ID == machineID);
+                                   .Include(m => m.SalesOrder) // Include SalesOrder to access related data
+                                   .FirstOrDefault(m => m.ID == machineID);
 
             if (machine == null)
             {
@@ -60,18 +60,19 @@ namespace haver.Controllers
 
             var data = new
             {
-                EngExpected = machine.SalesOrder?.EngPExp,
+                EngExpected = machine.SalesOrder?.EngPExp , // Use empty string if null
                 EngReleased = machine.SalesOrder?.EngPRel,
-                CustomerApproval = machine.SalesOrder?.AppDwgRel,
-                PackageReleased = machine.SalesOrder?.PreORel,
-                ShipExpected = machine.RToShipExp,
+                CustomerApproval = machine.SalesOrder?.AppDwgRel ,
+                PackageReleased = machine.SalesOrder?.PreORel ,
+                ShipExpected = machine.RToShipExp ,
                 ShipActual = machine.RToShipA,
                 DeliveryExpected = machine.SalesOrder?.AppDwgRet,
-                DeliveryActual = machine.SalesOrder?.PreOExp
+                DeliveryActual = machine.SalesOrder?.PreOExp 
             };
 
-            return Json(data); // Return the data as a JSON object
+            return Json(data); // Return data as JSON
         }
+
 
 
         // GET: GanttData/Create
