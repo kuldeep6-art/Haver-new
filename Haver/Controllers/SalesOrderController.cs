@@ -210,7 +210,10 @@ namespace haver.Controllers
                     _context.Add(salesOrder);
 					await _context.SaveChangesAsync();
                     TempData["Message"] = saveAsDraft ? "Sales Order saved as draft" : "Sales Order created successfully";
-                    return RedirectToAction("Details", new { salesOrder.ID });
+                    // Redirect to Index if saved as Draft, otherwise go to Details
+                    return saveAsDraft
+                        ? RedirectToAction(nameof(Index))
+                        : RedirectToAction("Details", new { id = salesOrder.ID });
                 }
             }
             catch (RetryLimitExceededException)
