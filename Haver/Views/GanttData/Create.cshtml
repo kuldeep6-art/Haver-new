@@ -86,7 +86,7 @@
 
                 if (machineID) {
                     $.ajax({
-                        url: '@Url.Action("GetMachineData", "GanttData")/' + machineID,
+                            url: '@Url.Action("GetMachineData", "GanttData")' + '?machineID=' + machineID,
                         type: 'GET',
                         success: function (data) {
                             console.log(data); // Log the response data

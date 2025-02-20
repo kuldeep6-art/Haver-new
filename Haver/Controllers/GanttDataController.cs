@@ -49,28 +49,31 @@ namespace haver.Controllers
         // GET: GanttData/GetMachineData/5
         public IActionResult GetMachineData(int machineID)
         {
+            Console.WriteLine($"Machine ID: {machineID}");
+
             var machine = _context.Machines
-                                   .Include(m => m.SalesOrder) // Include SalesOrder to access related data
-                                   .FirstOrDefault(m => m.ID == machineID);
+                                 .Include(m => m.SalesOrder)
+                                 .FirstOrDefault(m => m.ID == machineID);
 
             if (machine == null)
             {
+                Console.WriteLine("Machine not found");
                 return Json(new { success = false, message = "Machine not found" });
             }
 
             var data = new
             {
-                EngExpected = machine.SalesOrder?.EngPExp , // Use empty string if null
-                EngReleased = machine.SalesOrder?.EngPRel,
-                CustomerApproval = machine.SalesOrder?.AppDwgRel ,
-                PackageReleased = machine.SalesOrder?.PreORel ,
-                ShipExpected = machine.RToShipExp ,
-                ShipActual = machine.RToShipA,
-                DeliveryExpected = machine.SalesOrder?.AppDwgRet,
-                DeliveryActual = machine.SalesOrder?.PreOExp 
+                EngExpected = machine.SalesOrder?.EngPExp?.ToString("yyyy-MM-dd"),
+                EngReleased = machine.SalesOrder?.EngPRel?.ToString("yyyy-MM-dd"),
+                CustomerApproval = machine.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
+                PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
+                ShipExpected = machine.RToShipExp?.ToString("yyyy-MM-dd"),
+                ShipActual = machine.RToShipA?.ToString("yyyy-MM-dd"),
+                DeliveryExpected = machine.SalesOrder?.AppDwgRet?.ToString("yyyy-MM-dd"),
+                DeliveryActual = machine.SalesOrder?.PreOExp.ToString("yyyy-MM-dd")
             };
 
-            return Json(data); // Return data as JSON
+            return Json(data);
         }
 
 
