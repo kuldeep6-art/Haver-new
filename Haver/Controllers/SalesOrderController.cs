@@ -56,9 +56,12 @@ namespace haver.Controllers
                 case "Completed":
                     salesOrders = salesOrders.Where(so => so.Status == Status.Completed);
                     break;
+                case "Draft":
+                    salesOrders = salesOrders.Where(so => so.Status == Status.Draft);
+                    break;
                 default:
                     // Active tab shows non-archived and non-completed
-                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed);
+                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed && so.Status!= Status.Draft);
                     break;
             }
 

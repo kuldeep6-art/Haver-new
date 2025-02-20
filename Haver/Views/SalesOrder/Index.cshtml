@@ -20,7 +20,8 @@
             {
                 ["Active"] = new Dictionary<string, string>(),
                 ["Archived"] = new Dictionary<string, string> { ["status"] = "Archived" },
-                ["Completed"] = new Dictionary<string, string> { ["status"] = "Completed" }
+                ["Completed"] = new Dictionary<string, string> { ["status"] = "Completed" },
+                ["Draft"] = new Dictionary<string, string> { ["status"] = "Draft" }
             };
 
     // Preserve existing query parameters
@@ -43,19 +44,25 @@
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == null ? "active" : "")"
            href="@Url.Action("Index", routeValues["Active"])">
-            Active
+            Active Sales Orders
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == "Completed" ? "active" : "")"
            href="@Url.Action("Index", routeValues["Completed"])">
-            Completed
+            Completed Sales Orders
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == "Archived" ? "active" : "")"
            href="@Url.Action("Index", routeValues["Archived"])">
-            Archived
+            Archived Sales Orders
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Status == "Draft" ? "active" : "")"
+           href="@Url.Action("Index", routeValues["Draft"])">
+            Drafts
         </a>
     </li>
 </ul>
