@@ -1,0 +1,119 @@
+﻿@model IEnumerable<haver.Models.GanttData>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Machine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EngExpected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EngReleased)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerApproval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PackageReleased)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseOrdersIssued)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseOrdersCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierPODue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssemblyStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssemblyComplete)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipExpected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipActual)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryExpected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryActual)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EngExpected)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EngReleased)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerApproval)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackageReleased)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseOrdersIssued)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseOrdersCompleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierPODue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssemblyStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssemblyComplete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipExpected)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipActual)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryExpected)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryActual)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

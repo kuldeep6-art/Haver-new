@@ -1,0 +1,103 @@
+﻿@model haver.Models.GanttData
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>GanttData</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MachineID" class="control-label"></label>
+                <select asp-for="MachineID" class="form-control" asp-items="ViewBag.MachineID" id="MachineID">
+                    <option value="">Select a Machine</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngExpected" class="control-label"></label>
+                <input asp-for="EngExpected" class="form-control" id="EngExpected" />
+                <span asp-validation-for="EngExpected" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngReleased" class="control-label"></label>
+                <input asp-for="EngReleased" class="form-control" id="EngReleased" />
+                <span asp-validation-for="EngReleased" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerApproval" class="control-label"></label>
+                <input asp-for="CustomerApproval" class="form-control" id="CustomerApproval" />
+                <span asp-validation-for="CustomerApproval" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PackageReleased" class="control-label"></label>
+                <input asp-for="PackageReleased" class="form-control" id="PackageReleased" />
+                <span asp-validation-for="PackageReleased" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShipExpected" class="control-label"></label>
+                <input asp-for="ShipExpected" class="form-control" id="ShipExpected" />
+                <span asp-validation-for="ShipExpected" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShipActual" class="control-label"></label>
+                <input asp-for="ShipActual" class="form-control" id="ShipActual" />
+                <span asp-validation-for="ShipActual" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryExpected" class="control-label"></label>
+                <input asp-for="DeliveryExpected" class="form-control" id="DeliveryExpected" />
+                <span asp-validation-for="DeliveryExpected" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryActual" class="control-label"></label>
+                <input asp-for="DeliveryActual" class="form-control" id="DeliveryActual" />
+                <span asp-validation-for="DeliveryActual" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notes" class="control-label"></label>
+                <textarea asp-for="Notes" class="form-control"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#MachineID').change(function () {
+                var machineID = $(this).val();
+                if (machineID) {
+                    $.ajax({
+                        url: '@Url.Action("GetMachineData", "GanttData")/' + machineID,
+                        type: 'GET',
+                        success: function (data) {
+                            // Populate the date fields with data returned from the server
+                            $('#EngExpected').val(data.EngExpected);
+                            $('#EngReleased').val(data.EngReleased);
+                            $('#CustomerApproval').val(data.CustomerApproval);
+                            $('#PackageReleased').val(data.PackageReleased);
+                            $('#ShipExpected').val(data.ShipExpected);
+                            $('#ShipActual').val(data.ShipActual);
+                            $('#DeliveryExpected').val(data.DeliveryExpected);
+                            $('#DeliveryActual').val(data.DeliveryActual);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
