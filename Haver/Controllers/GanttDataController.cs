@@ -69,7 +69,10 @@ namespace haver.Controllers
                 //PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
                 PurchaseOrdersIssued = machine.SalesOrder?.SoDate.ToString("yyy-MM-dd"),
                 //PurchaseOrdersDue = machine.SalesOrder?.
-                ShipExpected = machine.RToShipExp?.ToString("yyyy-MM-dd"),
+                //SupplierPODue = machine.SalesOrder?.SupplierPODue?.ToString("yyyy-MM-dd"),  // ✅ Now included
+                //AssemblyStart = machine?.AssemblyStart?.ToString("yyyy-MM-dd"),  // ✅ Now included
+                //AssemblyComplete = machine?.AssemblyComplete?.ToString("yyyy-MM-dd"),
+                //ShipExpected = machine.RToShipExp?.ToString("yyyy-MM-dd"),
                 ShipActual = machine.RToShipA?.ToString("yyyy-MM-dd"),
                 DeliveryExpected = machine.SalesOrder?.AppDwgRet?.ToString("yyyy-MM-dd"),
                 DeliveryActual = machine.SalesOrder?.PreOExp.ToString("yyyy-MM-dd")

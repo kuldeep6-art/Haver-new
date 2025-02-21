@@ -49,6 +49,24 @@
                 <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SupplierPODue" class="control-label"></label>
+                <input asp-for="SupplierPODue" class="form-control" id="SupplierPODue" />
+                <span asp-validation-for="SupplierPODue" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AssemblyStart" class="control-label"></label>
+                <input asp-for="AssemblyStart" class="form-control" id="AssemblyStart" />
+                <span asp-validation-for="AssemblyStart" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AssemblyComplete" class="control-label"></label>
+                <input asp-for="AssemblyComplete" class="form-control" id="AssemblyComplete" />
+                <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="ShipExpected" class="control-label"></label>
                 <input asp-for="ShipExpected" class="form-control" id="ShipExpected" />
                 <span asp-validation-for="ShipExpected" class="text-danger"></span>
