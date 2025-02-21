@@ -114,14 +114,16 @@
 							</a>
 
 							
-								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Deactivate @item.Name" data-bs-toggle="tooltip" title="Deactivate vendor">
+								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Deactivate @item.Name" data-bs-toggle="tooltip" title="Deactivate vendor"
+								   onclick="return confirm('Are you sure you want to mark this vendor as inactive. If yes the vendor wont be available unless you mark it as active.?');">
 									<i class="fa-solid fa-power-off"></i> Deactivate
 								</a>
 							}
 							else
 							{
 
-								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Activate @item.Name" data-bs-toggle="tooltip" title="Activate vendor">
+								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Activate @item.Name" data-bs-toggle="tooltip" title="Activate vendor"
+								   onclick="return confirm('Are you sure you want to mark this vendor as active?');">
 									<i class="fa-solid fa-power-off"></i> Activate
 								</a>
 							}

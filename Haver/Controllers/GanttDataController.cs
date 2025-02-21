@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace haver.Controllers
 {
@@ -65,12 +66,17 @@ namespace haver.Controllers
             {
                 EngExpected = machine.SalesOrder?.EngPExp?.ToString("yyyy-MM-dd"),
                 EngReleased = machine.SalesOrder?.EngPRel?.ToString("yyyy-MM-dd"),
-                CustomerApproval = machine.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
-                PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
+                //CustomerApproval = machine.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
+                //PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
+                PurchaseOrdersIssued = machine.SalesOrder?.SoDate.ToString("yyy-MM-dd"),
+                //PurchaseOrdersDue = machine.SalesOrder?.
+                //SupplierPODue = machine.SalesOrder?.SupplierPODue?.ToString("yyyy-MM-dd"),  // ✅ Now included
+                //AssemblyStart = machine?.AssemblyStart?.ToString("yyyy-MM-dd"),  // ✅ Now included
+                //AssemblyComplete = machine?.AssemblyComplete?.ToString("yyyy-MM-dd"),
                 ShipExpected = machine.RToShipExp?.ToString("yyyy-MM-dd"),
                 ShipActual = machine.RToShipA?.ToString("yyyy-MM-dd"),
-                DeliveryExpected = machine.SalesOrder?.AppDwgRet?.ToString("yyyy-MM-dd"),
-                DeliveryActual = machine.SalesOrder?.PreOExp.ToString("yyyy-MM-dd")
+               // DeliveryExpected = machine.SalesOrder?.AppDwgRet?.ToString("yyyy-MM-dd"),
+                //DeliveryActual = machine.SalesOrder?.PreOExp.ToString("yyyy-MM-dd")
             };
 
             return Json(data);
@@ -94,6 +100,15 @@ namespace haver.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+
+                ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
+                ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
+                ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
+                ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
+                ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
+
+
                 _context.Add(ganttData);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

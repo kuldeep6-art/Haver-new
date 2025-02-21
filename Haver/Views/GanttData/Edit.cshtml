@@ -40,6 +40,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="PurchaseOrdersIssued" class="control-label"></label>
+                <input asp-for="PurchaseOrdersIssued" class="form-control" id="PurchaseOrdersIssued" />
+                <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseOrdersCompleted" class="control-label"></label>
+                <input asp-for="PurchaseOrdersCompleted" class="form-control" id="PurchaseOrdersCompleted" />
+                <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseOrdersIssued" class="control-label"></label>
                 <input asp-for="PurchaseOrdersIssued" class="form-control" />
                 <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
             </div>
