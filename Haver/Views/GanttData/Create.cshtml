@@ -19,6 +19,11 @@
                 </select>
             </div>
             <div class="form-group">
+                <label asp-for="AppDRcd" class="control-label"></label>
+                <input asp-for="AppDRcd" class="form-control" id="AppDrRcd" />
+                <span asp-validation-for="AppDRcd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="EngExpected" class="control-label"></label>
                 <input asp-for="EngExpected" class="form-control" id="EngExpected" />
                 <span asp-validation-for="EngExpected" class="text-danger"></span>
