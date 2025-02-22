@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="AppDRcd" class="control-label"></label>
-                <input asp-for="AppDRcd" class="form-control" id="AppDrRcd" />
+                <input asp-for="AppDRcd" class="form-control" id="AppDRcd" />
                 <span asp-validation-for="AppDRcd" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -127,6 +127,7 @@
                         alert(data.message); // Alert if no machine is found
                     } else {
                         // Populate the date fields with data returned from the server
+                        $('#AppDRcd').val(data.AppDRcd);
                         $('#EngExpected').val(data.EngExpected);
                         $('#EngReleased').val(data.EngReleased);
                         $('#CustomerApproval').val(data.CustomerApproval);
