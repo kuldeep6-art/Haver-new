@@ -11,6 +11,11 @@ namespace haver.Models
         public int MachineID { get; set; }
         public Machine? Machine { get; set; }
 
+        [Display(Name = "Approval Drawing Received")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? AppDRcd { get; set; }
+
         // Engineering Milestones  
         [Display(Name = "Engineering Package Expected")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
