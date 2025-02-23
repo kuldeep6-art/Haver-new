@@ -23,7 +23,8 @@ namespace haver.Controllers
         // GET: GanttData
         public async Task<IActionResult> Index()
         {
-            var haverContext = _context.GanttDatas.Include(g => g.Machine);
+            var haverContext = _context.GanttDatas.Include(g => g.Machine)
+                .ThenInclude(s => s.SalesOrder);
             return View(await haverContext.ToListAsync());
         }
 
@@ -36,7 +37,7 @@ namespace haver.Controllers
             }
 
             var ganttData = await _context.GanttDatas
-                .Include(g => g.Machine)
+                .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (ganttData == null)
             {
