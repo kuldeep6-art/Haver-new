@@ -205,8 +205,8 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            if ((await TryUpdateModelAsync<Engineer>(engineerToUpdate, "", n=>n.FirstName,
-                n => n.LastName, n=> n.Email )))
+            if (await TryUpdateModelAsync<Engineer>(engineerToUpdate, "", n=>n.FirstName,
+                n => n.LastName, n=> n.Email ))
             {
                 try
                 {
