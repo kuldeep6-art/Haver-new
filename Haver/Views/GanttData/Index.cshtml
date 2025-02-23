@@ -13,10 +13,14 @@
     <thead>
         <tr>
             <th>Order Number</th>
+            <th>Customer</th>
+            <td>
+                Approval Drawings Received
+            </td>
             <th>
                 @Html.DisplayNameFor(model => model.Machine)
             </th>
-            <th>Customer</th>
+         
             <th>
                 @Html.DisplayNameFor(model => model.EngExpected)
             </th>
@@ -68,12 +72,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Machine.SalesOrder.OrderNumber)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)
-            </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Machine.SalesOrder.CompanyName)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppDRcd)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)
+            </td>
+               
             <td>
                 @Html.DisplayFor(modelItem => item.EngExpected)
             </td>
