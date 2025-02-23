@@ -2,7 +2,7 @@
 
 namespace haver.Models
 {
-    public class GanttData
+    public class GanttData : IValidatableObject
     {
         public int ID { get; set; }
 
@@ -87,6 +87,45 @@ namespace haver.Models
 
         [DataType(DataType.MultilineText)]
         public string? Notes { get; set; }  // Notes for tracking changes or delays
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+
+            // Ensure EngReleased is after EngExpected
+            if (EngExpected.HasValue && EngReleased.HasValue && EngReleased.Value < EngExpected.Value)
+            {
+                yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "AppDwgRet" });
+            }
+
+            // Ensure CustomerApproval is after EngReleased
+            if (EngReleased.HasValue && CustomerApproval.HasValue && CustomerApproval.Value < EngReleased.Value)
+            {
+                yield return new ValidationResult("Customer Approval date must not be earlier than Engineering Released date.", new[] { "CustomerApproval" });
+            }
+
+            // Ensure PackageReleased is after CustomerApproval
+            if (CustomerApproval.HasValue && PackageReleased.HasValue && PackageReleased.Value < CustomerApproval.Value)
+            {
+                yield return new ValidationResult("Package Released date must not be earlier than Customer Approval date.", new[] { "PackageReleased" });
+            }
+
+            // Ensure ShipExpected is after PackageReleased
+            if (PackageReleased.HasValue && ShipExpected.HasValue && ShipExpected.Value < PackageReleased.Value)
+            {
+                yield return new ValidationResult("Ship Expected date must not be earlier than Package Released date.", new[] { "ShipExpected" });
+            }
+
+            // Ensure DeliveryExpected is after ShipExpected
+            if (ShipExpected.HasValue && DeliveryExpected.HasValue && DeliveryExpected.Value < ShipExpected.Value)
+            {
+                yield return new ValidationResult("Delivery Expected date must not be earlier than Ship Expected date.", new[] { "DeliveryExpected" });
+            }
+
+
+
+
+
+        }
     }
 
 
