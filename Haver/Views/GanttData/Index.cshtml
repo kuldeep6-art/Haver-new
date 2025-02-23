@@ -15,13 +15,11 @@
         <tr>
             <th data-bs-toggle="tooltip" title="Order Number assigned to the sale">Order Number</th>
             <th data-bs-toggle="tooltip" title="Customer associated with the order">Customer</th>
-            <th data-bs-toggle="tooltip" title="Date when approval drawings were received">Approval Drawings Received</th>
+            <th data-bs-toggle="tooltip" title="Date when approval drawings were received">App Drw Rcd</th>
             <th data-bs-toggle="tooltip" title="Machine associated with the order">@Html.DisplayNameFor(model => model.Machine)</th>
-            <th data-bs-toggle="tooltip" title="Engineering release date">@Html.DisplayNameFor(model => model.EngReleased)</th>
-            <th data-bs-toggle="tooltip" title="Date when purchase orders were issued">@Html.DisplayNameFor(model => model.PurchaseOrdersIssued)</th>
-            <th data-bs-toggle="tooltip" title="Expected shipping date">@Html.DisplayNameFor(model => model.ShipExpected)</th>
-            <th data-bs-toggle="tooltip" title="Actual shipping date">@Html.DisplayNameFor(model => model.ShipActual)</th>
-
+            <th data-bs-toggle="tooltip" title="Engineering release date">Eng Rel</th>
+            <th data-bs-toggle="tooltip" title="Date when purchase orders were issued">Pur order Iss</th>
+            <th data-bs-toggle="tooltip" title="Expected shipping date">Readiness to Ship Exp</th>
             <th class="align-middle">Actions</th>
         </tr>
     </thead>
@@ -36,22 +34,21 @@
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.EngReleased)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.PurchaseOrdersIssued)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.ShipExpected)</td>
-                <td tabindex="0">@Html.DisplayFor(modelItem => item.ShipActual)</td>
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
                        aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"
                        data-bs-toggle="tooltip" title="Edit Order">
-                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                        <i class="fa-solid fa-pen-to-square"></i> 
                     </a>
                     <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white"
                        aria-label="View details of order @item.Machine.SalesOrder.OrderNumber"
                        data-bs-toggle="tooltip" title="View Details">
-                        <i class="fa-solid fa-circle-info"></i> Details
+                        <i class="fa-solid fa-circle-info"></i> 
                     </a>
                     <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
                        aria-label="Delete order @item.Machine.SalesOrder.OrderNumber"
                        data-bs-toggle="tooltip" title="Delete Order">
-                        <i class="fa-solid fa-delete-left"></i> Delete
+                        <i class="fa-solid fa-delete-left"></i> 
                     </a>
                 </td>
             </tr>
