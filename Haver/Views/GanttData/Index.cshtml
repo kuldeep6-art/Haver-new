@@ -15,11 +15,9 @@
         <tr>
             <th data-bs-toggle="tooltip" title="Order Number assigned to the sale">Order Number</th>
             <th data-bs-toggle="tooltip" title="Customer associated with the order">Customer</th>
-            <th data-bs-toggle="tooltip" title="Date when approval drawings were received">App Drw Rcd</th>
             <th data-bs-toggle="tooltip" title="Machine associated with the order">@Html.DisplayNameFor(model => model.Machine)</th>
+            <th data-bs-toggle="tooltip" title="Date when approval drawings were received">App Drw Rcd</th>
             <th data-bs-toggle="tooltip" title="Engineering release date">Eng Rel</th>
-            <th data-bs-toggle="tooltip" title="Date when purchase orders were issued">Pur order Iss</th>
-            <th data-bs-toggle="tooltip" title="Expected shipping date">Readiness to Ship Exp</th>
             <th class="align-middle">Actions</th>
         </tr>
     </thead>
@@ -29,11 +27,9 @@
             <tr>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.SalesOrder.OrderNumber)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.SalesOrder.CompanyName)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.Description)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.AppDRcd)</td>
-                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.EngReleased)</td>
-                <td tabindex="0">@Html.DisplayFor(modelItem => item.PurchaseOrdersIssued)</td>
-                <td tabindex="0">@Html.DisplayFor(modelItem => item.ShipExpected)</td>
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
                        aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"

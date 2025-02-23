@@ -24,7 +24,8 @@ namespace haver.Controllers
         public async Task<IActionResult> Index()
         {
             var haverContext = _context.GanttDatas.Include(g => g.Machine)
-                .ThenInclude(s => s.SalesOrder);
+                .ThenInclude(s => s.SalesOrder)
+                .Include(g => g.Machine).ThenInclude(s => s.MachineType);
             return View(await haverContext.ToListAsync());
         }
 
@@ -37,8 +38,11 @@ namespace haver.Controllers
             }
 
             var ganttData = await _context.GanttDatas
+                .Include(g => g.Machine)
                 .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
+                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (ganttData == null)
             {
                 return NotFound();
@@ -89,7 +93,8 @@ namespace haver.Controllers
         // GET: GanttData/Create
         public IActionResult Create()
         {
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber");
+            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
+
             return View();
         }
 
@@ -126,7 +131,7 @@ namespace haver.Controllers
             }
 
 
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber", ganttData.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", ganttData.MachineID);
             return View(ganttData);
         }
 
@@ -138,12 +143,16 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            var ganttData = await _context.GanttDatas.FindAsync(id);
+            var ganttData = await _context.GanttDatas
+                .Include(g => g.Machine)
+                 .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
+                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (ganttData == null)
             {
                 return NotFound();
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber", ganttData.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", ganttData.MachineID);
             return View(ganttData);
         }
 
@@ -189,7 +198,7 @@ namespace haver.Controllers
                 }
 
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber", gDataToUpdate.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", gDataToUpdate.MachineID);
             return View(gDataToUpdate);
         }
 
@@ -203,6 +212,8 @@ namespace haver.Controllers
 
             var ganttData = await _context.GanttDatas
                 .Include(g => g.Machine)
+                 .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
+                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (ganttData == null)
             {
@@ -217,7 +228,11 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ganttData = await _context.GanttDatas.FindAsync(id);
+            var ganttData = await _context.GanttDatas
+                .Include(g => g.Machine)
+                 .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
+                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             try
             {
