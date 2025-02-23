@@ -69,12 +69,12 @@ namespace haver.Data
                     if (!context.SalesOrders.Any())
                     {
                         context.SalesOrders.AddRange(
-                            new SalesOrder { ID = 1, OrderNumber = "SO-1001", SoDate = DateTime.Parse("2024-06-01") },
-                            new SalesOrder { ID = 2, OrderNumber = "SO-1002", SoDate = DateTime.Parse("2024-06-10") },
-                            new SalesOrder { ID = 3, OrderNumber = "SO-1003", SoDate = DateTime.Parse("2024-07-01") },
-                            new SalesOrder { ID = 4, OrderNumber = "SO-1004", SoDate = DateTime.Parse("2024-07-15") },
-                            new SalesOrder { ID = 5, OrderNumber = "SO-1005", SoDate = DateTime.Parse("2024-08-01") },
-                            new SalesOrder { ID = 6, OrderNumber = "SO-1006", SoDate = DateTime.Parse("2024-08-10") }
+                            new SalesOrder { ID = 1, OrderNumber = "10430736", SoDate = DateTime.Parse("2025-02-21") },
+                            new SalesOrder { ID = 2, OrderNumber = "10430754", SoDate = DateTime.Parse("2025-02-17") },
+                            new SalesOrder { ID = 3, OrderNumber = "10430709", SoDate = DateTime.Parse("2025-02-18") },
+                            new SalesOrder { ID = 4, OrderNumber = "10430798", SoDate = DateTime.Parse("2025-02-23") },
+                            new SalesOrder { ID = 5, OrderNumber = "10430765", SoDate = DateTime.Parse("2025-02-22") },
+                            new SalesOrder { ID = 6, OrderNumber = "10430792", SoDate = DateTime.Parse("2025-02-20") }
                         );
                         context.SaveChanges();
                     }
