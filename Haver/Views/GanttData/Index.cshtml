@@ -16,6 +16,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Machine)
             </th>
+            <th>Customer</th>
             <th>
                 @Html.DisplayNameFor(model => model.EngExpected)
             </th>
@@ -70,6 +71,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Machine.SalesOrder.CompanyName)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EngExpected)
             </td>
