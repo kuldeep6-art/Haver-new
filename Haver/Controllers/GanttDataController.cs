@@ -100,21 +100,32 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,MachineID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
         {
-            if (ModelState.IsValid)
+            try
             {
-                
 
-                ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
-                ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
-                ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
-                ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
-                ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
+                if (ModelState.IsValid)
+                {
 
 
-                _context.Add(ganttData);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
+                    ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
+                    ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
+                    ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
+                    ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
+
+
+                    _context.Add(ganttData);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException)
+            {
+               
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            }
+
+
             ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber", ganttData.MachineID);
             return View(ganttData);
         }
@@ -141,23 +152,28 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,MachineID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != ganttData.ID)
+            var gDataToUpdate = await _context.GanttDatas.FirstOrDefaultAsync(e => e.ID == id);
+
+            if (gDataToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
+                 p => p.MachineID, p => p.AppDRcd, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted,
+                  p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
             {
                 try
                 {
-                    _context.Update(ganttData);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GanttDataExists(ganttData.ID))
+                    if (!GanttDataExists(gDataToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -166,10 +182,15 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber", ganttData.MachineID);
-            return View(ganttData);
+            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "ProductionOrderNumber", gDataToUpdate.MachineID);
+            return View(gDataToUpdate);
         }
 
         // GET: GanttData/Delete/5
@@ -197,13 +218,24 @@ namespace haver.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ganttData = await _context.GanttDatas.FindAsync(id);
-            if (ganttData != null)
+
+            try
             {
-                _context.GanttDatas.Remove(ganttData);
+                if (ganttData != null)
+                {
+                    _context.GanttDatas.Remove(ganttData);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            { 
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View(ganttData);
+
         }
 
         private bool GanttDataExists(int id)
