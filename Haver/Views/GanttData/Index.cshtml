@@ -7,129 +7,71 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="table table-striped table-bordered table-hover shadow-sm">
+    <thead class="bg-dark text-white text-center">
         <tr>
-            <th>Order Number</th>
-            <th>Customer</th>
-            <th>
-                Approval Drawings Received
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Machine)
-            </th>
-         
-            <th>
-                @Html.DisplayNameFor(model => model.EngExpected)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EngReleased)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerApproval)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PackageReleased)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PurchaseOrdersIssued)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PurchaseOrdersCompleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SupplierPODue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssemblyStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssemblyComplete)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShipExpected)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShipActual)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryExpected)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryActual)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th></th>
+            <th data-bs-toggle="tooltip" title="Order Number assigned to the sale">Order Number</th>
+            <th data-bs-toggle="tooltip" title="Customer associated with the order">Customer</th>
+            <th data-bs-toggle="tooltip" title="Date when approval drawings were received">Approval Drawings Received</th>
+            <th data-bs-toggle="tooltip" title="Machine associated with the order">@Html.DisplayNameFor(model => model.Machine)</th>
+            <th data-bs-toggle="tooltip" title="Engineering release date">@Html.DisplayNameFor(model => model.EngReleased)</th>
+            <th data-bs-toggle="tooltip" title="Date when purchase orders were issued">@Html.DisplayNameFor(model => model.PurchaseOrdersIssued)</th>
+            <th data-bs-toggle="tooltip" title="Expected shipping date">@Html.DisplayNameFor(model => model.ShipExpected)</th>
+            <th data-bs-toggle="tooltip" title="Actual shipping date">@Html.DisplayNameFor(model => model.ShipActual)</th>
+
+            <th class="align-middle">Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Machine.SalesOrder.OrderNumber)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.SalesOrder.OrderNumber)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.SalesOrder.CompanyName)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.AppDRcd)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.EngReleased)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.PurchaseOrdersIssued)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.ShipExpected)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.ShipActual)</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                       aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"
+                       data-bs-toggle="tooltip" title="Edit Order">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white"
+                       aria-label="View details of order @item.Machine.SalesOrder.OrderNumber"
+                       data-bs-toggle="tooltip" title="View Details">
+                        <i class="fa-solid fa-circle-info"></i> Details
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                       aria-label="Delete order @item.Machine.SalesOrder.OrderNumber"
+                       data-bs-toggle="tooltip" title="Delete Order">
+                        <i class="fa-solid fa-delete-left"></i> Delete
+                    </a>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Machine.SalesOrder.CompanyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppDRcd)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Machine.ProductionOrderNumber)
-            </td>
-               
-            <td>
-                @Html.DisplayFor(modelItem => item.EngExpected)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EngReleased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerApproval)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackageReleased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseOrdersIssued)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseOrdersCompleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SupplierPODue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssemblyStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssemblyComplete)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipExpected)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipActual)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryExpected)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryActual)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+            </tr>
+        }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
+
+<style>
+    .align-middle button {
+        background: none;
+        outline: none;
+    }
+</style>
