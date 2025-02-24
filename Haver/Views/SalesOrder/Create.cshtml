@@ -41,7 +41,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Name of the Company"></i>
                         </label>
                         <input asp-for="CompanyName" class="form-control" placeholder="Enter Company Name"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="companyNameInput" />
                         <span asp-validation-for="CompanyName" class="text-danger"></span>
                     </div>
 
@@ -246,6 +246,9 @@
 
 @section Head {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+   
+
 }
 
 @section Scripts {
@@ -260,6 +263,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.summernote').summernote({
@@ -296,10 +300,19 @@
         //Adds autocomplete for entering company name
         $(document).ready(function () {
             $("#companyNameInput").autocomplete({
-                source: '/SalesOrder/GetCompanyName',
-                minLength: 2
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/SalesOrder/GetCompanyName',
+                        data: { term: request.term },
+                        success: function (data) {
+                            response(data);  // Pass the results back to the autocomplete
+                        }
+                    });
+                },
+                minLength: 2 // Set to 2 or higher to limit the suggestions
             });
         });
+
     </script>
 
     <script>
