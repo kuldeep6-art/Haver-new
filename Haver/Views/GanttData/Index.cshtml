@@ -18,6 +18,9 @@
             <th data-bs-toggle="tooltip" title="Machine associated with the order">@Html.DisplayNameFor(model => model.Machine)</th>
             <th data-bs-toggle="tooltip" title="Date when approval drawings were received">App Drw Rcd</th>
             <th data-bs-toggle="tooltip" title="Engineering release date">Eng Rel</th>
+            <th>Week</th>
+            <th>Month</th>
+            <th>Day</th>
             <th class="align-middle">Actions</th>
         </tr>
     </thead>
@@ -30,6 +33,9 @@
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.Description)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.AppDRcd)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.EngReleased)</td>
+                <td>@item.WeekNumber</td>  <!-- Display computed Week Number -->
+                <td>@item.Month</td>       <!-- Display computed Month -->
+                <td>@item.Day</td>
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
                        aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"
