@@ -195,7 +195,8 @@
                         else if (item.Status == Status.Draft)
                         {
                             <span class="badge bg-warning text-dark">Draft</span>
-                            <a asp-action="Continue" asp-route-id="@item.ID" class="btn btn-sm  mx-1" aria-label="Continue editing sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Continue editing">
+                            <a asp-action="Continue" asp-route-id="@item.ID" class="btn btn-sm  mx-1" aria-label="Continue editing sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Continue editing"
+                               onclick="return confirm('Are you sure you want to continue, if yes status will be changed to active')";>
                                 <i class="fa-solid fa-play"></i> Continue
                             </a>
                         }

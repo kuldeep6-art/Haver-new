@@ -590,11 +590,17 @@ namespace haver.Controllers
         //Return customer name suggestions
         public async Task<JsonResult> GetCompanyName(string term)
         {
+            if (string.IsNullOrEmpty(term))
+            {
+                return Json(new List<string>());
+            }
+
             var companyNames = await _context.Customers
                 .Where(c => c.CompanyName.Contains(term))
                 .Select(c => c.CompanyName)
                 .Take(10)
                 .ToListAsync();
+
             return Json(companyNames);
         }
 
