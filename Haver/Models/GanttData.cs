@@ -114,9 +114,15 @@ namespace haver.Models
         {
 
             // Ensure EngReleased is after EngExpected
+            if (AppDRcd == null)
+            {
+                yield return new ValidationResult("Approved Drawings Received is required", new[] { "AppDRcd" });
+            }
+
+            // Ensure EngReleased is after EngExpected
             if (EngExpected.HasValue && EngReleased.HasValue && EngReleased.Value < EngExpected.Value)
             {
-                yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "AppDwgRet" });
+                yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "EngReleased" });
             }
 
             // Ensure CustomerApproval is after EngReleased
