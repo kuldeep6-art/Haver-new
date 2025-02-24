@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace haver.Models
 {
@@ -16,8 +17,26 @@ namespace haver.Models
         [DataType(DataType.Date)]
         public DateTime? AppDRcd { get; set; }
 
-
         public WeekStartOption StartOfWeek { get; set; } = WeekStartOption.Monday; // Default to Monday
+
+        // Dynamically compute week number based on selected StartOfWeek (Monday or Friday)
+        public int WeekNumber
+        {
+            get
+            {
+                if (!AppDRcd.HasValue) return 0;
+                var culture = CultureInfo.CurrentCulture;
+                return culture.Calendar.GetWeekOfYear(AppDRcd.Value,
+                    culture.DateTimeFormat.CalendarWeekRule,
+                    StartOfWeek == WeekStartOption.Monday ? DayOfWeek.Monday : DayOfWeek.Friday);
+            }
+        }
+
+        // Extract month
+        public string Month => AppDRcd?.ToString("MMMM") ?? "N/A";
+
+        // Extract day
+        public int? Day => AppDRcd?.Day;
 
         // Engineering Milestones  
         [Display(Name = "Engineering Package Expected")]
