@@ -16,6 +16,9 @@ namespace haver.Models
         [DataType(DataType.Date)]
         public DateTime? AppDRcd { get; set; }
 
+
+        public WeekStartOption StartOfWeek { get; set; } = WeekStartOption.Monday; // Default to Monday
+
         // Engineering Milestones  
         [Display(Name = "Engineering Package Expected")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]

@@ -5,24 +5,25 @@
 namespace haver.Data.HaverMigrations
 {
     /// <inheritdoc />
-    public partial class newh : Migration
+    public partial class @new : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
-                name: "IX_Engineers_Email",
-                table: "Engineers",
-                column: "Email",
-                unique: true);
+            migrationBuilder.AddColumn<int>(
+                name: "StartOfWeek",
+                table: "GanttDatas",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Engineers_Email",
-                table: "Engineers");
+            migrationBuilder.DropColumn(
+                name: "StartOfWeek",
+                table: "GanttDatas");
         }
     }
 }
