@@ -17,6 +17,7 @@ namespace haver.Models
         [DataType(DataType.Date)]
         public DateTime? AppDRcd { get; set; }
 
+        [Display(Name= "Start of Week")]
         public WeekStartOption StartOfWeek { get; set; } = WeekStartOption.Monday; // Default to Monday
 
         // Dynamically compute week number based on selected StartOfWeek (Monday or Friday)
