@@ -94,6 +94,7 @@ namespace haver.Models
         public DateTime? ShipExpected { get; set; }
 
         [Display(Name = "Readiness To Ship Actual")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")] 
         [DataType(DataType.Date)]
         public DateTime? ShipActual { get; set; }
 
