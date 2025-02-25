@@ -253,6 +253,34 @@ namespace haver.Controllers
 
         }
 
+        public IActionResult Chart()
+        {
+            var ganttData = _context.GanttDatas
+                .Include(g => g.Machine) // Ensure Machine is loaded
+                .ToList() // Convert to memory before calling a custom method
+                .Select(g => new GanttViewModel
+                {
+                    ID = g.ID,
+                    MachineName = g.Machine?.Description ?? "Unknown",
+                    StartDate = g.AppDRcd,
+                    EndDate = g.DeliveryExpected,
+                    Progress = 0,
+                    MilestoneClass = GetMilestoneClass(g) // Now safe to use
+                })
+                .ToList();
+
+            return View(ganttData);
+        }
+
+        private string GetMilestoneClass(GanttData g)
+        {
+            if (g.EngReleased.HasValue) return "eng-released";
+            if (g.PackageReleased.HasValue) return "package-released";
+            if (g.ShipExpected.HasValue) return "shipping";
+            if (g.DeliveryExpected.HasValue) return "delivery";
+            return "default-task";
+        }
+
         private bool GanttDataExists(int id)
         {
             return _context.GanttDatas.Any(e => e.ID == id);

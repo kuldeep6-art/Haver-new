@@ -1,0 +1,70 @@
+﻿@model List<GanttViewModel>
+
+@{
+    ViewData["Title"] = "Gantt Chart";
+}
+
+<h2>Machinery Gantt Chart</h2>
+
+<!-- Gantt Chart Container -->
+<div id="gantt"></div>
+
+@section stylesheets {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
+
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tasks = [
+        @foreach (var task in Model)
+        {
+            <text>
+                        {
+                            id: "@task.ID",
+                            name: "@task.MachineName",
+                            start: "@(task.StartDate?.ToString("yyyy-MM-dd") ?? "")",
+                            end: "@(task.EndDate?.ToString("yyyy-MM-dd") ?? "")",
+                            progress: 0,
+                            custom_class: "@task.MilestoneClass"
+                        },
+            </text>
+        }
+            ];
+
+            var gantt = new Gantt("#gantt", tasks, {
+                on_click: function (task) {
+                    alert("Clicked on " + task.name);
+                },
+                on_date_change: function (task, start, end) {
+                    console.log(task.name, start, end);
+                },
+                on_progress_change: function (task, progress) {
+                    console.log(task.name, progress);
+                },
+                on_view_change: function (mode) {
+                    console.log("View mode changed to " + mode);
+                },
+                view_mode: 'Week',
+                language: 'en'
+            });
+
+            // Apply colors based on milestone type
+            tasks.forEach(task => {
+                let elements = document.querySelectorAll(`[data-id='${task.id}'] .bar`);
+                elements.forEach(el => el.classList.add(task.custom_class));
+            });
+        });
+    </script>
+}
+
+<!-- Custom Styles for Milestone Colors -->
+<style>
+    .eng-released { fill: blue !important; }
+    .package-released { fill: orange !important; }
+    .shipping { fill: purple !important; }
+    .delivery { fill: green !important; }
+    .default-task { fill: gray !important; }
+</style>
