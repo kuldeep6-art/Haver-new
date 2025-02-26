@@ -4,71 +4,131 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.GanttData.ID" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
 
-<div>
-    <h4>GanttData</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Machine</dt>
-        <dd class="col-sm-10">@Model.GanttData.Machine.ProductionOrderNumber</dd>
+    <div class="info-container">
+        <div class="info-box p-3 bg-light border rounded mb-3">
+            <dl class="row">
+                <!-- Machine Information -->
+                <dt class="col-md-3">Production Order</dt>
+                <dd class="col-md-3">@Model.GanttData.Machine.ProductionOrderNumber</dd>
 
-        <dt class="col-sm-2">Order Number</dt>
-        <dd class="col-sm-10">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
+                <dt class="col-md-3">Sales Order</dt>
+                <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
 
-        <dt class="col-sm-2">Customer</dt>
-        <dd class="col-sm-10">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
+                <dt class="col-md-3">Customer</dt>
+                <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
 
-        <dt class="col-sm-2">Approval Drawings Received</dt>
-        <dd class="col-sm-10">@Model.GanttData.AppDRcd</dd>
+                <dt class="col-md-3">Serial Number</dt>
+                <dd class="col-md-3">@Model.GanttData.Machine.SerialNumber</dd>
+            </dl>
 
-        <dt class="col-sm-2">Engineering Expected</dt>
-        <dd class="col-sm-10">@Model.GanttData.EngExpected</dd>
+            <dl class="row">
+                <dt class="col-md-3">Approval Drawings Received</dt>
+                <dd class="col-md-3">@Model.GanttData.AppDRcd?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Engineering Released</dt>
-        <dd class="col-sm-10">@Model.GanttData.EngReleased</dd>
+                <dt class="col-md-3">Engineering Expected</dt>
+                <dd class="col-md-3">@Model.GanttData.EngExpected?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Customer Approval</dt>
-        <dd class="col-sm-10">@Model.GanttData.CustomerApproval</dd>
+                <dt class="col-md-3">Engineering Released</dt>
+                <dd class="col-md-3">@Model.GanttData.EngReleased?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Package Released</dt>
-        <dd class="col-sm-10">@Model.GanttData.PackageReleased</dd>
+                <dt class="col-md-3">Customer Approval</dt>
+                <dd class="col-md-3">@Model.GanttData.CustomerApproval?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Purchase Orders Issued</dt>
-        <dd class="col-sm-10">@Model.GanttData.PurchaseOrdersIssued</dd>
+                <dt class="col-md-3">Package Released</dt>
+                <dd class="col-md-3">@Model.GanttData.PackageReleased?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Supplier PO Due</dt>
-        <dd class="col-sm-10">@Model.GanttData.SupplierPODue</dd>
+                <dt class="col-md-3">Supplier PO Due</dt>
+                <dd class="col-md-3">@Model.GanttData.SupplierPODue?.ToString("d")</dd>
+            </dl>
 
-        <dt class="col-sm-2">Assembly Start</dt>
-        <dd class="col-sm-10">@Model.GanttData.AssemblyStart</dd>
+            <dl class="row">
+                <dt class="col-md-3">Assembly Start</dt>
+                <dd class="col-md-3">@Model.GanttData.AssemblyStart?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Assembly Complete</dt>
-        <dd class="col-sm-10">@Model.GanttData.AssemblyComplete</dd>
+                <dt class="col-md-3">Assembly Complete</dt>
+                <dd class="col-md-3">@Model.GanttData.AssemblyComplete?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Shipping Expected</dt>
-        <dd class="col-sm-10">@Model.GanttData.ShipExpected</dd>
+                <dt class="col-md-3">Shipping Expected</dt>
+                <dd class="col-md-3">@Model.GanttData.ShipExpected?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Shipped</dt>
-        <dd class="col-sm-10">@Model.GanttData.ShipActual</dd>
+                <dt class="col-md-3">Actual Shipping</dt>
+                <dd class="col-md-3">@Model.GanttData.ShipActual?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Delivery Expected</dt>
-        <dd class="col-sm-10">@Model.GanttData.DeliveryExpected</dd>
+                <dt class="col-md-3">Delivery Expected</dt>
+                <dd class="col-md-3">@Model.GanttData.DeliveryExpected?.ToString("d")</dd>
 
-        <dt class="col-sm-2">Delivery Actual</dt>
-        <dd class="col-sm-10">@Model.GanttData.DeliveryActual</dd>
-    </dl>
+                <dt class="col-md-3">Actual Delivery</dt>
+                <dd class="col-md-3">@Model.GanttData.DeliveryActual?.ToString("d")</dd>
+            </dl>
+
+            <p class="fw-bold text-center" style="font-size:20px;">Additional Information</p>
+
+            <div class="row">
+                <div class="col-12">
+                    <dt>Notes</dt>
+                    <dd class="mb-4">
+                        @if (!string.IsNullOrEmpty(Model.GanttData.Notes))
+                        {
+                            @Model.GanttData.Notes
+                        }
+                        else
+                        {
+                            <span class="text-muted">No notes available</span>
+                        }
+                    </dd>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gantt Chart Card -->
+    <div class="info-container mt-4">
+        <div class="info-box p-3 bg-light border rounded">
+            <div class="card-header bg-success text-white mb-3">
+                <h5 class="mb-0">Project Timeline</h5>
+            </div>
+            <div id="gantt" style="min-width: 1000px; overflow-x: auto;"></div>
+        </div>
+    </div>
 </div>
 
-<h3>Gantt Chart</h3>
-<div id="gantt"></div>
-
-
-
+<!-- Keep the existing stylesheets and scripts sections unchanged -->
 @section stylesheets {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
+    <style>
+        .card-header h5 {
+            font-weight: 500;
+        }
 
+        .notes-content {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        #gantt {
+            min-width: 1000px;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #666;
+        }
+
+        dd {
+            margin-bottom: 0.5rem;
+        }
+    </style>
 }
+
+<!-- Keep the existing Scripts section unchanged -->
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
