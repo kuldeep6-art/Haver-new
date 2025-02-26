@@ -285,60 +285,54 @@ namespace haver.Controllers
             return View(ganttData);
         }
 
-        private List<GanttViewModel> GetMilestoneTasks(GanttData g)
-        {
-            var tasks = new List<GanttViewModel>();
+		private List<GanttViewModel> GetMilestoneTasks(GanttData g)
+		{
+			var tasks = new List<GanttViewModel>();
 
-            // Define milestones & their colors
-            var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
-    {
-        (g.AppDRcd, g.EngExpected, "Engineering", "blue"),
-        (g.EngExpected, g.EngReleased, "Eng Released", "blue"),
-        (g.EngReleased, g.CustomerApproval, "Approval", "yellow"),
-        (g.CustomerApproval, g.PackageReleased, "Package Released", "orange"),
-        (g.PackageReleased, g.PurchaseOrdersIssued, "PO Issued", "purple"),
-        (g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "PO Completed", "red"),
-        (g.PurchaseOrdersCompleted, g.SupplierPODue, "Supplier PO Due", "brown"),
-        (g.SupplierPODue, g.AssemblyStart, "Assembly Start", "pink"),
-        (g.AssemblyStart, g.AssemblyComplete, "Assembly Complete", "cyan"),
-        (g.AssemblyComplete, g.ShipExpected, "Shipping", "teal"),
-        (g.ShipExpected, g.ShipActual, "Shipped", "lime"),
-        (g.ShipActual, g.DeliveryExpected, "Delivery Expected", "black"),
-        (g.DeliveryExpected, g.DeliveryActual, "Delivered", "gray"),
-    };
+			// Define only the required milestones with colors
+			var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
+	{
+		(g.AppDRcd, g.EngReleased, "Engineering Released to Customer", "#CB7723"),
+		(g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#FF8C00"),
+		(g.PackageReleased, g.PurchaseOrdersIssued, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
+		(g.PurchaseOrdersIssued, g.SupplierPODue, "Purchase Orders Issued", "#87CEEB"),
+		(g.SupplierPODue, g.AssemblyStart, "Supplier Purchase Orders Due", "#CBC3E3"),
+		(g.AssemblyStart, g.AssemblyComplete, "Machine Assembly and Testing", "#006400")
+	};
 
-            // Generate a Gantt task for each valid milestone
-            foreach (var (start, end, name, color) in milestones)
-            {
-                if (start.HasValue && end.HasValue)
-                {
-                    tasks.Add(new GanttViewModel
-                    {
-                        ID = g.ID,
-                        MachineName = $"{g.Machine?.Description} - {name}",
-                        StartDate = start.Value,
-                        EndDate = end.Value,
-                        Progress = 100, // Can adjust based on completion
-                        MilestoneClass = color
-                    });
-                }
-            }
+			// Generate Gantt tasks only for valid milestones
+			foreach (var (start, end, name, color) in milestones)
+			{
+				if (start.HasValue && end.HasValue)
+				{
+					tasks.Add(new GanttViewModel
+					{
+						ID = g.ID, // Keep ID as int
+						UniqueID = $"{g.ID}-{name}", // New unique string identifier (Add this field to GanttViewModel)
+						MachineName = $"{g.Machine?.Description} - {name}",
+						StartDate = start.Value,
+						EndDate = end.Value,
+						Progress = 100, // Assuming milestones are fully completed
+						MilestoneClass = color // Assign color
+					});
+				}
+			}
 
-            return tasks;
-        }
+			return tasks;
+		}
 
 
-        //private string GetMilestoneClass(GanttData g)
-        //{
-        //    if (g.EngReleased.HasValue) return "eng-released";
-        //    if (g.PackageReleased.HasValue) return "package-released";
-        //    if (g.ShipExpected.HasValue) return "shipping";
-        //    if (g.DeliveryExpected.HasValue) return "delivery";
-        //    return "default-task";
-        //}
+		//private string GetMilestoneClass(GanttData g)
+		//{
+		//    if (g.EngReleased.HasValue) return "eng-released";
+		//    if (g.PackageReleased.HasValue) return "package-released";
+		//    if (g.ShipExpected.HasValue) return "shipping";
+		//    if (g.DeliveryExpected.HasValue) return "delivery";
+		//    return "default-task";
+		//}
 
 
-        private bool GanttDataExists(int id)
+		private bool GanttDataExists(int id)
         {
             return _context.GanttDatas.Any(e => e.ID == id);
         }
