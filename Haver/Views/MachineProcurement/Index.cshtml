@@ -19,13 +19,21 @@
         ViewData["Title"] = ViewData["ControllerFriendlyName"];
     }
 
-    <h1 class="text-center my-4">Procurement Section</h1>
+    <h1 class="text-center my-4">Procurement Information</h1>
 
     <form asp-action="Index" method="get" class="mb-4">
         <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
         <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
         <input type="hidden" name="MachineID" value="@machine.ID" />
 
+        <a asp-controller="MachineProcurement" asp-action="Add"
+                               asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
+                               class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information">
+                                <i class="fa-solid fa-plus"></i> Add Procurement Details
+        </a>
+
+        <br />
+        <br />
 
         <button class="btn btn-outline-primary mb-3 no-print" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
@@ -95,15 +103,7 @@
                         <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="NcrRaised">
                             NCR Raised
                         </button>
-                    </th>
-                    <th class="text-center">
-                      
-                            <a asp-controller="MachineProcurement" asp-action="Add"
-                               asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
-                               class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information">
-                                <i class="fa-solid fa-plus"></i> Add
-                            </a>
-                    </th>
+                    </th>             
                 </tr>
             </thead>
             <tbody>
