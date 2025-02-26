@@ -440,19 +440,22 @@ namespace haver.Controllers
         {
             var schedules = _context.SalesOrders
                 .Include(so => so.Machines)
+                    .ThenInclude(m => m.Procurements)
+                        .ThenInclude(p => p.Vendor)
                 .OrderByDescending(so => so.SoDate)
                 .Select(so => new
                 {
                     SalesOrderNumber = so.OrderNumber ?? "",
                     CustomerName = so.CompanyName ?? "Unknown",
-                    MachineDescriptions = string.Join(", ", so.Machines.Select(m => m.Description)), // Convert list to string
-                    SerialNumbers = string.Join(", ", so.Machines.Select(m => m.SerialNumber)), // Convert list to string
-                    VendorNames = string.Join("\n", so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name)).Distinct()),
-                    PoNumbers = string.Join("\n", so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber)).Distinct()),
-                    PoDueDates = string.Join(", ", so.Machines
+                    MachineDescriptions = string.Join(", ", so.Machines.Select(m => m.Description)),
+                    SerialNumbers = string.Join(", ", so.Machines.Select(m => m.SerialNumber)),
+                    // Use Environment.NewLine for proper Excel line breaks
+                    VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name))),
+                    PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber))),
+                    PoDueDates = string.Join(Environment.NewLine, so.Machines
                         .SelectMany(m => m.Procurements
                         .Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
-                    DeliveryDates = string.Join(", ", so.Machines
+                    DeliveryDates = string.Join(Environment.NewLine, so.Machines
                         .SelectMany(m => m.Procurements
                         .Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
                     Media = string.Join(", ", so.Machines.Select(m => m.Media ? "Yes" : "No")),
@@ -515,23 +518,24 @@ namespace haver.Controllers
                     workSheet.Cells[3, i + 1].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
                 }
 
-                // Load data from schedules
+                // Load data
                 workSheet.Cells[4, 1].LoadFromCollection(schedules, false);
 
-                // Format date columns
-                workSheet.Column(7).Style.Numberformat.Format = "yyyy-MM-dd";
-                workSheet.Column(8).Style.Numberformat.Format = "yyyy-MM-dd";
+                // Enable text wrapping for columns with line breaks
+                int[] wrapTextColumns = { 5, 6, 7, 8 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
+                foreach (int col in wrapTextColumns)
+                {
+                    workSheet.Column(col).Style.WrapText = true;
+                }
 
-                // AutoFit for better layout
+                // AutoFit and manual column adjustments
                 workSheet.Cells.AutoFitColumns();
-
-                // Set specific column widths for better readability
-                workSheet.Column(3).Width = 25;  // Machine Description
-                workSheet.Column(4).Width = 20;  // Serial Number
-                workSheet.Column(5).Width = 20;  // Vendor Name
-                workSheet.Column(6).Width = 15;  // PO Number
-                workSheet.Column(7).Width = 15;  // PO Due Date
-                workSheet.Column(8).Width = 15;  // Delivery Date
+                workSheet.Column(3).Width = 25;
+                workSheet.Column(4).Width = 20;
+                workSheet.Column(5).Width = 20;
+                workSheet.Column(6).Width = 15;
+                workSheet.Column(7).Width = 15;
+                workSheet.Column(8).Width = 15;
 
                 try
                 {
@@ -544,8 +548,6 @@ namespace haver.Controllers
                 }
             }
         }
-
-
 
         //Return customer name suggestions
         public async Task<JsonResult> GetCompanyName(string term)
