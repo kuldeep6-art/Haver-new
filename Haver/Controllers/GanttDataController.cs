@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using haver.ViewModels;
 
 namespace haver.Controllers
 {
@@ -252,6 +253,90 @@ namespace haver.Controllers
             return View(ganttData);
 
         }
+
+
+        //public IActionResult Chart()
+        //{
+        //    var ganttData = _context.GanttDatas
+        //        .Include(g => g.Machine) // Ensure Machine is loaded
+        //        .ToList() // Convert to memory before calling a custom method
+        //        .Select(g => new GanttViewModel
+        //        {
+        //            ID = g.ID,
+        //            MachineName = g.Machine?.Description ?? "Unknown",
+        //            StartDate = g.AppDRcd,
+        //            EndDate = g.DeliveryExpected,
+        //            Progress = 0,
+        //            MilestoneClass = GetMilestoneClass(g) // Now safe to use
+        //        })
+        //        .ToList();
+
+        //    return View(ganttData);
+        //}
+
+        public IActionResult Chart()
+        {
+            var ganttData = _context.GanttDatas
+                .Include(g => g.Machine)
+                .ToList() // Fetch all data first
+                .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
+                .ToList();
+
+            return View(ganttData);
+        }
+
+        private List<GanttViewModel> GetMilestoneTasks(GanttData g)
+        {
+            var tasks = new List<GanttViewModel>();
+
+            // Define milestones & their colors
+            var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
+    {
+        (g.AppDRcd, g.EngExpected, "Engineering", "blue"),
+        (g.EngExpected, g.EngReleased, "Eng Released", "blue"),
+        (g.EngReleased, g.CustomerApproval, "Approval", "yellow"),
+        (g.CustomerApproval, g.PackageReleased, "Package Released", "orange"),
+        (g.PackageReleased, g.PurchaseOrdersIssued, "PO Issued", "purple"),
+        (g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "PO Completed", "red"),
+        (g.PurchaseOrdersCompleted, g.SupplierPODue, "Supplier PO Due", "brown"),
+        (g.SupplierPODue, g.AssemblyStart, "Assembly Start", "pink"),
+        (g.AssemblyStart, g.AssemblyComplete, "Assembly Complete", "cyan"),
+        (g.AssemblyComplete, g.ShipExpected, "Shipping", "teal"),
+        (g.ShipExpected, g.ShipActual, "Shipped", "lime"),
+        (g.ShipActual, g.DeliveryExpected, "Delivery Expected", "black"),
+        (g.DeliveryExpected, g.DeliveryActual, "Delivered", "gray"),
+    };
+
+            // Generate a Gantt task for each valid milestone
+            foreach (var (start, end, name, color) in milestones)
+            {
+                if (start.HasValue && end.HasValue)
+                {
+                    tasks.Add(new GanttViewModel
+                    {
+                        ID = g.ID,
+                        MachineName = $"{g.Machine?.Description} - {name}",
+                        StartDate = start.Value,
+                        EndDate = end.Value,
+                        Progress = 100, // Can adjust based on completion
+                        MilestoneClass = color
+                    });
+                }
+            }
+
+            return tasks;
+        }
+
+
+        //private string GetMilestoneClass(GanttData g)
+        //{
+        //    if (g.EngReleased.HasValue) return "eng-released";
+        //    if (g.PackageReleased.HasValue) return "package-released";
+        //    if (g.ShipExpected.HasValue) return "shipping";
+        //    if (g.DeliveryExpected.HasValue) return "delivery";
+        //    return "default-task";
+        //}
+
 
         private bool GanttDataExists(int id)
         {
