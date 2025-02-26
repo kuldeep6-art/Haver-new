@@ -1,4 +1,4 @@
-﻿namespace haver.Models
+﻿    namespace haver.ViewModels
 {
     public class GanttViewModel
     {
@@ -10,5 +10,4 @@
         public int Progress { get; set; }
         public string MilestoneClass { get; set; }
     }
-
 }

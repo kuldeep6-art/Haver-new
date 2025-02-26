@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace haver.Data.HaverMigrations
 {
     /// <inheritdoc />
-    public partial class nnn : Migration
+    public partial class hhf : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,7 +74,6 @@ namespace haver.Data.HaverMigrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -120,28 +119,6 @@ namespace haver.Data.HaverMigrations
                         column: x => x.CustomerID,
                         principalTable: "Customers",
                         principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GanttTasks",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SalesOrderID = table.Column<int>(type: "INTEGER", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Notes = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GanttTasks", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_GanttTasks_SalesOrders_SalesOrderID",
-                        column: x => x.SalesOrderID,
-                        principalTable: "SalesOrders",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,62 +225,6 @@ namespace haver.Data.HaverMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GanttMilestones",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    GanttTaskID = table.Column<int>(type: "INTEGER", nullable: false),
-                    MilestoneName = table.Column<int>(type: "INTEGER", nullable: false),
-                    Progress = table.Column<int>(type: "INTEGER", nullable: false),
-                    DateCompleted = table.Column<DateTime>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GanttMilestones", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_GanttMilestones_GanttTasks_GanttTaskID",
-                        column: x => x.GanttTaskID,
-                        principalTable: "GanttTasks",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GanttDatas",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    MachineID = table.Column<int>(type: "INTEGER", nullable: false),
-                    AppDRcd = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    EngExpected = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    EngReleased = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CustomerApproval = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PackageReleased = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PurchaseOrdersIssued = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PurchaseOrdersCompleted = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SupplierPODue = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    AssemblyStart = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    AssemblyComplete = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ShipExpected = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ShipActual = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    DeliveryExpected = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    DeliveryActual = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Notes = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GanttDatas", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_GanttDatas_Machines_MachineID",
-                        column: x => x.MachineID,
-                        principalTable: "Machines",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Procurements",
                 columns: table => new
                 {
@@ -312,9 +233,9 @@ namespace haver.Data.HaverMigrations
                     VendorID = table.Column<int>(type: "INTEGER", nullable: false),
                     MachineID = table.Column<int>(type: "INTEGER", nullable: true),
                     PONumber = table.Column<string>(type: "TEXT", nullable: false),
-                    ExpDueDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PODueDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PORcd = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ExpDueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PODueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PORcd = table.Column<DateTime>(type: "TEXT", nullable: false),
                     QualityICom = table.Column<bool>(type: "INTEGER", nullable: false),
                     NcrRaised = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
@@ -341,31 +262,10 @@ namespace haver.Data.HaverMigrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Engineers_Email",
-                table: "Engineers",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Engineers_FirstName_LastName",
                 table: "Engineers",
                 columns: new[] { "FirstName", "LastName" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GanttDatas_MachineID",
-                table: "GanttDatas",
-                column: "MachineID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GanttMilestones_GanttTaskID",
-                table: "GanttMilestones",
-                column: "GanttTaskID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GanttTasks_SalesOrderID",
-                table: "GanttTasks",
-                column: "SalesOrderID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Machines_MachineTypeID",
@@ -444,12 +344,6 @@ namespace haver.Data.HaverMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GanttDatas");
-
-            migrationBuilder.DropTable(
-                name: "GanttMilestones");
-
-            migrationBuilder.DropTable(
                 name: "PackageReleases");
 
             migrationBuilder.DropTable(
@@ -457,9 +351,6 @@ namespace haver.Data.HaverMigrations
 
             migrationBuilder.DropTable(
                 name: "SalesOrderEngineers");
-
-            migrationBuilder.DropTable(
-                name: "GanttTasks");
 
             migrationBuilder.DropTable(
                 name: "Machines");

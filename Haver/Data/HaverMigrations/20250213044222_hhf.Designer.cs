@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250213044222_hhf")]
+    partial class hhf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -91,125 +94,10 @@ namespace haver.Data.HaverMigrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.HasIndex("FirstName", "LastName")
                         .IsUnique();
 
                     b.ToTable("Engineers");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttData", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("AppDRcd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("AssemblyComplete")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("AssemblyStart")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("CustomerApproval")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DeliveryActual")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DeliveryExpected")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("EngExpected")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("EngReleased")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("MachineID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("PackageReleased")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("PurchaseOrdersCompleted")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("PurchaseOrdersIssued")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ShipActual")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ShipExpected")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("SupplierPODue")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("MachineID");
-
-                    b.ToTable("GanttDatas");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttMilestone", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateCompleted")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("GanttTaskID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MilestoneName")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Progress")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("GanttTaskID");
-
-                    b.ToTable("GanttMilestones");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttTask", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("SalesOrderID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("SalesOrderID");
-
-                    b.ToTable("GanttTasks");
                 });
 
             modelBuilder.Entity("haver.Models.Machine", b =>
@@ -398,7 +286,7 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("ExpDueDate")
+                    b.Property<DateTime>("ExpDueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("MachineID")
@@ -407,14 +295,14 @@ namespace haver.Data.HaverMigrations
                     b.Property<bool>("NcrRaised")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("PODueDate")
+                    b.Property<DateTime>("PODueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PONumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PORcd")
+                    b.Property<DateTime>("PORcd")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("QualityICom")
@@ -563,9 +451,6 @@ namespace haver.Data.HaverMigrations
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -588,39 +473,6 @@ namespace haver.Data.HaverMigrations
                         .IsUnique();
 
                     b.ToTable("Vendors");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttData", b =>
-                {
-                    b.HasOne("haver.Models.Machine", "Machine")
-                        .WithMany()
-                        .HasForeignKey("MachineID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Machine");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttMilestone", b =>
-                {
-                    b.HasOne("haver.Models.GanttTask", "GanttTask")
-                        .WithMany("GanttMilestones")
-                        .HasForeignKey("GanttTaskID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GanttTask");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttTask", b =>
-                {
-                    b.HasOne("haver.Models.SalesOrder", "SalesOrder")
-                        .WithMany()
-                        .HasForeignKey("SalesOrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SalesOrder");
                 });
 
             modelBuilder.Entity("haver.Models.Machine", b =>
@@ -704,11 +556,6 @@ namespace haver.Data.HaverMigrations
             modelBuilder.Entity("haver.Models.Engineer", b =>
                 {
                     b.Navigation("SalesOrderEngineers");
-                });
-
-            modelBuilder.Entity("haver.Models.GanttTask", b =>
-                {
-                    b.Navigation("GanttMilestones");
                 });
 
             modelBuilder.Entity("haver.Models.Machine", b =>

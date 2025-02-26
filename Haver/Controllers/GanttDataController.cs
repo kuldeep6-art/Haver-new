@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using haver.Data;
 using haver.Models;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using haver.ViewModels;
 
 namespace haver.Controllers
 {
@@ -103,7 +104,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,MachineID,AppDRcd,StartOfWeek,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
+        public async Task<IActionResult> Create([Bind("ID,MachineID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
         {
             try
             {
@@ -171,7 +172,7 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
-                 p => p.MachineID, p => p.AppDRcd,p => p.StartOfWeek, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.MachineID, p => p.AppDRcd, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
                  p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted,
                   p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
             {
@@ -253,33 +254,89 @@ namespace haver.Controllers
 
         }
 
+
+        //public IActionResult Chart()
+        //{
+        //    var ganttData = _context.GanttDatas
+        //        .Include(g => g.Machine) // Ensure Machine is loaded
+        //        .ToList() // Convert to memory before calling a custom method
+        //        .Select(g => new GanttViewModel
+        //        {
+        //            ID = g.ID,
+        //            MachineName = g.Machine?.Description ?? "Unknown",
+        //            StartDate = g.AppDRcd,
+        //            EndDate = g.DeliveryExpected,
+        //            Progress = 0,
+        //            MilestoneClass = GetMilestoneClass(g) // Now safe to use
+        //        })
+        //        .ToList();
+
+        //    return View(ganttData);
+        //}
+
         public IActionResult Chart()
         {
             var ganttData = _context.GanttDatas
-                .Include(g => g.Machine) // Ensure Machine is loaded
-                .ToList() // Convert to memory before calling a custom method
-                .Select(g => new GanttViewModel
-                {
-                    ID = g.ID,
-                    MachineName = g.Machine?.Description ?? "Unknown",
-                    StartDate = g.AppDRcd,
-                    EndDate = g.DeliveryExpected,
-                    Progress = 0,
-                    MilestoneClass = GetMilestoneClass(g) // Now safe to use
-                })
+                .Include(g => g.Machine)
+                .ToList() // Fetch all data first
+                .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
                 .ToList();
 
             return View(ganttData);
         }
 
-        private string GetMilestoneClass(GanttData g)
+        private List<GanttViewModel> GetMilestoneTasks(GanttData g)
         {
-            if (g.EngReleased.HasValue) return "eng-released";
-            if (g.PackageReleased.HasValue) return "package-released";
-            if (g.ShipExpected.HasValue) return "shipping";
-            if (g.DeliveryExpected.HasValue) return "delivery";
-            return "default-task";
+            var tasks = new List<GanttViewModel>();
+
+            // Define milestones & their colors
+            var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
+    {
+        (g.AppDRcd, g.EngExpected, "Engineering", "blue"),
+        (g.EngExpected, g.EngReleased, "Eng Released", "blue"),
+        (g.EngReleased, g.CustomerApproval, "Approval", "yellow"),
+        (g.CustomerApproval, g.PackageReleased, "Package Released", "orange"),
+        (g.PackageReleased, g.PurchaseOrdersIssued, "PO Issued", "purple"),
+        (g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "PO Completed", "red"),
+        (g.PurchaseOrdersCompleted, g.SupplierPODue, "Supplier PO Due", "brown"),
+        (g.SupplierPODue, g.AssemblyStart, "Assembly Start", "pink"),
+        (g.AssemblyStart, g.AssemblyComplete, "Assembly Complete", "cyan"),
+        (g.AssemblyComplete, g.ShipExpected, "Shipping", "teal"),
+        (g.ShipExpected, g.ShipActual, "Shipped", "lime"),
+        (g.ShipActual, g.DeliveryExpected, "Delivery Expected", "black"),
+        (g.DeliveryExpected, g.DeliveryActual, "Delivered", "gray"),
+    };
+
+            // Generate a Gantt task for each valid milestone
+            foreach (var (start, end, name, color) in milestones)
+            {
+                if (start.HasValue && end.HasValue)
+                {
+                    tasks.Add(new GanttViewModel
+                    {
+                        ID = g.ID,
+                        MachineName = $"{g.Machine?.Description} - {name}",
+                        StartDate = start.Value,
+                        EndDate = end.Value,
+                        Progress = 100, // Can adjust based on completion
+                        MilestoneClass = color
+                    });
+                }
+            }
+
+            return tasks;
         }
+
+
+        //private string GetMilestoneClass(GanttData g)
+        //{
+        //    if (g.EngReleased.HasValue) return "eng-released";
+        //    if (g.PackageReleased.HasValue) return "package-released";
+        //    if (g.ShipExpected.HasValue) return "shipping";
+        //    if (g.DeliveryExpected.HasValue) return "delivery";
+        //    return "default-task";
+        //}
+
 
         private bool GanttDataExists(int id)
         {

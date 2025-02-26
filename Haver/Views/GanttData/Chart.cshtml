@@ -1,4 +1,4 @@
-﻿@model List<GanttViewModel>
+﻿@model List<haver.ViewModels.GanttViewModel>
 
 @{
     ViewData["Title"] = "Gantt Chart";
@@ -51,20 +51,66 @@
                 language: 'en'
             });
 
-            // Apply colors based on milestone type
-            tasks.forEach(task => {
-                let elements = document.querySelectorAll(`[data-id='${task.id}'] .bar`);
-                elements.forEach(el => el.classList.add(task.custom_class));
+            // Apply CSS class directly in task creation
+            gantt.tasks.forEach(function (task) {
+                let taskElement = document.querySelector(`[data-id='${task.id}'] .bar`);
+                if (taskElement) {
+                    taskElement.classList.add(task.custom_class);  // Add color class to the bar element
+                }
             });
         });
     </script>
 }
 
-<!-- Custom Styles for Milestone Colors -->
+
+
+
 <style>
-    .eng-released { fill: blue !important; }
-    .package-released { fill: orange !important; }
-    .shipping { fill: purple !important; }
-    .delivery { fill: green !important; }
-    .default-task { fill: gray !important; }
+    .blue {
+        fill: blue !important;
+    }
+
+    .yellow {
+        fill: yellow !important;
+    }
+
+    .orange {
+        fill: orange !important;
+    }
+
+    .purple {
+        fill: purple !important;
+    }
+
+    .red {
+        fill: red !important;
+    }
+
+    .brown {
+        fill: brown !important;
+    }
+
+    .pink {
+        fill: pink !important;
+    }
+
+    .cyan {
+        fill: cyan !important;
+    }
+
+    .teal {
+        fill: teal !important;
+    }
+
+    .lime {
+        fill: lime !important;
+    }
+
+    .black {
+        fill: black !important;
+    }
+
+    .gray {
+        fill: gray !important;
+    }
 </style>
