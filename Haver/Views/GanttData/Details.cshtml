@@ -16,20 +16,15 @@
         <div class="info-box p-3 bg-light border rounded mb-3">
             <dl class="row">
                 <!-- Machine Information -->
-                <dt class="col-md-3">Production Order</dt>
-                <dd class="col-md-3">@Model.GanttData.Machine.ProductionOrderNumber</dd>
+                <dt class="col-md-3">Machine & Serial Number</dt>
+                <dd class="col-md-3">@Model.GanttData.Machine.Description</dd>
 
-                <dt class="col-md-3">Sales Order</dt>
+                <dt class="col-md-3">Order Number</dt>
                 <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
 
                 <dt class="col-md-3">Customer</dt>
                 <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
 
-                <dt class="col-md-3">Serial Number</dt>
-                <dd class="col-md-3">@Model.GanttData.Machine.SerialNumber</dd>
-            </dl>
-
-            <dl class="row">
                 <dt class="col-md-3">Approval Drawings Received</dt>
                 <dd class="col-md-3">@Model.GanttData.AppDRcd?.ToString("d")</dd>
 
@@ -47,9 +42,7 @@
 
                 <dt class="col-md-3">Supplier PO Due</dt>
                 <dd class="col-md-3">@Model.GanttData.SupplierPODue?.ToString("d")</dd>
-            </dl>
 
-            <dl class="row">
                 <dt class="col-md-3">Assembly Start</dt>
                 <dd class="col-md-3">@Model.GanttData.AssemblyStart?.ToString("d")</dd>
 
@@ -69,11 +62,10 @@
                 <dd class="col-md-3">@Model.GanttData.DeliveryActual?.ToString("d")</dd>
             </dl>
 
-            <p class="fw-bold text-center" style="font-size:20px;">Additional Information</p>
+            <p class="fw-bold text-center" style="font-size:20px;">Notes</p>
 
             <div class="row">
                 <div class="col-12">
-                    <dt>Notes</dt>
                     <dd class="mb-4">
                         @if (!string.IsNullOrEmpty(Model.GanttData.Notes))
                         {
