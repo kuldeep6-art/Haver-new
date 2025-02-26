@@ -70,7 +70,7 @@
                     <dd class="mb-4">
                         @if (!string.IsNullOrEmpty(Model.GanttData.Notes))
                         {
-                            @Model.GanttData.Notes
+                            @Html.Raw(Model.GanttData.Notes)
                         }
                         else
                         {
