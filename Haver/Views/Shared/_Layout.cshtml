@@ -39,93 +39,41 @@
 				<i class="fa-solid fa-arrow-up"></i>
 			</button>
 
-		
-			<!-- Sales Order Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Sales Order <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="SalesOrder" asp-action="Index">View Sales Orders</a>
-					<a asp-area="" asp-controller="SalesOrder" asp-action="Create">Create Sales Order</a>
-				</div>
+			<!-- Sales Order Links -->
+			<div>
+				<a asp-area="" asp-controller="SalesOrder" asp-action="Index">Sales Orders</a>
+				
 			</div>
 
-
-			<!-- Machine Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Machine <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Types</a>
-					<a asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
-				</div>
-			</div>
-@* 
-			<!-- Package Release Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Package Release <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="PackageRelease" asp-action="Index">View Package Release</a>
-					<a asp-area="" asp-controller="PackageRelease" asp-action="Create">Create Package Release</a>
-				</div>
-			</div>
- *@
-			@* 	<!-- Customer Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Customer <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Customer" asp-action="Index">View Customers</a>
-					<a asp-area="" asp-controller="Customer" asp-action="Create">Create Customer</a>
-				</div>
-			</div> *@
-
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Vendor <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Vendor" asp-action="Index">View Vendors</a>
-					<a asp-area="" asp-controller="Vendor" asp-action="Create">Create Vendors</a>
-				</div>
+			<!-- Gantt Links -->
+			<div>
+				<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt Schedules</a>
 			</div>
 
-			@* <!-- Machine Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Machine Type<i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="MachineType" asp-action="Index">View Machines</a>
-					<a asp-area="" asp-controller="MachineType" asp-action="Create">Create Machine</a>
-				</div>
-			</div>
- *@
-
-			<!-- Engineer Dropdown -->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Engineer <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="Engineer" asp-action="Index">View Engineers</a>
-					<a asp-area="" asp-controller="Engineer" asp-action="Create">Create Engineer</a>
-				</div>
+			<!-- Customer Links -->
+			<div>
+				<a asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
 			</div>
 
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Gantt <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt Task</a>
-					@* <a asp-area="" asp-controller="GanttMilestone" asp-action="Index">Gantt Milestone</a> *@
-				</div>
+			<!-- Vendor Links -->
+			<div>
+				<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
+			</div>
+
+			<!-- Machine(work in progress) Links -->
+			<div>
+				<a asp-area="" asp-controller="Machine" asp-action="Index">Machines(WIP)</a>
+			</div>
+
+			<!-- Machine(types) Link -->
+			<div>
+				<a asp-area="" asp-controller="MachineType" asp-action="Index">Machines(Types)</a>
+			</div>
+
+			<!-- Engineer Links -->
+			<div>
+				<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
+				
 			</div>
 
 			<div class="sidebar-menu">
