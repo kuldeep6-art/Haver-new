@@ -1,4 +1,4 @@
-﻿@model haver.Models.GanttData
+﻿@model haver.ViewModels.GanttDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,117 +10,125 @@
     <h4>GanttData</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Machine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Machine.ProductionOrderNumber)
-        </dd>
-        <dt class="col-sm-2">
-            Order Number
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Machine.SalesOrder.OrderNumber)
-        </dd>
-        <dt class="col-sm-2">
-            Customer
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Machine.SalesOrder.CompanyName)
-        </dd>
-        <dt class="col-sm-2">
-            Approval Drawings Received
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AppDRcd)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EngExpected)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EngExpected)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EngReleased)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EngReleased)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerApproval)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CustomerApproval)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PackageReleased)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PackageReleased)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchaseOrdersIssued)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurchaseOrdersIssued)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchaseOrdersCompleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurchaseOrdersCompleted)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SupplierPODue)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SupplierPODue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssemblyStart)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssemblyStart)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssemblyComplete)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssemblyComplete)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShipExpected)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShipExpected)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShipActual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShipActual)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryExpected)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryExpected)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryActual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryActual)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
+        <dt class="col-sm-2">Machine</dt>
+        <dd class="col-sm-10">@Model.GanttData.Machine.ProductionOrderNumber</dd>
+
+        <dt class="col-sm-2">Order Number</dt>
+        <dd class="col-sm-10">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
+
+        <dt class="col-sm-2">Customer</dt>
+        <dd class="col-sm-10">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
+
+        <dt class="col-sm-2">Approval Drawings Received</dt>
+        <dd class="col-sm-10">@Model.GanttData.AppDRcd</dd>
+
+        <dt class="col-sm-2">Engineering Expected</dt>
+        <dd class="col-sm-10">@Model.GanttData.EngExpected</dd>
+
+        <dt class="col-sm-2">Engineering Released</dt>
+        <dd class="col-sm-10">@Model.GanttData.EngReleased</dd>
+
+        <dt class="col-sm-2">Customer Approval</dt>
+        <dd class="col-sm-10">@Model.GanttData.CustomerApproval</dd>
+
+        <dt class="col-sm-2">Package Released</dt>
+        <dd class="col-sm-10">@Model.GanttData.PackageReleased</dd>
+
+        <dt class="col-sm-2">Purchase Orders Issued</dt>
+        <dd class="col-sm-10">@Model.GanttData.PurchaseOrdersIssued</dd>
+
+        <dt class="col-sm-2">Supplier PO Due</dt>
+        <dd class="col-sm-10">@Model.GanttData.SupplierPODue</dd>
+
+        <dt class="col-sm-2">Assembly Start</dt>
+        <dd class="col-sm-10">@Model.GanttData.AssemblyStart</dd>
+
+        <dt class="col-sm-2">Assembly Complete</dt>
+        <dd class="col-sm-10">@Model.GanttData.AssemblyComplete</dd>
+
+        <dt class="col-sm-2">Shipping Expected</dt>
+        <dd class="col-sm-10">@Model.GanttData.ShipExpected</dd>
+
+        <dt class="col-sm-2">Shipped</dt>
+        <dd class="col-sm-10">@Model.GanttData.ShipActual</dd>
+
+        <dt class="col-sm-2">Delivery Expected</dt>
+        <dd class="col-sm-10">@Model.GanttData.DeliveryExpected</dd>
+
+        <dt class="col-sm-2">Delivery Actual</dt>
+        <dd class="col-sm-10">@Model.GanttData.DeliveryActual</dd>
     </dl>
 </div>
+
+<h3>Gantt Chart</h3>
+<div id="gantt"></div>
+
+
+
+@section stylesheets {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
+
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tasks = [
+        @foreach (var task in Model.GanttTasks)
+        {
+            <text>
+                        {
+                            id: "@task.UniqueID", // Use UniqueID instead of ID
+                        name: "@task.MachineName",
+                        start: "@(task.StartDate?.ToString("yyyy-MM-dd") ?? "")",
+                        end: "@(task.EndDate?.ToString("yyyy-MM-dd") ?? "")",
+                        progress: 0,
+                        custom_class: "@task.MilestoneClass"
+                                    },
+            </text>
+        }
+                    ];
+
+            var gantt = new Gantt("#gantt", tasks, {
+                on_click: function (task) {
+                    alert("Clicked on " + task.name);
+                },
+                on_date_change: function (task, start, end) {
+                    console.log(task.name, start, end);
+                },
+                on_progress_change: function (task, progress) {
+                    console.log(task.name, progress);
+                },
+                on_view_change: function (mode) {
+                    console.log("View mode changed to " + mode);
+                },
+                view_mode: 'Week',
+                language: 'en',
+                custom_popup_html: function (task) {
+                    return `<div class="gantt-task-popup">
+                                        <strong>${task.name}</strong><br>
+                                        <small>${task.start} → ${task.end}</small>
+                                    </div>`;
+                }
+            });
+
+            // Apply colors AFTER rendering
+            setTimeout(function () {
+                tasks.forEach(task => {
+                    let bars = document.querySelectorAll(`.bar-wrapper[data-id='${task.id}'] .bar`);
+                    bars.forEach(bar => {
+                        bar.style.fill = task.custom_class;
+                    });
+                });
+            }, 500);
+        });
+
+    </script>
+}
+
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.GanttData.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
