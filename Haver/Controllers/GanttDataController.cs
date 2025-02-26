@@ -31,25 +31,29 @@ namespace haver.Controllers
         }
 
         // GET: GanttData/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ganttData = await _context.GanttDatas
+            var ganttData = _context.GanttDatas
                 .Include(g => g.Machine)
-                .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
-                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .ThenInclude(m => m.SalesOrder)
+                .Include(g => g.Machine)
+                .ThenInclude(m => m.MachineType)
+                .FirstOrDefault(g => g.ID == id);
 
             if (ganttData == null)
             {
                 return NotFound();
             }
 
-            return View(ganttData);
+            var ganttTasks = GetMilestoneTasks(ganttData);
+
+            var viewModel = new GanttDetailsViewModel
+            {
+                GanttData = ganttData,
+                GanttTasks = ganttTasks
+            };
+
+            return View(viewModel);
         }
 
 
@@ -278,6 +282,7 @@ namespace haver.Controllers
         {
             var ganttData = _context.GanttDatas
                 .Include(g => g.Machine)
+                .Include(g => g.Machine).ThenInclude(g => g.MachineType)
                 .ToList() // Fetch all data first
                 .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
                 .ToList();
