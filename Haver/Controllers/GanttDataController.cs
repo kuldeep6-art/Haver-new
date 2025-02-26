@@ -278,6 +278,7 @@ namespace haver.Controllers
         {
             var ganttData = _context.GanttDatas
                 .Include(g => g.Machine)
+                .Include(g => g.Machine).ThenInclude(g => g.MachineType)
                 .ToList() // Fetch all data first
                 .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
                 .ToList();
