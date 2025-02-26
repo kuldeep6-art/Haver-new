@@ -23,12 +23,12 @@
         {
             <text>
                         {
-                            id: "@task.ID",
-                            name: "@task.MachineName",
-                            start: "@(task.StartDate?.ToString("yyyy-MM-dd") ?? "")",
-                            end: "@(task.EndDate?.ToString("yyyy-MM-dd") ?? "")",
-                            progress: 0,
-                            custom_class: "@task.MilestoneClass"
+                         id: "@task.UniqueID", // Use UniqueID instead of ID
+                        name: "@task.MachineName",
+                        start: "@(task.StartDate?.ToString("yyyy-MM-dd") ?? "")",
+                        end: "@(task.EndDate?.ToString("yyyy-MM-dd") ?? "")",
+                        progress: 0,
+                        custom_class: "@task.MilestoneClass"
                         },
             </text>
         }
@@ -48,17 +48,26 @@
                     console.log("View mode changed to " + mode);
                 },
                 view_mode: 'Week',
-                language: 'en'
-            });
-
-            // Apply CSS class directly in task creation
-            gantt.tasks.forEach(function (task) {
-                let taskElement = document.querySelector(`[data-id='${task.id}'] .bar`);
-                if (taskElement) {
-                    taskElement.classList.add(task.custom_class);  // Add color class to the bar element
+                language: 'en',
+                custom_popup_html: function (task) {
+                    return `<div class="gantt-task-popup">
+                                <strong>${task.name}</strong><br>
+                                <small>${task.start} → ${task.end}</small>
+                            </div>`;
                 }
             });
+
+            // Apply colors AFTER rendering
+            setTimeout(function () {
+                tasks.forEach(task => {
+                    let bars = document.querySelectorAll(`.bar-wrapper[data-id='${task.id}'] .bar`);
+                    bars.forEach(bar => {
+                        bar.style.fill = task.custom_class;
+                    });
+                });
+            }, 500);
         });
+
     </script>
 }
 
