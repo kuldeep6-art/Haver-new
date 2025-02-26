@@ -66,6 +66,7 @@
 
             <div class="row">
                 <div class="col-12">
+                    <dl>
                     <dd class="mb-4">
                         @if (!string.IsNullOrEmpty(Model.GanttData.Notes))
                         {
@@ -76,6 +77,7 @@
                             <span class="text-muted">No notes available</span>
                         }
                     </dd>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -85,14 +87,14 @@
     <div class="info-container mt-4">
         <div class="info-box p-3 bg-light border rounded">
             <div class="card-header bg-success text-white mb-3">
-                <h5 class="mb-0">Project Timeline</h5>
+                <h5 class="mb-0">Gantt Chart</h5>
             </div>
             <div id="gantt" style="min-width: 1000px; overflow-x: auto;"></div>
         </div>
     </div>
 </div>
 
-<!-- Keep the existing stylesheets and scripts sections unchanged -->
+
 @section stylesheets {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
     <style>
@@ -120,7 +122,6 @@
     </style>
 }
 
-<!-- Keep the existing Scripts section unchanged -->
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
@@ -178,9 +179,3 @@
 
     </script>
 }
-
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.GanttData.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
