@@ -45,34 +45,34 @@
 
 			</div>
 
-			<!-- Gantt Links -->
-			<div>
-				<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt Schedules</a>
+			<div class="dropdown">
+				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+					Machine <i class="fa fa-plus"></i>
+				</a>
+				<div class="dropdown-content">
+					<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Types</a>
+					<a asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
+				</div>
 			</div>
 
-			<!-- Customer Links -->
-			<div>
-				<a asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
-			</div>
 			<!-- Vendor Links -->
 			<div>
 				<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
-			</div>
-
-			<!-- Machine(work in progress) Links -->
-			<div>
-				<a asp-area="" asp-controller="Machine" asp-action="Index">Machines(WIP)</a>
-			</div>
-
-			<!-- Machine(types) Link -->
-			<div>
-				<a asp-area="" asp-controller="MachineType" asp-action="Index">Machines(Types)</a>
 			</div>
 
 			<!-- Engineer Links -->
 			<div>
 				<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
 
+			</div>
+			<div class="dropdown">
+				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+					Gantt <i class="fa fa-plus"></i>
+				</a>
+				<div class="dropdown-content">
+					<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt Data</a>
+					<a asp-area="" asp-controller="GanttData" asp-action="Chart">Gantt Chart</a>
+				</div>
 			</div>
 
 			<div class="sidebar-menu">
