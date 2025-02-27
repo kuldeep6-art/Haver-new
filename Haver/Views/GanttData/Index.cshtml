@@ -1,14 +1,41 @@
 ﻿@model IEnumerable<haver.Models.GanttData>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Engineers";
+    var currentSortField = ViewData["sortField"]?.ToString();
+    var currentSortDirection = ViewData["sortDirection"]?.ToString();
 }
 
-<h1>Index</h1>
+<h1 class="text-center my-4" aria-label="Engineer Index">Engineer</h1>
 
-<p>
-    <a asp-action="Create" class="btn">Create New</a>
-</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn" aria-label="Create a new engineer" data-bs-toggle="tooltip" title="Create a new engineer">
+        <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
+    </a>
+</div>
+
+<form asp-action="Index" method="get" aria-label="Engineer filter form">
+    <div class="form-horizontal">
+        <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+        <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+        <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" aria-label="Toggle filter/search options" data-bs-toggle="tooltip" title="Filter/Search">
+            <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
+        </button>
+        <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
+            <div class="card card-body bg-light">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="form-label fw-bold" for="SearchString">Search by Engineer Name:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter engineer name", aria_label = "Enter engineer name to search" })
+                    </div>
+                    <div class="form-group col-md-4 align-self-end">
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
+                        <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <table class="table table-striped table-bordered table-hover shadow-sm">
     <thead class="bg-dark text-white text-center">
@@ -51,7 +78,7 @@
         }
     </tbody>
 </table>
-
+<</form>
 
 @section Scripts {
     <script type="text/javascript">
