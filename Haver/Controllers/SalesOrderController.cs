@@ -447,9 +447,7 @@ namespace haver.Controllers
      {
          SalesOrderNumber = so.OrderNumber ?? "",
          CustomerName = so.CompanyName ?? "Unknown",
-         // Corrected: Replaced SelectMany with Select
          MachineDescriptions = string.Join(Environment.NewLine, so.Machines.Select(m => m.MachineType.Description ?? "Unknown")),
-         // Corrected: Replaced SelectMany with Select
          SerialNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.SerialNumber ?? "N/A")),
          VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name ?? "N/A"))),
          PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber ?? "N/A"))),
@@ -459,14 +457,14 @@ namespace haver.Controllers
          DeliveryDates = string.Join(Environment.NewLine, so.Machines
              .SelectMany(m => m.Procurements
              .Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
-         Media = string.Join(", ", so.Machines.Select(m => m.Media ? "Yes" : "No")),
-         SpareParts = string.Join(", ", so.Machines.Select(m => m.SpareParts ? "Yes" : "No")),
-         Base = string.Join(", ", so.Machines.Select(m => m.Base ? "Yes" : "No")),
-         AirSeal = string.Join(", ", so.Machines.Select(m => m.AirSeal ? "Yes" : "No")),
-         CoatingLining = string.Join(", ", so.Machines.Select(m => m.CoatingLining ? "Yes" : "No")),
-         Disassembly = string.Join(", ", so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
-         PreOrder = string.Join(", ", so.Machines.Select(m => m.PreOrder ?? "N/A")),
-         Scope = string.Join(", ", so.Machines.Select(m => m.Scope ?? "N/A")),
+         Media = string.Join(Environment.NewLine, so.Machines.Select(m => m.Media ? "Yes" : "No")),
+         SpareParts = string.Join(Environment.NewLine, so.Machines.Select(m => m.SpareParts ? "Yes" : "No")),
+         Base = string.Join(Environment.NewLine, so.Machines.Select(m => m.Base ? "Yes" : "No")),
+         AirSeal = string.Join(Environment.NewLine, so.Machines.Select(m => m.AirSeal ? "Yes" : "No")),
+         CoatingLining = string.Join(Environment.NewLine, so.Machines.Select(m => m.CoatingLining ? "Yes" : "No")),
+         Disassembly = string.Join(Environment.NewLine, so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
+         PreOrder = string.Join(Environment.NewLine, so.Machines.Select(m => m.PreOrder ?? "N/A")),
+         Scope = string.Join(Environment.NewLine, so.Machines.Select(m => m.Scope ?? "N/A")),
          ActualAssemblyHours = so.Machines.FirstOrDefault()?.ActualAssemblyHours != null
              ? $"{so.Machines.FirstOrDefault().ActualAssemblyHours} hrs"
              : "N/A",
@@ -523,7 +521,7 @@ namespace haver.Controllers
                 workSheet.Cells[4, 1].LoadFromCollection(schedules, false);
 
                 // Enable text wrapping for columns with line breaks
-                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
+                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
                 foreach (int col in wrapTextColumns)
                 {
                     workSheet.Column(col).Style.WrapText = true;
