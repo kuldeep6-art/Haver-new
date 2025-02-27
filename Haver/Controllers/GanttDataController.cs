@@ -9,10 +9,12 @@ using haver.Data;
 using haver.Models;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using haver.ViewModels;
+using haver.CustomControllers;
+using haver.Utilities;
 
 namespace haver.Controllers
 {
-    public class GanttDataController : Controller
+    public class GanttDataController : ElephantController
     {
         private readonly HaverContext _context;
 
@@ -22,12 +24,77 @@ namespace haver.Controllers
         }
 
         // GET: GanttData
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number")
         {
-            var haverContext = _context.GanttDatas.Include(g => g.Machine)
+            string[] sortOptions = new[] { "Order Number" };
+
+            //Count the number of filters applied - start by assuming no filters
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
+
+            var gData = from g in _context.GanttDatas
+                        .Include(g => g.Machine)
                 .ThenInclude(s => s.SalesOrder)
-                .Include(g => g.Machine).ThenInclude(s => s.MachineType);
-            return View(await haverContext.ToListAsync());
+                .Include(g => g.Machine).ThenInclude(s => s.MachineType)
+                .AsNoTracking()
+                        select g;
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                gData = gData.Where(p => p.Machine.SalesOrder.OrderNumber.Contains(SearchString));
+                numberFilters++;
+            }
+
+            //Give feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending on if we are filtering
+                ViewData["Filtering"] = " btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }
+
+            //Before we sort, see if we have called for a change of filtering or sorting
+            if (!String.IsNullOrEmpty(actionButton)) //Form Submitted!
+            {
+                if (sortOptions.Contains(actionButton))//Change of sort is requested
+                {
+                    if (actionButton == sortField) //Reverse order on same field
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;//Sort by the button clicked
+                }
+            }
+            //Now we know which field and direction to sort by
+            if (sortField == "Order Number")
+            {
+                if (sortDirection == "asc")
+                {
+                    gData = gData
+                        .OrderByDescending(p => p.Machine.SalesOrder.OrderNumber);
+                }
+                else
+                {
+                    gData = gData
+                        .OrderBy(p => p.Machine.SalesOrder.OrderNumber);
+                }
+            }
+
+            //Set sort for next time
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            //Handle Paging
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+            var pagedData = await PaginatedList<GanttData>.CreateAsync(gData.AsNoTracking(), page ?? 1, pageSize);
+
+            return View(pagedData);
         }
 
         // GET: GanttData/Details/5
