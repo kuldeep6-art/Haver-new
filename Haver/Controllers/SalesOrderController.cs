@@ -447,7 +447,9 @@ namespace haver.Controllers
      {
          SalesOrderNumber = so.OrderNumber ?? "",
          CustomerName = so.CompanyName ?? "Unknown",
+         // Corrected: Replaced SelectMany with Select
          MachineDescriptions = string.Join(Environment.NewLine, so.Machines.Select(m => m.MachineType.Description ?? "Unknown")),
+         // Corrected: Replaced SelectMany with Select
          SerialNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.SerialNumber ?? "N/A")),
          VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name ?? "N/A"))),
          PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber ?? "N/A"))),
@@ -503,7 +505,7 @@ namespace haver.Controllers
 
                 // Column headers
                 string[] headers = {
-            "Sales Order", "Customer Name", "Machine Description", "Serial Number", "Vendor Name",
+            "Sales Order", "Customer Name", "Machine Description", "Serial Number", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
             "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
             "Actual Hours", "Rework Hours", "NamePlate"
@@ -521,7 +523,7 @@ namespace haver.Controllers
                 workSheet.Cells[4, 1].LoadFromCollection(schedules, false);
 
                 // Enable text wrapping for columns with line breaks
-                int[] wrapTextColumns = { 5, 6, 7, 8 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
+                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
                 foreach (int col in wrapTextColumns)
                 {
                     workSheet.Column(col).Style.WrapText = true;
