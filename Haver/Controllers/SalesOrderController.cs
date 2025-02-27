@@ -288,7 +288,7 @@ namespace haver.Controllers
 				try
                 {
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Engineer has been successfully edited";
+                    TempData["Message"] = "Sales Order has been successfully edited";
                     return RedirectToAction("Details", new { salesOrderToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
@@ -471,7 +471,8 @@ namespace haver.Controllers
          ReworkHours = string.Join(Environment.NewLine, so.Machines.Select(m => m.ReworkHours != null
              ? $"{m.ReworkHours} hrs"
              : "N/A")),
-         NamePlate = string.Join(Environment.NewLine, so.Machines.Select(m => m.Nameplate?.ToString() ?? "N/A"))
+         NamePlate = string.Join(Environment.NewLine, so.Machines.Select(m => m.Nameplate?.ToString() ?? "N/A")),
+         Notes = so.CompanyName ?? "No notes for this salesorder",
      })
      .ToList();
 
@@ -506,7 +507,7 @@ namespace haver.Controllers
             "Sales Order", "Customer Name", "Machine Description", "Serial Number", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
             "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
-            "Actual Hours", "Rework Hours", "NamePlate"
+            "Actual Hours", "Rework Hours", "NamePlate", "Notes/Comments"
         };
 
                 for (int i = 0; i < headers.Length; i++)
