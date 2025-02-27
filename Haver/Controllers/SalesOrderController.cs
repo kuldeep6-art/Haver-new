@@ -439,42 +439,41 @@ namespace haver.Controllers
         public IActionResult DownloadMachineSchedules()
         {
             var schedules = _context.SalesOrders
-                .Include(so => so.Machines)
-                    .ThenInclude(m => m.Procurements)
-                        .ThenInclude(p => p.Vendor)
-                .OrderByDescending(so => so.SoDate)
-                .Select(so => new
-                {
-                    SalesOrderNumber = so.OrderNumber ?? "",
-                    CustomerName = so.CompanyName ?? "Unknown",
-                    MachineDescriptions = string.Join(", ", so.Machines.Select(m => m.Description)),
-                    SerialNumbers = string.Join(", ", so.Machines.Select(m => m.SerialNumber)),
-                    // Use Environment.NewLine for proper Excel line breaks
-                    VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name))),
-                    PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber))),
-                    PoDueDates = string.Join(Environment.NewLine, so.Machines
-                        .SelectMany(m => m.Procurements
-                        .Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
-                    DeliveryDates = string.Join(Environment.NewLine, so.Machines
-                        .SelectMany(m => m.Procurements
-                        .Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
-                    Media = string.Join(", ", so.Machines.Select(m => m.Media ? "Yes" : "No")),
-                    SpareParts = string.Join(", ", so.Machines.Select(m => m.SpareParts ? "Yes" : "No")),
-                    Base = string.Join(", ", so.Machines.Select(m => m.Base ? "Yes" : "No")),
-                    AirSeal = string.Join(", ", so.Machines.Select(m => m.AirSeal ? "Yes" : "No")),
-                    CoatingLining = string.Join(", ", so.Machines.Select(m => m.CoatingLining ? "Yes" : "No")),
-                    Disassembly = string.Join(", ", so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
-                    PreOrder = string.Join(", ", so.Machines.Select(m => m.PreOrder)),
-                    Scope = string.Join(", ", so.Machines.Select(m => m.Scope)),
-                    ActualAssemblyHours = so.Machines.FirstOrDefault().ActualAssemblyHours != null
-                        ? $"{so.Machines.FirstOrDefault().ActualAssemblyHours} hrs"
-                        : "N/A",
-                    ReworkHours = so.Machines.FirstOrDefault().ReworkHours != null
-                        ? $"{so.Machines.FirstOrDefault().ReworkHours} hrs"
-                        : "N/A",
-                    NamePlate = so.Machines.FirstOrDefault().Nameplate.ToString() ?? "N/A"
-                })
-                .ToList();
+     .Include(so => so.Machines).ThenInclude(g => g.MachineType)
+     .Include(so => so.Machines).ThenInclude(m => m.Procurements).ThenInclude(p => p.Vendor)
+     .OrderByDescending(so => so.SoDate)
+     .AsEnumerable() // Forces EF to fetch data into memory first
+     .Select(so => new
+     {
+         SalesOrderNumber = so.OrderNumber ?? "",
+         CustomerName = so.CompanyName ?? "Unknown",
+         MachineDescriptions = string.Join(Environment.NewLine, so.Machines.Select(m => m.MachineType.Description ?? "Unknown")),
+         SerialNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.SerialNumber ?? "N/A")),
+         VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name ?? "N/A"))),
+         PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber ?? "N/A"))),
+         PoDueDates = string.Join(Environment.NewLine, so.Machines
+             .SelectMany(m => m.Procurements
+             .Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
+         DeliveryDates = string.Join(Environment.NewLine, so.Machines
+             .SelectMany(m => m.Procurements
+             .Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
+         Media = string.Join(", ", so.Machines.Select(m => m.Media ? "Yes" : "No")),
+         SpareParts = string.Join(", ", so.Machines.Select(m => m.SpareParts ? "Yes" : "No")),
+         Base = string.Join(", ", so.Machines.Select(m => m.Base ? "Yes" : "No")),
+         AirSeal = string.Join(", ", so.Machines.Select(m => m.AirSeal ? "Yes" : "No")),
+         CoatingLining = string.Join(", ", so.Machines.Select(m => m.CoatingLining ? "Yes" : "No")),
+         Disassembly = string.Join(", ", so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
+         PreOrder = string.Join(", ", so.Machines.Select(m => m.PreOrder ?? "N/A")),
+         Scope = string.Join(", ", so.Machines.Select(m => m.Scope ?? "N/A")),
+         ActualAssemblyHours = so.Machines.FirstOrDefault()?.ActualAssemblyHours != null
+             ? $"{so.Machines.FirstOrDefault().ActualAssemblyHours} hrs"
+             : "N/A",
+         ReworkHours = so.Machines.FirstOrDefault()?.ReworkHours != null
+             ? $"{so.Machines.FirstOrDefault().ReworkHours} hrs"
+             : "N/A",
+         NamePlate = so.Machines.FirstOrDefault()?.Nameplate?.ToString() ?? "N/A"
+     })
+     .ToList();
 
             if (schedules.Count == 0)
             {
