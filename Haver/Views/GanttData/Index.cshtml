@@ -1,5 +1,17 @@
 ﻿@model IEnumerable<haver.Models.GanttData>
 
+@if (TempData["Message"] != null)
+{
+    <div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fas fa-check-circle"></i>
+        @TempData["Message"]
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+}
+
 @{
     ViewData["Title"] = "Gantt Data";
     var currentSortField = ViewData["sortField"]?.ToString();
@@ -68,23 +80,32 @@
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.Description)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.AppDRcd)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.EngReleased)</td>
-                <td class="text-center">
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                       aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"
-                       data-bs-toggle="tooltip" title="Edit Order">
-                        <i class="fa-solid fa-pen-to-square"></i> 
-                    </a>
-                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white"
-                       aria-label="View details of order @item.Machine.SalesOrder.OrderNumber"
-                       data-bs-toggle="tooltip" title="View Details">
-                        <i class="fa-solid fa-circle-info"></i> 
-                    </a>
-                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                       aria-label="Delete order @item.Machine.SalesOrder.OrderNumber"
-                       data-bs-toggle="tooltip" title="Delete Order">
-                        <i class="fa-solid fa-delete-left"></i> 
-                    </a>
-                </td>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white"
+                           aria-label="View details of order @item.Machine.SalesOrder.OrderNumber"
+                           data-bs-toggle="tooltip" title="View Details">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+
+                        @if (!item.IsFinalized)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                               aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"
+                               data-bs-toggle="tooltip" title="Edit Order">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                               aria-label="Delete order @item.Machine.SalesOrder.OrderNumber"
+                               data-bs-toggle="tooltip" title="Delete Order">
+                                <i class="fa-solid fa-delete-left"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Finalized</span>
+                        }
+                    </td>
+
             </tr>
         }
     </tbody>

@@ -88,6 +88,8 @@ namespace haver.Models
         [DataType(DataType.MultilineText)]
         public string? Notes { get; set; }  // Notes for tracking changes or delays
 
+        public bool IsFinalized { get; set; } = false;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 

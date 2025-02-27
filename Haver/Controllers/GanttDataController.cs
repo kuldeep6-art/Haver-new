@@ -394,17 +394,46 @@ namespace haver.Controllers
 		}
 
 
-		//private string GetMilestoneClass(GanttData g)
-		//{
-		//    if (g.EngReleased.HasValue) return "eng-released";
-		//    if (g.PackageReleased.HasValue) return "package-released";
-		//    if (g.ShipExpected.HasValue) return "shipping";
-		//    if (g.DeliveryExpected.HasValue) return "delivery";
-		//    return "default-task";
-		//}
+        //private string GetMilestoneClass(GanttData g)
+        //{
+        //    if (g.EngReleased.HasValue) return "eng-released";
+        //    if (g.PackageReleased.HasValue) return "package-released";
+        //    if (g.ShipExpected.HasValue) return "shipping";
+        //    if (g.DeliveryExpected.HasValue) return "delivery";
+        //    return "default-task";
+        //}
+
+        public async Task<IActionResult> FinalizeGantt(int id)
+        {
+            var gantt = _context.GanttDatas.Find(id);
+            if (gantt == null)
+            {
+                return NotFound();
+            }
+
+            gantt.IsFinalized = true;
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Gantt chart finalized successfully!";
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> UnfinalizeGantt(int id)
+        {
+            var gantt = _context.GanttDatas.Find(id);
+            if (gantt == null)
+            {
+                return NotFound();
+            }
+
+            gantt.IsFinalized = false;
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Gantt chart has been unfinalized.";
+            return RedirectToAction("Index");
+        }
 
 
-		private bool GanttDataExists(int id)
+        private bool GanttDataExists(int id)
         {
             return _context.GanttDatas.Any(e => e.ID == id);
         }
