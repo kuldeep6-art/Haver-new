@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TextTemplating;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace haver.Controllers
 {
@@ -442,7 +443,7 @@ namespace haver.Controllers
      .Include(so => so.Machines).ThenInclude(g => g.MachineType)
      .Include(so => so.Machines).ThenInclude(m => m.Procurements).ThenInclude(p => p.Vendor)
      .OrderByDescending(so => so.SoDate)
-     .AsEnumerable() // Forces EF to fetch data into memory first
+     .AsEnumerable() 
      .Select(so => new
      {
          SalesOrderNumber = so.OrderNumber ?? "",
@@ -472,7 +473,9 @@ namespace haver.Controllers
              ? $"{m.ReworkHours} hrs"
              : "N/A")),
          NamePlate = string.Join(Environment.NewLine, so.Machines.Select(m => m.Nameplate?.ToString() ?? "N/A")),
-         Notes = so.CompanyName ?? "No notes for this salesorder",
+         Notes = !string.IsNullOrEmpty(so.Comments)
+    ? Regex.Replace(so.Comments, "<.*?>", string.Empty) // Removes HTML tags
+    : "No notes for this sales order"
      })
      .ToList();
 
