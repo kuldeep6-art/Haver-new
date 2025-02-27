@@ -465,13 +465,13 @@ namespace haver.Controllers
          Disassembly = string.Join(Environment.NewLine, so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
          PreOrder = string.Join(Environment.NewLine, so.Machines.Select(m => m.PreOrder ?? "N/A")),
          Scope = string.Join(Environment.NewLine, so.Machines.Select(m => m.Scope ?? "N/A")),
-         ActualAssemblyHours = so.Machines.FirstOrDefault()?.ActualAssemblyHours != null
-             ? $"{so.Machines.FirstOrDefault().ActualAssemblyHours} hrs"
-             : "N/A",
-         ReworkHours = so.Machines.FirstOrDefault()?.ReworkHours != null
-             ? $"{so.Machines.FirstOrDefault().ReworkHours} hrs"
-             : "N/A",
-         NamePlate = so.Machines.FirstOrDefault()?.Nameplate?.ToString() ?? "N/A"
+         ActualAssemblyHours = string.Join(Environment.NewLine, so.Machines.Select(m => m.ActualAssemblyHours != null
+             ? $"{m.ActualAssemblyHours} hrs"
+             : "N/A")),
+         ReworkHours = string.Join(Environment.NewLine, so.Machines.Select(m => m.ReworkHours != null
+             ? $"{m.ReworkHours} hrs"
+             : "N/A")),
+         NamePlate = string.Join(Environment.NewLine, so.Machines.Select(m => m.Nameplate?.ToString() ?? "N/A"))
      })
      .ToList();
 
@@ -521,10 +521,10 @@ namespace haver.Controllers
                 workSheet.Cells[4, 1].LoadFromCollection(schedules, false);
 
                 // Enable text wrapping for columns with line breaks
-                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
+                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
                 foreach (int col in wrapTextColumns)
                 {
-                    workSheet.Column(col).Style.WrapText = true;
+                    workSheet.Column(col).Style.WrapText = true; 
                 }
 
                 // AutoFit and manual column adjustments
