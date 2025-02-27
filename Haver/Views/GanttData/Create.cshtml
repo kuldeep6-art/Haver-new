@@ -49,6 +49,23 @@
                         </div>
                     </div>
                     <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.StartOfWeek)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
+                        </label>
+                        <select asp-for="StartOfWeek" class="form-control"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                asp-items="Html.GetEnumSelectList<WeekStartOption>()"></select>
+                        <span asp-validation-for="StartOfWeek" class="text-danger"></span>
+                    </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Row 2: EngReleased, CustomerApproval, PackageReleased -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="EngExpected" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -60,10 +77,6 @@
                             <span asp-validation-for="EngExpected" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Row 2: EngReleased, CustomerApproval, PackageReleased -->
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="EngReleased" class="control-label"
@@ -88,6 +101,11 @@
                             <span asp-validation-for="CustomerApproval" class="text-danger"></span>
                         </div>
                     </div>
+                    
+                </div>
+
+                <!-- Row 3: PurchaseOrdersIssued, PurchaseOrdersCompleted, SupplierPODue -->
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="PackageReleased" class="control-label"
@@ -100,10 +118,6 @@
                             <span asp-validation-for="PackageReleased" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Row 3: PurchaseOrdersIssued, PurchaseOrdersCompleted, SupplierPODue -->
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="PurchaseOrdersIssued" class="control-label"
@@ -128,6 +142,11 @@
                             <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
                         </div>
                     </div>
+                   
+                </div>
+
+                <!-- Row 4: AssemblyStart, AssemblyComplete, ShipExpected -->
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="SupplierPODue" class="control-label"
@@ -140,10 +159,6 @@
                             <span asp-validation-for="SupplierPODue" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Row 4: AssemblyStart, AssemblyComplete, ShipExpected -->
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="AssemblyStart" class="control-label"

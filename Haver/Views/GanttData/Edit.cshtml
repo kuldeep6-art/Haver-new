@@ -23,6 +23,16 @@
                 <input asp-for="AppDRcd" class="form-control" id="AppDrRcd" />
                 <span asp-validation-for="AppDRcd" class="text-danger"></span>
             </div>
+            <div class="form-group  mb-4">
+                <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                    @Html.DisplayNameFor(model => model.StartOfWeek)
+                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
+                </label>
+                <select asp-for="StartOfWeek" class="form-control"
+                        style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                        asp-items="Html.GetEnumSelectList<WeekStartOption>()"></select>
+                <span asp-validation-for="StartOfWeek" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="EngExpected" class="control-label"></label>
                 <input asp-for="EngExpected" class="form-control" />
