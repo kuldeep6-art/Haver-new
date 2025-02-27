@@ -24,9 +24,15 @@ namespace haver.Controllers
         }
 
         // GET: GanttData
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number", bool? isFinalized = null)
         {
             string[] sortOptions = new[] { "Order Number" };
+
+            // Default filter to Active (not finalized) if isFinalized is null
+            if (!isFinalized.HasValue)
+            {
+                isFinalized = false;
+            }
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -39,6 +45,17 @@ namespace haver.Controllers
                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
                 .AsNoTracking()
                         select g;
+
+
+            // Apply `isFinalized` filter only if it's not null
+            if (isFinalized.HasValue)
+            {
+                gData = gData.Where(v => v.IsFinalized == isFinalized.Value);
+            }
+
+            // Set ViewBag.Status to control which tab is active
+            ViewBag.Status = isFinalized.Value ? "Finalized" : "Active";
+
 
             if (!String.IsNullOrEmpty(SearchString))
             {
@@ -394,17 +411,46 @@ namespace haver.Controllers
 		}
 
 
-		//private string GetMilestoneClass(GanttData g)
-		//{
-		//    if (g.EngReleased.HasValue) return "eng-released";
-		//    if (g.PackageReleased.HasValue) return "package-released";
-		//    if (g.ShipExpected.HasValue) return "shipping";
-		//    if (g.DeliveryExpected.HasValue) return "delivery";
-		//    return "default-task";
-		//}
+        //private string GetMilestoneClass(GanttData g)
+        //{
+        //    if (g.EngReleased.HasValue) return "eng-released";
+        //    if (g.PackageReleased.HasValue) return "package-released";
+        //    if (g.ShipExpected.HasValue) return "shipping";
+        //    if (g.DeliveryExpected.HasValue) return "delivery";
+        //    return "default-task";
+        //}
+
+        public async Task<IActionResult> FinalizeGantt(int id)
+        {
+            var gantt = _context.GanttDatas.Find(id);
+            if (gantt == null)
+            {
+                return NotFound();
+            }
+
+            gantt.IsFinalized = true;
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Gantt chart finalized successfully!";
+            return RedirectToAction("Index", new { isFinalized = true });
+        }
+        public async Task<IActionResult> UnfinalizeGantt(int id)
+        {
+            var gantt = _context.GanttDatas.Find(id);
+            if (gantt == null)
+            {
+                return NotFound();
+            }
+
+            gantt.IsFinalized = false;
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Gantt chart has been unfinalized.";
+            return RedirectToAction("Index", new { isFinalized = false });
+        }
 
 
-		private bool GanttDataExists(int id)
+        private bool GanttDataExists(int id)
         {
             return _context.GanttDatas.Any(e => e.ID == id);
         }

@@ -4,12 +4,36 @@
     ViewData["Title"] = "Details";
 }
 
+
+
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <a asp-action="Edit" asp-route-id="@Model.GanttData.ID" class="btn">Edit</a>
-            <a asp-action="Index" class="btn ">Back to List</a>
+            @if (!Model.GanttData.IsFinalized)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.GanttData.ID" class="btn">Edit</a>
+                <form asp-action="FinalizeGantt" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@Model.GanttData.ID" />
+                    <button type="submit" class="btn" onclick="return confirm('Are you sure you want to finalize this Gantt chart?');">
+                        Finalize
+                    </button>
+                </form>
+            }
+            else
+            {
+                <span class="badge bg-success">Finalized</span>
+                <form asp-action="UnfinalizeGantt" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@Model.GanttData.ID" />
+                    <button type="submit" class="btn" onclick="return confirm('Are you sure you want to unfinalize this Gantt chart?');">
+                        Unfinalize
+                    </button>
+                </form>
+            }
+
+            <a asp-action="Index" class="btn">Back to List</a>
         </div>
+
+
     </div>
 
     <div class="info-container">
