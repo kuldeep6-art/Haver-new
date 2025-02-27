@@ -13,6 +13,46 @@
 }
 
 @{
+    // Create route value dictionaries for each tab
+    var routeValues = new Dictionary<string, Dictionary<string, string>>
+            {
+                ["Active"] = new Dictionary<string, string> { ["isFinalized"] = "false" },
+                ["Finalized"] = new Dictionary<string, string> { ["isFinalized"] = "true" }
+            };
+
+    // Preserve existing query parameters (except 'isActive' and 'page')
+    foreach (var key in Context.Request.Query.Keys.Where(k => k != "isFinalized" && k != "page"))
+    {
+        foreach (var dict in routeValues.Values)
+        {
+            dict[key] = Context.Request.Query[key];
+        }
+    }
+
+    // Reset page number to 1 when switching tabs
+    foreach (var dict in routeValues.Values)
+    {
+        dict["page"] = "1";
+    }
+}
+
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Status == "Active" ? "active" : "")"
+           href="@Url.Action("Index", routeValues["Active"])">
+            Active 
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Status == "Finalized" ? "active" : "")"
+           href="@Url.Action("Index", routeValues["Finalized"])">
+           Finalized
+        </a>
+    </li>
+</ul>
+
+
+@{
     ViewData["Title"] = "Gantt Data";
     var currentSortField = ViewData["sortField"]?.ToString();
     var currentSortDirection = ViewData["sortDirection"]?.ToString();
