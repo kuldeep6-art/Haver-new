@@ -511,7 +511,7 @@ namespace haver.Controllers
 
                 // Column headers
                 string[] headers = {
-            "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number","Package Release Expected","Package Release Actual", "Vendors",
+            "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number","Production Order Number","Package Release Expected","Package Release Actual", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
             "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
             "Actual Hours", "Rework Hours", "NamePlate", "Notes/Comments"
