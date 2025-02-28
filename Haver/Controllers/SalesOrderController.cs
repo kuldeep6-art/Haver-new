@@ -447,6 +447,7 @@ namespace haver.Controllers
      .Select(so => new
      {
          SalesOrderNumber = so.OrderNumber ?? "",
+         SalesOrderDate = so.SoDate.ToShortDateString() ?? "N/A", 
          CustomerName = so.CompanyName ?? "Unknown",
          MachineDescriptions = string.Join(Environment.NewLine, so.Machines.Select(m => m.MachineType.Description ?? "Unknown")),
          SerialNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.SerialNumber ?? "N/A")),
@@ -507,7 +508,7 @@ namespace haver.Controllers
 
                 // Column headers
                 string[] headers = {
-            "Sales Order", "Customer Name", "Machine Description", "Serial Number", "Vendors",
+            "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
             "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
             "Actual Hours", "Rework Hours", "NamePlate", "Notes/Comments"
