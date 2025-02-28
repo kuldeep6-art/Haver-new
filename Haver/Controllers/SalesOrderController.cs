@@ -513,7 +513,7 @@ namespace haver.Controllers
                 string[] headers = {
             "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number","Production Order Number","Package Release Expected","Package Release Actual", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
-            "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
+            "Air Seal", "Coating Lining", "Disassembly", "Pre Order", "Scope",
             "Actual Hours", "Rework Hours", "NamePlate", "Notes/Comments"
         };
 
@@ -529,7 +529,7 @@ namespace haver.Controllers
                 workSheet.Cells[4, 1].LoadFromCollection(schedules, false);
 
                 // Enable text wrapping for columns with line breaks
-                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
+                int[] wrapTextColumns = { 4 ,5 ,6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }; 
                 foreach (int col in wrapTextColumns)
                 {
                     workSheet.Column(col).Style.WrapText = true; 
@@ -543,6 +543,8 @@ namespace haver.Controllers
                 workSheet.Column(6).Width = 15;
                 workSheet.Column(7).Width = 15;
                 workSheet.Column(8).Width = 15;
+                workSheet.Column(9).Width = 30;
+                workSheet.Column(10).Width = 12;
 
                 try
                 {
