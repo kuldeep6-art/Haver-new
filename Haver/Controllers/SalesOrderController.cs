@@ -505,9 +505,15 @@ namespace haver.Controllers
                 // Add timestamp
                 DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
                     TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-                workSheet.Cells[2, 16].Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
-                workSheet.Cells[2, 16].Style.Font.Bold = true;
-                workSheet.Cells[2, 16].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                // Add timestamp spanning across multiple columns
+                using (ExcelRange timestamp = workSheet.Cells[2, 1, 2, 16]) // Spanning from column 1 to 16
+                {
+                    timestamp.Merge = true;
+                    timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
+                    timestamp.Style.Font.Bold = true;
+                    timestamp.Style.Font.Size = 14; // Make it bigger
+                    timestamp.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
 
                 // Column headers
                 string[] headers = {
@@ -549,7 +555,7 @@ namespace haver.Controllers
                 try
                 {
                     Byte[] theData = excel.GetAsByteArray();
-                    return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MachineSchedules.xlsx");
+                    return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Machine Schedule.xlsx");
                 }
                 catch (Exception)
                 {
