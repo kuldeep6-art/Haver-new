@@ -16,11 +16,10 @@
 
     <!-- Centered Form -->
     <div class="row py-4">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-10 offset-md-1">
             <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Gantt Data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <!-- Row 1: MachineID, AppDRcd, EngExpected -->
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -40,11 +39,11 @@
                         <div class="form-group">
                             <label asp-for="AppDRcd" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                App DRcd
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the application delivery record code."></i>
+                                Approved Drawings Recieved
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Approved Drawings Recieved Date"></i>
                             </label>
                             <input asp-for="AppDRcd" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AppDRcd" placeholder="Enter App DRcd" />
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AppDRcd" placeholder="Enter Approved Drawings Recieved" />
                             <span asp-validation-for="AppDRcd" class="text-danger"></span>
                         </div>
                     </div>
@@ -63,17 +62,17 @@
                     
                 </div>
 
-                <!-- Row 2: EngReleased, CustomerApproval, PackageReleased -->
+            
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="EngExpected" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Engineering Expected
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the expected engineering date."></i>
+                                Engineering Package Expected
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Expected date."></i>
                             </label>
                             <input asp-for="EngExpected" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngExpected" placeholder="Enter Engineering Expected Date" />
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngExpected" placeholder="Enter Engineering Package Expected Date" />
                             <span asp-validation-for="EngExpected" class="text-danger"></span>
                         </div>
                     </div>
@@ -183,6 +182,8 @@
                             <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
                         </div>
                     </div>
+                    </div>
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="ShipExpected" class="control-label"
@@ -194,8 +195,58 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="ShipExpected" placeholder="Enter Ship Expected Date" />
                             <span asp-validation-for="ShipExpected" class="text-danger"></span>
                         </div>
-                    </div>
+                        </div>
+
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="ShipActual" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">Ship Actual
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the actual shipping date."></i>
+                            </label>
+                            <input asp-for="ShipActual" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="ShipActual" placeholder="Enter Ship Actual Date" />
+                            <span asp-validation-for="ShipActual" class="text-danger"></span>
+                        </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DeliveryExpected" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                   Delivery Expected
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery expected date."></i>
+                                </label>
+                                <input asp-for="DeliveryExpected" class="form-control"
+                                       style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="DeliveryExpected" placeholder="Enter Delivery Expected Date" />
+                                <span asp-validation-for="DeliveryExpected" class="text-danger"></span>
+                            </div>
+                          
+
+                        </div>
+                        </div>
+
+                <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DeliveryActual" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                  Delivery Actual
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery actual date."></i>
+                                </label>
+                                <input asp-for="DeliveryActual" class="form-control"
+                                       style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="DeliveryExpected" placeholder="Enter Delivery Actual Date" />
+                                <span asp-validation-for="DeliveryActual" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                <div class="form-group">
+                        <label asp-for="Notes" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Notes
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter Notes"></i>
+                        </label>
+                        <textarea asp-for="Notes" class="form-control summernote" style="border-color:#0C2340; font-family: 'Avenir Roman';"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
                 </div>
+                </div>
+               
 
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary mr-2"

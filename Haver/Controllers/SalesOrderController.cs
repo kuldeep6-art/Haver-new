@@ -447,9 +447,13 @@ namespace haver.Controllers
      .Select(so => new
      {
          SalesOrderNumber = so.OrderNumber ?? "",
+         SalesOrderDate = so.SoDate.ToShortDateString() ?? "N/A", 
          CustomerName = so.CompanyName ?? "Unknown",
          MachineDescriptions = string.Join(Environment.NewLine, so.Machines.Select(m => m.MachineType.Description ?? "Unknown")),
          SerialNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.SerialNumber ?? "N/A")),
+         ProductionOrderNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.ProductionOrderNumber ?? "N/A")),
+         PackageReleaseDateE = "P - " + so.EngPExp?.ToShortDateString() ?? "N/A",
+         PackageReleaseDateA = "A - " + so.EngPRel?.ToString() ?? "N/A",
          VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name ?? "N/A"))),
          PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber ?? "N/A"))),
          PoDueDates = string.Join(Environment.NewLine, so.Machines
@@ -501,15 +505,21 @@ namespace haver.Controllers
                 // Add timestamp
                 DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
                     TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-                workSheet.Cells[2, 16].Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
-                workSheet.Cells[2, 16].Style.Font.Bold = true;
-                workSheet.Cells[2, 16].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                // Add timestamp spanning across multiple columns
+                using (ExcelRange timestamp = workSheet.Cells[2, 1, 2, 16]) // Spanning from column 1 to 16
+                {
+                    timestamp.Merge = true;
+                    timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
+                    timestamp.Style.Font.Bold = true;
+                    timestamp.Style.Font.Size = 14; // Make it bigger
+                    timestamp.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
 
                 // Column headers
                 string[] headers = {
-            "Sales Order", "Customer Name", "Machine Description", "Serial Number", "Vendors",
+            "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number","Production Order Number","Package Release Expected","Package Release Actual", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
-            "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
+            "Air Seal", "Coating Lining", "Disassembly", "Pre Order", "Scope",
             "Actual Hours", "Rework Hours", "NamePlate", "Notes/Comments"
         };
 
@@ -525,7 +535,7 @@ namespace haver.Controllers
                 workSheet.Cells[4, 1].LoadFromCollection(schedules, false);
 
                 // Enable text wrapping for columns with line breaks
-                int[] wrapTextColumns = { 3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }; // Vendor Name, PO Number, PO Due Date, Delivery Date
+                int[] wrapTextColumns = { 4 ,5 ,6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }; 
                 foreach (int col in wrapTextColumns)
                 {
                     workSheet.Column(col).Style.WrapText = true; 
@@ -539,11 +549,13 @@ namespace haver.Controllers
                 workSheet.Column(6).Width = 15;
                 workSheet.Column(7).Width = 15;
                 workSheet.Column(8).Width = 15;
+                workSheet.Column(9).Width = 30;
+                workSheet.Column(10).Width = 12;
 
                 try
                 {
                     Byte[] theData = excel.GetAsByteArray();
-                    return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MachineSchedules.xlsx");
+                    return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Machine Schedule.xlsx");
                 }
                 catch (Exception)
                 {

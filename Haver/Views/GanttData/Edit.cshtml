@@ -4,124 +4,263 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>GanttData</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="MachineID" class="control-label"></label>
-                <select asp-for="MachineID" class="form-control" asp-items="ViewBag.MachineID"></select>
-                <span asp-validation-for="MachineID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppDRcd" class="control-label"></label>
-                <input asp-for="AppDRcd" class="form-control" id="AppDrRcd" />
-                <span asp-validation-for="AppDRcd" class="text-danger"></span>
-            </div>
-            <div class="form-group  mb-4">
-                <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                    @Html.DisplayNameFor(model => model.StartOfWeek)
-                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
-                </label>
-                <select asp-for="StartOfWeek" class="form-control"
-                        style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                        asp-items="Html.GetEnumSelectList<WeekStartOption>()"></select>
-                <span asp-validation-for="StartOfWeek" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EngExpected" class="control-label"></label>
-                <input asp-for="EngExpected" class="form-control" />
-                <span asp-validation-for="EngExpected" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EngReleased" class="control-label"></label>
-                <input asp-for="EngReleased" class="form-control" />
-                <span asp-validation-for="EngReleased" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerApproval" class="control-label"></label>
-                <input asp-for="CustomerApproval" class="form-control" />
-                <span asp-validation-for="CustomerApproval" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PackageReleased" class="control-label"></label>
-                <input asp-for="PackageReleased" class="form-control" />
-                <span asp-validation-for="PackageReleased" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchaseOrdersIssued" class="control-label"></label>
-                <input asp-for="PurchaseOrdersIssued" class="form-control" id="PurchaseOrdersIssued" />
-                <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchaseOrdersCompleted" class="control-label"></label>
-                <input asp-for="PurchaseOrdersCompleted" class="form-control" id="PurchaseOrdersCompleted" />
-                <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchaseOrdersIssued" class="control-label"></label>
-                <input asp-for="PurchaseOrdersIssued" class="form-control" />
-                <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchaseOrdersCompleted" class="control-label"></label>
-                <input asp-for="PurchaseOrdersCompleted" class="form-control" />
-                <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierPODue" class="control-label"></label>
-                <input asp-for="SupplierPODue" class="form-control" />
-                <span asp-validation-for="SupplierPODue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssemblyStart" class="control-label"></label>
-                <input asp-for="AssemblyStart" class="form-control" />
-                <span asp-validation-for="AssemblyStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssemblyComplete" class="control-label"></label>
-                <input asp-for="AssemblyComplete" class="form-control" />
-                <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShipExpected" class="control-label"></label>
-                <input asp-for="ShipExpected" class="form-control" />
-                <span asp-validation-for="ShipExpected" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShipActual" class="control-label"></label>
-                <input asp-for="ShipActual" class="form-control" />
-                <span asp-validation-for="ShipActual" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeliveryExpected" class="control-label"></label>
-                <input asp-for="DeliveryExpected" class="form-control" />
-                <span asp-validation-for="DeliveryExpected" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeliveryActual" class="control-label"></label>
-                <input asp-for="DeliveryActual" class="form-control" />
-                <span asp-validation-for="DeliveryActual" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <textarea asp-for="Notes" class="form-control summernote"></textarea>
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Edit Gantt Data
+            </h4>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <!-- Centered Form -->
+    <div class="row py-4">
+        <div class="col-md-10 offset-md-1">
+            <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Gantt Data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="MachineID" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Machine
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine associated with the Gantt data."></i>
+                            </label>
+                            <select asp-for="MachineID" class="form-control"
+                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" asp-items="ViewBag.MachineID" id="MachineID">
+                                <option value="">Select a Machine</option>
+                            </select>
+                            <span asp-validation-for="MachineID" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="AppDRcd" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Approved Drawings Recieved
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Approved Drawings Recieved Date"></i>
+                            </label>
+                            <input asp-for="AppDRcd" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AppDRcd" placeholder="Enter Approved Drawings Recieved" />
+                            <span asp-validation-for="AppDRcd" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.StartOfWeek)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
+                        </label>
+                        <select asp-for="StartOfWeek" class="form-control"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                asp-items="Html.GetEnumSelectList<WeekStartOption>()"></select>
+                        <span asp-validation-for="StartOfWeek" class="text-danger"></span>
+                    </div>
+                    </div>
+                    
+                </div>
+
+            
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="EngExpected" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Engineering Package Expected
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Expected date."></i>
+                            </label>
+                            <input asp-for="EngExpected" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngExpected" placeholder="Enter Engineering Package Expected Date" />
+                            <span asp-validation-for="EngExpected" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="EngReleased" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Engineering Released
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineering release date."></i>
+                            </label>
+                            <input asp-for="EngReleased" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngReleased" placeholder="Enter Engineering Release Date" />
+                            <span asp-validation-for="EngReleased" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="CustomerApproval" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Customer Approval
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer approval date."></i>
+                            </label>
+                            <input asp-for="CustomerApproval" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="CustomerApproval" placeholder="Enter Customer Approval Date" />
+                            <span asp-validation-for="CustomerApproval" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Row 3: PurchaseOrdersIssued, PurchaseOrdersCompleted, SupplierPODue -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PackageReleased" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Package Released
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the package release date."></i>
+                            </label>
+                            <input asp-for="PackageReleased" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PackageReleased" placeholder="Enter Package Release Date" />
+                            <span asp-validation-for="PackageReleased" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PurchaseOrdersIssued" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Purchase Orders Issued
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were issued."></i>
+                            </label>
+                            <input asp-for="PurchaseOrdersIssued" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersIssued" placeholder="Enter Purchase Orders Issued Date" />
+                            <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PurchaseOrdersCompleted" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Purchase Orders Completed
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were completed."></i>
+                            </label>
+                            <input asp-for="PurchaseOrdersCompleted" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersCompleted" placeholder="Enter Purchase Orders Completed Date" />
+                            <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                <!-- Row 4: AssemblyStart, AssemblyComplete, ShipExpected -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="SupplierPODue" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Supplier PO Due
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier PO due date."></i>
+                            </label>
+                            <input asp-for="SupplierPODue" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="SupplierPODue" placeholder="Enter Supplier PO Due Date" />
+                            <span asp-validation-for="SupplierPODue" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="AssemblyStart" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Assembly Start
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the assembly start date."></i>
+                            </label>
+                            <input asp-for="AssemblyStart" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AssemblyStart" placeholder="Enter Assembly Start Date" />
+                            <span asp-validation-for="AssemblyStart" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="AssemblyComplete" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Assembly Complete
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the assembly completion date."></i>
+                            </label>
+                            <input asp-for="AssemblyComplete" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AssemblyComplete" placeholder="Enter Assembly Complete Date" />
+                            <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
+                        </div>
+                    </div>
+                    </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="ShipExpected" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Ship Expected
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the expected shipping date."></i>
+                            </label>
+                            <input asp-for="ShipExpected" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="ShipExpected" placeholder="Enter Ship Expected Date" />
+                            <span asp-validation-for="ShipExpected" class="text-danger"></span>
+                        </div>
+                        </div>
+
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="ShipActual" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">Ship Actual
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the actual shipping date."></i>
+                            </label>
+                            <input asp-for="ShipActual" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="ShipActual" placeholder="Enter Ship Actual Date" />
+                            <span asp-validation-for="ShipActual" class="text-danger"></span>
+                        </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DeliveryExpected" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                   Delivery Expected
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery expected date."></i>
+                                </label>
+                                <input asp-for="DeliveryExpected" class="form-control"
+                                       style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="DeliveryExpected" placeholder="Enter Delivery Expected Date" />
+                                <span asp-validation-for="DeliveryExpected" class="text-danger"></span>
+                            </div>
+                          
+
+                        </div>
+                        </div>
+
+                <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DeliveryActual" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                  Delivery Actual
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery actual date."></i>
+                                </label>
+                                <input asp-for="DeliveryActual" class="form-control"
+                                       style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="DeliveryExpected" placeholder="Enter Delivery Actual Date" />
+                                <span asp-validation-for="DeliveryActual" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                <div class="form-group">
+                        <label asp-for="Notes" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Notes
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter Notes"></i>
+                        </label>
+                        <textarea asp-for="Notes" class="form-control summernote" style="border-color:#0C2340; font-family: 'Avenir Roman';"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                </div>
+               
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary mr-2"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Save
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary"
+                       style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Head {

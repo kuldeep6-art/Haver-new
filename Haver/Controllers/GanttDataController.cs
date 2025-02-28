@@ -210,6 +210,7 @@ namespace haver.Controllers
 
                     _context.Add(ganttData);
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Gantt Data has been successfully created";
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -267,6 +268,7 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Gantt Data has been successfully edited";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
