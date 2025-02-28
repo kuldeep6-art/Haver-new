@@ -451,6 +451,9 @@ namespace haver.Controllers
          CustomerName = so.CompanyName ?? "Unknown",
          MachineDescriptions = string.Join(Environment.NewLine, so.Machines.Select(m => m.MachineType.Description ?? "Unknown")),
          SerialNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.SerialNumber ?? "N/A")),
+         ProductionOrderNumbers = string.Join(Environment.NewLine, so.Machines.Select(m => m.ProductionOrderNumber ?? "N/A")),
+         PackageReleaseDateE = "P - " + so.EngPExp?.ToShortDateString() ?? "N/A",
+         PackageReleaseDateA = "A - " + so.EngPRel?.ToString() ?? "N/A",
          VendorNames = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.Vendor.Name ?? "N/A"))),
          PoNumbers = string.Join(Environment.NewLine, so.Machines.SelectMany(m => m.Procurements.Select(p => p.PONumber ?? "N/A"))),
          PoDueDates = string.Join(Environment.NewLine, so.Machines
@@ -508,7 +511,7 @@ namespace haver.Controllers
 
                 // Column headers
                 string[] headers = {
-            "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number", "Vendors",
+            "Sales Order","Order Date", "Customer Name", "Machine Description", "Serial Number","Package Release Expected","Package Release Actual", "Vendors",
             "PO Number", "PO Due Date", "Delivery Date", "Media", "Spare Parts", "Base",
             "Air Seal", "Coating Lining", "Disassembly", "PreOrder", "Scope",
             "Actual Hours", "Rework Hours", "NamePlate", "Notes/Comments"
