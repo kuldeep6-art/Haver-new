@@ -398,13 +398,13 @@ namespace haver.Controllers
 				{
 					tasks.Add(new GanttViewModel
 					{
-						ID = g.ID, // Keep ID as int
-						UniqueID = $"{g.ID}-{name}", // New unique string identifier (Add this field to GanttViewModel)
+						ID = g.ID, 
+						UniqueID = $"{g.ID}-{name}", 
 						MachineName = $"{g.Machine?.Description} - {name}",
 						StartDate = start.Value,
 						EndDate = end.Value,
-						Progress = 100, // Assuming milestones are fully completed
-						MilestoneClass = color // Assign color
+						Progress = 100, 
+						MilestoneClass = color 
 					});
 				}
 			}
