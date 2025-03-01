@@ -146,6 +146,17 @@ namespace haver.Models
                 yield return new ValidationResult("Delivery Expected date must not be earlier than Ship Expected date.", new[] { "DeliveryExpected" });
             }
 
+        
+            if (AssemblyStart.HasValue && AssemblyComplete.HasValue && AssemblyComplete.Value < AssemblyStart.Value)
+            {
+                yield return new ValidationResult("Assembly Complete Date cannot be less than Assembly Start Date", new[] { "AssemblyComplete" });
+            }
+
+            if (PurchaseOrdersIssued.HasValue && PurchaseOrdersCompleted.HasValue && PurchaseOrdersCompleted.Value < PurchaseOrdersIssued.Value)
+            {
+                yield return new ValidationResult("Purchase Orders Completed cannot be less than Purchase Orders Issued Date", new[] { "PurchaseOrdersCompleted" });
+            }
+
         }
     }
 }
