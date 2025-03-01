@@ -83,14 +83,14 @@
                     int specCount = Model.SalesOrderEngineers.Count;
                     if (specCount > 0)
                     {
-                        string firstSpec = Model.SalesOrderEngineers.FirstOrDefault().Engineer.EngineerInitials;
+                        string firstSpec = Model.SalesOrderEngineers.FirstOrDefault().Engineer.EngineerInitialsB;
                         if (specCount > 1)
                         {
                             string specList = "";
                             var s = Model.SalesOrderEngineers.ToList();
                             for (int i = 1; i < specCount; i++)
                             {
-                                specList += s[i].Engineer.EngineerInitials + " <br />";
+                                specList += s[i].Engineer.EngineerInitialsB + " <br />";
                             }
                             <a class="engineer-list text-info" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)" aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
                                 @firstSpec <span class="badge bg-info">@specCount</span>
