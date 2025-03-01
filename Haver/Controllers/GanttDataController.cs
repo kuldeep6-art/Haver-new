@@ -201,11 +201,11 @@ namespace haver.Controllers
                 {
 
 
-                    ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
-                    ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
-                    ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
-                    ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
-                    ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
+                    //ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
+                    //ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
+                    //ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
+                    //ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
+                    //ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
 
 
                     _context.Add(ganttData);
@@ -221,7 +221,7 @@ namespace haver.Controllers
             }
 
 
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", ganttData.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
             return View(ganttData);
         }
 
@@ -383,12 +383,12 @@ namespace haver.Controllers
 			// Define only the required milestones with colors
 			var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
 	{
-		(g.AppDRcd, g.EngReleased, "Engineering Released to Customer", "#CB7723"),
-		(g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#FF8C00"),
-		(g.PackageReleased, g.PurchaseOrdersIssued, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
-		(g.PurchaseOrdersIssued, g.SupplierPODue, "Purchase Orders Issued", "#87CEEB"),
-		(g.SupplierPODue, g.AssemblyStart, "Supplier Purchase Orders Due", "#CBC3E3"),
-		(g.AssemblyStart, g.AssemblyComplete, "Machine Assembly and Testing", "#006400")
+		(g.EngExpected, g.EngReleased, "Engineering Released to Customer", "#FABF8F"),
+		(g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#E26B0A"),
+		(g.PackageReleased, g.PackageReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
+		(g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "Purchase Orders Issued", "#8DB4E2"),
+		(g.SupplierPODue, g.SupplierPODue, "Supplier Purchase Orders Due", "#FF99CC"),
+		(g.AssemblyStart, g.AssemblyComplete, "Machine Assembly and Testing", "#00B050")
 	};
 
 			// Generate Gantt tasks only for valid milestones
@@ -398,13 +398,13 @@ namespace haver.Controllers
 				{
 					tasks.Add(new GanttViewModel
 					{
-						ID = g.ID, // Keep ID as int
-						UniqueID = $"{g.ID}-{name}", // New unique string identifier (Add this field to GanttViewModel)
+						ID = g.ID, 
+						UniqueID = $"{g.ID}-{name}", 
 						MachineName = $"{g.Machine?.Description} - {name}",
 						StartDate = start.Value,
 						EndDate = end.Value,
-						Progress = 100, // Assuming milestones are fully completed
-						MilestoneClass = color // Assign color
+						Progress = 100, 
+						MilestoneClass = color 
 					});
 				}
 			}

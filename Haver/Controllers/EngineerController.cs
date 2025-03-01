@@ -27,10 +27,10 @@ namespace haver.Controllers
 
         // adding in Sorting and filtering for the engineer section based on ??(Dont know which variables to sort by yet)
         // GET: Engineer
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "LastName")
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Last Name")
         {
 
-            string[] sortOptions = new[] { "LastName","FirstName", "Phone" };
+            string[] sortOptions = new[] { "Last Name","First Name", "Phone" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -73,7 +73,7 @@ namespace haver.Controllers
                 }
             }
             //Now we know which field and direction to sort by
-            if (sortField == "FirstName")
+            if (sortField == "First Name")
             {
                 if (sortDirection == "asc")
                 {
