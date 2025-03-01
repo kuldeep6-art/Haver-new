@@ -201,11 +201,11 @@ namespace haver.Controllers
                 {
 
 
-                    ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
-                    ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
-                    ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
-                    ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
-                    ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
+                    //ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
+                    //ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
+                    //ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
+                    //ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
+                    //ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
 
 
                     _context.Add(ganttData);
