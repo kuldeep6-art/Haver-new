@@ -242,7 +242,7 @@ namespace haver.Controllers
             {
                 return NotFound();
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", ganttData.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
             return View(ganttData);
         }
 
@@ -289,7 +289,7 @@ namespace haver.Controllers
                 }
 
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", gDataToUpdate.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
             return View(gDataToUpdate);
         }
 
