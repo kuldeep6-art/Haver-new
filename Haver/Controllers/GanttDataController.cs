@@ -221,7 +221,7 @@ namespace haver.Controllers
             }
 
 
-            ViewData["MachineID"] = new SelectList(_context.Machines, "ID", "Description", ganttData.MachineID);
+            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
             return View(ganttData);
         }
 
@@ -383,7 +383,7 @@ namespace haver.Controllers
 			// Define only the required milestones with colors
 			var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
 	{
-		(g.AppDRcd, g.EngReleased, "Engineering Released to Customer", "#CB7723"),
+		(g.EngExpected, g.EngReleased, "Engineering Released to Customer", "#CB7723"),
 		(g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#FF8C00"),
 		(g.PackageReleased, g.PackageReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
 		(g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "Purchase Orders Issued", "#87CEEB"),

@@ -146,13 +146,6 @@ namespace haver.Models
                 yield return new ValidationResult("Delivery Expected date must not be earlier than Ship Expected date.", new[] { "DeliveryExpected" });
             }
 
-
-
-
-
         }
     }
-
-
-
 }
