@@ -30,7 +30,7 @@ namespace haver.Models
 
                 if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
                 {
-                    return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper() + FirstName + LastName;
+                    return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper() + " ( " + FirstName + " " + LastName + " ) ";
                 }
                 return string.Empty;
             }
