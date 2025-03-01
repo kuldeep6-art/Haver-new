@@ -22,6 +22,20 @@ namespace haver.Models
             }
         }
 
+        [Display(Name ="Engineer Initials")]
+        public string EngineerInitialsB
+        {
+            get
+            {
+
+                if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
+                {
+                    return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper() + FirstName + LastName;
+                }
+                return string.Empty;
+            }
+        }
+
 
         #endregion
 

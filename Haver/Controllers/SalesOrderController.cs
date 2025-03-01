@@ -186,7 +186,7 @@ namespace haver.Controllers
            // PopulateDropDownLists();
 
             //Fetch available engineers from the database
-            ViewBag.EngineersList = new MultiSelectList(_context.Engineers, "ID", "EngineerInitials");
+            ViewBag.EngineersList = new MultiSelectList(_context.Engineers, "ID", "EngineerInitialsB");
             return View();
         }
 
@@ -624,7 +624,7 @@ namespace haver.Controllers
                     selected.Add(new ListOptionVM
                     {
                         ID = s.ID,
-                        DisplayText = s.EngineerInitials
+                        DisplayText = s.EngineerInitialsB
                     });
                 }
                 else
@@ -632,7 +632,7 @@ namespace haver.Controllers
                     available.Add(new ListOptionVM
                     {
                         ID = s.ID,
-                        DisplayText = s.EngineerInitials
+                        DisplayText = s.EngineerInitialsB
                     });
                 }
             }
