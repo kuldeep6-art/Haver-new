@@ -9,7 +9,10 @@ namespace haver.Models
 
         [Required(ErrorMessage = "Please select the machine")]
         [Display(Name = "Machine")]
-        public int MachineID { get; set; }
+        public int? MachineID { get; set; }
+
+        [Required(ErrorMessage = "Please select the machine")]
+        [Display(Name = "Machine")]
         public Machine? Machine { get; set; }
 
         [Display(Name = "Approval Drawing Received")]
