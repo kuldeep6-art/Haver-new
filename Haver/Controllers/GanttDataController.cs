@@ -182,10 +182,18 @@ namespace haver.Controllers
         // GET: GanttData/Create
         public IActionResult Create()
         {
-            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
+            var assignedMachineIds = _context.GanttDatas.Select(g => g.MachineID).ToList(); // Get machines that already have a Gantt schedule
+
+            var availableMachines = _context.Machines
+                .Include(m => m.MachineType)
+                .Where(m => !assignedMachineIds.Contains(m.ID)) // Exclude assigned machines
+                .ToList();
+
+            ViewData["MachineID"] = new SelectList(availableMachines, "ID", "Description");
 
             return View();
         }
+
 
         // POST: GanttData/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -196,18 +204,8 @@ namespace haver.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
-
-                    //ganttData.PurchaseOrdersIssued ??= ganttData.PackageReleased?.AddDays(2);
-                    //ganttData.PurchaseOrdersCompleted ??= ganttData.PurchaseOrdersIssued?.AddDays(14);
-                    //ganttData.SupplierPODue ??= ganttData.PurchaseOrdersCompleted?.AddDays(10);
-                    //ganttData.AssemblyStart ??= ganttData.SupplierPODue?.AddDays(10);
-                    //ganttData.AssemblyComplete ??= ganttData.AssemblyStart?.AddDays(7);
-
-
                     _context.Add(ganttData);
                     await _context.SaveChangesAsync();
                     TempData["Message"] = "Gantt Data has been successfully created";
@@ -216,14 +214,21 @@ namespace haver.Controllers
             }
             catch (DbUpdateException)
             {
-               
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
+            // Ensure the dropdown remains filtered when the page reloads
+            var assignedMachineIds = _context.GanttDatas.Select(g => g.MachineID).ToList();
+            var availableMachines = _context.Machines
+                .Include(m => m.MachineType)
+                .Where(m => !assignedMachineIds.Contains(m.ID)) // Exclude assigned machines
+                .ToList();
 
-            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
+            ViewData["MachineID"] = new SelectList(availableMachines, "ID", "Description");
+
             return View(ganttData);
         }
+
 
         // GET: GanttData/Edit/5
         public async Task<IActionResult> Edit(int? id)
