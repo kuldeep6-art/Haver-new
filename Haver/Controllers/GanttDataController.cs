@@ -204,10 +204,8 @@ namespace haver.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
                     _context.Add(ganttData);
                     await _context.SaveChangesAsync();
                     TempData["Message"] = "Gantt Data has been successfully created";
@@ -216,14 +214,21 @@ namespace haver.Controllers
             }
             catch (DbUpdateException)
             {
-               
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
+            // Ensure the dropdown remains filtered when the page reloads
+            var assignedMachineIds = _context.GanttDatas.Select(g => g.MachineID).ToList();
+            var availableMachines = _context.Machines
+                .Include(m => m.MachineType)
+                .Where(m => !assignedMachineIds.Contains(m.ID)) // Exclude assigned machines
+                .ToList();
 
-            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
+            ViewData["MachineID"] = new SelectList(availableMachines, "ID", "Description");
+
             return View(ganttData);
         }
+
 
         // GET: GanttData/Edit/5
         public async Task<IActionResult> Edit(int? id)
