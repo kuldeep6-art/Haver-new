@@ -29,7 +29,7 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
-        public async Task<IActionResult> Index(int? page, int? pageSizeID,string status, string? SearchString, string? CString,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID,string status, DateTime? DtString, string? SearchString, string? CString,
             string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
             //List of sort options.
@@ -82,6 +82,14 @@ namespace haver.Controllers
             if (!String.IsNullOrEmpty(CString))
             {
                 salesOrders = salesOrders.Where(p => p.CompanyName.Contains(CString));
+                numberFilters++;
+            }
+            if(DtString.HasValue)
+            {
+                DateTime searchDae = DtString.Value.Date;
+                salesOrders = salesOrders.Where(s => s.SoDate.Year == searchDae.Year &&
+                                                s.SoDate.Month == searchDae.Month &&
+                                                s.SoDate.Day == searchDae.Day);
                 numberFilters++;
             }
 
