@@ -136,7 +136,7 @@
                     <td tabindex="0">@Html.DisplayFor(modelItem => item.Month)</td>
                     <td class="text-center">
                         <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white"
-                           aria-label="View details of order @item.Machine.SalesOrder.OrderNumber"
+                           aria-label="View details of gantt data @item.Machine.SalesOrder.OrderNumber"
                            data-bs-toggle="tooltip" title="View Details">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
@@ -144,15 +144,15 @@
                         @if (!item.IsFinalized)
                         {
                             <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Edit order @item.Machine.SalesOrder.OrderNumber"
-                               data-bs-toggle="tooltip" title="Edit Order">
+                               aria-label="Edit gantt data @item.Machine.SalesOrder.OrderNumber"
+                               data-bs-toggle="tooltip" title="Edit Gantt Data">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Delete order @item.Machine.SalesOrder.OrderNumber"
-                               data-bs-toggle="tooltip" title="Delete Order">
+                           @*  <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                               aria-label="Delete gantt data @item.Machine.SalesOrder.OrderNumber"
+                               data-bs-toggle="tooltip" title="Delete Gantt Data">
                                 <i class="fa-solid fa-delete-left"></i>
-                            </a>
+                            </a> *@
                         }
                         else
                         {
