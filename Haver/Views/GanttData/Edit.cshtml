@@ -21,6 +21,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @* <div asp-validation-summary="All" class="text-danger"></div> *@
                 <input type="hidden" asp-for="ID" />
+                <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
 
                 <div class="row mb-3">
@@ -28,7 +29,7 @@
                         <div class="form-group">
                             <label asp-for="MachineID" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Machine
+                                Machine <span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine associated with the Gantt data."></i>
                             </label>
                             <select asp-for="MachineID" class="form-control"
