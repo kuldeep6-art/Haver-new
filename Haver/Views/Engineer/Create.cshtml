@@ -15,13 +15,14 @@
         <div class="col-md-8 offset-md-2">
             <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Engineer Information">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
                 <div class="form-grid">
                     <!-- First Name -->
                     <div class="form-group mb-3">
                         <label asp-for="FirstName" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            First Name
+                            First Name <span class="text-danger">*</span>
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's first name."></i>
                         </label>
                         <input asp-for="FirstName" class="form-control"
@@ -33,7 +34,7 @@
                     <div class="form-group mb-3">
                         <label asp-for="LastName" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Last Name
+                            Last Name <span class="text-danger">*</span>
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's last name."></i>
                         </label>
                         <input asp-for="LastName" class="form-control"
@@ -45,7 +46,7 @@
                     <div class="form-group mb-3">
                         <label asp-for="Email" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Email Address
+                            Email Address <span class="text-danger">*</span>
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's email address."></i>
                         </label>
                         <input asp-for="Email" class="form-control"
