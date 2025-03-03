@@ -14,71 +14,81 @@
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
             <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Engineer Information">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <!-- First Name -->
-                <div class="form-group mb-3">
-                    <label asp-for="FirstName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        First Name
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's first name."></i>
-                    </label>
-                    <input asp-for="FirstName" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"  placeholder="Enter First Name"/>
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                <div class="form-grid">
+                    <!-- First Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            First Name
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's first name."></i>
+                        </label>
+                        <input asp-for="FirstName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter First Name" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Last Name
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's last name."></i>
+                        </label>
+                        <input asp-for="LastName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Last Name" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Email Address
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's email address."></i>
+                        </label>
+                        <input asp-for="Email" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
 
-                <!-- Last Name -->
-                <div class="form-group mb-3">
-                    <label asp-for="LastName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Last Name
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's last name."></i>
-                    </label>
-                    <input asp-for="LastName" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"  placeholder="Enter Last Name"/>
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-
-
-
-                <!-- Email Address -->
-                <div class="form-group mb-3">
-                    <label asp-for="Email" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Email Address
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's email address."></i>
-                    </label>
-                    <input asp-for="Email" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Email"/>
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary"
+                <!-- Submit Button and Navigation -->
+                <div class="form-actions text-center mt-4">
+                    <button type="submit" class="btn btn-primary mb-3"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         Add Engineer
                     </button>
+                    <div class="d-flex flex-column align-items-center gap-2">
+                        <a href="@Url.Action("Index", "Engineer")" class="btn btn-primary"
+                           style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                            ⬅ Back to Engineer List
+                        </a>
+                    </div>
                 </div>
-                <div class="d-flex flex-column align-items-start gap-2">
-                    <!-- Back to Previous Page -->
-                   @*  <button onclick="goBack()" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back To Previous Page
-                    </button> *@
-
-                    <!-- Back to Machine List -->
-                    <a href="@Url.Action("Index", "Engineer")" class="btn btn-primary"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Engineer List
-                    </a>
-                </div>
-
             </form>
         </div>
     </div>
 </div>
+
+<style>
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 @section Scripts {
     @{

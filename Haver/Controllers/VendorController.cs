@@ -12,131 +12,128 @@ using haver.CustomControllers;
 
 namespace haver.Controllers
 {
-    public class VendorController : ElephantController
-    {
-        private readonly HaverContext _context;
+	public class VendorController : ElephantController
+	{
+		private readonly HaverContext _context;
 
-        public VendorController(HaverContext context)
-        {
-            _context = context;
-        }
+		public VendorController(HaverContext context)
+		{
+			_context = context;
+		}
 
-        // GET: Vendor
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Name",bool? isActive = null)
-        {
-            string[] sortOptions = new[] { "Name", "Phone", "Email" };
+		// GET: Vendor
+		public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname,
+			string? SearchString, string? actionButton, string sortDirection = "asc",
+			string sortField = "Name", bool? isActive = null)
+		{
+			string[] sortOptions = new[] { "Name", "Phone", "Email" };
+			var vendors = from m in _context.Vendors.AsNoTracking() select m;
 
-            var vendors = from m in _context.Vendors.AsNoTracking() select m;
+			ViewData["Filtering"] = "btn-outline-secondary";
+			int numberFilters = 0;
 
-            ViewData["Filtering"] = "btn-outline-secondary";
-            int numberFilters = 0;
-
-			// Default to Active Vendors if isActive is null
 			if (!isActive.HasValue)
 			{
 				isActive = true;
 			}
-
 			vendors = vendors.Where(v => v.IsActive == isActive.Value);
 			ViewBag.Status = isActive.Value ? "Active" : "Inactive";
 
 			if (!string.IsNullOrEmpty(SearchCname))
-            {
-                vendors = vendors.Where(v => v.Name.ToUpper().Contains(SearchCname.ToUpper()));
-                numberFilters++;
-            }
+			{
+				vendors = vendors.Where(v => v.Name.ToUpper().Contains(SearchCname.ToUpper()));
+				numberFilters++;
+			}
 
-            if (!string.IsNullOrEmpty(SearchString))
-            {
-                vendors = vendors.Where(v => v.Phone.ToUpper().Contains(SearchString.ToUpper()));
-                numberFilters++;
-            }
+			if (!string.IsNullOrEmpty(SearchString))
+			{
+				vendors = vendors.Where(v => v.Phone.ToUpper().Contains(SearchString.ToUpper()));
+				numberFilters++;
+			}
 
-            if (numberFilters > 0)
-            {
-                ViewData["Filtering"] = "btn-danger";
-                ViewData["numberFilters"] = $"({numberFilters} Filter{(numberFilters > 1 ? "s" : "")} Applied)";
-                ViewData["ShowFilter"] = "show";
-            }
-            else
-            {
-                ViewData["numberFilters"] = string.Empty;
-                ViewData["ShowFilter"] = string.Empty;
-            }
+			if (numberFilters > 0)
+			{
+				ViewData["Filtering"] = "btn-danger";
+				ViewData["numberFilters"] = $"({numberFilters} Filter{(numberFilters > 1 ? "s" : "")} Applied)";
+				ViewData["ShowFilter"] = "show";
+			}
+			else
+			{
+				ViewData["numberFilters"] = string.Empty;
+				ViewData["ShowFilter"] = string.Empty;
+			}
 
-            if (!string.IsNullOrEmpty(actionButton) && sortOptions.Contains(actionButton))
-            {
-                if (actionButton == sortField)
-                {
-                    sortDirection = sortDirection == "asc" ? "desc" : "asc";
-                }
-                sortField = actionButton;
-            }
+			if (!string.IsNullOrEmpty(actionButton) && sortOptions.Contains(actionButton))
+			{
+				if (actionButton == sortField)
+				{
+					sortDirection = sortDirection == "asc" ? "desc" : "asc";
+				}
+				sortField = actionButton;
+			}
 
-            vendors = sortField switch
-            {
-                "Phone" => sortDirection == "asc"
-                    ? vendors.OrderBy(v => v.Phone)
-                    : vendors.OrderByDescending(v => v.Phone),
-                "Email" => sortDirection == "asc"
-                    ? vendors.OrderBy(v => v.Email)
-                    : vendors.OrderByDescending(v => v.Email),
-                _ => sortDirection == "asc"
-                    ? vendors.OrderBy(v => v.Name)
-                    : vendors.OrderByDescending(v => v.Name),
-            };
+			vendors = sortField switch
+			{
+				"Phone" => sortDirection == "asc"
+					? vendors.OrderBy(v => v.Phone)
+					: vendors.OrderByDescending(v => v.Phone),
+				"Email" => sortDirection == "asc"
+					? vendors.OrderBy(v => v.Email)
+					: vendors.OrderByDescending(v => v.Email),
+				_ => sortDirection == "asc"
+					? vendors.OrderBy(v => v.Name)
+					: vendors.OrderByDescending(v => v.Name),
+			};
 
-            ViewData["sortField"] = sortField;
-            ViewData["sortDirection"] = sortDirection;
+			ViewData["sortField"] = sortField;
+			ViewData["sortDirection"] = sortDirection;
 
-            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
-            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-            var pagedData = await PaginatedList<Vendor>.CreateAsync(vendors, page ?? 1, pageSize);
+			int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+			ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+			var pagedData = await PaginatedList<Vendor>.CreateAsync(vendors, page ?? 1, pageSize);
 
-            return View(pagedData);
-        }
+			return View(pagedData);
+		}
 
-        // GET: Vendor/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		// GET: Vendor/Details/5
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-            var vendor = await _context.Vendors
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (vendor == null)
-            {
-                return NotFound();
-            }
+			var vendor = await _context.Vendors
+				.FirstOrDefaultAsync(m => m.ID == id);
+			if (vendor == null)
+			{
+				return NotFound();
+			}
 
-            return View(vendor);
-        }
+			return View(vendor);
+		}
 
-        // GET: Vendor/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+		// GET: Vendor/Create
+		public IActionResult Create()
+		{
+			return View();
+		}
 
-        // POST: Vendor/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Phone,Email")] Vendor vendor)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(vendor);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vendor has been successfully created";
-                    return RedirectToAction("Details", new { vendor.ID });
-                }
-            }
+		// POST: Vendor/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create([Bind("ID,Name,Phone,Email")] Vendor vendor)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					_context.Add(vendor);
+					await _context.SaveChangesAsync();
+					TempData["Message"] = "Vendor has been successfully created";
+					return RedirectToAction("Details", new { vendor.ID });
+				}
+			}
 			catch (DbUpdateException dex)
 			{
 				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendors.Name"))
@@ -148,130 +145,124 @@ namespace haver.Controllers
 					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
 				}
 			}
+			return View(vendor);
+		}
+
+		// GET: Vendor/Edit/5
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var vendor = await _context.Vendors.FindAsync(id);
+			if (vendor == null)
+			{
+				return NotFound();
+			}
+			return View(vendor);
+		}
+
+		// POST: Vendor/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var vendorToUpdate = await _context.Vendors.FirstOrDefaultAsync(c => c.ID == id);
+			if (vendorToUpdate == null)
+			{
+				return NotFound();
+			}
+
+			if (await TryUpdateModelAsync<Vendor>(vendorToUpdate, "",
+				  p => p.Name, p => p.Phone, p => p.Email))
+			{
+				try
+				{
+					await _context.SaveChangesAsync();
+					TempData["Message"] = "Vendor has been successfully Edited";
+					return RedirectToAction("Details", new { vendorToUpdate.ID });
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!VendorExists(vendorToUpdate.ID))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				catch (DbUpdateException dex)
+				{
+					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendors.Name"))
+					{
+						ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Vendor Names.");
+					}
+					else
+					{
+						ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+					}
+				}
+			}
+			return View(vendorToUpdate);
+		}
+
+		// GET: Vendor/Delete/5
+		public async Task<IActionResult> Delete(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var vendor = await _context.Vendors
+				.FirstOrDefaultAsync(m => m.ID == id);
+			if (vendor == null)
+			{
+				return NotFound();
+			}
 
 			return View(vendor);
-        }   
+		}
 
-        // GET: Vendor/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		// POST: Vendor/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var vendor = await _context.Vendors.FindAsync(id);
+			try
+			{
+				if (vendor != null)
+				{
+					_context.Vendors.Remove(vendor);
+				}
 
-            var vendor = await _context.Vendors.FindAsync(id);
-            if (vendor == null)
-            {
-                return NotFound();
-            }
-            return View(vendor);
-        }
-
-        // POST: Vendor/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
-        {
-            //Go get the vendor to update
-            var vendorToUpdate = await _context.Vendors.FirstOrDefaultAsync(c => c.ID == id);
-
-            if (vendorToUpdate == null)
-            {
-                return NotFound();
-            }
-
-            if (await TryUpdateModelAsync<Vendor>(vendorToUpdate, "",
-                  p => p.Name, p => p.Phone, p => p.Email))
-            {
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vendor has been successfully Edited";
-                    return RedirectToAction("Details", new { vendorToUpdate.ID });
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VendorExists(vendorToUpdate.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                catch (DbUpdateException dex)
-                {
-                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendors.Name"))
-                    {
-                        ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Vendor Names.");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                    }
-                }
-            }
-            return View(vendorToUpdate);
-        }
-
-        // GET: Vendor/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vendor = await _context.Vendors
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (vendor == null)
-            {
-                return NotFound();
-            }
-
-            return View(vendor);
-        }
-
-        // POST: Vendor/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var vendor = await _context.Vendors.FindAsync(id);
-
-            try
-            {
-                if (vendor != null)
-                {
-                    _context.Vendors.Remove(vendor);
-                }
-
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "Vendor has been successfully deleted";
-                var returnUrl = ViewData["returnURL"]?.ToString();
-                if (string.IsNullOrEmpty(returnUrl))
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return Redirect(returnUrl);
-            }
-            catch (DbUpdateException dex)
-            {
-                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
-                {
-                    ModelState.AddModelError("", "Unable to Delete Vendor.  Remember, you cannot delete a Vendor attached to a Sales Order");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
-            }
-            return View(vendor);
-        }
+				await _context.SaveChangesAsync();
+				TempData["Message"] = "Vendor has been successfully deleted";
+				var returnUrl = ViewData["returnURL"]?.ToString();
+				if (string.IsNullOrEmpty(returnUrl))
+				{
+					return RedirectToAction(nameof(Index));
+				}
+				return Redirect(returnUrl);
+			}
+			catch (DbUpdateException dex)
+			{
+				if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+				{
+					ModelState.AddModelError("", "Unable to Delete Vendor. Remember, you cannot delete a Vendor attached to a Sales Order");
+				}
+				else
+				{
+					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+				}
+			}
+			return View(vendor);
+		}
 
 		public async Task<IActionResult> ToggleStatus(int id)
 		{
@@ -281,17 +272,16 @@ namespace haver.Controllers
 				return NotFound();
 			}
 
-			vendor.IsActive = !vendor.IsActive; // Toggle status
+			vendor.IsActive = !vendor.IsActive;
 			_context.Update(vendor);
 			await _context.SaveChangesAsync();
 
 			return RedirectToAction(nameof(Index));
 		}
 
-
 		private bool VendorExists(int id)
-        {
-            return _context.Vendors.Any(e => e.ID == id);
-        }
-    }
+		{
+			return _context.Vendors.Any(e => e.ID == id);
+		}
+	}
 }

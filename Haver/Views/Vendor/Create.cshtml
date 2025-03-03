@@ -1,93 +1,104 @@
 ﻿@model haver.Models.Vendor
 
 <div class="container-fluid bg-light">
-	<!-- Header -->
-	<div class="row">
-		<div class="col-md-12 py-4" style="background-color:#0C2340;">
-			<h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
-				Add A New Vendor
-			</h4>
-		</div>
-	</div>
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Add A New Vendor
+            </h4>
+        </div>
+    </div>
 
-	<!-- Centered Form -->
-	<div class="row py-4">
-		<div class="col-md-8 offset-md-2">
-			<form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Vendor Information">
-				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-				<h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
+    <!-- Centered Form -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create Vendor Information">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
-				<!-- Vendor Name -->
-				<div class="form-group mb-3">
-					<label asp-for="Name" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Vendor Name <span class="text-danger">*</span>
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the vendor."></i>
-					</label>
-					<input asp-for="Name" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"  placeholder="Enter Vendor Name" />
-					<span asp-validation-for="Name" class="text-danger"></span>
-				</div>
+                <div class="form-grid">
+                    <!-- Vendor Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Vendor Name <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the name of the vendor."></i>
+                        </label>
+                        <input asp-for="Name" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Vendor Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
 
-				<!-- Contact Number -->
-				<div class="form-group mb-3">
-					<label asp-for="Phone" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Contact Number
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the vendor's contact number."></i>
-					</label>
-					<input asp-for="Phone" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Vendor Contact Number" />
-					<span asp-validation-for="Phone" class="text-danger"></span>
-				</div>
+                    <!-- Contact Number -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Phone" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Contact Number
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the vendor's contact number."></i>
+                        </label>
+                        <input asp-for="Phone" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Vendor Contact Number" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
 
-				<!-- Email Address -->
-				<div class="form-group mb-3">
-					<label asp-for="Email" class="control-label"
-						   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-						Email Address
-						<i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the vendor's email address."></i>
-					</label>
-					<input asp-for="Email" class="form-control"
-						   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Vendor Email" />
-					<span asp-validation-for="Email" class="text-danger"></span>
-				</div>
+                    <!-- Email Address -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Email Address
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the vendor's email address."></i>
+                        </label>
+                        <input asp-for="Email" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Vendor Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
 
-				<!-- Submit Button -->
-				<div class="form-group text-center">
-					<button type="submit" class="btn btn-primary"
-							style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-						<i class="fa-solid fa-plus"></i> Create Vendor
-					</button>
-
-
-				</div>
-				<div class="d-flex flex-column align-items-start gap-2">
-					<!-- Back to Previous Page -->
-				@* 	<button onclick="goBack()" class="btn btn-primary"
-							style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-						⬅ Back To Previous Page
-					</button> *@
-
-					<!-- Back to Machine List -->
-					<a href="@Url.Action("Index", "Vendor")" class="btn btn-primary"
-					   style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-						⬅ Back to Vendor List
-					</a>
-				</div>
-			</form>
-		</div>
-	</div>
+                <!-- Submit Button and Navigation -->
+                <div class="form-actions text-center mt-4">
+                    <button type="submit" class="btn btn-primary mb-3"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        <i class="fa-solid fa-plus"></i> Create Vendor
+                    </button>
+                    <div class="d-flex flex-column align-items-center gap-2">
+                        <a href="@Url.Action("Index", "Vendor")" class="btn btn-primary"
+                           style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                            ⬅ Back to Vendor List
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
+<style>
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 @section Scripts {
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
-	<script type="text/javascript">
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-			return new bootstrap.Tooltip(tooltipTriggerEl)
-		})
-	</script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 }
