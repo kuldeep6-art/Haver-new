@@ -4,28 +4,54 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="container-fluid bg-light">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Edit Machine Type
+            </h4>
+        </div>
+    </div>
 
-<h4>MachineType</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Centered Form -->
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Machine Type Information">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
+
+                <input type="hidden" asp-for="ID" />
+
+                <!-- Machine Description -->
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Description <span class="text-danger">*</span>
+                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the machine type description."></i>
+                    </label>
+                    <input asp-for="Description" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                           placeholder="Enter Machine Description" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        <i class="fa-solid fa-save"></i> Save Changes
+                    </button>
+                </div>
+
+                <!-- Back to List -->
+                <div class="d-flex flex-column align-items-start gap-2 mt-3">
+                    <a asp-action="Index" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Machine Type List
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
