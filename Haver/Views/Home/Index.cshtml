@@ -1,7 +1,89 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Haver & Boecker</h1>
+<div class="container">
+    <!-- Dashboard Header -->
+    <div class="text-center mt-5">
+        <h1 class="display-4 fw-bold">Haver & Boecker</h1>
     </div>
+
+    <div class="row justify-content-center mt-4">
+        <!-- Create Sales Order -->
+        <div class="col-md-5">
+            <div class="dashboard-card">
+                <a asp-controller="SalesOrder" asp-action="Create">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Create Sales Order</h3>
+                    <p>Start a new sales order and add required details.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Add Gantt Schedule -->
+        <div class="col-md-5">
+            <div class="dashboard-card">
+                <a asp-controller="GanttData" asp-action="Create">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Add Gantt Schedule</h3>
+                    <p>Assign and manage Gantt schedules for orders.</p>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <p id="year">&copy; <span id="currentYear"></span></p>
+        </div>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    #year{
+        text-align:center;
+        font-weight:bold;
+    }
+    .dashboard-card {
+        background: linear-gradient(135deg, #001b40, #004080);
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 20px;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard-card a {
+            text-decoration: none;
+            color: #ffffff;
+            display: block;
+        }
+
+        .dashboard-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .dashboard-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+</style>
+<script>
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+</script>
