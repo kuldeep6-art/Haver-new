@@ -24,7 +24,8 @@ namespace haver.Controllers
         }
 
         // GET: GanttData
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number", bool? isFinalized = null)
+        public async Task<IActionResult> Index(int? page, int? pageSizeID,DateTime? DtString,
+            string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number", bool? isFinalized = null)
         {
             string[] sortOptions = new[] { "Order Number" };
 
@@ -62,6 +63,17 @@ namespace haver.Controllers
                 gData = gData.Where(p => p.Machine.SalesOrder.OrderNumber.Contains(SearchString));
                 numberFilters++;
             }
+            if (DtString.HasValue)
+            {
+                DateTime searchDae = DtString.Value.Date;
+                gData = gData.Where(s => s.AppDRcd.HasValue &&
+                                         s.AppDRcd.Value.Year == searchDae.Year &&
+                                         s.AppDRcd.Value.Month == searchDae.Month &&
+                                         s.AppDRcd.Value.Day == searchDae.Day);
+                numberFilters++;
+            }
+
+
 
             //Give feedback about the state of the filters
             if (numberFilters != 0)

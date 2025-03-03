@@ -80,6 +80,10 @@
                         <label class="form-label fw-bold" for="SearchString">Search by Order Number:</label>
                         @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter Order Number", aria_label = "Enter order number to search" })
                     </div>
+                    <div class="form-group col-md-4">
+                        <label class="form-label fw-bold" for="SearchString">Search Approved Drawings Received Date:</label>
+                        @Html.TextBox("DtString", null, new { @class = "form-control", placeholder = "Search by Approved Drawings Received Date", aria_label = "Search by Approved Drawings Received Date", type = "date" })
+                    </div>
                     <div class="form-group col-md-4 align-self-end">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
                         <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
