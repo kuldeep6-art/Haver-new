@@ -232,10 +232,13 @@
                         <i class="fa-solid fa-check"></i> Create Sales Order
                     </button>
 
+
                     <a asp-action="Index" class="btn btn-secondary"
                        style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
                     </a>
+
+                    <button type="button" class="btn    " id="autofillButton">Test</button>
                 </div>
 
             </form>
@@ -297,6 +300,24 @@
     </script>
 
     <script>
+        document.getElementById('autofillButton').addEventListener('click', function () {
+            document.getElementById('OrderNumber').value = '10476526';
+            document.getElementById('companyNameInput').value = 'FMI';
+            document.getElementById('SoDate').value = '2025-03-03';
+            document.getElementById('Price').value = '50000';
+            document.getElementById('currencyDropdown').value = 'USD';
+            document.getElementById('ShippingTerms').value = 'FOB Toronto';
+            document.getElementById('AppDwgExp').value = '2025-03-10';
+            document.getElementById('AppDwgRel').value = '2025-03-15';
+            document.getElementById('AppDwgRet').value = '2025-03-20';
+            document.getElementById('PreOExp').value = '2025-03-25';
+            document.getElementById('PreORel').value = '2025-03-30';
+            document.getElementById('EngPExp').value = '2025-04-05';
+        });
+    </script>
+
+
+    <script>
         //Adds autocomplete for entering company name
         $(document).ready(function () {
             $("#companyNameInput").autocomplete({
@@ -314,6 +335,7 @@
         });
 
     </script>
+
 
     <script>
         $(document).ready(function () {
