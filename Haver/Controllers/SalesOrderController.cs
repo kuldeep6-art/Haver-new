@@ -475,9 +475,17 @@ namespace haver.Controllers
 					AirSeal = string.Join(Environment.NewLine, so.Machines.Select(m => m.AirSeal ? "Yes" : "No")),
 					CoatingLining = string.Join(Environment.NewLine, so.Machines.Select(m => m.CoatingLining ? "Yes" : "No")),
 					Disassembly = string.Join(Environment.NewLine, so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
-					PreOrder = string.Join(Environment.NewLine, so.Machines.Select(m => m.PreOrder ?? "N/A")),
-					Scope = string.Join(Environment.NewLine, so.Machines.Select(m => m.Scope ?? "N/A")),
-					ActualAssemblyHours = string.Join(Environment.NewLine, so.Machines.Select(m => m.ActualAssemblyHours != null
+                    PreOrder = string.Join(Environment.NewLine,
+    so.Machines.Select(m => !string.IsNullOrEmpty(m.PreOrder)
+        ? Regex.Replace(m.PreOrder, "<.*?>", string.Empty)
+        : "N/A")),
+
+                    Scope = string.Join(Environment.NewLine,
+    so.Machines.Select(m => !string.IsNullOrEmpty(m.Scope)
+        ? Regex.Replace(m.Scope, "<.*?>", string.Empty)
+        : "N/A")),
+
+                    ActualAssemblyHours = string.Join(Environment.NewLine, so.Machines.Select(m => m.ActualAssemblyHours != null
 						? $"{m.ActualAssemblyHours} hrs"
 						: "N/A")),
 					ReworkHours = string.Join(Environment.NewLine, so.Machines.Select(m => m.ReworkHours != null
