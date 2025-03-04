@@ -49,13 +49,13 @@
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == "Active" ? "active" : "")"
            href="@Url.Action("Index", routeValues["Active"])">
-            Active 
+             <i class="fas fa-list"></i> Active 
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(ViewBag.Status == "Finalized" ? "active" : "")"
            href="@Url.Action("Index", routeValues["Finalized"])">
-           Finalized
+          <i class="fas fa-check-circle"></i>  Finalized
         </a>
     </li>
 </ul>
@@ -180,5 +180,43 @@
     .align-middle button {
         background: none;
         outline: none;
+    }
+
+    .nav-tabs {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .nav-item {
+        margin-right: 15px;
+    }
+
+    .nav-link {
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #001a3d;
+    }
+
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
     }
 </style>
