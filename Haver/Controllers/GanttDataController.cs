@@ -393,41 +393,41 @@ namespace haver.Controllers
             return View(ganttData);
         }
 
-		private List<GanttViewModel> GetMilestoneTasks(GanttData g)
-		{
-			var tasks = new List<GanttViewModel>();
+        private List<GanttViewModel> GetMilestoneTasks(GanttData g)
+        {
+            var tasks = new List<GanttViewModel>();
 
-			// Define only the required milestones with colors
-			var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
-	{
-		(g.EngExpected, g.EngReleased, "Engineering Released to Customer", "#FABF8F"),
-		(g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#E26B0A"),
-		(g.PackageReleased, g.PackageReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
-		(g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "Purchase Orders Issued", "#8DB4E2"),
-		(g.SupplierPODue, g.SupplierPODue, "Supplier Purchase Orders Due", "#FF99CC"),
-		(g.AssemblyStart, g.AssemblyComplete, "Machine Assembly and Testing", "#00B050")
-	};
+            // Define only the required milestones with colors
+            var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
+    {
+        (g.EngExpected, g.EngReleased, "Engineering Released to Customer", "#FABF8F"),
+        (g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#E26B0A"),
+        (g.PackageReleased, g.PackageReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
+        (g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "Purchase Orders Issued", "#8DB4E2"),
+        (g.SupplierPODue, g.SupplierPODue, "Supplier Purchase Orders Due", "#FF99CC"),
+        (g.AssemblyStart, g.AssemblyComplete, "Machine Assembly and Testing", "#00B050")
+    };
 
-			// Generate Gantt tasks only for valid milestones
-			foreach (var (start, end, name, color) in milestones)
-			{
-				if (start.HasValue && end.HasValue)
-				{
-					tasks.Add(new GanttViewModel
-					{
-						ID = g.ID, 
-						UniqueID = $"{g.ID}-{name}", 
-						MachineName = $"{g.Machine?.Description} - {name}",
-						StartDate = start.Value,
-						EndDate = end.Value,
-						Progress = 100, 
-						MilestoneClass = color 
-					});
-				}
-			}
+            // Generate Gantt tasks only for valid milestones
+            foreach (var (start, end, name, color) in milestones)
+            {
+                if (start.HasValue && end.HasValue)
+                {
+                    tasks.Add(new GanttViewModel
+                    {
+                        ID = g.ID,
+                        UniqueID = $"{g.ID}-{name}",
+                        MachineName = $"{g.Machine?.Description} - {name}",
+                        StartDate = start.Value,
+                        EndDate = end.Value,
+                        Progress = 100,
+                        MilestoneClass = color
+                    });
+                }
+            }
 
-			return tasks;
-		}
+            return tasks;
+        }
 
 
         //private string GetMilestoneClass(GanttData g)
