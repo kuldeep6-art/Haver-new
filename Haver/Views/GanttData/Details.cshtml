@@ -118,7 +118,7 @@
     </div>
 </div>
 
-
+<br />
 @section stylesheets {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
     <style>
@@ -143,6 +143,21 @@
         dd {
             margin-bottom: 0.5rem;
         }
+
+        .bar-label {
+            display: none !important;
+        }
+
+        .gantt .row {
+            height: 20px !important; /* Adjust the height as needed */
+        }
+        /* Adjust SVG height */
+        .gantt-container svg {
+            height: 100px !important; /* Shrink empty space */
+        }
+
+
+
     </style>
 }
 
@@ -156,12 +171,13 @@
         {
             <text>
                         {
-                            id: "@task.UniqueID", // Use UniqueID instead of ID
+                            id: "@task.UniqueID",
                         name: "@task.MachineName",
                         start: "@(task.StartDate?.ToString("yyyy-MM-dd") ?? "")",
                         end: "@(task.EndDate?.ToString("yyyy-MM-dd") ?? "")",
                         progress: 0,
-                        custom_class: "@task.MilestoneClass"
+                        custom_class: "@task.MilestoneClass",
+                        _row: 0  // Force all tasks into a single row
                                     },
             </text>
         }
@@ -190,16 +206,112 @@
                 }
             });
 
-            // Apply colors AFTER rendering
+           
+
+
+            // Manually adjust all task bars to align in the same row
             setTimeout(function () {
-                tasks.forEach(task => {
+                const yOffset = 23; // Adjust to align all bars properly
+
+                function applyYOffset(el, yOffset) {
+                    const tag = el.tagName.toLowerCase();
+                    if (tag === "rect" || tag === "polygon") {
+                        if (tag === "rect") {
+                            el.setAttribute("y", yOffset);
+                        } else if (tag === "polygon") {
+                            let points = el.getAttribute("points");
+                            if (points) {
+                                let updatedPoints = points
+                                    .split(" ")
+                                    .map(point => {
+                                        let [x, y] = point.split(",").map(Number);
+                                        return `${x},${y + yOffset}`;
+                                    })
+                                    .join(" ");
+                                el.setAttribute("points", updatedPoints);
+                            }
+                        }
+                    } else if (tag === "g") {
+                        el.setAttribute("transform", `translate(0, ${yOffset})`);
+                    } else {
+                        el.style.transform = `translateY(${yOffset}px)`;
+                    }
+                }
+
+                // Move all bars
+                document.querySelectorAll(".bar").forEach(bar => {
+                    applyYOffset(bar, yOffset);
+                });
+
+                // Move progress bars
+                document.querySelectorAll(".bar-progress").forEach(progress => {
+                    applyYOffset(progress, yOffset);
+                });
+
+                // Move bar labels
+                document.querySelectorAll(".bar-label").forEach(label => {
+                    applyYOffset(label, yOffset);
+                });
+
+                // Move parent summary bars (grey bars)
+                document.querySelectorAll(".bar:not(.bar-progress)").forEach(parentBar => {
+                    applyYOffset(parentBar, yOffset);
+                });
+
+                // Move bar wrappers
+                document.querySelectorAll(".bar-wrapper").forEach(wrapper => {
+                    applyYOffset(wrapper, yOffset);
+                });
+
+                // Move drag handles (start and end of tasks)
+                document.querySelectorAll(".handle").forEach(handle => {
+                    applyYOffset(handle, yOffset);
+                });
+
+                // Move all task groups (which contain bars, progress, and handles)
+                document.querySelectorAll("g.task").forEach(taskGroup => {
+                    applyYOffset(taskGroup, yOffset);
+                });
+
+                // Adjust grid row heights
+                document.querySelectorAll(".gantt .row").forEach(row => {
+                    row.style.height = "40px";
+                    row.style.display = "flex";
+                    row.style.alignItems = "center";
+                    row.style.borderBottom = "none";
+                });
+
+                // Adjust grid background heights
+                document.querySelectorAll(".grid-row, .grid-background").forEach(grid => {
+                    grid.style.height = "40px";
+                });
+
+                // Apply custom colors
+                // Apply milestone-specific colors
+                tasks.forEach((task) => {
                     let bars = document.querySelectorAll(`.bar-wrapper[data-id='${task.id}'] .bar`);
                     bars.forEach(bar => {
-                        bar.style.fill = task.custom_class;
+                        bar.style.fill = task.custom_class; // Use the color from the ViewModel
                     });
                 });
+
+
+                // Scroll to today's date
+                showCurrentDay();
+
             }, 500);
+
+            function showCurrentDay() {
+                const currentDay = document.querySelector('.today-highlight');
+                if (currentDay) {
+                    currentDay.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                }
+            }
         });
+
+        gantt.options.bar_height = 20; // Reduce bar height to match row height
+        gantt.refresh(); // Apply changes
 
     </script>
 }
+
