@@ -494,7 +494,7 @@ namespace haver.Controllers
 					NamePlate = string.Join(Environment.NewLine, so.Machines.Select(m => m.Nameplate?.ToString() ?? "N/A")),
 					Notes = !string.IsNullOrEmpty(so.Comments)
 						? Regex.Replace(so.Comments, "<.*?>", string.Empty)
-						: "No notes for this sales order"
+						: " "
 				})
 				.ToList();
 
