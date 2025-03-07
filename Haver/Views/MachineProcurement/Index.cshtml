@@ -27,9 +27,18 @@
         <input type="hidden" name="MachineID" value="@machine.ID" />
 
 
+    <div class="d-flex justify-content-between">
         <button class="btn btn-outline-primary mb-3 no-print" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
+
+        <a asp-controller="MachineProcurement" asp-action="Add"
+           asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
+           class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information" style="height:40px;">
+            <i class="fa-solid fa-plus"></i> Add Procurement
+        </a>
+    </div>
+
 
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
             <div class="card card-body bg-light">
@@ -98,11 +107,13 @@
                     </th>
                     <th class="text-center">
                       
-                            <a asp-controller="MachineProcurement" asp-action="Add"
+                           @*  <a asp-controller="MachineProcurement" asp-action="Add"
                                asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
                                class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information">
                                 <i class="fa-solid fa-plus"></i> Add
-                            </a>
+                            </a> *@
+
+                            Actions
                     </th>
                 </tr>
             </thead>
