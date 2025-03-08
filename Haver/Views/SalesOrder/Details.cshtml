@@ -152,7 +152,8 @@
                                     {
 
                                         <td rowspan="@machine.Procurements.Count">
-                                            <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank">
+                                            <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
+                                               data-bs-toggle="tooltip" title="Click here to view all information about this machine">
                                                 @Html.DisplayFor(m => machine.Description)
                                             </a>
                                         </td>
