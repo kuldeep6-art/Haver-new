@@ -150,9 +150,13 @@
                                 <tr>
                                     @if (firstRow)
                                     {
+
                                         <td rowspan="@machine.Procurements.Count">
-                                            @Html.DisplayFor(m => machine.Description)
+                                            <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank">
+                                                @Html.DisplayFor(m => machine.Description)
+                                            </a>
                                         </td>
+
                                         firstRow = false;
                                     }
 
