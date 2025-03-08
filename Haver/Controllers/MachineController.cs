@@ -182,7 +182,7 @@ namespace haver.Controllers
         // POST: Machine/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SerialNumber,ProductionOrderNumber,RToShipExp,RToShipA,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
+        public async Task<IActionResult> Create([Bind("ID,SerialNumber,ProductionOrderNumber,AssemblyExp,AssemblyStart,AssemblyComplete,RToShipExp,RToShipA,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
         {
             try
             {
@@ -223,30 +223,44 @@ namespace haver.Controllers
         // Method to create Gantt record for the newly created machine
         public async Task CreateGanttForMachine(Machine machine)
         {
-            // Step 1: Retrieve the Sales Order that the machine belongs to
+            // Step 1: Retrieve the Sales Order that the machine belongs to, including related machines and procurements
             var salesOrder = await _context.SalesOrders
+                .Include(so => so.Machines)   // Include related Machines
+                .ThenInclude(m => m.Procurements)  // Include related Procurements for each machine
                 .FirstOrDefaultAsync(so => so.ID == machine.SalesOrderID);
 
             if (salesOrder != null)
             {
-                // Step 2: Create a Gantt record for the machine
+                // Step 2: Retrieve the Procurement related to this specific machine (if it exists)
+                var procurement = machine.Procurements.FirstOrDefault();
+
+                // Step 3: Create a Gantt record for the machine
                 var gantt = new GanttData
                 {
                     SalesOrderID = machine.SalesOrderID,
                     MachineID = machine.ID,
+                    AppDExp = salesOrder.AppDwgExp,
                     AppDRcd = salesOrder.AppDwgRel,
+                    PreORel = salesOrder.PreORel,
+                    PreOExp = salesOrder.PreOExp,
                     EngExpected = salesOrder.EngPExp,
                     EngReleased = salesOrder.EngPRel,
-                    PurchaseOrdersIssued = salesOrder.SoDate,
+                    // Handling the Procurement-related fields
+                    PurchaseOrdersIssued = procurement?.ExpDueDate, // Assuming PurchaseOrderDate is the relevant field in Procurement
+                    PurchaseOrdersCompleted = procurement?.ExpDueDate,
+                    PurchaseOrdersReceived = procurement?.PORcd,
+                    AssemblyStart = machine.AssemblyStart,
+                    AssemblyComplete = machine.AssemblyComplete,
                     ShipExpected = machine.RToShipExp,
                     ShipActual = machine.RToShipA
                 };
 
-                // Step 3: Add the Gantt record to the database
+                // Step 4: Add the Gantt record to the database
                 _context.GanttDatas.Add(gantt);
                 await _context.SaveChangesAsync();
             }
         }
+
 
 
         // GET: Machine/Edit/5
@@ -281,7 +295,7 @@ namespace haver.Controllers
 			}
 
             if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "",
-                  p => p.SerialNumber, p => p.ProductionOrderNumber,
+                  p => p.SerialNumber, p => p.ProductionOrderNumber,p => p.AssemblyExp,p => p.AssemblyStart,p => p.AssemblyComplete,
               p => p.RToShipExp, p => p.RToShipA, p => p.Media, p => p.SpareParts,
               p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly,
               p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,

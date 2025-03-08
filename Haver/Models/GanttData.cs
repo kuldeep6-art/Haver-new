@@ -16,10 +16,27 @@ namespace haver.Models
         public int? MachineID { get; set; }
         public Machine? Machine { get; set; }
 
-        [Display(Name = "Approval Drawing Received")]
+        [Display(Name = "Pre Orders Expected")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? PreOExp { get; set; }
+
+        [Display(Name = "Pre Orders Released")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? PreORel { get; set; }
+
+        [Display(Name = "Approval Drawing Expected")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? AppDExp { get; set; }
+
+        [Display(Name = "Approval Drawing Released")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? AppDRcd { get; set; }
+
+
 
         [Display(Name = "Start of Week")]
         public WeekStartOption StartOfWeek { get; set; } = WeekStartOption.Monday; // Default to Monday
@@ -65,15 +82,20 @@ namespace haver.Models
         [DataType(DataType.Date)]
         public DateTime? PackageReleased { get; set; }
 
-        [Display(Name = "Purchase Orders Issued")]
+        [Display(Name = "Purchase Orders Expected")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? PurchaseOrdersIssued { get; set; }
 
-        [Display(Name = "Purchase Orders Completed")]
+        [Display(Name = "Purchase Orders Due")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? PurchaseOrdersCompleted { get; set; }
+
+        [Display(Name = "Purchase Orders Received")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? PurchaseOrdersReceived { get; set; }
 
         [Display(Name = "Supplier Purchase Order Due")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]

@@ -49,8 +49,17 @@
                 <dt class="col-md-3">Customer</dt>
                 <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
 
+                <dt class="col-md-3">Approval Drawings Expected</dt>
+                <dd class="col-md-3">@Model.GanttData.AppDExp?.ToString("MMM dd, yyyy")</dd>
+
                 <dt class="col-md-3">Approval Drawings Received</dt>
                 <dd class="col-md-3">@Model.GanttData.AppDRcd?.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-md-3">Pre Orders Expected</dt>
+                <dd class="col-md-3">@Model.GanttData.PreOExp?.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-md-3">Pre Orders Released</dt>
+                <dd class="col-md-3">@Model.GanttData.PreORel?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-3">Engineering Expected</dt>
                 <dd class="col-md-3">@Model.GanttData.EngExpected?.ToString("MMM dd, yyyy")</dd>
@@ -63,6 +72,15 @@
 
                 <dt class="col-md-3">Package Released</dt>
                 <dd class="col-md-3">@Model.GanttData.PackageReleased?.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-md-3">Purchase Orders Expected</dt>
+                <dd class="col-md-3">@Model.GanttData.PurchaseOrdersIssued?.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-md-3">Purchase Orders Due</dt>
+                <dd class="col-md-3">@Model.GanttData.PurchaseOrdersCompleted?.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-md-3">Purchase Orders Received</dt>
+                <dd class="col-md-3">@Model.GanttData.PurchaseOrdersReceived?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-3">Supplier PO Due</dt>
                 <dd class="col-md-3">@Model.GanttData.SupplierPODue?.ToString("d")</dd>
