@@ -179,38 +179,75 @@ namespace haver.Controllers
         // POST: Machine/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Machine/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,SerialNumber,ProductionOrderNumber,RToShipExp,RToShipA,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
         {
             try
             {
-				if (ModelState.IsValid)
-				{
-					_context.Add(machine);
-					await _context.SaveChangesAsync();
-                    TempData["Message"] = "Machine has been successfully created";
-                    return RedirectToAction("Index", "MachineProcurement", new { MachineID =  machine.ID });
-				}
-			}
-			catch (DbUpdateException dex)
-			{
-				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
-				{
-					ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
-				}
-				else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
-				{
-					ModelState.AddModelError("ProductionOrderNumber", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
-				}
-				else
-				{
-					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-				}
-			}
-			PopulateDropDownLists(machine);
+                if (ModelState.IsValid)
+                {
+                    // Step 1: Add the machine to the database
+                    _context.Add(machine);
+                    await _context.SaveChangesAsync();
+
+                    // Step 2: Create the corresponding Gantt record
+                    await CreateGanttForMachine(machine);
+
+                    // Step 3: Set a message and redirect
+                    TempData["Message"] = "Machine has been successfully created and Gantt record added.";
+                    return RedirectToAction("Index", "MachineProcurement", new { MachineID = machine.ID });
+                }
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
+                {
+                    ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
+                }
+                else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
+                {
+                    ModelState.AddModelError("ProductionOrderNumber", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+
+            PopulateDropDownLists(machine);
             return View(machine);
         }
+
+        // Method to create Gantt record for the newly created machine
+        public async Task CreateGanttForMachine(Machine machine)
+        {
+            // Step 1: Retrieve the Sales Order that the machine belongs to
+            var salesOrder = await _context.SalesOrders
+                .FirstOrDefaultAsync(so => so.ID == machine.SalesOrderID);
+
+            if (salesOrder != null)
+            {
+                // Step 2: Create a Gantt record for the machine
+                var gantt = new GanttData
+                {
+                    SalesOrderID = machine.SalesOrderID,
+                    MachineID = machine.ID,
+                    AppDRcd = salesOrder.AppDwgRel,
+                    EngExpected = salesOrder.EngPExp,
+                    EngReleased = salesOrder.EngPRel,
+                    PurchaseOrdersIssued = salesOrder.SoDate,
+                    ShipExpected = machine.RToShipExp,
+                    ShipActual = machine.RToShipA
+                };
+
+                // Step 3: Add the Gantt record to the database
+                _context.GanttDatas.Add(gantt);
+                await _context.SaveChangesAsync();
+            }
+        }
+
 
         // GET: Machine/Edit/5
         public async Task<IActionResult> Edit(int? id)

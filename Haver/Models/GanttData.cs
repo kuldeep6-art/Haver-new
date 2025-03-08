@@ -7,7 +7,11 @@ namespace haver.Models
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Please select the machine")]
+        [Required(ErrorMessage = "Please select the sales order")]
+        [Display(Name = "Sales Order")]
+        public int SalesOrderID { get; set; }
+        public SalesOrder? SalesOrder { get; set; }
+
         [Display(Name = "Machine")]
         public int? MachineID { get; set; }
         public Machine? Machine { get; set; }

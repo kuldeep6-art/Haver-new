@@ -41,9 +41,8 @@ namespace haver.Controllers
 
 
             var gData = from g in _context.GanttDatas
-                        .Include(g => g.Machine)
-                .ThenInclude(s => s.SalesOrder)
-                .Include(g => g.Machine).ThenInclude(s => s.MachineType)
+                        .Include(g => g.SalesOrder)
+                .ThenInclude(m => m.Machines)
                 .AsNoTracking()
                         select g;
 
@@ -60,7 +59,7 @@ namespace haver.Controllers
 
             if (!String.IsNullOrEmpty(SearchString))
             {
-                gData = gData.Where(p => p.Machine.SalesOrder.OrderNumber.Contains(SearchString));
+                gData = gData.Where(p => p.SalesOrder.OrderNumber.Contains(SearchString));
                 numberFilters++;
             }
             if (DtString.HasValue)
@@ -105,12 +104,12 @@ namespace haver.Controllers
                 if (sortDirection == "asc")
                 {
                     gData = gData
-                        .OrderByDescending(p => p.Machine.SalesOrder.OrderNumber);
+                        .OrderByDescending(p => p.SalesOrder.OrderNumber);
                 }
                 else
                 {
                     gData = gData
-                        .OrderBy(p => p.Machine.SalesOrder.OrderNumber);
+                        .OrderBy(p => p.SalesOrder.OrderNumber);
                 }
             }
 
@@ -130,10 +129,9 @@ namespace haver.Controllers
         public IActionResult Details(int? id)
         {
             var ganttData = _context.GanttDatas
-                .Include(g => g.Machine)
-                .ThenInclude(m => m.SalesOrder)
-                .Include(g => g.Machine)
-                .ThenInclude(m => m.MachineType)
+                 .Include(g => g.SalesOrder)
+                .ThenInclude(m => m.Machines)
+                .Include(m => m.Machine).ThenInclude(m => m.MachineType)
                 .FirstOrDefault(g => g.ID == id);
 
             if (ganttData == null)
@@ -154,57 +152,62 @@ namespace haver.Controllers
 
 
         // GET: GanttData/GetMachineData/5
-        public IActionResult GetMachineData(int machineID)
+        public IActionResult GetMachineData(int salesOrderID)
         {
-            Console.WriteLine($"Machine ID: {machineID}");
+            //Console.WriteLine($"Machine ID: {machineID}");
 
-            var machine = _context.Machines
-                                 .Include(m => m.SalesOrder)
-                                 .FirstOrDefault(m => m.ID == machineID);
-
-            if (machine == null)
+            // Find the Sales Order to check if the SalesOrderID is valid
+            var salesOrder = _context.SalesOrders.FirstOrDefault(so => so.ID == salesOrderID);
+            if (salesOrder == null)
             {
-                Console.WriteLine("Machine not found");
-                return Json(new { success = false, message = "Machine not found" });
+                return Json(new { success = false, message = "Sales Order not found" });
             }
 
-            var data = new
+
+            var machines = _context.Machines
+
+                                      .Where(m => m.SalesOrderID == salesOrderID)
+                                      .ToList();
+
+            if (!machines.Any())
             {
-                AppDRcd = machine.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
-                EngExpected = machine.SalesOrder?.EngPExp?.ToString("yyyy-MM-dd"),
-                EngReleased = machine.SalesOrder?.EngPRel?.ToString("yyyy-MM-dd"),
+                return Json(new { success = false, message = "No machines found for the selected Sales Order." });
+            }
+
+            var data = machines.Select(m => new
+            {
+                AppDRcd = m.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
+                EngExpected = m.SalesOrder?.EngPExp?.ToString("yyyy-MM-dd"),
+                EngReleased = m.SalesOrder?.EngPRel?.ToString("yyyy-MM-dd"),
                 //CustomerApproval = machine.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
                 //PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
-                PurchaseOrdersIssued = machine.SalesOrder?.SoDate.ToString("yyy-MM-dd"),
+                PurchaseOrdersIssued = m.SalesOrder?.SoDate.ToString("yyy-MM-dd"),
                 //PurchaseOrdersDue = machine.SalesOrder?.
                 //SupplierPODue = machine.SalesOrder?.SupplierPODue?.ToString("yyyy-MM-dd"),  // ✅ Now included
                 //AssemblyStart = machine?.AssemblyStart?.ToString("yyyy-MM-dd"),  // ✅ Now included
                 //AssemblyComplete = machine?.AssemblyComplete?.ToString("yyyy-MM-dd"),
-                ShipExpected = machine.RToShipExp?.ToString("yyyy-MM-dd"),
-                ShipActual = machine.RToShipA?.ToString("yyyy-MM-dd"),
-               // DeliveryExpected = machine.SalesOrder?.AppDwgRet?.ToString("yyyy-MM-dd"),
+                ShipExpected = m.RToShipExp?.ToString("yyyy-MM-dd"),
+                ShipActual = m.RToShipA?.ToString("yyyy-MM-dd"),
+                // DeliveryExpected = machine.SalesOrder?.AppDwgRet?.ToString("yyyy-MM-dd"),
                 //DeliveryActual = machine.SalesOrder?.PreOExp.ToString("yyyy-MM-dd")
-            };
+            });
 
-            return Json(data);
+            return Json(new { success = true, machines = data });
         }
 
 
 
         // GET: GanttData/Create
+        // GET: GanttData/Create
         public IActionResult Create()
         {
-            var assignedMachineIds = _context.GanttDatas.Select(g => g.MachineID).ToList(); // Get machines that already have a Gantt schedule
-
-            var availableMachines = _context.Machines
-                .Include(m => m.MachineType)
-                .Where(m => !assignedMachineIds.Contains(m.ID)) // Exclude assigned machines
-                .ToList();
-
-            ViewData["MachineID"] = new SelectList(availableMachines, "ID", "Description");
+            // Get all Sales Orders for selection
+            var salesOrders = _context.SalesOrders.ToList();
+            ViewData["SalesOrderID"] = new SelectList(salesOrders, "ID", "OrderNumber");
 
             return View();
         }
+
 
 
         // POST: GanttData/Create
@@ -212,15 +215,55 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,MachineID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
+        public async Task<IActionResult> Create([Bind("SalesOrderID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(ganttData);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Gantt Data has been successfully created";
+                    // Get all machines linked to the selected Sales Order
+                    var machines = _context.Machines
+                                           .Where(m => m.SalesOrderID == ganttData.SalesOrderID)
+                                           .ToList();
+
+                    if (machines.Any())
+                    {
+                        foreach (var machine in machines)
+                        {
+                            var newGanttData = new GanttData
+                            {
+                                SalesOrderID = ganttData.SalesOrderID,
+                                MachineID = machine.ID, // Assign MachineID
+                                AppDRcd = ganttData.AppDRcd,
+                                EngExpected = ganttData.EngExpected,
+                                EngReleased = ganttData.EngReleased,
+                                CustomerApproval = ganttData.CustomerApproval,
+                                PackageReleased = ganttData.PackageReleased,
+                                PurchaseOrdersIssued = ganttData.PurchaseOrdersIssued,
+                                PurchaseOrdersCompleted = ganttData.PurchaseOrdersCompleted,
+                                SupplierPODue = ganttData.SupplierPODue,
+                                AssemblyStart = ganttData.AssemblyStart,
+                                AssemblyComplete = ganttData.AssemblyComplete,
+                                ShipExpected = ganttData.ShipExpected,
+                                ShipActual = ganttData.ShipActual,
+                                DeliveryExpected = ganttData.DeliveryExpected,
+                                DeliveryActual = ganttData.DeliveryActual,
+                                Notes = ganttData.Notes,
+                                IsFinalized = false, // Default to false
+                                StartOfWeek = WeekStartOption.Monday // Or dynamically set based on user input
+                            };
+
+                            _context.GanttDatas.Add(newGanttData);
+                        }
+
+                        await _context.SaveChangesAsync();
+                        TempData["Message"] = "Gantt Data has been successfully created for all machines in the Sales Order.";
+                    }
+                    else
+                    {
+                        TempData["Error"] = "No machines found for the selected Sales Order.";
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -229,17 +272,13 @@ namespace haver.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            // Ensure the dropdown remains filtered when the page reloads
-            var assignedMachineIds = _context.GanttDatas.Select(g => g.MachineID).ToList();
-            var availableMachines = _context.Machines
-                .Include(m => m.MachineType)
-                .Where(m => !assignedMachineIds.Contains(m.ID)) // Exclude assigned machines
-                .ToList();
-
-            ViewData["MachineID"] = new SelectList(availableMachines, "ID", "Description");
+            // Re-populate dropdown with Sales Orders
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
 
             return View(ganttData);
         }
+
+
 
 
         // GET: GanttData/Edit/5
@@ -251,15 +290,13 @@ namespace haver.Controllers
             }
 
             var ganttData = await _context.GanttDatas
-                .Include(g => g.Machine)
-                 .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
-                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
+                .Include(g => g.SalesOrder).ThenInclude(m => m.Machines)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (ganttData == null)
             {
                 return NotFound();
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
             return View(ganttData);
         }
 
@@ -278,7 +315,7 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
-                 p => p.MachineID, p => p.AppDRcd, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.SalesOrderID, p => p.AppDRcd, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
                  p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted,
                   p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
             {
@@ -306,7 +343,7 @@ namespace haver.Controllers
                 }
 
             }
-            ViewData["MachineID"] = new SelectList(_context.Machines.Include(m => m.MachineType), "ID", "Description");
+            ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
             return View(gDataToUpdate);
         }
 
@@ -319,9 +356,7 @@ namespace haver.Controllers
             }
 
             var ganttData = await _context.GanttDatas
-                .Include(g => g.Machine)
-                 .Include(g => g.Machine).ThenInclude(s => s.SalesOrder)
-                 .Include(g => g.Machine).ThenInclude(s => s.MachineType)
+                .Include(g => g.SalesOrder).ThenInclude(m => m.Machines)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (ganttData == null)
             {
@@ -384,8 +419,8 @@ namespace haver.Controllers
         public IActionResult Chart()
         {
             var ganttData = _context.GanttDatas
+                .Include(g => g.SalesOrder)
                 .Include(g => g.Machine)
-                .Include(g => g.Machine).ThenInclude(g => g.MachineType)
                 .ToList() // Fetch all data first
                 .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
                 .ToList();
@@ -396,6 +431,9 @@ namespace haver.Controllers
         private List<GanttViewModel> GetMilestoneTasks(GanttData g)
         {
             var tasks = new List<GanttViewModel>();
+
+            if (g.Machine == null) // Safety check
+                return tasks;
 
             // Define only the required milestones with colors
             var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
@@ -416,8 +454,8 @@ namespace haver.Controllers
                     tasks.Add(new GanttViewModel
                     {
                         ID = g.ID,
-                        UniqueID = $"{g.ID}-{name}",
-                        MachineName = $"{g.Machine?.Description} - {name}",
+                        UniqueID = $"{g.ID}-{g.Machine.ID}-{name}", // Ensure uniqueness
+                        MachineName = $"{g.Machine.Description} - {name}", // Reference single machine
                         StartDate = start.Value,
                         EndDate = end.Value,
                         Progress = 100,
@@ -428,6 +466,7 @@ namespace haver.Controllers
 
             return tasks;
         }
+
 
 
         //private string GetMilestoneClass(GanttData g)

@@ -30,16 +30,16 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label asp-for="MachineID" class="control-label"
+                            <label asp-for="SalesOrderID" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Machine<span class="text-danger">*</span>
+                                Sales Order<span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine associated with the Gantt data."></i>
                             </label>
-                            <select asp-for="MachineID" class="form-control"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" asp-items="ViewBag.MachineID" id="MachineID">
-                                <option value="">Select a Machine</option>
+                            <select asp-for="SalesOrderID" class="form-control"
+                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" asp-items="ViewBag.SalesOrderID" id="SalesOrderID">
+                                <option value="">Select a Sales Order</option>
                             </select>
-                            <span asp-validation-for="MachineID" class="text-danger"></span>
+                            <span asp-validation-for="SalesOrderID" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -341,20 +341,20 @@
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-     $(document).ready(function () {
-    // Trigger when MachineID is changed
-    $('#MachineID').change(function () {
-        var machineID = $(this).val();
-        console.log('Selected MachineID: ', machineID); // Log the selected machineID
+        $(document).ready(function () {
+            // Trigger when SalesOrderID is changed
+            $('#SalesOrderID').change(function () {
+                var salesOrderID = $(this).val(); // Get the selected Sales Order ID
+                console.log('Selected SalesOrderID: ', salesOrderID);
 
-        if (machineID) {
-            $.ajax({
-                url: '@Url.Action("GetMachineData", "GanttData")' + '?machineID=' + machineID,
-                type: 'GET',
-                success: function (data) {
-                    console.log(data); // Log the response data
-                    if (data.success === false) {
-                        alert(data.message); // Alert if no machine is found
+                if (salesOrderID) {
+                    $.ajax({
+                        url: '@Url.Action("GetMachineData", "GanttData")' + '?salesOrderID=' + salesOrderID, // Use salesOrderID instead of machineID
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            if (data.success === false) {
+                                alert(data.message); // Show error if no machines found
                     } else {
                         // Populate the date fields with data returned from the server
                         $('#AppDRcd').val(data.AppDRcd);
