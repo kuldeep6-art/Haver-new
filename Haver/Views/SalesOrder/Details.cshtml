@@ -134,6 +134,8 @@
                         <th data-bs-toggle="tooltip" title="Expected Due Date of Procurement">Exp Due Date</th>
                         <th data-bs-toggle="tooltip" title="Official PO Due Date">PO Due Date</th>
                         <th data-bs-toggle="tooltip" title="Date PO was received">PO Received Date</th>
+                        <th data-bs-toggle="tooltip" title="Is Quality Completed">Quality Completed</th>
+                        <th data-bs-toggle="tooltip" title="NCR Raised">NCR Raised</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -148,9 +150,14 @@
                                 <tr>
                                     @if (firstRow)
                                     {
+
                                         <td rowspan="@machine.Procurements.Count">
-                                            @Html.DisplayFor(m => machine.Description)
+                                            <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
+                                               data-bs-toggle="tooltip" title="Click here to view all information about this machine">
+                                                @Html.DisplayFor(m => machine.Description)
+                                            </a>
                                         </td>
+
                                         firstRow = false;
                                     }
 
@@ -159,6 +166,8 @@
                                     <td data-bs-toggle="tooltip" title="Expected Due Date: @procurement.ExpDueDate">@Html.DisplayFor(m => procurement.ExpDueDate)</td>
                                     <td data-bs-toggle="tooltip" title="PO Due Date: @procurement.PODueDate">@Html.DisplayFor(m => procurement.PODueDate)</td>
                                     <td data-bs-toggle="tooltip" title="Received on: @procurement.PORcd">@Html.DisplayFor(m => procurement.PORcd)</td>
+                                    <td data-bs-toggle="tooltip" title="Quality Completed">@Html.DisplayFor(m => procurement.QualityICom)</td>
+                                    <td data-bs-toggle="tooltip" title="NCR Raised">@Html.DisplayFor(m => procurement.NcrRaised)</td>
                                 </tr>
                             }
                         }
@@ -213,7 +222,7 @@
         body * {
             visibility: hidden;
         }
-
+       
         #printableArea, #printableArea * {
             visibility: visible;
         }
@@ -263,5 +272,11 @@
         tr {
             page-break-inside: avoid !important;
         }
+
+     
+    }
+
+    td {
+        cursor: default;
     }
 </style>
