@@ -43,6 +43,7 @@ namespace haver.Controllers
             var gData = from g in _context.GanttDatas
                         .Include(g => g.SalesOrder)
                 .ThenInclude(m => m.Machines)
+                .Include(m => m.Machine).ThenInclude(m => m.MachineType)
                 .AsNoTracking()
                         select g;
 
