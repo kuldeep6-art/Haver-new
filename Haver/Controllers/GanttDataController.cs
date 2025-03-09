@@ -349,20 +349,10 @@ namespace haver.Controllers
                             isUpdated = true;
                         }
 
-                        //if (gDataToUpdate.ShipExpected != null && gDataToUpdate.SalesOrder.ExpectedShippingDate != gDataToUpdate.ShipExpected)
-                        //{
-                        //    gDataToUpdate.SalesOrder.ExpectedShippingDate = gDataToUpdate.ShipExpected;
-                        //    isUpdated = true;
-                        //}
                     }
 
                     if (gDataToUpdate.Machine != null)
                     {
-                        //if (gDataToUpdate.EngReleased != null && gDataToUpdate.Machine.EngineeringReleaseDate != gDataToUpdate.EngReleased)
-                        //{
-                        //    gDataToUpdate.Machine.EngineeringReleaseDate = gDataToUpdate.EngReleased;
-                        //    isUpdated = true;
-                        //}
 
                         if (gDataToUpdate.AssemblyStart != null && gDataToUpdate.Machine.AssemblyStart != gDataToUpdate.AssemblyStart)
                         {

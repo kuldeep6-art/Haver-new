@@ -245,8 +245,7 @@ namespace haver.Controllers
                     //PreOExp = salesOrder.PreOExp,
                     EngExpected = salesOrder.EngPExp,
                     EngReleased = salesOrder.EngPRel,
-                    // Handling the Procurement-related fields
-                    PurchaseOrdersIssued = salesOrder.SoDate, // Assuming PurchaseOrderDate is the relevant field in Procurement
+                    PurchaseOrdersIssued = salesOrder.SoDate, 
                     PurchaseOrdersCompleted = salesOrder.SoDate,
                     PurchaseOrdersReceived = salesOrder.SoDate,
                     AssemblyStart = machine.AssemblyStart,
