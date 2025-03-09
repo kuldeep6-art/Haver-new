@@ -203,7 +203,8 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet,PreOExp,PreORel,EngPExp,EngPRel,Comments,Status")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers, bool saveAsDraft)
+        public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet," +
+            "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers, bool saveAsDraft)
         {
             try
             {
@@ -292,7 +293,8 @@ namespace haver.Controllers
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
 			p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
 			p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
-			p => p.EngPRel, p => p.CompanyName, p => p.Comments))
+			p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.Media, p => p.SpareParts,
+              p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly))
 			{
 				try
                 {
@@ -469,12 +471,12 @@ namespace haver.Controllers
 					DeliveryDates = string.Join(Environment.NewLine, so.Machines
 						.SelectMany(m => m.Procurements
 						.Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))),
-					Media = string.Join(Environment.NewLine, so.Machines.Select(m => m.Media ? "Yes" : "No")),
-					SpareParts = string.Join(Environment.NewLine, so.Machines.Select(m => m.SpareParts ? "Yes" : "No")),
-					Base = string.Join(Environment.NewLine, so.Machines.Select(m => m.Base ? "Yes" : "No")),
-					AirSeal = string.Join(Environment.NewLine, so.Machines.Select(m => m.AirSeal ? "Yes" : "No")),
-					CoatingLining = string.Join(Environment.NewLine, so.Machines.Select(m => m.CoatingLining ? "Yes" : "No")),
-					Disassembly = string.Join(Environment.NewLine, so.Machines.Select(m => m.Disassembly ? "Yes" : "No")),
+					Media = so.Media ? "Yes" : "No",
+					SpareParts = so.SpareParts ? "Yes" : "No",
+					Base = so.Base ? "Yes" : "No",
+					AirSeal = so.AirSeal ? "Yes" : "No",
+					CoatingLining = so.CoatingLining ? "Yes" : "No",
+					Disassembly = so.Disassembly ? "Yes" : "No",
                     PreOrder = string.Join(Environment.NewLine,
     so.Machines.Select(m => !string.IsNullOrEmpty(m.PreOrder)
         ? Regex.Replace(m.PreOrder, "<.*?>", string.Empty)
