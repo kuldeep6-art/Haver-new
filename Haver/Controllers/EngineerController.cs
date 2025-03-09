@@ -142,7 +142,7 @@ namespace haver.Controllers
 				}
                 else if (baseExceptionMessage.Contains("UNIQUE constraint failed: Engineers.EngineerInitials"))
                 {
-                    ModelState.AddModelError("Email", "An engineer with the same Initial already exists.");
+                    ModelState.AddModelError("EngineerInitials", "An engineer with the same Initial already exists.");
                 }
                 else
 				{
