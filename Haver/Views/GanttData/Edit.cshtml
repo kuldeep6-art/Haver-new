@@ -32,16 +32,17 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label asp-for="MachineID" class="control-label"
+                            <label asp-for="SalesOrderID" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Machine <span class="text-danger">*</span>
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine associated with the Gantt data."></i>
+                                Sales Order <span class="text-danger">*</span>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title=" The sales order associated with the Gantt data."></i>
                             </label>
-                            <select asp-for="MachineID" class="form-control"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" asp-items="ViewBag.MachineID" id="MachineID">
-                                <option value="">Select a Machine</option>
+                            <select class="form-control" id="SalesOrderID" disabled>
+                                <option value="@Model.SalesOrderID">@Model.SalesOrder?.OrderNumber</option>
                             </select>
-                            <span asp-validation-for="MachineID" class="text-danger"></span>
+                            <input type="hidden" asp-for="SalesOrderID" />
+
+                            <span asp-validation-for="SalesOrderID" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4">

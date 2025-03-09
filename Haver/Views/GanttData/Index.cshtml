@@ -126,8 +126,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.SalesOrder.OrderNumber)</td>
-                <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.SalesOrder.CompanyName)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
+                <td tabindex="0">@Html.DisplayFor(modelItem => item.SalesOrder.CompanyName)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.Machine.Description)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.AppDRcd)</td>
                 <td tabindex="0">@Html.DisplayFor(modelItem => item.EngReleased)</td>
@@ -136,7 +136,7 @@
                     <td tabindex="0">@Html.DisplayFor(modelItem => item.Month)</td>
                     <td class="text-center">
                         <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white"
-                           aria-label="View details of gantt data @item.Machine.SalesOrder.OrderNumber"
+                           aria-label="View details of gantt data @item.SalesOrder.OrderNumber"
                            data-bs-toggle="tooltip" title="View Details">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
@@ -144,7 +144,7 @@
                         @if (!item.IsFinalized)
                         {
                             <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Edit gantt data @item.Machine.SalesOrder.OrderNumber"
+                               aria-label="Edit gantt data @item.SalesOrder.OrderNumber"
                                data-bs-toggle="tooltip" title="Edit Gantt Data">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>

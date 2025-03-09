@@ -32,6 +32,21 @@ namespace haver.Models
         [Required(ErrorMessage = "Production order number is required.")]
         public string? ProductionOrderNumber { get; set; }
 
+        [Display(Name = "Assembly Expectd")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? AssemblyExp { get; set; }
+
+        [Display(Name = "Assembly Start")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? AssemblyStart { get; set; }
+
+        [Display(Name = "Assembly Complete")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [DataType(DataType.Date)]
+        public DateTime? AssemblyComplete { get; set; }
+
 
         [Display(Name = "Readiness To Ship Expected")]
         [Required(ErrorMessage = "Enter the Readiness to Ship Expected Date")]

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250308200200_gdatasup")]
+    partial class gdatasup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -106,9 +109,6 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("AppDExp")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("AppDRcd")
                         .HasColumnType("TEXT");
 
@@ -137,6 +137,7 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("MachineID")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Notes")
@@ -145,22 +146,14 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime?>("PackageReleased")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PreOExp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("PreORel")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("PurchaseOrdersCompleted")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("PurchaseOrdersIssued")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("PurchaseOrdersReceived")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("SalesOrderID")
+                    b.Property<int?>("SalesOrderID")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("ShipActual")
@@ -246,15 +239,6 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<bool>("AirSeal")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("AssemblyComplete")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("AssemblyExp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("AssemblyStart")
-                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Base")
                         .HasColumnType("INTEGER");
@@ -626,7 +610,9 @@ namespace haver.Data.HaverMigrations
                 {
                     b.HasOne("haver.Models.Machine", "Machine")
                         .WithMany()
-                        .HasForeignKey("MachineID");
+                        .HasForeignKey("MachineID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("haver.Models.SalesOrder", "SalesOrder")
                         .WithMany()

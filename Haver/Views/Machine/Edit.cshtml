@@ -169,6 +169,39 @@
                     <span asp-validation-for="Nameplate" class="text-danger"></span>
                 </div>
 
+                <div class="row">
+
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AssemblyExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AssemblyStart)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Assembly Expected Date"></i>
+                        </label>
+                        <input asp-for="AssemblyExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AssemblyExp" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AssemblyStart" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AssemblyStart)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Assembly Start Date"></i>
+                        </label>
+                        <input asp-for="AssemblyStart" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AssemblyStart" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AssemblyComplete" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AssemblyComplete)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Assembly Complete Date"></i>
+                        </label>
+                        <input asp-for="AssemblyComplete" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
+                    </div>
+                </div>
+
                 <!-- Third Row -->
                 <div class="row">
                     <!-- Budgeted Hours -->
