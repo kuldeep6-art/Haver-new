@@ -30,78 +30,82 @@
                 </form>
             }
 
+
+            <button href="#" onclick="printPrintableArea()" return false;" class="ms-3 btn btn-sm "> <i class="fa-solid fa-print"></i> Print</button>
             <a asp-action="Index" class="btn">Back to List</a>
         </div>
 
 
     </div>
 
+    <div id="printableArea">
     <div class="info-container">
         <div class="info-box p-3 bg-light border rounded mb-3">
             <dl class="row">
                 <!-- Machine Information -->
-                <dt class="col-md-3">Machine & Serial Number</dt>
-                <dd class="col-md-3">@Model.GanttData.Machine.Description</dd>
+                <dt class="col-md-2">Machine & Serial Number</dt>
+                <dd class="col-md-2">@Model.GanttData.Machine.Description</dd>
 
-                <dt class="col-md-3">Order Number</dt>
-                <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
+                <dt class="col-md-2">Order Number</dt>
+                <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
 
-                <dt class="col-md-3">Customer</dt>
-                <dd class="col-md-3">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
+                <dt class="col-md-2">Customer</dt>
+                <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
 
-                <dt class="col-md-3">Approval Drawings Expected</dt>
-                <dd class="col-md-3">@Model.GanttData.AppDExp?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Approval Drawings Received</dt>
+                <dd class="col-md-2">@Model.GanttData.AppDRcd?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Approval Drawings Received</dt>
-                <dd class="col-md-3">@Model.GanttData.AppDRcd?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Approval Drawings Expected</dt>
+                <dd class="col-md-2">@Model.GanttData.AppDExp?.ToString("MMM dd, yyyy")</dd>
+  
 
-                <dt class="col-md-3">Pre Orders Expected</dt>
-                <dd class="col-md-3">@Model.GanttData.PreOExp?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Pre Orders Expected</dt>
+                <dd class="col-md-2">@Model.GanttData.PreOExp?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Pre Orders Released</dt>
-                <dd class="col-md-3">@Model.GanttData.PreORel?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Pre Orders Released</dt>
+                <dd class="col-md-2">@Model.GanttData.PreORel?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Engineering Expected</dt>
-                <dd class="col-md-3">@Model.GanttData.EngExpected?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Engineering Expected</dt>
+                <dd class="col-md-2">@Model.GanttData.EngExpected?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Engineering Released</dt>
-                <dd class="col-md-3">@Model.GanttData.EngReleased?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Engineering Released</dt>
+                <dd class="col-md-2">@Model.GanttData.EngReleased?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Customer Approval</dt>
-                <dd class="col-md-3">@Model.GanttData.CustomerApproval?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Customer Approval</dt>
+                <dd class="col-md-2">@Model.GanttData.CustomerApproval?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Package Released</dt>
-                <dd class="col-md-3">@Model.GanttData.PackageReleased?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Package Released</dt>
+                <dd class="col-md-2">@Model.GanttData.PackageReleased?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Purchase Orders Expected</dt>
-                <dd class="col-md-3">@Model.GanttData.PurchaseOrdersIssued?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Purchase Orders Expected</dt>
+                <dd class="col-md-2">@Model.GanttData.PurchaseOrdersIssued?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Purchase Orders Due</dt>
-                <dd class="col-md-3">@Model.GanttData.PurchaseOrdersCompleted?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Purchase Orders Due</dt>
+                <dd class="col-md-2">@Model.GanttData.PurchaseOrdersCompleted?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Purchase Orders Received</dt>
-                <dd class="col-md-3">@Model.GanttData.PurchaseOrdersReceived?.ToString("MMM dd, yyyy")</dd>
+                <dt class="col-md-2">Purchase Orders Received</dt>
+                <dd class="col-md-2">@Model.GanttData.PurchaseOrdersReceived?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-3">Supplier PO Due</dt>
-                <dd class="col-md-3">@Model.GanttData.SupplierPODue?.ToString("d")</dd>
+                <dt class="col-md-2">Supplier PO Due</dt>
+                <dd class="col-md-2">@Model.GanttData.SupplierPODue?.ToString("d")</dd>
 
-                <dt class="col-md-3">Assembly Start</dt>
-                <dd class="col-md-3">@Model.GanttData.AssemblyStart?.ToString("d")</dd>
+                <dt class="col-md-2">Assembly Start</dt>
+                <dd class="col-md-2">@Model.GanttData.AssemblyStart?.ToString("d")</dd>
 
-                <dt class="col-md-3">Assembly Complete</dt>
-                <dd class="col-md-3">@Model.GanttData.AssemblyComplete?.ToString("d")</dd>
+                <dt class="col-md-2">Assembly Complete</dt>
+                <dd class="col-md-2">@Model.GanttData.AssemblyComplete?.ToString("d")</dd>
 
-                <dt class="col-md-3">Shipping Expected</dt>
-                <dd class="col-md-3">@Model.GanttData.ShipExpected?.ToString("d")</dd>
+                <dt class="col-md-2">Shipping Expected</dt>
+                <dd class="col-md-2">@Model.GanttData.ShipExpected?.ToString("d")</dd>
 
-                <dt class="col-md-3">Actual Shipping</dt>
-                <dd class="col-md-3">@Model.GanttData.ShipActual?.ToString("d")</dd>
+                <dt class="col-md-2">Actual Shipping</dt>
+                <dd class="col-md-2">@Model.GanttData.ShipActual?.ToString("d")</dd>
 
-                <dt class="col-md-3">Delivery Expected</dt>
-                <dd class="col-md-3">@Model.GanttData.DeliveryExpected?.ToString("d")</dd>
+                <dt class="col-md-2">Delivery Expected</dt>
+                <dd class="col-md-2">@Model.GanttData.DeliveryExpected?.ToString("d")</dd>
 
-                <dt class="col-md-3">Actual Delivery</dt>
-                <dd class="col-md-3">@Model.GanttData.DeliveryActual?.ToString("d")</dd>
+                <dt class="col-md-2">Actual Delivery</dt>
+                <dd class="col-md-2">@Model.GanttData.DeliveryActual?.ToString("d")</dd>
             </dl>
 
             <p class="fw-bold text-center" style="font-size:20px;">Notes</p>
@@ -136,10 +140,74 @@
     </div>
 </div>
 
+</div>
 <br />
 @section stylesheets {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
     <style>
+
+         @@media print {
+        body * {
+            visibility: hidden;
+        }
+       
+        #printableArea, #printableArea * {
+            visibility: visible;
+        }
+
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+
+        .info-box dt {
+            width: 30%;
+            float: left;
+            clear: both;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box dd {
+            width: 70%;
+            float: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .procurement-table {
+            width: 100% !important;
+            font-size: 12px;
+        }
+
+        .section-header {
+            font-size: 18px !important;
+            margin: 15px 0;
+        }
+
+        .badge, .btn {
+            display: none !important;
+        }
+
+        .bg-light, .bg-dark {
+            background-color: #fff !important;
+        }
+
+        table {
+            page-break-inside: auto !important;
+        }
+
+        tr {
+            page-break-inside: avoid !important;
+        }
+
+     
+    }
+
+    td {
+        cursor: default;
+    }
+
         .card-header h5 {
             font-weight: 500;
         }
@@ -182,6 +250,11 @@
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+    <script>
+    function printPrintableArea() {
+        window.print();
+    }
+</script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var tasks = [
