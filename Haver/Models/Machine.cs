@@ -30,6 +30,7 @@ namespace haver.Models
         // Production Order Number
         [Display(Name = "Production Order Number")]
         [Required(ErrorMessage = "Production order number is required.")]
+        [StringLength(10, ErrorMessage = "Production order number must be exactly 7 digits.")]
         public string? ProductionOrderNumber { get; set; }
 
         [Display(Name = "Assembly Expectd")]
