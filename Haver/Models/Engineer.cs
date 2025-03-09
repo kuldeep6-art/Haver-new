@@ -9,20 +9,6 @@ namespace haver.Models
         #region SUMMARY PROPERTIES
 
         [Display(Name = "Engineer Initials")]
-        public string EngineerInitials
-        {
-            get
-            {
-
-                if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
-                {
-                    return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper();
-                }
-                return string.Empty;
-            }
-        }
-
-        [Display(Name ="Engineer Initials")]
         public string EngineerInitialsB
         {
             get
@@ -30,7 +16,7 @@ namespace haver.Models
 
                 if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
                 {
-                    return FirstName.Substring(0, 1).ToUpper() + LastName.Substring(0, 1).ToUpper() + " ( " + FirstName + " " + LastName + " ) ";
+                    return EngineerInitials + " ( " + FirstName + " " + LastName + " ) ";
                 }
                 return string.Empty;
             }
@@ -39,10 +25,17 @@ namespace haver.Models
 
         #endregion
 
+
+        [Display(Name = "Engineer Initials")]
+        [Required(ErrorMessage = "Enter Engineer Initials.")]
+        [MaxLength(2, ErrorMessage = "First name cannot be more than 50 characters long.")]
+        [MinLength(2, ErrorMessage = "First name cannot be less than 2 characters long.")]
+        public string? EngineerInitials { get; set; }
+
         //First Name Annotations
 
         [Display(Name = "First Name")]
-        [Required(ErrorMessage = "Enter the first name of the engineer related to this schedule.")]
+        [Required(ErrorMessage = "Enter the first name of the engineer .")]
         [MaxLength(50, ErrorMessage = "First name cannot be more than 50 characters long.")]
         [MinLength(2, ErrorMessage = "First name cannot be less than 2 characters long.")]
         public string? FirstName { get; set; }
@@ -50,7 +43,7 @@ namespace haver.Models
         //Last Name Annotations
 
         [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "Enter the first name of the engineer related to this schedule.")]
+        [Required(ErrorMessage = "Enter the last name of the engineer.")]
         [MaxLength(50, ErrorMessage = "Last name cannot be more than 50 characters long.")]
         [MinLength(2, ErrorMessage = "Last name cannot be less than 2 characters long.")]
         public string? LastName { get; set; }
