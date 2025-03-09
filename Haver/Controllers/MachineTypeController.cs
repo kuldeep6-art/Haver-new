@@ -101,7 +101,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Description")] MachineType machineType)
+        public async Task<IActionResult> Create([Bind("ID,Class,Size,Deck")] MachineType machineType)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace haver.Controllers
 				return NotFound();
 			}
 			if (await TryUpdateModelAsync<MachineType>(machinetypeToUpdate, "",
-						p => p.Description))
+						p => p.Class, p => p.Size, p => p.Deck))
 			{
 				try
                 {
