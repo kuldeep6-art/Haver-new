@@ -309,9 +309,9 @@ namespace haver.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var gDataToUpdate = await _context.GanttDatas
-       .Include(g => g.SalesOrder)
-       .Include(g => g.Machine) // Ensure related data is loaded
-       .FirstOrDefaultAsync(e => e.ID == id);
+                .Include(g => g.SalesOrder)
+                .Include(g => g.Machine) // Ensure related data is loaded
+                .FirstOrDefaultAsync(e => e.ID == id);
 
             if (gDataToUpdate == null)
             {
@@ -320,8 +320,9 @@ namespace haver.Controllers
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
                  p => p.SalesOrderID, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
-                 p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
-                  p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
+                 p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
+                 p => p.SupplierPODue, p => p.AssemblyStart, p => p.AssemblyComplete, p => p.ShipExpected, p => p.ShipActual, p => p.DeliveryExpected,
+                 p => p.DeliveryActual, p => p.Notes)) 
             {
                 try
                 {
@@ -336,7 +337,6 @@ namespace haver.Controllers
                             isUpdated = true;
                         }
 
-
                         if (gDataToUpdate.AppDRcd != null && gDataToUpdate.SalesOrder.AppDwgRel != gDataToUpdate.AppDRcd)
                         {
                             gDataToUpdate.SalesOrder.AppDwgRel = gDataToUpdate.AppDRcd;
@@ -348,12 +348,10 @@ namespace haver.Controllers
                             gDataToUpdate.SalesOrder.EngPRel = gDataToUpdate.EngReleased;
                             isUpdated = true;
                         }
-
                     }
 
                     if (gDataToUpdate.Machine != null)
                     {
-
                         if (gDataToUpdate.AssemblyStart != null && gDataToUpdate.Machine.AssemblyStart != gDataToUpdate.AssemblyStart)
                         {
                             gDataToUpdate.Machine.AssemblyStart = gDataToUpdate.AssemblyStart;
@@ -379,12 +377,14 @@ namespace haver.Controllers
                         }
                     }
 
-                    // Save changes if updates were made
+                    // If there were any updates, save changes
                     if (isUpdated)
                     {
                         await _context.SaveChangesAsync();
                     }
-                    TempData["Message"] = "Gantt Data has been successfully edited, Neccesary Dates have been updated on the sales order and machine";
+
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Gantt Data has been successfully edited, Necessary Dates have been updated on the sales order and machine";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -400,11 +400,10 @@ namespace haver.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
-
             }
+
             ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
             return View(gDataToUpdate);
         }
