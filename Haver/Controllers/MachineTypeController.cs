@@ -115,7 +115,7 @@ namespace haver.Controllers
 			catch (DbUpdateException dex)
 			{
                 var baseExceptionMessage = dex.GetBaseException().Message;
-                if (baseExceptionMessage.Contains("UNIQUE constraint failed: MachineTypes.Class, MachineTypes.Size, MachineTypes.Deck"))
+                if (baseExceptionMessage.Contains("UNIQUE"))
                 {
                     ModelState.AddModelError("Class", "Machine Type Combination should be Unique");
                     ModelState.AddModelError("Size", "Machine Type Combination should be Unique");
@@ -183,7 +183,7 @@ namespace haver.Controllers
 				catch (DbUpdateException dex)
 				{
                     var baseExceptionMessage = dex.GetBaseException().Message;
-                    if (baseExceptionMessage.Contains("UNIQUE constraint failed: MachineTypes.Class, MachineTypes.Size, MachineTypes.Deck"))
+                    if (baseExceptionMessage.Contains("UNIQUE"))
                     {
                         ModelState.AddModelError("Class", "Machine Type Combination should be Unique");
                         ModelState.AddModelError("Size", "Machine Type Combination should be Unique");
