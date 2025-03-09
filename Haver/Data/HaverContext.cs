@@ -116,6 +116,10 @@ namespace haver.Data
              .HasIndex(m => m.Email)
              .IsUnique();
 
+            modelBuilder.Entity<Engineer>()
+           .HasIndex(m => m.EngineerInitials)
+           .IsUnique();
+
 
             modelBuilder.Entity<Engineer>()
                 .HasIndex(pr => new { pr.FirstName, pr.LastName })

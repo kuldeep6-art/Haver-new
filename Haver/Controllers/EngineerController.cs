@@ -116,7 +116,7 @@ namespace haver.Controllers
 		// POST: Engineer/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Phone,Email")] Engineer engineer)
+		public async Task<IActionResult> Create([Bind("ID,EngineerInitials,FirstName,LastName,Phone,Email")] Engineer engineer)
 		{
 			try
 			{
@@ -140,7 +140,11 @@ namespace haver.Controllers
 				{
 					ModelState.AddModelError("Email", "An engineer with the same Email already exists.");
 				}
-				else
+                else if (baseExceptionMessage.Contains("UNIQUE constraint failed: Engineers.EngineerInitials"))
+                {
+                    ModelState.AddModelError("Email", "An engineer with the same Initial already exists.");
+                }
+                else
 				{
 					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
 				}
@@ -176,7 +180,7 @@ namespace haver.Controllers
 				return NotFound();
 			}
 
-			if (await TryUpdateModelAsync<Engineer>(engineerToUpdate, "", n => n.FirstName,
+			if (await TryUpdateModelAsync<Engineer>(engineerToUpdate, "",n => n.EngineerInitials, n => n.FirstName,
 				n => n.LastName, n => n.Email))
 			{
 				try
