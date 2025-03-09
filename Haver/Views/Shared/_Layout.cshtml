@@ -46,14 +46,9 @@
 
 			</div>
 
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Machine <i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Types</a>
-					<a asp-area="" asp-controller="Machine" asp-action="Index">Machines(WIP)</a>
-				</div>
+			<!--Machine Type Link-->
+			<div>
+				<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Types</a>
 			</div>
 
 			<!-- Vendor Links -->
@@ -68,7 +63,7 @@
 			</div>
 
 			<div>
-				<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
+				<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt Schedules</a>
 
 			</div>
 
