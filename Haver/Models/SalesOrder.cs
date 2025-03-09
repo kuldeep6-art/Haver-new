@@ -17,6 +17,14 @@ namespace haver.Models
             }
         }
 
+        public string MachineOrderDetail
+        {
+            get
+            {
+                return OrderNumber + " " + "|" + " " + CompanyName;
+            }
+        }
+
         #endregion
 
 

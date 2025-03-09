@@ -31,7 +31,10 @@
                             </label>
                             <select asp-for="MachineTypeID" class="form-control"
                                     style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    asp-items="ViewBag.MachineTypeID"></select>
+                                    asp-items="ViewBag.MachineTypeID">
+                            <option value="" disabled selected>Select Machine Type</option>
+                        </select>
+                                    
                         </div>
 
                         <!-- Sales Order -->
@@ -42,7 +45,9 @@
                             </label>
                             <select asp-for="SalesOrderID" class="form-control"
                                     style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    asp-items="ViewBag.SalesOrderID"></select>
+                                    asp-items="ViewBag.SalesOrderID">
+                            <option value="" disabled selected>Select Order Number | Customer</option>
+                        </select>
                         </div>
 
                         <!-- Serial Number -->
@@ -211,7 +216,7 @@
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary mr-2"
                                 style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-                            Next ➔
+                            Add Procurment Info ➔
                         </button>
                         <a asp-action="Index" class="btn btn-secondary"
                            style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">

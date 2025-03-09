@@ -22,6 +22,7 @@ namespace haver.Models
 
         [Display(Name = "Purchase Order Number")]
         [Required(ErrorMessage = "Please Enter the Purchase Order Number")]
+        [StringLength(10, ErrorMessage = "Purchase Order number must be exactly 10 digits.")] 
         public string PONumber { get; set; } = "";
 
         [Display(Name = "Purchase Orders Expected")]

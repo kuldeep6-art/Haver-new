@@ -395,18 +395,18 @@ namespace haver.Controllers
         }
 
 
-			private void PopulateDropDownLists(Machine? machine = null)
-		{
-			ViewData["MachineTypeID"] = new SelectList(_context.MachineType, "ID", "Description");
-			// Filter SalesOrders where Status is InProgress
-			ViewData["SalesOrderID"] = new SelectList(
-				_context.SalesOrders.Where(so => so.Status == Status.InProgress),
-				"ID",
-				"OrderNumber"
-			);
-		}
+        private void PopulateDropDownLists(Machine? machine = null)
+        {
+            ViewData["MachineTypeID"] = new SelectList(_context.MachineType, "ID", "Description");
+            // Filter SalesOrders where Status is InProgress
+            ViewData["SalesOrderID"] = new SelectList(
+                _context.SalesOrders.Where(so => so.Status == Status.InProgress),
+                "ID",
+                "MachineOrderDetail"
+            );
+        }
 
-		private bool MachineExists(int id)
+        private bool MachineExists(int id)
         {
             return _context.Machines.Any(e => e.ID == id);
         }
