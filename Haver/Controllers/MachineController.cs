@@ -170,10 +170,18 @@ namespace haver.Controllers
         }
 
         // GET: Machine/Create
-        public IActionResult Create()
+        public IActionResult Create(int? salesOrderId)
         {
+            var machine = new Machine();
+
+            // If a SalesOrderID is provided, preselect it
+            if (salesOrderId.HasValue)
+            {
+                machine.SalesOrderID = salesOrderId.Value;
+            }
+
             PopulateDropDownLists();
-            return View();
+            return View(machine);
         }
 
         // POST: Machine/Create

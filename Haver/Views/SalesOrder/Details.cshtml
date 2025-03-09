@@ -148,11 +148,8 @@
         </div>
 
         <div>
-<<<<<<< HEAD
-            <a asp-controller="Machine" asp-action="Create" class="ms-3 btn btn-sm" target="_blank">
-=======
-            <a asp-controller="Machine" asp-action="Create" class="ms-3 btn btn-sm">
->>>>>>> 50f78d93d0ae24de9725e790f6c2c71a5020d435
+            <a asp-controller="Machine" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="ms-3 btn btn-sm" target="_blank">
+
                         <i class="fa fa-plus" aria-hidden="true"></i> Add Machine</a>
         </div>
 
@@ -208,7 +205,7 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(m => machine.Description)</td>
-                                <td colspan="" class="text-center text-muted" data-bs-toggle="tooltip" title="No procurement details available">No Procurement Details</td>
+                                <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" title="No procurement details available">No Procurement Details</td>
                             </tr>
                         }
                     }
