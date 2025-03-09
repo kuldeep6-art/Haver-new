@@ -39,7 +39,7 @@
     </div>
 
     <div id="printableArea">
-    <div class="info-container">
+    <div class="info-container opts">
         <div class="info-box p-3 bg-light border rounded mb-3">
             <dl class="row">
                 <!-- Machine Information -->
@@ -57,13 +57,6 @@
 
                 <dt class="col-md-2">Approval Drawings Expected</dt>
                 <dd class="col-md-2">@Model.GanttData.AppDExp?.ToString("MMM dd, yyyy")</dd>
-  
-
-                <dt class="col-md-2">Pre Orders Expected</dt>
-                <dd class="col-md-2">@Model.GanttData.PreOExp?.ToString("MMM dd, yyyy")</dd>
-
-                <dt class="col-md-2">Pre Orders Released</dt>
-                <dd class="col-md-2">@Model.GanttData.PreORel?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Engineering Expected</dt>
                 <dd class="col-md-2">@Model.GanttData.EngExpected?.ToString("MMM dd, yyyy")</dd>
@@ -87,25 +80,25 @@
                 <dd class="col-md-2">@Model.GanttData.PurchaseOrdersReceived?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Supplier PO Due</dt>
-                <dd class="col-md-2">@Model.GanttData.SupplierPODue?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.SupplierPODue?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Assembly Start</dt>
-                <dd class="col-md-2">@Model.GanttData.AssemblyStart?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.AssemblyStart?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Assembly Complete</dt>
-                <dd class="col-md-2">@Model.GanttData.AssemblyComplete?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.AssemblyComplete?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Shipping Expected</dt>
-                <dd class="col-md-2">@Model.GanttData.ShipExpected?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.ShipExpected?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Actual Shipping</dt>
-                <dd class="col-md-2">@Model.GanttData.ShipActual?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.ShipActual?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Delivery Expected</dt>
-                <dd class="col-md-2">@Model.GanttData.DeliveryExpected?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.DeliveryExpected?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Actual Delivery</dt>
-                <dd class="col-md-2">@Model.GanttData.DeliveryActual?.ToString("d")</dd>
+                    <dd class="col-md-2">@Model.GanttData.DeliveryActual?.ToString("MMM dd, yyyy")</dd>
             </dl>
 
             <p class="fw-bold text-center" style="font-size:20px;">Notes</p>
@@ -162,6 +155,8 @@
             width: 100%;
         }
 
+            
+
         .info-box dt {
             width: 30%;
             float: left;
@@ -174,6 +169,7 @@
             float: left;
             margin-bottom: 0.5rem;
         }
+
 
         .procurement-table {
             width: 100% !important;

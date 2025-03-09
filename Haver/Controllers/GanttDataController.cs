@@ -308,7 +308,10 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
-            var gDataToUpdate = await _context.GanttDatas.FirstOrDefaultAsync(e => e.ID == id);
+            var gDataToUpdate = await _context.GanttDatas
+                .Include(g => g.SalesOrder)
+                .Include(g => g.Machine) // Ensure related data is loaded
+                .FirstOrDefaultAsync(e => e.ID == id);
 
             if (gDataToUpdate == null)
             {
@@ -316,14 +319,72 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
-                 p => p.SalesOrderID,p => p.PreOExp, p => p.PreORel, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
-                 p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
-                  p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
+                 p => p.SalesOrderID, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
+                 p => p.SupplierPODue, p => p.AssemblyStart, p => p.AssemblyComplete, p => p.ShipExpected, p => p.ShipActual, p => p.DeliveryExpected,
+                 p => p.DeliveryActual, p => p.Notes)) 
             {
                 try
                 {
+                    bool isUpdated = false;
+
+                    // Ensure related SalesOrder and Machine reflect changes
+                    if (gDataToUpdate.SalesOrder != null)
+                    {
+                        if (gDataToUpdate.AppDExp.HasValue && gDataToUpdate.SalesOrder.AppDwgExp != gDataToUpdate.AppDExp.Value)
+                        {
+                            gDataToUpdate.SalesOrder.AppDwgExp = gDataToUpdate.AppDExp.Value;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.AppDRcd != null && gDataToUpdate.SalesOrder.AppDwgRel != gDataToUpdate.AppDRcd)
+                        {
+                            gDataToUpdate.SalesOrder.AppDwgRel = gDataToUpdate.AppDRcd;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.EngReleased != null && gDataToUpdate.SalesOrder.EngPRel != gDataToUpdate.EngReleased)
+                        {
+                            gDataToUpdate.SalesOrder.EngPRel = gDataToUpdate.EngReleased;
+                            isUpdated = true;
+                        }
+                    }
+
+                    if (gDataToUpdate.Machine != null)
+                    {
+                        if (gDataToUpdate.AssemblyStart != null && gDataToUpdate.Machine.AssemblyStart != gDataToUpdate.AssemblyStart)
+                        {
+                            gDataToUpdate.Machine.AssemblyStart = gDataToUpdate.AssemblyStart;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.AssemblyComplete != null && gDataToUpdate.Machine.AssemblyComplete != gDataToUpdate.AssemblyComplete)
+                        {
+                            gDataToUpdate.Machine.AssemblyComplete = gDataToUpdate.AssemblyComplete;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.ShipExpected != null && gDataToUpdate.Machine.RToShipExp != gDataToUpdate.ShipExpected)
+                        {
+                            gDataToUpdate.Machine.RToShipExp = gDataToUpdate.ShipExpected;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.ShipActual != null && gDataToUpdate.Machine.RToShipA != gDataToUpdate.ShipActual)
+                        {
+                            gDataToUpdate.Machine.RToShipA = gDataToUpdate.ShipActual;
+                            isUpdated = true;
+                        }
+                    }
+
+                    // If there were any updates, save changes
+                    if (isUpdated)
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Gantt Data has been successfully edited";
+                    TempData["Message"] = "Gantt Data has been successfully edited, Necessary Dates have been updated on the sales order and machine";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -339,11 +400,10 @@ namespace haver.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
-
             }
+
             ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber");
             return View(gDataToUpdate);
         }
