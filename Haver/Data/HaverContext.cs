@@ -121,7 +121,13 @@ namespace haver.Data
                 .HasIndex(pr => new { pr.FirstName, pr.LastName })
                 .IsUnique();
 
-          
+
+            modelBuilder.Entity<MachineType>()
+                .HasIndex(pr => new { pr.Class, pr.Size, pr.Deck })
+                .IsUnique();
+
+
+
 
             modelBuilder.Entity<PackageRelease>()
                 .HasIndex(pr => new { pr.Name, pr.SalesOrderID })
