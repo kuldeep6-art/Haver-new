@@ -319,7 +319,7 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
-                 p => p.SalesOrderID,p => p.PreOExp, p => p.PreORel, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.SalesOrderID, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
                  p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
                   p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
             {
@@ -330,6 +330,13 @@ namespace haver.Controllers
                     // Ensure related SalesOrder and Machine reflect changes
                     if (gDataToUpdate.SalesOrder != null)
                     {
+                        if (gDataToUpdate.AppDExp.HasValue && gDataToUpdate.SalesOrder.AppDwgExp != gDataToUpdate.AppDExp.Value)
+                        {
+                            gDataToUpdate.SalesOrder.AppDwgExp = gDataToUpdate.AppDExp.Value;
+                            isUpdated = true;
+                        }
+
+
                         if (gDataToUpdate.AppDRcd != null && gDataToUpdate.SalesOrder.AppDwgRel != gDataToUpdate.AppDRcd)
                         {
                             gDataToUpdate.SalesOrder.AppDwgRel = gDataToUpdate.AppDRcd;
@@ -360,6 +367,24 @@ namespace haver.Controllers
                         if (gDataToUpdate.AssemblyStart != null && gDataToUpdate.Machine.AssemblyStart != gDataToUpdate.AssemblyStart)
                         {
                             gDataToUpdate.Machine.AssemblyStart = gDataToUpdate.AssemblyStart;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.AssemblyComplete != null && gDataToUpdate.Machine.AssemblyComplete != gDataToUpdate.AssemblyComplete)
+                        {
+                            gDataToUpdate.Machine.AssemblyComplete = gDataToUpdate.AssemblyComplete;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.ShipExpected != null && gDataToUpdate.Machine.RToShipExp != gDataToUpdate.ShipExpected)
+                        {
+                            gDataToUpdate.Machine.RToShipExp = gDataToUpdate.ShipExpected;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.ShipActual != null && gDataToUpdate.Machine.RToShipA != gDataToUpdate.ShipActual)
+                        {
+                            gDataToUpdate.Machine.RToShipA = gDataToUpdate.ShipActual;
                             isUpdated = true;
                         }
                     }
