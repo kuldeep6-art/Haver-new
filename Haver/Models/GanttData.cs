@@ -16,15 +16,15 @@ namespace haver.Models
         public int? MachineID { get; set; }
         public Machine? Machine { get; set; }
 
-        [Display(Name = "Pre Orders Expected")]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        [DataType(DataType.Date)]
-        public DateTime? PreOExp { get; set; }
+        //[Display(Name = "Pre Orders Expected")]
+        //[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        //[DataType(DataType.Date)]
+        //public DateTime? PreOExp { get; set; }
 
-        [Display(Name = "Pre Orders Released")]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        [DataType(DataType.Date)]
-        public DateTime? PreORel { get; set; }
+        //[Display(Name = "Pre Orders Released")]
+        //[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        //[DataType(DataType.Date)]
+        //public DateTime? PreORel { get; set; }
 
         [Display(Name = "Approval Drawing Expected")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]

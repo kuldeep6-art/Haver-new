@@ -308,7 +308,10 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
-            var gDataToUpdate = await _context.GanttDatas.FirstOrDefaultAsync(e => e.ID == id);
+            var gDataToUpdate = await _context.GanttDatas
+       .Include(g => g.SalesOrder)
+       .Include(g => g.Machine) // Ensure related data is loaded
+       .FirstOrDefaultAsync(e => e.ID == id);
 
             if (gDataToUpdate == null)
             {
@@ -316,14 +319,72 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
-                 p => p.SalesOrderID,p => p.PreOExp, p => p.PreORel, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.SalesOrderID, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
                  p => p.CustomerApproval, p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
                   p => p.SupplierPODue, p => p.AssemblyStart,p => p.AssemblyComplete, p => p.ShipExpected, p => p.DeliveryExpected, p => p.DeliveryActual, p => p.Notes))
             {
                 try
                 {
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Gantt Data has been successfully edited";
+                    bool isUpdated = false;
+
+                    // Ensure related SalesOrder and Machine reflect changes
+                    if (gDataToUpdate.SalesOrder != null)
+                    {
+                        if (gDataToUpdate.AppDExp.HasValue && gDataToUpdate.SalesOrder.AppDwgExp != gDataToUpdate.AppDExp.Value)
+                        {
+                            gDataToUpdate.SalesOrder.AppDwgExp = gDataToUpdate.AppDExp.Value;
+                            isUpdated = true;
+                        }
+
+
+                        if (gDataToUpdate.AppDRcd != null && gDataToUpdate.SalesOrder.AppDwgRel != gDataToUpdate.AppDRcd)
+                        {
+                            gDataToUpdate.SalesOrder.AppDwgRel = gDataToUpdate.AppDRcd;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.EngReleased != null && gDataToUpdate.SalesOrder.EngPRel != gDataToUpdate.EngReleased)
+                        {
+                            gDataToUpdate.SalesOrder.EngPRel = gDataToUpdate.EngReleased;
+                            isUpdated = true;
+                        }
+
+                    }
+
+                    if (gDataToUpdate.Machine != null)
+                    {
+
+                        if (gDataToUpdate.AssemblyStart != null && gDataToUpdate.Machine.AssemblyStart != gDataToUpdate.AssemblyStart)
+                        {
+                            gDataToUpdate.Machine.AssemblyStart = gDataToUpdate.AssemblyStart;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.AssemblyComplete != null && gDataToUpdate.Machine.AssemblyComplete != gDataToUpdate.AssemblyComplete)
+                        {
+                            gDataToUpdate.Machine.AssemblyComplete = gDataToUpdate.AssemblyComplete;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.ShipExpected != null && gDataToUpdate.Machine.RToShipExp != gDataToUpdate.ShipExpected)
+                        {
+                            gDataToUpdate.Machine.RToShipExp = gDataToUpdate.ShipExpected;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.ShipActual != null && gDataToUpdate.Machine.RToShipA != gDataToUpdate.ShipActual)
+                        {
+                            gDataToUpdate.Machine.RToShipA = gDataToUpdate.ShipActual;
+                            isUpdated = true;
+                        }
+                    }
+
+                    // Save changes if updates were made
+                    if (isUpdated)
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    TempData["Message"] = "Gantt Data has been successfully edited, Neccesary Dates have been updated on the sales order and machine";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
