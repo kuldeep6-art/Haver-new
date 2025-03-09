@@ -171,16 +171,17 @@
                 <tbody>
                     @foreach (var machine in Model.Machines)
                     {
-                        @if (machine.Procurements != null && machine.Procurements.Any())
-                        {
-                            bool firstRow = true;
+                        bool hasProcurements = machine.Procurements != null && machine.Procurements.Any();
 
+                        bool firstRow = true;
+
+                        if (hasProcurements)
+                        {
                             foreach (var procurement in machine.Procurements)
                             {
                                 <tr>
                                     @if (firstRow)
                                     {
-
                                         <td rowspan="@machine.Procurements.Count">
                                             <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
                                                data-bs-toggle="tooltip" title="Click here to view all information about this machine">
@@ -204,12 +205,21 @@
                         else
                         {
                             <tr>
-                                <td>@Html.DisplayFor(m => machine.Description)</td>
-                                <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" title="No procurement details available">No Procurement Details</td>
+                                <!-- ✅ Machine description is now always a link -->
+                                <td>
+                                    <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
+                                       data-bs-toggle="tooltip" title="Click here to view all information about this machine">
+                                        @Html.DisplayFor(m => machine.Description)
+                                    </a>
+                                </td>
+                                <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" title="No procurement details available">
+                                    No Procurement Details
+                                </td>
                             </tr>
                         }
                     }
                 </tbody>
+
             </table>
         </div>
 
