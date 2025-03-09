@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250309000819_sdsa")]
+    partial class sdsa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -244,6 +247,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<decimal?>("ActualAssemblyHours")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("AirSeal")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("AssemblyComplete")
                         .HasColumnType("TEXT");
 
@@ -253,8 +259,14 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime?>("AssemblyStart")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Base")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal?>("BudgetedHours")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("CoatingLining")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
@@ -263,7 +275,13 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Disassembly")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("MachineTypeID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Media")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("Nameplate")
@@ -296,6 +314,12 @@ namespace haver.Data.HaverMigrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("SparePMedia")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SpareParts")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -324,10 +348,6 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Class")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -335,12 +355,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Deck")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Size")
-                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedBy")
@@ -352,7 +369,7 @@ namespace haver.Data.HaverMigrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Class", "Size", "Deck")
+                    b.HasIndex("Description")
                         .IsUnique();
 
                     b.ToTable("MachineType");

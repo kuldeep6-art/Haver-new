@@ -8,11 +8,31 @@ namespace haver.Models
 
 
         // Machine Description
-        [Display(Name = "Machine Description")]
+
+        #region SUMMARY PROPERTY
+        
+        public string Description { get {
+                return Class + "-" + Size + " " + Deck;
+            
+            }
+        }
+
+        #endregion
+
+
+        [Display(Name = "Machine Class")]
         [Required(ErrorMessage = "Machine description is required.")]
-        [MaxLength(100, ErrorMessage = "Description cannot exceed 100 characters.")]
-        [MinLength(10, ErrorMessage = "Description must be at least 5 characters.")]
-        public string? Description { get; set; }
+        public string? Class {  get; set; }
+
+
+        [Display(Name = "Machine Size")]
+        [Required(ErrorMessage = "Machine description is required.")]
+        public string? Size {  get; set; }
+
+
+        [Display(Name = "Machine Deck")]
+        [Required(ErrorMessage = "Machine description is required.")]
+        public string? Deck {  get; set; }
 
         public ICollection<Machine> Machines { get; set; } = new HashSet<Machine>();
     }
