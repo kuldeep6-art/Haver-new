@@ -122,7 +122,7 @@
             </dl>
 
 
-             <dl class="row">
+             <dl class="row opts">
             <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Media)</dt>
             <dd class="col-md-2">@Html.DisplayFor(model => Model.Media)</dd>
 
@@ -247,6 +247,8 @@
         body * {
             visibility: hidden;
         }
+
+       
        
         #printableArea, #printableArea * {
             visibility: visible;
@@ -272,6 +274,22 @@
             margin-bottom: 0.5rem;
         }
 
+        .opts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Add space between items */
+        }
+
+            .opts dt, .opts dd {
+                display: inline-block;
+                width: auto;
+                margin-right: 15px; /* Adjust spacing */
+            }
+
+                .opts dt::after {
+                    content: ":"; /* Add a colon after labels */
+                    margin-right: 5px;
+                }
         .procurement-table {
             width: 100% !important;
             font-size: 12px;
