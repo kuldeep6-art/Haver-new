@@ -4,9 +4,13 @@
 <div class="info-container">
     <div class="info-box p-3 bg-light border rounded mb-3">
         <dl class="row">
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.SalesOrder)</dt>
-            <dd class="col-md-3">@Html.DisplayFor(model => Model.SalesOrder.OrderNumber)</dd>
-
+            <dt class="col-md-3">Sales Order</dt>
+            <dd class="col-md-3">
+                <a href="@Url.Action("Details", "SalesOrder", new { id = Model.SalesOrder.ID })"
+                   data-bs-toggle="tooltip" title="View Sales Order Details" target="_blank">
+                    @Html.DisplayFor(model => model.SalesOrder.OrderNumber)
+                </a>
+            </dd>
             <dt class="col-md-3">@Html.DisplayNameFor(model => Model.MachineType)</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.MachineType.Description)</dd>
 
