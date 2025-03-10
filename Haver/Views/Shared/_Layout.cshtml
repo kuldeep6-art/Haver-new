@@ -52,8 +52,8 @@
 					Machine <i class="fa fa-plus"></i>
 				</a>
 				<div class="dropdown-content">
-					<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Model</a>
-					<a asp-area="" asp-controller="Machine" asp-action="Index">Machines Instances</a>
+					<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Models</a>
+					<a asp-area="" asp-controller="Machine" asp-action="Index">Machine Instances</a>
 				</div>
 			</div>
 
@@ -69,16 +69,12 @@
 
 			</div>
 
-			<!--Machine Type Link-->
-			<div class="dropdown">
-				<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-					Gantt<i class="fa fa-plus"></i>
-				</a>
-				<div class="dropdown-content">
-					<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt Schedules</a>
-					<a asp-area="" asp-controller="GanttData" asp-action="Chart">All Gantt Charts</a>
-				</div>
+			<!-- Engineer Links -->
+			<div>
+				<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
+
 			</div>
+
 
 			
 
