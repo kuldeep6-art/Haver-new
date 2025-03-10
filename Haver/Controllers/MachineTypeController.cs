@@ -202,9 +202,9 @@ namespace haver.Controllers
                     var baseExceptionMessage = dex.GetBaseException().Message;
                     if (baseExceptionMessage.Contains("UNIQUE"))
                     {
-                        ModelState.AddModelError("Class", "Machine Type Combination should be Unique");
-                        ModelState.AddModelError("Size", "Machine Type Combination should be Unique");
-                        ModelState.AddModelError("Deck", "Machine Type Combination should be Unique");
+                        ModelState.AddModelError("Class", "Machine Model Combination should be Unique");
+                        ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
+                        ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
                     }
                     else
                     {
