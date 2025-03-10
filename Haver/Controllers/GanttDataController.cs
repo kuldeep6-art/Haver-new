@@ -481,9 +481,10 @@ namespace haver.Controllers
         {
             var ganttData = _context.GanttDatas
                 .Include(g => g.SalesOrder)
-                .Include(g => g.Machine)
+                .Include(g => g.Machine).ThenInclude(m => m.MachineType)
                 .ToList() // Fetch all data first
                 .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
+
                 .ToList();
 
             return View(ganttData);
@@ -517,6 +518,7 @@ namespace haver.Controllers
                         ID = g.ID,
                         UniqueID = $"{g.ID}-{g.Machine.ID}-{name}", // Ensure uniqueness
                         MachineName = $"{g.Machine.Description} - {name}", // Reference single machine
+                        SalesOrder = g.SalesOrder.OrderNumber,
                         StartDate = start.Value,
                         EndDate = end.Value,
                         Progress = 100,
