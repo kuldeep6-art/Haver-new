@@ -402,10 +402,28 @@ namespace haver.Controllers
             return View(machine);
         }
 
+        private SelectList MachineTypeList(int? selectedId)
+        {
+            return new SelectList(_context
+                .MachineTypes
+                .AsEnumerable() // Move data to memory
+                .OrderBy(m => m.Description), // Now sorting works
+                "ID",
+                "Description",
+                selectedId);
+        }
+
+
+        [HttpGet]
+        public JsonResult GetMachineTypes(int? id)
+        {
+            return Json(MachineTypeList(id));
+        }
+
 
         private void PopulateDropDownLists(Machine? machine = null)
         {
-            ViewData["MachineTypeID"] = new SelectList(_context.MachineType, "ID", "Description");
+            ViewData["MachineTypeID"] = MachineTypeList(machine?.MachineTypeID);
             // Filter SalesOrders where Status is InProgress
             ViewData["SalesOrderID"] = new SelectList(
                 _context.SalesOrders.Where(so => so.Status == Status.InProgress),
@@ -413,6 +431,9 @@ namespace haver.Controllers
                 "MachineOrderDetail"
             );
         }
+
+
+      
 
         private bool MachineExists(int id)
         {

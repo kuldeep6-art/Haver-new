@@ -238,6 +238,21 @@
             height: 100px !important; /* Shrink empty space */
         }
 
+        .handle {
+            display: none !important;
+        }
+        /* Disable interaction with drag handles */
+        .handle {
+            pointer-events: none !important;
+            display: none !important;
+        }
+
+        /* Allow clicks on bars and labels */
+        .bar,
+        .bar-label {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
 
 
     </style>
@@ -245,7 +260,7 @@
 
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.0/frappe-gantt.min.js"></script>
     <script>
     function printPrintableArea() {
         window.print();
@@ -271,6 +286,9 @@
                     ];
 
             var gantt = new Gantt("#gantt", tasks, {
+                draggable:false, 
+                can_move:false,
+                can_resize: false,
                 on_click: function (task) {
                     alert("Clicked on " + task.name);
                 },
@@ -292,8 +310,6 @@
                                     </div>`;
                 }
             });
-
-           
 
 
             // Manually adjust all task bars to align in the same row

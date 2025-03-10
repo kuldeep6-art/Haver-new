@@ -7,6 +7,7 @@ using haver.Data;
 using haver.Models;
 using haver.CustomControllers;
 using haver.Utilities;
+using haver.ViewModels;
 
 namespace haver.Controllers
 {
@@ -254,9 +255,17 @@ namespace haver.Controllers
 				}
 				return Redirect(returnUrl);
 			}
-			catch (DbUpdateException)
+			catch (DbUpdateException dex)
 			{
-				ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+				ExceptionMessageVM msg = new();
+				if(dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed")){
+					msg.ErrProperty = "";
+					msg.ErrMessage = "Unable to Delete " + ViewData["ControllerFriendlyName"] +
+						". Remember, you cannot delete a " + ViewData["ControllerFriendlyName"] +
+						"that has related records.";
+				}
+
+				ModelState.AddModelError(msg.ErrProperty, msg.ErrMessage);
 			}
 			return View(engineer);
 		}
