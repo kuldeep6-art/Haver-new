@@ -365,3 +365,6 @@ FodyWeavers.xsd
 /Haver/Haver.db-shm
 /Haver/Controllers/GanttDataController.cs
 /Haver/Views/Shared/_Layout.cshtml
+/Haver/HaverOne.db
+/Haver/HaverOne.db-shm
+/Haver/HaverOne.db-wal
