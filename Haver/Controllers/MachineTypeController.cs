@@ -10,6 +10,8 @@ using haver.Models;
 using haver.Utilities;
 using haver.CustomControllers;
 using System.Reflection.PortableExecutable;
+using haver.ViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace haver.Controllers
 {
@@ -126,9 +128,24 @@ namespace haver.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                 }
             }
+            //Decide if we need to send the Validaiton Errors directly to the client
+            if (!ModelState.IsValid && Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                //Was an AJAX request so build a message with all validation errors
+                string errorMessage = "";
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                        errorMessage += error.ErrorMessage + "|";
+                    }
+                }
+                //Note: returning a BadRequest results in HTTP Status code 400
+                return BadRequest(errorMessage);
+            }
 
 
-			return View(machineType);
+            return View(machineType);
         }
 
         // GET: MachineType/Edit/5
@@ -240,17 +257,19 @@ namespace haver.Controllers
 				}
 				return Redirect(returnUrl);
 			}
-			catch (DbUpdateException dex)
-			{
-				if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
-				{
-					ModelState.AddModelError("", "Unable to Delete Machine Type.  Remember, you cannot delete a MachineType attached to a Machine");
-				}
-				else
-				{
-					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-				}
-			}
+            catch (DbUpdateException dex)
+            {
+                ExceptionMessageVM msg = new();
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    msg.ErrProperty = "";
+                    msg.ErrMessage = "Unable to Delete " + ViewData["ControllerFriendlyName"] +
+                        ". Remember, you cannot delete a " + ViewData["ControllerFriendlyName"] +
+                        "that has related records.";
+                }
+
+                ModelState.AddModelError(msg.ErrProperty, msg.ErrMessage);
+            }
             return View(machineType);
         }
 

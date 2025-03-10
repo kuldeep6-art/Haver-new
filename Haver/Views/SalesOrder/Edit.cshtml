@@ -28,34 +28,34 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.OrderNumber) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit Order Number"></i>
                         </label>
                         <input asp-for="OrderNumber" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="OrderNumber" class="text-danger"></span>
                     </div>
 
+                    
+                    <!-- Company Name -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="CompanyName" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.CompanyName) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Customer"></i>
+                        </label>
+                        <input asp-for="CompanyName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                    </div>
+
                     <!-- SO Date -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="SoDate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.SoDate) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Sales order creation date"></i>
                         </label>
                         <input asp-for="SoDate" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="SoDate" class="text-danger"></span>
                     </div>
 
-                    <!-- Company Name -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="CompanyName" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.CompanyName) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Customer company name"></i>
-                        </label>
-                        <input asp-for="CompanyName" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="CompanyName" class="text-danger"></span>
-                    </div>
                 </div>
 
                 <!-- Second Row -->
@@ -64,7 +64,7 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.Price)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Total order value"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Total value of the sales order"></i>
                         </label>
                         <input asp-for="Price" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -75,7 +75,6 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="Currency" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.Currency)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Transaction currency"></i>
                         </label>
                         <select asp-for="Currency" class="form-control"
                                 style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;">
@@ -106,7 +105,7 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing expection date"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing expected date"></i>
                         </label>
                         <input asp-for="AppDwgExp" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -117,7 +116,7 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.AppDwgRel)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing release date"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawings release date"></i>
                         </label>
                         <input asp-for="AppDwgRel" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -128,7 +127,7 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRet" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.AppDwgRet)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawing return date"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Date when drawings were returned"></i>
                         </label>
                         <input asp-for="AppDwgRet" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -144,7 +143,7 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="PreOExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.PreOExp) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Pre-order expected date"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Pre-orders expected date"></i>
                         </label>
                         <input asp-for="PreOExp" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -155,7 +154,7 @@
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="PreORel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.PreORel)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Pre-order release date"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Pre-orders release date"></i>
                         </label>
                         <input asp-for="PreORel" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -259,7 +258,6 @@
                     <div class="form-group col-md-6 mb-4">
                         <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Comments
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Additional notes or comments"></i>
                         </label>
                         <textarea asp-for="Comments" class="form-control summernote"
                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
