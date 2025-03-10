@@ -114,3 +114,9 @@ footer {
     .scroll-to-top i {
         font-size: 20px;
     }
+.back-to-list-btn {
+    background-color: #0C2340;
+    border-color: #0C2340;
+    font-family: 'Avenir Heavy', sans-serif;
+    color: white !important;
+}

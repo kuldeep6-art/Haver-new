@@ -7,12 +7,21 @@
         }
         else
         {
-            <a asp-action="Index">Back to the @ViewData["ControllerFriendlyName"] List</a>
+            <a asp-action="Index" class="ms-3 btn btn-sm back-to-list-btn">Back to the @ViewData["ControllerFriendlyName"] List</a>
         }
     }
     else
     {
-        <a asp-action="Index">Back to the List</a>
+        <a asp-action="Index" class="ms-3 btn btn-sm back-to-list-btn">Back to the List</a>
     }
 
 }
+
+<style>
+    .back-to-list-btn {
+        background-color: #0C2340;
+        border-color: #0C2340;
+        font-family: 'Avenir Heavy', sans-serif;
+        color: white !important;
+    }
+</style>
