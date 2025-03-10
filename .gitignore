@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /Haver/Views/Customer/Delete.cshtml
 /Haver/Haver.db-shm
+/Haver/Controllers/GanttDataController.cs
+/Haver/Views/Shared/_Layout.cshtml
