@@ -11,5 +11,8 @@
 
         public int Progress { get; set; }
         public string MilestoneClass { get; set; }
+
+        public string SalesOrder { get; set; }
+
     }
 }
