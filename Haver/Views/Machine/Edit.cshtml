@@ -25,7 +25,7 @@
                 <div class="row">
                     <!-- Machine Type -->
                     <div class="form-group col-md-4 mb-3">
-                        <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                      @*   <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine model"></i>
                         </label>
@@ -39,8 +39,15 @@
                             </button>
                         </div>
 
-                        <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span>
+                        <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span> *@
 
+                        <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
+                        </label>
+                        <select asp-for="MachineTypeID" class="form-control"
+                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                asp-items="ViewBag.MachineTypeID"></select>
                     </div>
 
                     <!-- Sales Order -->
