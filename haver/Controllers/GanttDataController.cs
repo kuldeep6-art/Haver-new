@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.Text.RegularExpressions;
 
 namespace haver.Controllers
 {
@@ -570,8 +571,10 @@ namespace haver.Controllers
 					SpareParts = so.SpareParts ? "Yes" : "No",
 					ApprovedDrawingReceived = so.AppDwgExp,
 					GanttData = ganttDataLookup.ContainsKey(so.ID) ? ganttDataLookup[so.ID] : new List<GanttViewModel>(),
-					SpecialNotes = so.Comments ?? ""
-				})
+					SpecialNotes = !string.IsNullOrEmpty(so.Comments)
+                        ? Regex.Replace(so.Comments, "<.*?>", string.Empty)
+                        : " "
+                })
 				.ToList();
 
 			Console.WriteLine($"Total Schedules: {schedules.Count}");
