@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -572,18 +572,10 @@ namespace haver.Controllers
 					SpareParts = so.SpareParts ? "Yes" : "No",
 					ApprovedDrawingReceived = so.AppDwgExp,
 					GanttData = ganttDataLookup.ContainsKey(so.ID) ? ganttDataLookup[so.ID] : new List<GanttViewModel>(),
-<<<<<<< Updated upstream
-					// Get SpecialNotes from GanttData if available, otherwise fall back to Comments, and strip HTML
-					SpecialNotes = ganttDataLookup.ContainsKey(so.ID) && ganttDataLookup[so.ID].Any()
-						? string.Join("; ", ganttDataLookup[so.ID].Select(g => g.notes != null ? System.Net.WebUtility.HtmlDecode(g.notes.Replace("<p>", "").Replace("</p>", "")) : ""))
-						: so.Comments != null ? System.Net.WebUtility.HtmlDecode(so.Comments.Replace("<p>", "").Replace("</p>", "")) : ""
-				})
-=======
 					SpecialNotes = !string.IsNullOrEmpty(so.Comments)
                         ? Regex.Replace(so.Comments, "<.*?>", string.Empty)
                         : " "
                 })
->>>>>>> Stashed changes
 				.ToList();
 
 			Console.WriteLine($"Total Schedules: {schedules.Count}");
@@ -876,8 +868,7 @@ namespace haver.Controllers
 						StartDate = start.Value,
 						EndDate = end.Value,
 						Progress = 100,
-						MilestoneClass = color,
-                        notes=g.Notes
+						MilestoneClass = color
                         
                         
 					});
