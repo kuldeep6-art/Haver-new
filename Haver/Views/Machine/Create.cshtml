@@ -25,7 +25,7 @@
                     <div class="row">
                         <!-- Machine Type -->
                     <div class="form-group col-md-4 mb-3">
-                        @* <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine model"></i>
                         </label>
@@ -39,14 +39,14 @@
                             </button>
                         </div>
 
-                        <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span> *@
-                        <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span>
+                        @* <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
                         </label>
                         <select asp-for="MachineTypeID" class="form-control"
                                 style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                asp-items="ViewBag.MachineTypeID"></select>
+                                asp-items="ViewBag.MachineTypeID"></select> *@
                     </div>
                     
                   
@@ -247,51 +247,45 @@
     }
     <script src="~/js/multiselect.js"></script>
 
-      <script src="~/js/refreshDDL.js"></script>
+ 
 
     <script type="text/javascript">
         $('#submitMachineTypeCreate').click(function (event) {
             event.preventDefault();
             ClearErrors();
-            var form = $('#createMachineTypeForm');
-            if (form.valid()) {
-                $.ajax({
-                    type: "POST",
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function () {
-                        $('#addMachineTypeModal').modal('hide');
-                    },
-                    error: function (xhr) { //Note: xhr is the XMLHttpRequest
-                        var errorMessages = [];
-                        switch (xhr.status) {
-                            case 401:
-                                errorMessages.push("You must be logged in first.");
-                                break;
-                            case 403:
-                                errorMessages.push("You are not authorized for this action.");
-                                break;
-                            default:
-                                //Messages coming from the Model State Errors
-                                //We split on the | delimeter and the .slice removes the last one
-                                errorMessages = xhr.responseText.split("|").slice(0, -1);
-                        }
-                        //This checks if there are any elements with some content
-                        //and if not then it provides a default feedback message.
-                        if (!errorMessages.some((str) => str !== "")) {
-                            errorMessages.push("Error: Unable to complete operation");
-                        }
-                        //Put the messages in the ErrorList ul contained in the 'ValidaitonSummary' div.
-                        var ul = document.getElementById("ErrorList");
-                        for (var i = 0; i < errorMessages.length; i++) {
-                            var errorMessage = errorMessages[i];
-                            var li = document.createElement("li");
-                            li.innerHTML = errorMessage;
-                            ul.appendChild(li);
-                        }
+
+            $.ajax({
+                type: "POST",
+                url: $('#createMachineTypeForm').attr('action'),
+                data: $('#createMachineTypeForm').serialize(),
+                success: function () {
+                    $('#addMachineTypeModal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                },
+                error: function (xhr) {
+                    var errorMessages = [];
+                    switch (xhr.status) {
+                        case 401:
+                            errorMessages.push("You must be logged in first.");
+                            break;
+                        case 403:
+                            errorMessages.push("You are not authorized for this action.");
+                            break;
+                        default:
+                            errorMessages = xhr.responseText.split("|").slice(0, -1);
                     }
-                });
-            }
+                    if (!errorMessages.some((str) => str !== "")) {
+                        errorMessages.push("Error: Unable to complete operation");
+                    }
+                    var ul = document.getElementById("ErrorList");
+                    for (var i = 0; i < errorMessages.length; i++) {
+                        var li = document.createElement("li");
+                        li.innerHTML = errorMessages[i];
+                        ul.appendChild(li);
+                    }
+                }
+            });
             return false;
         });
         $('#addMachineTypeModal').on('hide.bs.modal', function () {
@@ -308,6 +302,8 @@
             }
         }
     </script>
+
+    <script src="~/js/refreshDDL.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
     <!-- Summernote JS -->

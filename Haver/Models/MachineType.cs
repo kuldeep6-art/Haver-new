@@ -21,17 +21,17 @@ namespace haver.Models
 
 
         [Display(Name = "Machine Class")]
-        [Required(ErrorMessage = "Machine description is required.")]
+        [Required(ErrorMessage = "Machine class is required.")]
         public string? Class {  get; set; }
 
 
         [Display(Name = "Machine Size")]
-        [Required(ErrorMessage = "Machine description is required.")]
+        [Required(ErrorMessage = "Machine size is required.")]
         public string? Size {  get; set; }
 
 
         [Display(Name = "Machine Deck")]
-        [Required(ErrorMessage = "Machine description is required.")]
+        [Required(ErrorMessage = "Machine deck is required.")]
         public string? Deck {  get; set; }
 
         public ICollection<Machine> Machines { get; set; } = new HashSet<Machine>();
