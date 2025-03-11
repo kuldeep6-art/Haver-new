@@ -24,21 +24,23 @@
                     <!-- First Row -->
                     <div class="row">
                         <!-- Machine Type -->
-                       <div class="form-group col-md-4 mb-3">
+                    <div class="form-group col-md-4 mb-3">
                         <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Select the machine model"></i>
                         </label>
 
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary" id="nowAddMachineType" data-bs-toggle="modal" data-bs-target="#addMachineTypeModal" type="button">&#x2795;</button>
-                            </div>
+                        <div class="input-group">
                             <select asp-for="MachineTypeID" class="form-control" asp-items="ViewBag.MachineTypeID">
                                 <option value="">None</option>
                             </select>
-                            <span asp-validation-for="MachineTypeID" class="text-danger"></span>
+                            <button class="btn btn-outline-secondary" id="nowAddMachineType" data-bs-toggle="modal" data-bs-target="#addMachineTypeModal" type="button">
+                                &#x2795;
+                            </button>
                         </div>
+
+                        <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span>
+                    
                     </div>
 
                         <!-- Sales Order -->

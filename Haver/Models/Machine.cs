@@ -124,8 +124,8 @@ namespace haver.Models
         public SalesOrder? SalesOrder { get; set; }
 
         // Foreign Key to MachineType
-        [Display(Name = "Machine Type")]
-        [Required(ErrorMessage = "Select the Machine Type")]
+        [Display(Name = "Machine Model")]
+        [Required(ErrorMessage = "Select the Machine Model")]
         public int MachineTypeID { get; set; }
         public MachineType? MachineType { get; set; }
 
