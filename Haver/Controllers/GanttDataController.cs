@@ -554,7 +554,8 @@ namespace haver.Controllers
 				.Select(so => new
 				{
 					OrderNumber = so.OrderNumber ?? "",
-					Engineer = so.SalesOrderEngineers?.FirstOrDefault()?.Engineer,
+					// Fix Engineer: Check if SalesOrderEngineers exists and get the Engineer's name
+					Engineer = $"{so.SalesOrderEngineers?.FirstOrDefault()?.Engineer.FirstName[0]} {so.SalesOrderEngineers?.FirstOrDefault()?.Engineer.LastName[0]}",
 					CustomerName = so.CompanyName ?? "Unknown",
 					Quantity = so.Machines?.Count() ?? 0,
 					Size = so.Machines != null
@@ -570,7 +571,10 @@ namespace haver.Controllers
 					SpareParts = so.SpareParts ? "Yes" : "No",
 					ApprovedDrawingReceived = so.AppDwgExp,
 					GanttData = ganttDataLookup.ContainsKey(so.ID) ? ganttDataLookup[so.ID] : new List<GanttViewModel>(),
-					SpecialNotes = so.Comments ?? ""
+					// Get SpecialNotes from GanttData if available, otherwise fall back to Comments, and strip HTML
+					SpecialNotes = ganttDataLookup.ContainsKey(so.ID) && ganttDataLookup[so.ID].Any()
+						? string.Join("; ", ganttDataLookup[so.ID].Select(g => g.notes != null ? System.Net.WebUtility.HtmlDecode(g.notes.Replace("<p>", "").Replace("</p>", "")) : ""))
+						: so.Comments != null ? System.Net.WebUtility.HtmlDecode(so.Comments.Replace("<p>", "").Replace("</p>", "")) : ""
 				})
 				.ToList();
 
@@ -713,7 +717,11 @@ namespace haver.Controllers
 						}
 					}
 
+					// Assign Special Notes to column 47 with HTML stripped and ensure it fits
 					workSheet.Cells[row, 47].Value = schedule.SpecialNotes;
+					workSheet.Cells[row, 47].Style.WrapText = true; // Ensure text wraps
+					workSheet.Cells[row, 47].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
 					row++;
 				}
 
@@ -767,7 +775,7 @@ namespace haver.Controllers
 				{
 					workSheet.Column(i).Width = 4; // Slightly wider for readability
 				}
-				workSheet.Column(47).Width = 40; // Special Notes
+				workSheet.Column(47).Width = 40; // Increased width for Special Notes to accommodate longer text
 
 				// Freeze panes
 				workSheet.View.FreezePanes(3, 11);
@@ -860,7 +868,10 @@ namespace haver.Controllers
 						StartDate = start.Value,
 						EndDate = end.Value,
 						Progress = 100,
-						MilestoneClass = color
+						MilestoneClass = color,
+                        notes=g.Notes
+                        
+                        
 					});
 					Console.WriteLine($"Milestone: {name}, Start: {start.Value}, End: {end.Value}, Color: {color}");
 				}
