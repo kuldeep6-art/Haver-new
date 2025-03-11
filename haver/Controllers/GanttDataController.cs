@@ -585,12 +585,12 @@ namespace haver.Controllers
 				var workSheet = excel.Workbook.Worksheets.Add("Machine Schedules");
 
 				// Set overall document properties
-				excel.Workbook.Properties.Title = "Machinery Gantt Schedule 2025";
+				excel.Workbook.Properties.Title = "Machinery Gantt Schedule";
 				excel.Workbook.Properties.Author = "xAI Generated";
 				excel.Workbook.Properties.Company = "Your Company";
 
 				// Title styling
-				workSheet.Cells[1, 1].Value = "Machinery Gantt Schedule 2025";
+				workSheet.Cells[1, 1].Value = "Machinery Gantt Schedule";
 				using (ExcelRange title = workSheet.Cells[1, 1, 1, 47])
 				{
 					title.Merge = true;
@@ -779,7 +779,7 @@ namespace haver.Controllers
 				try
 				{
 					byte[] theData = excel.GetAsByteArray();
-					return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Machine Schedule.xlsx");
+					return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Gantt Schedule.xlsx");
 				}
 				catch (Exception)
 				{
