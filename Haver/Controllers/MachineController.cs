@@ -402,23 +402,36 @@ namespace haver.Controllers
             return View(machine);
         }
 
+
+        public JsonResult GetMachineTypes(int? id)
+        {
+            var types = _context.MachineTypes
+                .OrderBy(m => m.Class)
+                .Select(m => new
+                {
+                    value = m.ID,
+                    text = m.Description
+                })
+                .ToList();
+
+            return Json(types);
+        }
+
+
         private SelectList MachineTypeList(int? selectedId)
         {
             return new SelectList(_context
                 .MachineTypes
-                .AsEnumerable() // Move data to memory
-                .OrderBy(m => m.Description), // Now sorting works
+                .AsEnumerable()
+                .OrderBy(m => m.Class),
                 "ID",
                 "Description",
                 selectedId);
         }
 
 
-        [HttpGet]
-        public JsonResult GetMachineTypes(int? id)
-        {
-            return Json(MachineTypeList(id));
-        }
+
+
 
 
         private void PopulateDropDownLists(Machine? machine = null)
