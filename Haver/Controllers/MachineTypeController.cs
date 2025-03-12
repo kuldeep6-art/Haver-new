@@ -111,23 +111,47 @@ namespace haver.Controllers
 				{
 					_context.Add(machineType);
 					await _context.SaveChangesAsync();
-					return RedirectToAction(nameof(Index));
-				}
+                    var returnUrl = ViewData["returnURL"]?.ToString();
+                    if (string.IsNullOrEmpty(returnUrl))
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    return Redirect(returnUrl);
+                }
 			}
-			catch (DbUpdateException dex)
-			{
-                var baseExceptionMessage = dex.GetBaseException().Message;
-                if (baseExceptionMessage.Contains("UNIQUE"))
+            catch (DbUpdateException dex)
+            {
+                ExceptionMessageVM msg = new();
+                string baseMessage = dex.GetBaseException().Message;
+
+                if (baseMessage.Contains("UNIQUE"))
                 {
-                    ModelState.AddModelError("Class", "Machine Type Combination should be Unique");
-                    ModelState.AddModelError("Size", "Machine Type Combination should be Unique");
-                    ModelState.AddModelError("Deck", "Machine Type Combination should be Unique");
+                    if (baseMessage.Contains("Class"))
+                    {
+                        msg.ErrProperty = "Class";
+                        ModelState.AddModelError("Class", "Machine Model Combination should be Unique");
+                    }
+
+                    if (baseMessage.Contains("Size"))
+                    {
+                        msg.ErrProperty = "Size";
+                        ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
+                    }
+
+                    if (baseMessage.Contains("Deck"))
+                    {
+                        msg.ErrProperty = "Deck";
+                        ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                    msg.ErrProperty = string.Empty;
                 }
+
+                ModelState.AddModelError(msg.ErrProperty, msg.ErrMessage);
             }
+
             //Decide if we need to send the Validaiton Errors directly to the client
             if (!ModelState.IsValid && Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
@@ -143,7 +167,6 @@ namespace haver.Controllers
                 //Note: returning a BadRequest results in HTTP Status code 400
                 return BadRequest(errorMessage);
             }
-
 
             return View(machineType);
         }
