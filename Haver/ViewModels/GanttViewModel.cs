@@ -14,5 +14,7 @@
 
         public string SalesOrder { get; set; }
 
+        public string Notes { get; set; } = "";
+
     }
 }

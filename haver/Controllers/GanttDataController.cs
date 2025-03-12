@@ -572,10 +572,14 @@ namespace haver.Controllers
 					SpareParts = so.SpareParts ? "Yes" : "No",
 					ApprovedDrawingReceived = so.AppDwgExp,
 					GanttData = ganttDataLookup.ContainsKey(so.ID) ? ganttDataLookup[so.ID] : new List<GanttViewModel>(),
-					SpecialNotes = !string.IsNullOrEmpty(so.Comments)
-                        ? Regex.Replace(so.Comments, "<.*?>", string.Empty)
-                        : " "
-                })
+                    SpecialNotes = ganttDataLookup.ContainsKey(so.ID) && ganttDataLookup[so.ID].Any()
+                 ? string.Join("; ", ganttDataLookup[so.ID]
+                 .Where(g => !string.IsNullOrEmpty(g.Notes))
+             .Select(g => Regex.Replace(g.Notes, "<.*?>", string.Empty))
+              .Distinct()) : ""
+
+
+        })
 				.ToList();
 
 			Console.WriteLine($"Total Schedules: {schedules.Count}");
@@ -865,6 +869,7 @@ namespace haver.Controllers
 						UniqueID = $"{g.ID}-{g.Machine.ID}-{name}",
 						MachineName = $"{g.Machine.Description} - {name}",
 						SalesOrder = g.SalesOrder.OrderNumber,
+                        Notes = g.Notes,
 						StartDate = start.Value,
 						EndDate = end.Value,
 						Progress = 100,
