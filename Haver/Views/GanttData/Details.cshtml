@@ -1,7 +1,7 @@
 ﻿@model haver.ViewModels.GanttDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Gantt Data Details";
 }
 
 
@@ -47,7 +47,12 @@
                 <dd class="col-md-2">@Model.GanttData.Machine.Description</dd>
 
                 <dt class="col-md-2">Order Number</dt>
-                <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
+                <dd class="col-md-2">
+                        <a href="@Url.Action("Details", "SalesOrder", new { id = Model.GanttData.Machine.SalesOrder.ID })"
+                           data-bs-toggle="tooltip" title="View Sales Order Details" target="_blank">
+                            @Model.GanttData.Machine.SalesOrder.OrderNumber
+                        </a>
+                    </dd>
 
                 <dt class="col-md-2">Customer</dt>
                 <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
