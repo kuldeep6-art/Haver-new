@@ -1,7 +1,7 @@
 ﻿@model haver.ViewModels.GanttDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Gantt Data Details";
 }
 
 
@@ -44,10 +44,22 @@
             <dl class="row">
                 <!-- Machine Information -->
                 <dt class="col-md-2">Machine & Serial Number</dt>
-                <dd class="col-md-2">@Model.GanttData.Machine.Description</dd>
+                <dd class="col-md-2">
+                        <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = Model.GanttData.Machine.ID })"
+                           data-bs-toggle="tooltip" title="View Machine Details" target="_blank">
+                            @Model.GanttData.Machine.Description
+                        </a>
+
+
+                    </dd>
 
                 <dt class="col-md-2">Order Number</dt>
-                <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.OrderNumber</dd>
+                <dd class="col-md-2">
+                        <a href="@Url.Action("Details", "SalesOrder", new { id = Model.GanttData.Machine.SalesOrder.ID })"
+                           data-bs-toggle="tooltip" title="View Sales Order Details" target="_blank">
+                            @Model.GanttData.Machine.SalesOrder.OrderNumber
+                        </a>
+                    </dd>
 
                 <dt class="col-md-2">Customer</dt>
                 <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
@@ -415,6 +427,13 @@
         gantt.options.bar_height = 20; // Reduce bar height to match row height
         gantt.refresh(); // Apply changes
 
+    </script>
+
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 }
 

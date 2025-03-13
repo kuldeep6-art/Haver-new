@@ -27,14 +27,52 @@
                     }
                 </button>
             </th>
+            <th>Sales Order(s)</th>
             <th class="align-middle">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
+                var salesOrders = item.Machines.Select(m => m.SalesOrder).Distinct().ToList();
+                int orderCount = salesOrders.Count;
+                string collapseId = $"collapseOrders{item.ID}"; // Unique collapse ID
+
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>
+                        @if (orderCount > 0)
+                        {
+                            string firstOrder = salesOrders.FirstOrDefault()?.OrderNumber ?? "Unknown";
+                            if (orderCount > 1)
+                            {
+                                <a class="text-info" role="button"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#@collapseId"
+                                   aria-expanded="false"
+                                   aria-controls="@collapseId">
+                                    @firstOrder <span class="badge bg-info">@orderCount</span>
+                                </a>
+                                <div class="collapse mt-2" id="@collapseId">
+                                    @foreach (var order in salesOrders.Skip(1))
+                                    {
+                                        <div>@order.OrderNumber</div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                @firstOrder
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Sales Orders</span>
+                        }
+                    </td>
+
+
+
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine type @item.Description" data-bs-toggle="tooltip" title="Edit machine model">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -60,6 +98,7 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
+
 }
 
 <style>

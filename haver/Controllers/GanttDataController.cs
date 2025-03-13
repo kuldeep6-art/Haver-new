@@ -141,9 +141,14 @@ namespace haver.Controllers
         // GET: GanttData/Details/5
         public IActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var ganttData = _context.GanttDatas
-                 .Include(g => g.SalesOrder)
-                .ThenInclude(m => m.Machines)
+                .Include(g => g.Machine)
+                    .ThenInclude(m => m.SalesOrder) // Ensure SalesOrder is loaded via Machine
                 .Include(m => m.Machine).ThenInclude(m => m.MachineType)
                 .FirstOrDefault(g => g.ID == id);
 
@@ -162,6 +167,7 @@ namespace haver.Controllers
 
             return View(viewModel);
         }
+
 
 
         // GET: GanttData/GetMachineData/5

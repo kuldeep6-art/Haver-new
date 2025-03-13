@@ -32,6 +32,8 @@ namespace haver.Controllers
 
 
             var machinetypes = from m in _context.MachineTypes
+                               .Include(m => m.Machines)
+                               .ThenInclude(m => m.SalesOrder)
                         .AsNoTracking()
                             select m;
 
@@ -83,6 +85,7 @@ namespace haver.Controllers
             }
 
             var machineType = await _context.MachineType
+                .Include(m => m.Machines).ThenInclude(m => m.SalesOrder)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machineType == null)
             {
