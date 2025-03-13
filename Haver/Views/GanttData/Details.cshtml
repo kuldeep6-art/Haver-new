@@ -44,7 +44,14 @@
             <dl class="row">
                 <!-- Machine Information -->
                 <dt class="col-md-2">Machine & Serial Number</dt>
-                <dd class="col-md-2">@Model.GanttData.Machine.Description</dd>
+                <dd class="col-md-2">
+                        <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = Model.GanttData.Machine.ID })"
+                           data-bs-toggle="tooltip" title="View Machine Details" target="_blank">
+                            @Model.GanttData.Machine.Description
+                        </a>
+
+
+                    </dd>
 
                 <dt class="col-md-2">Order Number</dt>
                 <dd class="col-md-2">
