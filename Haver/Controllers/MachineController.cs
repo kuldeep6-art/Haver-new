@@ -402,6 +402,8 @@ namespace haver.Controllers
             return View(machine);
         }
 
+      
+
 
         public JsonResult GetMachineTypes(int? id)
         {

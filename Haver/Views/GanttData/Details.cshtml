@@ -260,13 +260,11 @@
         }
 
         /* Allow clicks on bars and labels */
-        .bar,
-        .bar-label {
-            pointer-events: auto !important;
-            cursor: pointer !important;
-        }
 
-
+        .bar, .bar-label{
+     /*     pointer-events: none !important; */
+        cursor: not-allowed !important;
+}
     </style>
 }
 
@@ -375,6 +373,8 @@
 
                 // Move bar wrappers
                 document.querySelectorAll(".bar-wrapper").forEach(wrapper => {
+                     wrapper.style.pointerEvents = "none"; 
+            wrapper.style.cursor = "default";
                     applyYOffset(wrapper, yOffset);
                 });
 
@@ -382,6 +382,10 @@
                 document.querySelectorAll(".handle").forEach(handle => {
                     applyYOffset(handle, yOffset);
                 });
+
+        //     document.querySelectorAll(".bar").forEach(bar => {
+           
+        // });
 
                 // Move all task groups (which contain bars, progress, and handles)
                 document.querySelectorAll("g.task").forEach(taskGroup => {
