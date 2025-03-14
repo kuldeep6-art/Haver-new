@@ -169,6 +169,13 @@ namespace haver.Controllers
             return View(machine);
         }
 
+        public PartialViewResult CreateMachine(int? salesOrderID)
+        {
+            ViewBag.MachineTypeID = new SelectList(_context.MachineType.OrderBy(a => a.Class), "ID", "Description");
+            return PartialView("_addMachine", new Machine { SalesOrderID = salesOrderID ?? 0 });
+        }
+
+
         // GET: Machine/Create
         public IActionResult Create(int? salesOrderId)
         {
@@ -183,6 +190,8 @@ namespace haver.Controllers
             PopulateDropDownLists();
             return View(machine);
         }
+
+     
 
         // POST: Machine/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

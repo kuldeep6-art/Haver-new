@@ -1,35 +1,32 @@
-﻿ @model haver.Models.Machine
+﻿     @model haver.Models.Machine
 
 
 
-<div class="modal fade" id="addMachineModal" tabindex="-1" aria-labelledby="addMachineModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addMachineModalLabel">Add New Machine</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="Create" method="post">
-                    <input type="hidden" asp-for="SalesOrderID" />
-                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
-                    <!-- First Row -->
-                    <div class="row">
-                        <!-- Machine Type -->
-                        <div class="form-group col-md-4 mb-3">
-                            <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
-                            </label>
-                            <select asp-for="MachineTypeID" class="form-control"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    asp-items="ViewBag.MachineTypeID"></select>
-                               
-                        
-                            <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span>
+    <div class="modal fade" id="addMachineModal" tabindex="-1" aria-labelledby="addMachineModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMachineModalLabel">Add New Machine</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="Create" method="post">
+                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
+                        <!-- First Row -->
+                        <div class="row">
+                            <!-- Machine Type -->
+                            <div class="form-group col-md-4 mb-3">
+                                <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                    <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
+                                </label>
+                                <select asp-for="MachineTypeID" class="form-control"
+                                        style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                        asp-items="ViewBag.MachineTypeID"></select>
+                                <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span>
                            
-                        </div>
+                            </div>
 
 
 

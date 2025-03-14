@@ -187,6 +187,7 @@ namespace haver.Controllers
         }
 
 
+        
         // GET: SalesOrder/Create
         public IActionResult Create()
         {
