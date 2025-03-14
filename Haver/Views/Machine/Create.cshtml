@@ -112,10 +112,10 @@
                         </div>
                     </div>
 
-                   
+                <div class="row">
 
                     <!-- Nameplate -->
-                    <div class="form-group  mb-4">
+                    <div class="form-group col-md-4 mb-3">
                         <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.Nameplate)
                         </label>
@@ -124,9 +124,6 @@
                                 asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
                         <span asp-validation-for="Nameplate" class="text-danger"></span>
                     </div>
-
-                <!-- Third Row -->
-                <div class="row">
 
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AssemblyExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -148,6 +145,15 @@
                         <span asp-validation-for="AssemblyStart" class="text-danger"></span>
                     </div>
 
+
+                    </div>
+
+                <!-- Third Row -->
+                <div class="row">
+
+                   
+
+                   
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AssemblyComplete" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                              @Html.DisplayNameFor(model => model.AssemblyComplete)
@@ -157,30 +163,34 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
                     </div>
+
+                    <!-- Budgeted Hours -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="BudgetedHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.BudgetedHours)
+                        </label>
+                        <input asp-for="BudgetedHours" class="form-control" placeholder="Enter Budgeted Hours"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="BudgetedHours" class="text-danger"></span>
+                    </div>
+
+                    <!-- Actual Hours -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="ActualAssemblyHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.ActualAssemblyHours)
+                        </label>
+                        <input asp-for="ActualAssemblyHours" class="form-control" placeholder="Enter Actual Hours"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="ActualAssemblyHours" class="text-danger"></span>
+                    </div>
+
+
                 </div>
 
                     <!-- Third Row -->
                     <div class="row">
-                        <!-- Budgeted Hours -->
-                        <div class="form-group col-md-4 mb-3">
-                            <label asp-for="BudgetedHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                @Html.DisplayNameFor(model => model.BudgetedHours)
-                            </label>
-                            <input asp-for="BudgetedHours" class="form-control" placeholder="Enter Budgeted Hours"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                            <span asp-validation-for="BudgetedHours" class="text-danger"></span>
-                        </div>
-
-                        <!-- Actual Hours -->
-                        <div class="form-group col-md-4 mb-3">
-                            <label asp-for="ActualAssemblyHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                @Html.DisplayNameFor(model => model.ActualAssemblyHours)
-                            </label>
-                            <input asp-for="ActualAssemblyHours" class="form-control" placeholder="Enter Actual Hours"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                            <span asp-validation-for="ActualAssemblyHours" class="text-danger"></span>
-                        </div>
-
+                       
+                      
                         <!-- Rework Hours -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ReworkHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -190,6 +200,8 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="ReworkHours" class="text-danger"></span>
                         </div>
+
+
                     </div>
 
                
