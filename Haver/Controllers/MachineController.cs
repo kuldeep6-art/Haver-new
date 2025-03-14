@@ -169,11 +169,13 @@ namespace haver.Controllers
             return View(machine);
         }
 
-        public PartialViewResult CreateMachine(int? salesOrderID)
+        public async Task<PartialViewResult> CreateMachine(int? salesOrderID)
         {
-            ViewBag.MachineTypeID = new SelectList(_context.MachineType.OrderBy(a => a.Class), "ID", "Description");
-            return PartialView("_addMachine", new Machine { SalesOrderID = salesOrderID ?? 0 });
+            var machine = new Machine { SalesOrderID = salesOrderID ?? 0 };
+            PopulateDropDownLists();
+            return PartialView("_addMachine", machine);
         }
+
 
 
         // GET: Machine/Create
