@@ -44,6 +44,7 @@ namespace haver.Controllers
 
             var salesOrders = from s in _context.SalesOrders
                         //.Include(s => s.Customer)
+                        
                         .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
                         .AsNoTracking()
                               select s;
@@ -171,7 +172,7 @@ namespace haver.Controllers
                 .Include(s => s.PackageRelease)
                 .Include(s => s.SalesOrderEngineers).ThenInclude(s => s.Engineer)
                 .Include(s => s.Machines)
-                    .ThenInclude(m => m.MachineType) // ✅ Include MachineType to prevent null issues
+                    .ThenInclude(m => m.MachineType) // 
                 .Include(s => s.Machines)
                     .ThenInclude(m => m.Procurements) // Include Procurements
                         .ThenInclude(p => p.Vendor) // Include Vendor details

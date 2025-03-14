@@ -4,6 +4,11 @@
     ViewData["Title"] = "Gantt Chart";
 }
 
+ @* Test displaying all gantt : 
+     loop through each task for the gantt,that will include all ms, 
+increment the row for each task,offset
+ *@
+
 <h2>All Gantt Charts</h2>
 
 <div class="container-fluid">
@@ -38,10 +43,14 @@
         </div>
     </div>
 </div>
+
+
 @section stylesheets {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.css">
 
 }
+
+
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script>
@@ -58,7 +67,7 @@
                         end: "@(task.EndDate?.ToString("yyyy-MM-dd") ?? "")",
                         progress: 0,
                         custom_class: "@task.MilestoneClass",
-                    
+                        _row:0
                         },
             </text>
         }
@@ -86,6 +95,8 @@
                             </div>`;
                 }
             });
+
+
 
             // Apply colors AFTER rendering
             setTimeout(function () {

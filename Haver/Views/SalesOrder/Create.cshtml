@@ -107,7 +107,7 @@
                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawings expected date"></i>
                         </label>
                         <input asp-for="AppDwgExp" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"/>
                         <span asp-validation-for="AppDwgExp" class="text-danger"></span>
                     </div>
 
@@ -406,6 +406,24 @@
         });
     </script>
 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            flatpickr("#eventdate-picker", {
+                enableTime: true,
+                noCalendar: false,
+                dateFormat: "m/d/Y h:i K",
+                time_24hr: false,
+                minuteIncrement: 15,
+                maxDate: "today",
+                defaultDate: null,
+                allowInput: true,
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                disableMobile: false
+            });
+        });
+    </script>
 
 }
 

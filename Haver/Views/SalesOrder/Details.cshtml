@@ -12,6 +12,11 @@
 
 }
 
+<partial name="_addMachine" model="new haver.Models.Machine { SalesOrderID = Model.ID }" />
+
+
+
+
 <div class="text-end mb-3">
     @if (Model?.Status == Status.Completed)
     {
@@ -148,9 +153,14 @@
         </div>
 
         <div>
-            <a asp-controller="Machine" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="ms-3 btn btn-sm" target="_blank">
+            @* <a asp-controller="Machine" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="ms-3 btn btn-sm" target="_blank">
 
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add Machine</a>
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add Machine</a> *@
+
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addMachineModal">
+                &#x2795; Add Machine
+            </button>
+
         </div>
 
         <div>
