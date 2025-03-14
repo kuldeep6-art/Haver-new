@@ -3,7 +3,7 @@
 
 
     <div class="modal fade" id="addMachineModal" tabindex="-1" aria-labelledby="addMachineModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addMachineModalLabel">Add New Machine</h5>
@@ -41,6 +41,7 @@
                                     asp-items="ViewBag.SalesOrderID">
                                 <option value="" disabled selected>Select Order Number | Customer</option>
                             </select>
+                            <span asp-validation-for="SalesOrderID" class="text-danger d-block mt-1"></span>
                         </div>
 
                         <!-- Serial Number -->
@@ -60,7 +61,6 @@
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ProductionOrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.ProductionOrderNumber)
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Manufacturing order reference"></i>
                             </label>
                             <input asp-for="ProductionOrderNumber" class="form-control" placeholder="Enter Production Order Number"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -92,20 +92,17 @@
                     </div>
 
 
-
-                    <!-- Nameplate -->
-                    <div class="form-group  mb-4">
-                        <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.Nameplate)
-                        </label>
-                        <select asp-for="Nameplate" class="form-control"
-                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
-                        <span asp-validation-for="Nameplate" class="text-danger"></span>
-                    </div>
-
-                    <!-- Third Row -->
                     <div class="row">
+                        <!-- Nameplate -->
+                        <div class="form-group col-md-4 mb-4">
+                            <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                @Html.DisplayNameFor(model => model.Nameplate)
+                            </label>
+                            <select asp-for="Nameplate" class="form-control"
+                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                    asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
+                            <span asp-validation-for="Nameplate" class="text-danger"></span>
+                        </div>
 
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="AssemblyExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -126,7 +123,11 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="AssemblyStart" class="text-danger"></span>
                         </div>
+                    </div>
+                   
 
+                    <!-- Third Row -->
+                    <div class="row">
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="AssemblyComplete" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.AssemblyComplete)
@@ -136,10 +137,6 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
                         </div>
-                    </div>
-
-                    <!-- Third Row -->
-                    <div class="row">
                         <!-- Budgeted Hours -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="BudgetedHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -149,7 +146,6 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="BudgetedHours" class="text-danger"></span>
                         </div>
-
                         <!-- Actual Hours -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ActualAssemblyHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -159,7 +155,10 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="ActualAssemblyHours" class="text-danger"></span>
                         </div>
+                    </div>
 
+                    <!-- Third Row -->
+                    <div class="row">
                         <!-- Rework Hours -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ReworkHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -170,10 +169,6 @@
                             <span asp-validation-for="ReworkHours" class="text-danger"></span>
                         </div>
                     </div>
-
-
-
-
 
                     <div class="row">
                         <!-- PreOrder -->
@@ -208,3 +203,6 @@
         </div>
     </div>
 </div>
+
+
+

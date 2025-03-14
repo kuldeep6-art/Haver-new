@@ -250,20 +250,20 @@
             height: 100px !important; /* Shrink empty space */
         }
 
-        .handle {
-            display: none !important;
-        }
-        /* Disable interaction with drag handles */
-        .handle {
-            pointer-events: none !important;
-            display: none !important;
-        }
+       /*   .handle {
+             display: none !important;
+         } */
+         /* Disable interaction with drag handles */
+         /* .handle {
+             pointer-events: none !important;
+             display: none !important;
+         }
+ */
+         /* Allow clicks on bars and labels */
 
-        /* Allow clicks on bars and labels */
-
-        .bar, .bar-label{
-     /*     pointer-events: none !important; */
-        cursor: not-allowed !important;
+         /* .bar, .bar-label{
+          pointer-events: none !important; 
+         cursor: not-allowed !important; */
 }
     </style>
 }
@@ -296,9 +296,9 @@
                     ];
 
             var gantt = new Gantt("#gantt", tasks, {
-                draggable:false, 
-                can_move:false,
-                can_resize: false,
+                // draggable:false, 
+                // can_move:false,
+                // can_resize: false,
                 on_click: function (task) {
                     alert("Clicked on " + task.name);
                 },
@@ -316,7 +316,7 @@
                 custom_popup_html: function (task) {
                     return `<div class="gantt-task-popup">
                                         <strong>${task.name}</strong><br>
-                                        <small>${task.start} → ${task.end}</small>
+                                        <p style="font-size:15px;font-weight:bold;">${task.start} → ${task.end}</p>
                                     </div>`;
                 }
             });
@@ -373,7 +373,7 @@
 
                 // Move bar wrappers
                 document.querySelectorAll(".bar-wrapper").forEach(wrapper => {
-                     wrapper.style.pointerEvents = "none"; 
+                     // wrapper.style.pointerEvents = "none"; 
             wrapper.style.cursor = "default";
                     applyYOffset(wrapper, yOffset);
                 });
@@ -382,10 +382,6 @@
                 document.querySelectorAll(".handle").forEach(handle => {
                     applyYOffset(handle, yOffset);
                 });
-
-        //     document.querySelectorAll(".bar").forEach(bar => {
-           
-        // });
 
                 // Move all task groups (which contain bars, progress, and handles)
                 document.querySelectorAll("g.task").forEach(taskGroup => {
