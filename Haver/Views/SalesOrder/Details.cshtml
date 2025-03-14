@@ -12,7 +12,8 @@
 
 }
 
-<partial name="_addMachine" model="new haver.Models.Machine { SalesOrderID = Model.ID }" />
+<partial name="_addMachine" model="new haver.Models.Machine()" />
+
 
 
 
@@ -247,7 +248,9 @@
     function printPrintableArea() {
         window.print();
     }
+
 </script>
+
 
 @* <style>
      @@media print {
