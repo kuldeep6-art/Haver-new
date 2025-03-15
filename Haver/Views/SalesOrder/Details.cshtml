@@ -160,7 +160,7 @@
 
             @if (Model?.Status != Status.Archived && Model?.Status != Status.Completed)
             {
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addMachineModal">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addMachineModal" data-salesorderid="@ViewBag.SalesOrderID">
                     &#x2795; Add Machine
                 </button>
             }
@@ -310,6 +310,20 @@
     });
 
 </script>
+
+    <script>
+
+        $('#addMachineModal').on('show.bs.modal', function (event) {
+            
+            var button = $(event.relatedTarget);
+            // Extract the SalesOrderID from the data attribute
+            var salesOrderId = button.data('salesorderid');
+
+            // Set the value of the hidden input field in the modal
+            var modal = $(this);
+            modal.find('#SalesOrderID').val(salesOrderId);
+        });
+    </script>
 
 }
 

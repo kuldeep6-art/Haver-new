@@ -183,6 +183,7 @@ namespace haver.Controllers
                 return NotFound();
             }
 
+            ViewBag.SalesOrderID = salesOrder.ID;
             ViewBag.MachineTypeID = MachineTypeSelectList();
             ViewBag.SalesOrderID = SalesOrderSelectList();
 

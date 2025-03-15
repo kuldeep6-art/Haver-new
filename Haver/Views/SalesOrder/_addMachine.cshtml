@@ -10,6 +10,7 @@
                 <div class="modal-body">
                     <form  id="createMachineForm" asp-action="CreateFromModal" asp-controller="Machine" method="post">
                          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="SalesOrderID" name="SalesOrderID" />
                     <ul id="ErrorList" class="text-danger"></ul>
 
                         <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
@@ -203,5 +204,4 @@
         </div>
     </div>
 </div>
-
 
