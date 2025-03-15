@@ -9,6 +9,7 @@ using haver.Data;
 using haver.Models;
 using haver.Utilities;
 using haver.CustomControllers;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace haver.Controllers
 {
@@ -200,14 +201,14 @@ namespace haver.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Step 1: Add the machine to the database
+                    //Add the machine to the database
                     _context.Add(machine);
                     await _context.SaveChangesAsync();
 
-                    // Step 2: Create the corresponding Gantt record
+                    // Create the corresponding Gantt record
                     await CreateGanttForMachine(machine);
 
-                    // Step 3: Set a message and redirect
+                    // Set a message and redirect
                     TempData["Message"] = "Machine has been successfully created and Gantt record added.";
                     return RedirectToAction("Index", "MachineProcurement", new { MachineID = machine.ID });
                 }
@@ -227,10 +228,49 @@ namespace haver.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
+          
 
             PopulateDropDownLists(machine);
             return View(machine);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFromModal(Machine machine)
+        {
+          
+            if (!ModelState.IsValid)
+            {
+                // Collect all error messages
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+              
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return BadRequest(new { success = false, errors = errors });
+                }
+
+            }
+
+           
+            _context.Machines.Add(machine);
+            await _context.SaveChangesAsync();
+
+
+            await CreateGanttForMachine(machine);
+            TempData["Message"] = "Machine has been successfully created and Gantt record added.";
+
+            // Redirect to the SalesOrder Details page after success
+            return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
+        }
+
+
+
+
+
+
 
         // Method to create Gantt record for the newly created machine
         public async Task CreateGanttForMachine(Machine machine)

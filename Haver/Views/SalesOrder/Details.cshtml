@@ -158,14 +158,18 @@
 
                         <i class="fa fa-plus" aria-hidden="true"></i> Add Machine</a> *@
 
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addMachineModal">
-                &#x2795; Add Machine
-            </button>
+            @if (Model?.Status != Status.Archived && Model?.Status != Status.Completed)
+            {
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addMachineModal">
+                    &#x2795; Add Machine
+                </button>
+            }
+
 
         </div>
 
         <div>
-            <h4 class="section-header" style="text-align:center;font-weight:bold;">Machines and Procurement Information</h4>
+            <h4 class="section-header" id="machinesContainer" style="text-align:center;font-weight:bold;">Machines and Procurement Information</h4>
             <table class="table table-striped table-bordered table-hover shadow-sm procurement-table">
                 <thead class="bg-dark text-white text-center">
                     <tr>
@@ -250,25 +254,40 @@
     }
 
 </script>
+<script>
+    $('#submitMachineCreate').click(function (event) {
+        event.preventDefault();
+        ClearErrors();
+
+        $.ajax({
+            type: "POST",
+            url: $('#createMachineForm').attr('action'),
+            data: $('#createMachineForm').serialize(),
+            success: function (response) {
+                if (response.success) {
+                    // Hide the modal
+                    $('#addMachineModal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+
+                    // Redirect to the SalesOrder detail page
+                    window.location.href = response.redirectUrl;
+                }
+                else {
+                    // Handle validation errors
+                    ShowValidationErrors(response.errors);
+                }
+            },
+            error: function (xhr) {
+                // Handle any other errors
+                console.log('Error:', xhr);
+            }
+        });
+    });
+
+</script>
 
 
-@* <style>
-     @@media print {
-         /* Hide action buttons */
-         .text-end.mb-3 {
-             display: none;
-         }
-         /* Improve table appearance */
-         .procurement-table {
-             width: 100% !important;
-             font-size: 12px;
-         }
-         /* Remove background colors */
-         .bg-light, .bg-success, .bg-dark {
-             background-color: #fff !important;
-         }
-     }
- </style> *@
 
 <style>
     @@media print {
@@ -351,3 +370,4 @@
         cursor: default;
     }
 </style>
+
