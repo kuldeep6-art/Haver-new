@@ -168,7 +168,7 @@
 
         </div>
 
-        @if (Model.Machines != null && Model.Machines.Any())
+        @if (Model?.Machines != null && Model.Machines.Any())
         {
             <div>
                 <h4 class="section-header" id="machinesContainer" style="text-align:center;font-weight:bold;">
@@ -246,7 +246,10 @@
     </div>
 
 </div>
-
+@section Scripts {
+    @{
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -279,20 +282,36 @@
                     window.location.href = response.redirectUrl;
                 }
                 else {
-                    // Handle validation errors
-                    ShowValidationErrors(response.errors);
+                    error: function (xhr) {
+                        var errorMessages = [];
+                        switch (xhr.status) {
+                            case 401:
+                                errorMessages.push("You must be logged in first.");
+                                break;
+                            case 403:
+                                errorMessages.push("You are not authorized for this action.");
+                                break;
+                            default:
+                                errorMessages = xhr.responseText.split("|").slice(0, -1);
+                        }
+                        if (!errorMessages.some((str) => str !== "")) {
+                            errorMessages.push("Error: Unable to complete operation");
+                        }
+                        var ul = document.getElementById("ErrorList");
+                        for (var i = 0; i < errorMessages.length; i++) {
+                            var li = document.createElement("li");
+                            li.innerHTML = errorMessages[i];
+                            ul.appendChild(li);
+                        }
+                    }
                 }
             },
-            error: function (xhr) {
-                // Handle any other errors
-                console.log('Error:', xhr);
-            }
         });
     });
 
 </script>
 
-
+}
 
 <style>
     @@media print {
