@@ -183,6 +183,9 @@ namespace haver.Controllers
                 return NotFound();
             }
 
+            ViewBag.MachineTypeID = MachineTypeSelectList();
+            ViewBag.SalesOrderID = SalesOrderSelectList();
+
             return View(salesOrder);
         }
 
@@ -683,6 +686,35 @@ namespace haver.Controllers
             // Redirect back to the Index page after marking as completed
             return RedirectToAction(nameof(Index));
         }
+
+        private SelectList MachineTypeSelectList(int? selectedId = null)
+        {
+            var machineTypes = from mt in _context.MachineTypes
+                               orderby mt.Class
+                               select new
+                               {
+                                   ID = mt.ID,
+                                   DisplayText = $"{mt.Class} | {mt.Deck} | {mt.Size}"
+                               };
+
+            return new SelectList(machineTypes, "ID", "DisplayText", selectedId);
+        }
+
+
+        private SelectList SalesOrderSelectList(int? selectedId = null)
+        {
+            var salesOrders = from so in _context.SalesOrders
+                              orderby so.OrderNumber
+                              select new
+                              {
+                                  ID = so.ID,
+                                  DisplayText = so.OrderNumber + " | " + so.CompanyName
+                              };
+
+            return new SelectList(salesOrders, "ID", "DisplayText", selectedId);
+        }
+
+
 
         private void PopulateAssignedSpecialtyData(SalesOrder salesOrder)
         {
