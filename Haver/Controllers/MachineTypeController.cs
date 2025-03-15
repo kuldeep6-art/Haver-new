@@ -12,9 +12,11 @@ using haver.CustomControllers;
 using System.Reflection.PortableExecutable;
 using haver.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace haver.Controllers
 {
+    [Authorize]
     public class MachineTypeController : ElephantController
     {
         private readonly HaverContext _context;

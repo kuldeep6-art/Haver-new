@@ -8,9 +8,11 @@ using haver.Models;
 using haver.CustomControllers;
 using haver.Utilities;
 using haver.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace haver.Controllers
 {
+	[Authorize]
 	public class EngineerController : ElephantController
 	{
 		private readonly HaverContext _context;

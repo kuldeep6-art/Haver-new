@@ -10,9 +10,11 @@ using haver.Models;
 using haver.CustomControllers;
 using GymManagement.Utilities;
 using haver.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace haver.Controllers
 {
+    [Authorize]
     public class MachineProcurementController : ElephantController
     {
         private readonly HaverContext _context;
