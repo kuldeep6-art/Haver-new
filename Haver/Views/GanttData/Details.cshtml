@@ -269,6 +269,7 @@
 .bar{
     cursor:pointer;
 }
+
     </style>
 }
 
@@ -300,9 +301,9 @@
                     ];
 
             var gantt = new Gantt("#gantt", tasks, {
-                // draggable:false, 
-                // can_move:false,
-                // can_resize: false,
+                draggable:false, 
+                can_move:false,
+                can_resize: false,
                 on_click: function (task) {
                     alert("Clicked on " + task.name);
                 },
@@ -324,6 +325,8 @@
                                     </div>`;
                 }
             });
+
+     
 
 
             // Manually adjust all task bars to align in the same row
@@ -354,6 +357,8 @@
                         el.style.transform = `translateY(${yOffset}px)`;
                     }
                 }
+
+
 
                 // Move all bars
                 document.querySelectorAll(".bar").forEach(bar => {
@@ -417,6 +422,48 @@
 
                 // Scroll to today's date
                 showCurrentDay();
+
+            }, 500);
+
+
+            //so bars won't move
+            setTimeout(() => {
+                document.querySelectorAll(".bar").forEach(bar => {
+                    bar.removeAttribute("data-start");
+                    bar.removeAttribute("draggable");
+
+                    bar.addEventListener("mousedown", event => {
+                        if (!event.target.closest(".gantt-tooltip")) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    }, true);
+
+                    bar.addEventListener("mousemove", event => {
+                        if (!event.target.closest(".gantt-tooltip")) {
+                            event.stopPropagation();
+                        }
+                    }, true);
+
+                    bar.addEventListener("mouseup", event => {
+                        if (!event.target.closest(".gantt-tooltip")) {
+                            event.stopPropagation();
+                        }
+                    }, true);
+
+                    bar.addEventListener("click", function (event) {
+                        if (!event.target.closest(".gantt-tooltip")) {
+                            //event.stopPropagation();
+                            console.log("Click ignored outside tooltip.");
+                        } else {
+                            console.log("Tooltip clicked.");
+                        }
+                    });
+                });
+
+                document.querySelectorAll(".handle").forEach(handle => {
+                    handle.style.pointerEvents = "none";
+                });
 
             }, 500);
 

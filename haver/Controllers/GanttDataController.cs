@@ -890,16 +890,47 @@ namespace haver.Controllers
 			return tasks;
 		}
 
-		//private string GetMilestoneClass(GanttData g)
-		//{
-		//    if (g.EngReleased.HasValue) return "eng-released";
-		//    if (g.PackageReleased.HasValue) return "package-released";
-		//    if (g.ShipExpected.HasValue) return "shipping";
-		//    if (g.DeliveryExpected.HasValue) return "delivery";
-		//    return "default-task";
-		//}
+        //[HttpPost]
+        //public async Task<IActionResult> UpdateTask([FromBody] GanttViewModel updatedTask)
+        //{
+        //    if (updatedTask == null || string.IsNullOrEmpty(updatedTask.UniqueID))
+        //    {
+        //        return Json(new { success = false, message = "Invalid task data." });
+        //    }
 
-		public async Task<IActionResult> FinalizeGantt(int id)
+        //    var existingTask = await _context.GanttDatas
+        //        .FirstOrDefaultAsync(t => t.ID == updatedTask.UniqueID);
+
+        //    if (existingTask == null)
+        //    {
+        //        return Json(new { success = false, message = "Task not found." });
+        //    }
+
+        //    // Update task properties
+        //    existingTask.StartDate = updatedTask.StartDate;
+        //    existingTask.EndDate = updatedTask.EndDate;
+        //    existingTask.Progress = updatedTask.Progress;
+
+        //    _context.GanttTasks.Update(existingTask);
+        //    await _context.SaveChangesAsync();
+
+        //    return Json(new { success = true, message = "Task updated successfully." });
+        //}
+
+
+
+
+
+        //private string GetMilestoneClass(GanttData g)
+        //{
+        //    if (g.EngReleased.HasValue) return "eng-released";
+        //    if (g.PackageReleased.HasValue) return "package-released";
+        //    if (g.ShipExpected.HasValue) return "shipping";
+        //    if (g.DeliveryExpected.HasValue) return "delivery";
+        //    return "default-task";
+        //}
+
+        public async Task<IActionResult> FinalizeGantt(int id)
         {
             var gantt = _context.GanttDatas.Find(id);
             if (gantt == null)
