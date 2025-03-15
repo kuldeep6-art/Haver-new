@@ -35,15 +35,14 @@
 					<i class="fa-solid fa-arrow-up"></i>
 				</button>
 
-				@if (User.IsInRole("Admin") || User.IsInRole("Sales"))
-				{
+				
 
 					<!-- Sales Order Links -->
 					<div>
 						<a asp-area="" asp-controller="SalesOrder" asp-action="Index">Sales Orders</a>
 				</div>
 
-				}
+			
 				<!-- Machine Type Link -->
 				<div class="dropdown">
 					<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">

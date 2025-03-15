@@ -32,7 +32,7 @@ namespace haver.Controllers
 
         // GET: SalesOrder
 
-        [Authorize(Roles = "Admin,Sales")]
+        //[Authorize(Roles = "Admin,Sales")]
         public async Task<IActionResult> Index(int? page, int? pageSizeID,string status, DateTime? DtString, string? SearchString, string? CString,
             string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
