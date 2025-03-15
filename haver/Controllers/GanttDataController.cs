@@ -23,9 +23,11 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace haver.Controllers
 {
+    [Authorize]
     public class GanttDataController : ElephantController
     {
         private readonly HaverContext _context;

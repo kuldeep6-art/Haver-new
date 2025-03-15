@@ -27,19 +27,24 @@
     }
     else
     {
-        @if (Model?.Status != Status.Archived)
+        @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
         {
-            <a asp-action="Edit" asp-route-id="@Model?.ID" class="ms-3 btn btn-sm"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-        }
+            @if (Model?.Status != Status.Archived)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.ID" class="ms-3 btn btn-sm"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+            }
 
+            <a asp-action="Index" class="ms-3 btn btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List</a>
+
+            @if (Model?.Status != Status.Completed && Model?.Status != Status.Archived)
+            {
+                <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@Model?.ID" class="btn btn-sm ms-3" onclick="return confirm('Are you sure you want to mark this sales order as completed?');">
+                    <i class="fa fa-check" aria-hidden="true"></i>  Mark as Completed
+                </a>
+            }
+
+        }
         <a asp-action="Index" class="ms-3 btn btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List</a>
-
-        @if (Model?.Status != Status.Completed && Model?.Status != Status.Archived)
-        {
-            <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@Model?.ID" class="btn btn-sm ms-3" onclick="return confirm('Are you sure you want to mark this sales order as completed?');">
-                <i class="fa fa-check" aria-hidden="true"></i>  Mark as Completed
-            </a>
-        }
         <button href="#" onclick="printPrintableArea()" return false;" class="ms-3 btn btn-sm "> <i class="fa-solid fa-print"></i> Print</button>
 
     }
@@ -168,7 +173,7 @@
 
         </div>
 
-        @if (Model.Machines != null && Model.Machines.Any())
+        @if (Model?.Machines != null && Model.Machines.Any())
         {
             <div>
                 <h4 class="section-header" id="machinesContainer" style="text-align:center;font-weight:bold;">
@@ -246,7 +251,10 @@
     </div>
 
 </div>
-
+@section Scripts {
+    @{
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -279,20 +287,50 @@
                     window.location.href = response.redirectUrl;
                 }
                 else {
-                    // Handle validation errors
-                    ShowValidationErrors(response.errors);
+                    error: function (xhr) {
+                        var errorMessages = [];
+                        switch (xhr.status) {
+                            case 401:
+                                errorMessages.push("You must be logged in first.");
+                                break;
+                            case 403:
+                                errorMessages.push("You are not authorized for this action.");
+                                break;
+                            default:
+                                errorMessages = xhr.responseText.split("|").slice(0, -1);
+                        }
+                        if (!errorMessages.some((str) => str !== "")) {
+                            errorMessages.push("Error: Unable to complete operation");
+                        }
+                        var ul = document.getElementById("ErrorList");
+                        for (var i = 0; i < errorMessages.length; i++) {
+                            var li = document.createElement("li");
+                            li.innerHTML = errorMessages[i];
+                            ul.appendChild(li);
+                        }
+                    }
                 }
             },
-            error: function (xhr) {
-                // Handle any other errors
-                console.log('Error:', xhr);
-            }
         });
     });
 
 </script>
 
+    <script>
 
+        $('#addMachineModal').on('show.bs.modal', function (event) {
+            
+            var button = $(event.relatedTarget);
+            // Extract the SalesOrderID from the data attribute
+            var salesOrderId = button.data('salesorderid');
+
+            // Set the value of the hidden input field in the modal
+            var modal = $(this);
+            modal.find('#SalesOrderID').val(salesOrderId);
+        });
+    </script>
+
+}
 
 <style>
     @@media print {

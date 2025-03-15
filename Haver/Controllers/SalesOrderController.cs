@@ -16,9 +16,11 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace haver.Controllers
 {
+    [Authorize]
     public class SalesOrderController : ElephantController
     {
         private readonly HaverContext _context;
@@ -29,6 +31,8 @@ namespace haver.Controllers
         }
 
         // GET: SalesOrder
+
+        //[Authorize(Roles = "Admin,Sales")]
         public async Task<IActionResult> Index(int? page, int? pageSizeID,string status, DateTime? DtString, string? SearchString, string? CString,
             string? actionButton, string sortDirection = "asc", string sortField = "OrderNumber")
         {
@@ -159,8 +163,10 @@ namespace haver.Controllers
             return View(pagedData);
         }
 
-        // GET: SalesOrder/Details/5
-        public async Task<IActionResult> Details(int? id)
+		//[Authorize(Roles = "Admin,Sales")]
+
+		// GET: SalesOrder/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -183,6 +189,7 @@ namespace haver.Controllers
                 return NotFound();
             }
 
+            //ViewBag.SalesOrderID = salesOrder.ID;
             ViewBag.MachineTypeID = MachineTypeSelectList();
             ViewBag.SalesOrderID = SalesOrderSelectList();
 
@@ -190,9 +197,10 @@ namespace haver.Controllers
         }
 
 
-        
-        // GET: SalesOrder/Create
-        public IActionResult Create()
+		[Authorize(Roles = "Admin,Sales")]
+
+		// GET: SalesOrder/Create
+		public IActionResult Create()
         {
             SalesOrder salesOrder = new SalesOrder();
             PopulateAssignedSpecialtyData(salesOrder);
@@ -203,10 +211,11 @@ namespace haver.Controllers
             return View();
         }
 
-        // POST: SalesOrder/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+		// POST: SalesOrder/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[Authorize(Roles = "Admin,Sales")]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet," +
             "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers, bool saveAsDraft)
@@ -255,8 +264,11 @@ namespace haver.Controllers
             return View(salesOrder);
         }
 
-        // GET: SalesOrder/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+
+		[Authorize(Roles = "Admin,Sales")]
+
+		// GET: SalesOrder/Edit/5
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -277,10 +289,13 @@ namespace haver.Controllers
 			return View(salesOrder);
 		}
 
-        // POST: SalesOrder/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+
+
+		// POST: SalesOrder/Edit/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[Authorize(Roles = "Admin,Sales")]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string[] selectedOptions)
         {
@@ -355,8 +370,9 @@ namespace haver.Controllers
             return View(salesOrder);
         }
 
-        // POST: SalesOrder/Delete/5
-        [HttpPost, ActionName("Delete")]
+		// POST: SalesOrder/Delete/5
+		[Authorize(Roles = "Admin,Sales")]
+		[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -371,13 +387,14 @@ namespace haver.Controllers
         }
 
 
-        //private void PopulateDropDownLists(SalesOrder? salesOrder = null)
-        //{
-        //	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-        //}
+		//private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+		//{
+		//	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+		//}
 
 
-        public async Task<IActionResult> Continue(int id)
+		[Authorize(Roles = "Admin,Sales")]
+		public async Task<IActionResult> Continue(int id)
         {
             var salesOrder = await _context.SalesOrders.FindAsync(id);
             if (salesOrder == null)
@@ -398,8 +415,10 @@ namespace haver.Controllers
         }
 
 
-        // GET: SalesOrder/Archive/5
-        public async Task<IActionResult> Archive(int id)
+
+		// GET: SalesOrder/Archive/5
+		[Authorize(Roles = "Admin,Sales")]
+		public async Task<IActionResult> Archive(int id)
         {
             var salesOrder = await _context.SalesOrders
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -425,7 +444,8 @@ namespace haver.Controllers
             return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
         }
 
-        public async Task<IActionResult> Restore(int id)
+		[Authorize(Roles = "Admin,Sales")]
+		public async Task<IActionResult> Restore(int id)
         {
             var salesOrder = await _context.SalesOrders
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -659,7 +679,8 @@ namespace haver.Controllers
             return Json(companyNames);
         }
 
-        public async Task<IActionResult> Complete(int id)
+		[Authorize(Roles = "Admin,Sales")]
+		public async Task<IActionResult> Complete(int id)
         {
             var salesOrder = await _context.SalesOrders
                 .FirstOrDefaultAsync(m => m.ID == id);

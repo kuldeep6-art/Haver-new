@@ -10,9 +10,11 @@ using haver.Models;
 using haver.Utilities;
 using haver.CustomControllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace haver.Controllers
 {
+    [Authorize]
     public class MachineController : ElephantController
     {
         private readonly HaverContext _context;
@@ -237,33 +239,43 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFromModal(Machine machine)
         {
-          
-            if (!ModelState.IsValid)
-            {
-                // Collect all error messages
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
+            //try
+            //{
 
-              
-                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+
+                if (!ModelState.IsValid)
                 {
-                    return BadRequest(new { success = false, errors = errors });
+                    // Collect all error messages
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
                 }
+                _context.Machines.Add(machine);
+                await _context.SaveChangesAsync();
 
-            }
+                await CreateGanttForMachine(machine);
+                TempData["Message"] = "Machine has been successfully created and Gantt record added.";
 
-           
-            _context.Machines.Add(machine);
-            await _context.SaveChangesAsync();
+                // Redirect to the SalesOrder Details page after success
+                return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
 
-
-            await CreateGanttForMachine(machine);
-            TempData["Message"] = "Machine has been successfully created and Gantt record added.";
-
-            // Redirect to the SalesOrder Details page after success
-            return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
+   //         }catch(DbUpdateException dex)
+   //         {
+			//	if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
+			//	{
+			//		ModelState.AddModelError("", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
+			//	}
+			//	else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
+			//	{
+			//		ModelState.AddModelError("", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
+			//	}
+			//	else
+			//	{
+			//		ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+			//	}
+			//}
         }
 
 
