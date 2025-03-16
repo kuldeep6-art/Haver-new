@@ -333,6 +333,7 @@ namespace haver.Controllers
                 };
                 //Create a random password with a default 8 characters
                 string password = MakePassword.Generate();
+                password = "Pa55w@rd";
                 IdentityResult result = _userManager.CreateAsync(user, password).Result;
 
                 if (result.Succeeded)

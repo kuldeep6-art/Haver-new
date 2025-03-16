@@ -73,7 +73,26 @@ namespace haver.Data
                              FirstName = "Betty",
                              LastName = "Rubble",
                              Email = "user@outlook.com"
-                         });
+                         },
+                          new Employee
+                          {
+                              FirstName = "Kelly",
+                              LastName = "Hunt",
+                              Email = "procurement@outlook.com"
+                          },
+                          new Employee
+                          {
+                              FirstName = "Klay",
+                              LastName = "Log",
+                              Email = "production@outlook.com"
+                          },
+                          new Employee
+                          {
+                              FirstName = "Gody",
+                              LastName = "Lakes",
+                              Email = "pic@outlook.com"
+                          }
+                         );
 
                         context.SaveChanges();
                     }
