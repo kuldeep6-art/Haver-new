@@ -68,6 +68,15 @@
 				<div>
 					<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
 				</div>
+				<div class="dropdown">
+					<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+						Download Reports <i class="fa fa-plus"></i>
+					</a>
+					<div class="dropdown-content">
+						<a asp-area="" asp-controller="SalesOrder" asp-action="DownloadMachineSchedules">Download Schedule</a>
+					<a asp-area="" asp-controller="GanttData" asp-action="DownloadGanttSchedules">Download Gantt Schedule</a>
+					</div>
+				</div>
 
 				@if (User.IsInRole("Admin")){
 				<div>
@@ -76,13 +85,8 @@
 	}
 
 				<partial name="_LoginPartial" />
-
-				<div class="sidebar-menu">
-					<a asp-area="" asp-controller="SalesOrder" asp-action="DownloadMachineSchedules">Download Schedule</a>
-					<a asp-area="" asp-controller="GanttData" asp-action="DownloadGanttSchedules">Download Gantt Schedule</a>
-				</div>
 			</div>
-			<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo" width="100px">
+			<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo" style="width:180px;">
 		</div>
 	}
 
