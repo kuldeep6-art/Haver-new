@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace haver.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class EmployeeController : CognizantController
+    public class EmployeeController : ElephantController
     {
         private readonly HaverContext _context;
         private readonly ApplicationDbContext _identityContext;
@@ -29,19 +29,33 @@ namespace haver.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int? pageSizeID)
         {
-            var employees = await _context.Employees
-                 .Select(e => new EmployeeAdminVM
-                 {
-                     Email = e.Email,
-                     Active = e.Active,
-                     ID = e.ID,
-                     FirstName = e.FirstName,
-                     LastName = e.LastName,
-                     Phone = e.Phone
-                 }).ToListAsync();
+            // Get all employees, but let's use pagination
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
 
+            int pageIndex = page ?? 1; // Default to the first page if not provided
+
+            var query = _context.Employees
+                                .Select(e => new EmployeeAdminVM
+                                {
+                                    Email = e.Email,
+                                    Active = e.Active,
+                                    ID = e.ID,
+                                    FirstName = e.FirstName,
+                                    LastName = e.LastName,
+                                    Phone = e.Phone
+                                });
+
+            // Apply paging
+            var count = await query.CountAsync(); // Get total count for pagination
+            var employees = await query
+                                 .Skip((pageIndex - 1) * pageSize) // Skip the items for previous pages
+                                 .Take(pageSize) // Take the page size number of records
+                                 .ToListAsync();
+
+            // Retrieve roles for each employee
             foreach (var e in employees)
             {
                 var user = await _userManager.FindByEmailAsync(e.Email);
@@ -49,9 +63,13 @@ namespace haver.Controllers
                 {
                     e.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
                 }
-            };
-            return View(employees);
+            }
+
+            // Create PaginatedList and return the view
+            var pageData = new PaginatedList<EmployeeAdminVM>(employees, count, pageIndex, pageSize);
+            return View(pageData);
         }
+
 
         // GET: Employee/Create
         public IActionResult Create()
