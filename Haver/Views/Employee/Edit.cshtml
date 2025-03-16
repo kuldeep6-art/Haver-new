@@ -1,97 +1,136 @@
 ﻿@model haver.ViewModels.EmployeeAdminVM
 
-<partial name="_ViewHeading" />
-
-<hr />
-
-<form asp-action="Edit">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="container-fluid bg-light">
     <div class="row">
-        <div class="col-md-4">
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control"  autofocus />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Edit User Information
+            </h4>
         </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-                <div>
-                    Note:  Changing Email will reset the password for the new Login and the user will need to use Forgot Password with the new Email.
+    </div>
+
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit User Information">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div style="font:bold;font-size:15px;">
+     Note:  Changing Email will reset the password for the new Login and the user will need to use Forgot Password with the new Email.
+    </div>
+    <br />
+                <div class="row"> 
+               
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="FirstName" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            First Name
+                        </label>
+                        <input asp-for="FirstName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" autofocus />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                 
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="LastName" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Last Name
+                        </label>
+                        <input asp-for="LastName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group form-switch">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                </label>
-                @{
-                    if (Model.Active == true)
+
+                <div class="row">
+                 
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="Phone" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Phone
+                        </label>
+                        <input asp-for="Phone" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="Email" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Email
+                        </label>
+                        <input asp-for="Email" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>  
+
+                <!-- Active Status -->
+                <div class="form-group mb-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                    @if (Model.Active == true)
                     {
                         <div>
-                                            <strong>
-                                                Warning! If you make this user inactive, their login to the system will also be removed.
-                                                If you ever want to allow them to login again, make them Active and let them know they must use Forgot Password to set a new one for this email address.
-                                            </strong>
+                            <strong>
+                                Warning! If you make this user inactive, their login to the system will also be removed.
+                                If you ever want to allow them to login again, make them Active and let them know they must use Forgot Password to set a new one for this email address.
+                            </strong>
                         </div>
                     }
                     else
                     {
                         <div><strong>If you make this user active, let them know to use Forgot Password to set a new one for this email address.</strong></div>
                     }
-                }
-            </div>
-            <div class="form-group">
-                <label asp-for="UserRoles" class="control-label"></label>
-                <table>
-                    <tr>
-                        @{
-                            int cnt = 0;
-                            List<haver.ViewModels.RoleVM> roles = ViewBag.Roles;
-                            foreach (var role in roles)
-                            {
-                                if (cnt++ % 3 == 0)
+                </div>
+
+                <!-- User Roles -->
+                <div class="form-group mb-3">
+                    <label asp-for="UserRoles" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Roles
+                    </label>
+                    <table class="table">
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<haver.ViewModels.RoleVM> roles = ViewBag.Roles;
+                                foreach (var role in roles)
                                 {
-                                @:</tr><tr>
+                                    if (cnt++ % 3 == 0)
+                                    {
+                            @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
+                                                   id="@role.RoleName-CheckBox"
+                                                   name="selectedRoles"
+                                                   value="@role.RoleName"
+                                                   @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) />
+                                            <label class="form-check-label" for="@role.RoleName-CheckBox">@role.RoleName  &nbsp;&nbsp;</label>
+                                        </div>
+                                    @:</td>
                                 }
-                                @:<td>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox"
-                                               id="@role.RoleName-CheckBox"
-                                               name="selectedRoles"
-                                               value="@role.RoleName"
-                                               @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) />
-                                        <label class="form-check-label" "@role.RoleName-CheckBox">@role.RoleName  &nbsp;&nbsp;</label>
-                                    </div>
-                                @:</td>
-                            }
-                        @:</tr>
+                            @:</tr>
                         }
                     </table>
                 </div>
-            </div>
-        </div>
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-    </div>
-</form>
 
-<div>
-    <partial name="_BackToList" />
+                <!-- Submit Button -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Save Changes
+                    </button>
+                    <a href="@Url.Action("Index", "Employee")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Users List
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

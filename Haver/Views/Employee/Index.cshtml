@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<haver.ViewModels.EmployeeAdminVM>
 
-<partial name="_ViewHeading" />
+<h1 style="font-weight:bold;">USERS</h1>
+<hr />
 
 <div class="text-danger">@TempData["message"]</div>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn " role="button"
-       aria-label="Create a new User data-bs-toggle="tooltip" title="Create new User">
+       aria-label="Create a new User" data-bs-toggle="tooltip" title="Create new User">
         <i class="fa-solid fa-plus"></i> Create New
     </a>
 </div>
