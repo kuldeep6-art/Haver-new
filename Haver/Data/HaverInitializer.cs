@@ -52,6 +52,51 @@ namespace haver.Data
                         context.SaveChanges();
                     }
 
+                    // Look for any Employees.  Seed ones to match the seeded Identity accounts.
+                    if (!context.Employees.Any())
+                    {
+                        context.Employees.AddRange(
+                         new Employee
+                         {
+                             FirstName = "Gregory",
+                             LastName = "House",
+                             Email = "admin@outlook.com"
+                         },
+                         new Employee
+                         {
+                             FirstName = "Fred",
+                             LastName = "Flintstone",
+                             Email = "sales@outlook.com"
+                         },
+                         new Employee
+                         {
+                             FirstName = "Betty",
+                             LastName = "Rubble",
+                             Email = "user@outlook.com"
+                         },
+                          new Employee
+                          {
+                              FirstName = "Kelly",
+                              LastName = "Hunt",
+                              Email = "procurement@outlook.com"
+                          },
+                          new Employee
+                          {
+                              FirstName = "Klay",
+                              LastName = "Log",
+                              Email = "production@outlook.com"
+                          },
+                          new Employee
+                          {
+                              FirstName = "Gody",
+                              LastName = "Lakes",
+                              Email = "pic@outlook.com"
+                          }
+                         );
+
+                        context.SaveChanges();
+                    }
+
                     // 2. Seed Vendors
                     if (!context.Vendors.Any())
                     {

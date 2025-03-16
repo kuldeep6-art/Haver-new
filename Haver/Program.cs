@@ -1,4 +1,5 @@
 using haver.Data;
+using haver.Utilities;
 using haver.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -56,6 +57,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 //For email service configuration
 builder.Services.AddSingleton<IEmailConfiguration>(builder.Configuration
 	.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+
+//Email with methods for production use.
+builder.Services.AddTransient<IMyEmailSender, MyEmailSender>();
 
 //For the Identity System
 builder.Services.AddTransient<IEmailSender, EmailSender>();
