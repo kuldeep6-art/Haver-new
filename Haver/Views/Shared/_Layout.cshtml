@@ -26,9 +26,14 @@
 			<i class="fa fa-bars"></i>
 		</button>
 
+		
+
 		<!-- Sidebar -->
 		<div class="sidebar" id="sidebar">
 			<div class="sidebar-menu">
+
+					<partial name="_LoginPartial" />
+
 				<a href="@Url.Action("Index", "Home")">Home</a>
 
 				<button onclick="scrollToTop()" id="scrollToTopBtn" class="btn btn-primary">
@@ -84,7 +89,7 @@
 				</div>
 	}
 
-				<partial name="_LoginPartial" />
+			
 			</div>
 			<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo" style="width:180px;">
 		</div>
