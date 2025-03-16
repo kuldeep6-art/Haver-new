@@ -1,72 +1,120 @@
 ﻿@model haver.ViewModels.EmployeeAdminVM
 
-<partial name="_ViewHeading" />
+<div class="container-fluid bg-light">
 
-<hr />
-
-<form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
-        <div class="col-md-4">
-            <input type="hidden" asp-for="Active" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" autofocus />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-        
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserRoles" class="control-label"></label>
-                <table>
-                    <tr>
-                        @{
-                            int cnt = 0;
-                            List<haver.ViewModels.RoleVM> roles = ViewBag.Roles;
-                            foreach (var role in roles)
-                            {
-                                if (cnt++ % 3 == 0)
+        <div class="col-md-12 py-4" style="background-color:#0C2340;">
+            <h4 class="text-white" style="font-family: 'Avenir Heavy', sans-serif; font-size: 19px;">
+                Add A New User
+            </h4>
+        </div>
+    </div>
+
+
+    <div class="row py-4">
+        <div class="col-md-8 offset-md-2">
+            <form asp-action="Create" class="border p-4 shadow-sm" aria-label="Create User Information">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row"> 
+                      
+                <div class="form-group col-md-6 mb-3">
+                    <label asp-for="FirstName" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        First Name
+                    </label>
+                    <input asp-for="FirstName" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" autofocus />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+         
+                <div class="form-group col-md-6 mb-3">
+                    <label asp-for="LastName" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Last Name
+                    </label>
+                    <input asp-for="LastName" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                </div>
+              
+
+                <div class="row">
+                     <div class="form-group col-md-6 mb-3">
+                    <label asp-for="Phone" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Phone
+                    </label>
+                    <input asp-for="Phone" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+            
+                <div class="form-group col-md-6 mb-3">
+                    <label asp-for="Email" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Email
+                    </label>
+                    <input asp-for="Email" class="form-control"
+                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                </div>  
+         
+
+                <!-- User Roles -->
+                <div class="form-group mb-3">
+                    <label asp-for="UserRoles" class="control-label"
+                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                        Roles
+                    </label>
+                    <table class="table">
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<haver.ViewModels.RoleVM> roles = ViewBag.Roles;
+                                foreach (var role in roles)
                                 {
-                                @:</tr><tr>
+                                    if (cnt++ % 3 == 0)
+                                    {
+                            @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
+                                                   id="@role.RoleName-CheckBox"
+                                                   name="selectedRoles"
+                                                   value="@role.RoleName"
+                                                   @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) />
+                                            <label class="form-check-label" for="@role.RoleName-CheckBox">@role.RoleName  &nbsp;&nbsp;</label>
+                                        </div>
+                                    @:</td>
                                 }
-                                @:<td>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox"
-                                               id="@role.RoleName-CheckBox"
-                                               name="selectedRoles"
-                                               value="@role.RoleName"
-                                               @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) />
-                                        <label class="form-check-label" "@role.RoleName-CheckBox">@role.RoleName  &nbsp;&nbsp;</label>
-                                    </div>
-                                @:</td>
-                            }
-                        @:</tr>
+                            @:</tr>
                         }
                     </table>
                 </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
-        </div>
-    </form>
 
-<div>
-    <partial name="_BackToList" />
+                <!-- Submit Button -->
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary"
+                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                        Create User
+                    </button>
+        <a href="@Url.Action("Index", "Employee")" class="btn btn-primary"
+                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
+                        ⬅ Back to Users List
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+ 
+
 </div>
 
 @section Scripts {
