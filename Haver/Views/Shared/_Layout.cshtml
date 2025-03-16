@@ -69,6 +69,12 @@
 					<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
 				</div>
 
+				@if (User.IsInRole("Admin")){
+				<div>
+					<a asp-area="" asp-controller="UserRole" asp-action="Index">Users</a>
+				</div>
+	}
+
 				<partial name="_LoginPartial" />
 
 				<div class="sidebar-menu">
@@ -76,7 +82,7 @@
 					<a asp-area="" asp-controller="GanttData" asp-action="DownloadGanttSchedules">Download Gantt Schedule</a>
 				</div>
 			</div>
-			<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo">
+			<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo" width="100px">
 		</div>
 	}
 
