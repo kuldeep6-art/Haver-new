@@ -52,6 +52,32 @@ namespace haver.Data
                         context.SaveChanges();
                     }
 
+                    // Look for any Employees.  Seed ones to match the seeded Identity accounts.
+                    if (!context.Employees.Any())
+                    {
+                        context.Employees.AddRange(
+                         new Employee
+                         {
+                             FirstName = "Gregory",
+                             LastName = "House",
+                             Email = "admin@outlook.com"
+                         },
+                         new Employee
+                         {
+                             FirstName = "Fred",
+                             LastName = "Flintstone",
+                             Email = "sales@outlook.com"
+                         },
+                         new Employee
+                         {
+                             FirstName = "Betty",
+                             LastName = "Rubble",
+                             Email = "user@outlook.com"
+                         });
+
+                        context.SaveChanges();
+                    }
+
                     // 2. Seed Vendors
                     if (!context.Vendors.Any())
                     {

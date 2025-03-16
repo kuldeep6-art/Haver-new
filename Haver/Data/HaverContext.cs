@@ -56,6 +56,8 @@ namespace haver.Data
 
         public DbSet<GanttData> GanttDatas { get; set; }
 
+        public DbSet<Employee> Employees { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -120,6 +122,10 @@ namespace haver.Data
            .HasIndex(m => m.EngineerInitials)
            .IsUnique();
 
+            //Add a unique index to the Employee Email
+            modelBuilder.Entity<Employee>()
+            .HasIndex(a => new { a.Email })
+            .IsUnique();
 
             modelBuilder.Entity<Engineer>()
                 .HasIndex(pr => new { pr.FirstName, pr.LastName })
