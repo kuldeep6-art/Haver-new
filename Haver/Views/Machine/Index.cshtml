@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<haver.Models.Machine>
 
-<h1 class="text-center my-4" aria-label="Machine Index">Machines</h1>
+<h1 style="font-weight:bold;font-size:30px;text-align:center;" aria-label="Machine Index">Machines</h1>
 
  @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
                     {
