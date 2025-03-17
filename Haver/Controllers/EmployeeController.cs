@@ -30,10 +30,12 @@ namespace haver.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SUser)
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SUser, bool? Active = null)
         {
             ViewData["Filtering"] = "btn-block invisible";
             int numberFilters = 0;
+
+
 
             // Get all employees, but let's use pagination
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
@@ -51,6 +53,14 @@ namespace haver.Controllers
                                     LastName = e.LastName,
                                     Phone = e.Phone
                                 });
+
+
+            if (!Active.HasValue)
+            {
+                Active = true;
+            }
+            query = query.Where(v => v.Active == Active.Value);
+            ViewBag.Status = Active.Value ? "Active" : "Inactive";
 
             // Apply paging
             var count = await query.CountAsync(); // Get total count for pagination
