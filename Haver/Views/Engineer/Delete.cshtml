@@ -19,6 +19,13 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
                         <dl class="row mb-0">
+
+                            <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
+                                @Html.DisplayNameFor(model => model.EngineerInitials)
+                            </dt>
+                            <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
+                                @Html.DisplayFor(model => model.EngineerInitials)
+                            </dd>
                             <!-- First Name -->
                             <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
                                 @Html.DisplayNameFor(model => model.FirstName)
