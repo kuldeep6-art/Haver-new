@@ -480,26 +480,31 @@ namespace haver.Controllers
         }
 
 
-        //public IActionResult Chart()
-        //{
-        //    var ganttData = _context.GanttDatas
-        //        .Include(g => g.Machine) // Ensure Machine is loaded
-        //        .ToList() // Convert to memory before calling a custom method
-        //        .Select(g => new GanttViewModel
-        //        {
-        //            ID = g.ID,
-        //            MachineName = g.Machine?.Description ?? "Unknown",
-        //            StartDate = g.AppDRcd,
-        //            EndDate = g.DeliveryExpected,
-        //            Progress = 0,
-        //            MilestoneClass = GetMilestoneClass(g) // Now safe to use
-        //        })
-        //        .ToList();
+		//public IActionResult Chart()
+		//{
+		//    var ganttData = _context.GanttDatas
+		//        .Include(g => g.Machine) // Ensure Machine is loaded
+		//        .ToList() // Convert to memory before calling a custom method
+		//        .Select(g => new GanttViewModel
+		//        {
+		//            ID = g.ID,
+		//            MachineName = g.Machine?.Description ?? "Unknown",
+		//            StartDate = g.AppDRcd,
+		//            EndDate = g.DeliveryExpected,
+		//            Progress = 0,
+		//            MilestoneClass = GetMilestoneClass(g) // Now safe to use
+		//        })
+		//        .ToList();
 
-        //    return View(ganttData);
-        //}
+		//    return View(ganttData);
+		//}
 
-        public IActionResult Chart()
+		[HttpGet]
+		public IActionResult ExportSchedules()
+		{
+			return View(new ScheduleExportOptionsViewModel());
+		}
+		public IActionResult Chart()
         {
             var ganttData = _context.GanttDatas
                 .Include(g => g.SalesOrder)
@@ -512,304 +517,502 @@ namespace haver.Controllers
             return View(ganttData);
         }
 
-		public IActionResult DownloadGanttSchedules()
+		[HttpPost]
+		public IActionResult DownloadSchedules(ScheduleExportOptionsViewModel options)
 		{
-			// Fetch GanttDatas with related SalesOrder and Machine data
+			var salesOrders = _context.SalesOrders
+				.Include(so => so.Machines).ThenInclude(m => m.MachineType)
+				.Include(so => so.Machines).ThenInclude(m => m.Procurements).ThenInclude(p => p.Vendor)
+				.Include(so => so.SalesOrderEngineers).ThenInclude(se => se.Engineer)
+				.OrderByDescending(so => so.SoDate)
+				.AsNoTracking()
+				.AsEnumerable();
+
+			// Machine Schedules Data - One ViewModel per Machine
+			var machineSchedules = salesOrders
+				.SelectMany(so => so.Machines != null && so.Machines.Any()
+					? so.Machines.Select(m => new MachineScheduleViewModel
+					{
+						SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
+						SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.ToShortDateString() ?? "N/A") : null,
+						CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineType?.Description ?? "Unknown") : null,
+						SerialNumbers = options.IncludeSerialNumbers ? (m?.SerialNumber ?? "N/A") : null,
+						ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
+						PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
+						PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToString() ?? "N/A") : null,
+						VendorNames = options.IncludeVendorNames && m?.Procurements != null && m.Procurements.Any()
+							? string.Join(", ", m.Procurements.Select(p => p?.Vendor?.Name ?? "N/A"))
+							: null,
+						PoNumbers = options.IncludePoNumbers && m?.Procurements != null && m.Procurements.Any()
+							? string.Join(", ", m.Procurements.Select(p => p?.PONumber ?? "N/A"))
+							: null,
+						PoDueDates = options.IncludePoDueDates && m?.Procurements != null && m.Procurements.Any()
+							? string.Join(", ", m.Procurements.Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
+							: null,
+						DeliveryDates = options.IncludeDeliveryDates && m?.Procurements != null && m.Procurements.Any()
+							? string.Join(", ", m.Procurements.Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
+							: null,
+						Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
+						SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
+						Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
+						AirSeal = options.IncludeAirSeal ? (so?.AirSeal ?? false ? "Yes" : "No") : null,
+						CoatingLining = options.IncludeCoatingLining ? (so?.CoatingLining ?? false ? "Yes" : "No") : null,
+						Disassembly = options.IncludeDisassembly ? (so?.Disassembly ?? false ? "Yes" : "No") : null,
+						PreOrder = options.IncludePreOrder ? (!string.IsNullOrEmpty(m?.PreOrder) ? Regex.Replace(m.PreOrder, "<.*?>", string.Empty) : "N/A") : null,
+						Scope = options.IncludeScope ? (!string.IsNullOrEmpty(m?.Scope) ? Regex.Replace(m.Scope, "<.*?>", string.Empty) : "N/A") : null,
+						ActualAssemblyHours = options.IncludeActualAssemblyHours ? (m?.ActualAssemblyHours != null ? $"{m.ActualAssemblyHours} hrs" : "N/A") : null,
+						ReworkHours = options.IncludeReworkHours ? (m?.ReworkHours != null ? $"{m.ReworkHours} hrs" : "N/A") : null,
+						NamePlate = options.IncludeNamePlate ? (m?.Nameplate?.ToString() ?? "N/A") : null
+						// Removed Notes property
+					})
+					: new[] { new MachineScheduleViewModel
+			{
+				SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
+				SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.ToShortDateString() ?? "N/A") : null,
+				CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+				Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
+				SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
+				Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
+				AirSeal = options.IncludeAirSeal ? (so?.AirSeal ?? false ? "Yes" : "No") : null,
+				CoatingLining = options.IncludeCoatingLining ? (so?.CoatingLining ?? false ? "Yes" : "No") : null,
+				Disassembly = options.IncludeDisassembly ? (so?.Disassembly ?? false ? "Yes" : "No") : null,
+				PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
+				PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToString() ?? "N/A") : null
+			} })
+				.ToList();
+
+			// Gantt Schedules Data (unchanged)
 			var ganttData = _context.GanttDatas
 				.Include(g => g.SalesOrder)
 				.Include(g => g.Machine).ThenInclude(m => m.MachineType)
 				.AsNoTracking()
 				.ToList();
 
-			// Generate milestone tasks
-			var milestoneTasks = ganttData
-				.SelectMany(g => GetMilestoneTasks(g))
-				.ToList();
-
-			Console.WriteLine($"Total GanttDatas: {ganttData.Count}");
-			Console.WriteLine($"Total Milestone Tasks: {milestoneTasks.Count}");
-
-			// Create order number to ID mapping
-			var orderNumberToIdMap = _context.SalesOrders
-				.AsNoTracking()
-				.GroupBy(so => so.OrderNumber ?? "")
-				.ToDictionary(g => g.Key, g => g.First().ID);
-			Console.WriteLine($"OrderNumber to ID Map Keys: {string.Join(", ", orderNumberToIdMap.Keys)}");
-
-			// Group milestone tasks by SalesOrder
-			var groupedTasks = milestoneTasks
-				.GroupBy(g => g.SalesOrder)
-				.ToList();
-
-			// Create ganttDataLookup dictionary
+			var milestoneTasks = ganttData.SelectMany(g => GetMilestoneTasks(g)).ToList();
+			var orderNumberToIdMap = _context.SalesOrders.AsNoTracking().GroupBy(so => so.OrderNumber ?? "").ToDictionary(g => g.Key, g => g.First().ID);
+			var groupedTasks = milestoneTasks.GroupBy(g => g.SalesOrder).ToList();
 			var ganttDataLookup = new Dictionary<int, List<GanttViewModel>>();
 			foreach (var group in groupedTasks)
 			{
-				if (!orderNumberToIdMap.TryGetValue(group.Key, out var salesOrderId))
+				if (orderNumberToIdMap.TryGetValue(group.Key, out var salesOrderId))
 				{
-					Console.WriteLine($"Warning: SalesOrder '{group.Key}' not found in orderNumberToIdMap. Skipping this group.");
-					continue;
+					ganttDataLookup[salesOrderId] = group.ToList();
 				}
-				ganttDataLookup[salesOrderId] = group.ToList();
 			}
 
-			Console.WriteLine($"ganttDataLookup Keys: {string.Join(", ", ganttDataLookup.Keys)}");
-
-			// Fetch and map schedules
-			var schedules = _context.SalesOrders
-				.Include(so => so.Machines).ThenInclude(m => m.MachineType)
-				.Include(so => so.SalesOrderEngineers).ThenInclude(se => se.Engineer)
-				.OrderByDescending(so => so.SoDate)
-				.AsNoTracking()
-				.ToList()
-				.Select(so => new
+			var ganttSchedules = salesOrders
+				.Select(so => new GanttScheduleViewModel
 				{
-					OrderNumber = so.OrderNumber ?? "",
-					// Fix Engineer: Check if SalesOrderEngineers exists and get the Engineer's name
-					Engineer = $"{so.SalesOrderEngineers?.FirstOrDefault()?.Engineer.FirstName[0]} {so.SalesOrderEngineers?.FirstOrDefault()?.Engineer.LastName[0]}",
-					CustomerName = so.CompanyName ?? "Unknown",
-					Quantity = so.Machines?.Count() ?? 0,
-					Size = so.Machines != null
-						? string.Join(", ", so.Machines.Select(m => m.MachineType?.Size ?? "N/A"))
-						: "N/A",
-					Class = so.Machines != null
-						? string.Join(", ", so.Machines.Select(m => m.MachineType?.Class ?? "N/A"))
-						: "N/A",
-					SizeDeck = so.Machines != null
-						? string.Join(", ", so.Machines.Select(m => m.MachineType?.Deck ?? "N/A"))
-						: "N/A",
-					Media = so.Media ? "Yes" : "No",
-					SpareParts = so.SpareParts ? "Yes" : "No",
-					ApprovedDrawingReceived = so.AppDwgExp,
-					GanttData = ganttDataLookup.ContainsKey(so.ID) ? ganttDataLookup[so.ID] : new List<GanttViewModel>(),
-                    SpecialNotes = ganttDataLookup.ContainsKey(so.ID) && ganttDataLookup[so.ID].Any()
-                 ? string.Join("; ", ganttDataLookup[so.ID]
-                 .Where(g => !string.IsNullOrEmpty(g.Notes))
-             .Select(g => Regex.Replace(g.Notes, "<.*?>", string.Empty))
-              .Distinct()) : ""
-
-
-        })
+					OrderNumber = options.IncludeOrderNumber ? (so?.OrderNumber ?? "") : null,
+					Engineer = options.IncludeEngineer && so?.SalesOrderEngineers?.FirstOrDefault()?.Engineer != null
+						? $"{so.SalesOrderEngineers.FirstOrDefault().Engineer.FirstName?[0]} {so.SalesOrderEngineers.FirstOrDefault().Engineer.LastName?[0]}"
+						: null,
+					CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+					Quantity = options.IncludeQuantity ? (so?.Machines?.Count() ?? 0) : 0,
+					Size = options.IncludeSize && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Size ?? "N/A")) : null,
+					Class = options.IncludeClass && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Class ?? "N/A")) : null,
+					SizeDeck = options.IncludeSizeDeck && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Deck ?? "N/A")) : null,
+					Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
+					SpareParts = options.IncludeGanttSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
+					ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
+					GanttData = options.IncludeGanttData && ganttDataLookup.ContainsKey(so?.ID ?? 0) ? ganttDataLookup[so.ID] : null,
+					SpecialNotes = options.IncludeSpecialNotes && ganttDataLookup.ContainsKey(so?.ID ?? 0) && ganttDataLookup[so.ID].Any()
+						? string.Join("; ", ganttDataLookup[so.ID].Where(g => !string.IsNullOrEmpty(g?.Notes)).Select(g => Regex.Replace(g.Notes, "<.*?>", string.Empty)).Distinct())
+						: null
+				})
 				.ToList();
 
-			Console.WriteLine($"Total Schedules: {schedules.Count}");
-			foreach (var schedule in schedules)
+			if ((options.ReportType == ReportType.MachineSchedules && !machineSchedules.Any()) ||
+				(options.ReportType == ReportType.GanttSchedules && !ganttSchedules.Any()) ||
+				(options.ReportType == ReportType.Both && !machineSchedules.Any() && !ganttSchedules.Any()))
 			{
-				Console.WriteLine($"OrderNumber: {schedule.OrderNumber}, GanttData Count: {schedule.GanttData.Count}");
+				return NotFound("No data available to export.");
 			}
 
 			using (ExcelPackage excel = new ExcelPackage())
 			{
-				var workSheet = excel.Workbook.Worksheets.Add("Machine Schedules");
-
-				// Set overall document properties
-				excel.Workbook.Properties.Title = "Machinery Gantt Schedule";
-				excel.Workbook.Properties.Author = "xAI Generated";
-				excel.Workbook.Properties.Company = "Your Company";
-
-				// Title styling
-				workSheet.Cells[1, 1].Value = "Machinery Gantt Schedule";
-				using (ExcelRange title = workSheet.Cells[1, 1, 1, 47])
+				if (options.ReportType == ReportType.MachineSchedules || options.ReportType == ReportType.Both)
 				{
-					title.Merge = true;
-					title.Style.Font.Name = "Calibri";
-					title.Style.Font.Size = 20;
-					title.Style.Font.Bold = true;
-					title.Style.Fill.PatternType = ExcelFillStyle.Solid;
-					title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(31, 78, 121)); // Darker blue
-					title.Style.Font.Color.SetColor(Color.White);
-					title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					title.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					title.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
-				}
-				workSheet.Row(1).Height = 30; // Increase title row height
-
-				// Headers for static fields
-				string[] headers = {
-			"OR #", "ENG.", "Customer Name", "QTY", "Size", "Class", "SizeDeck", "Media", "Spare Parts", "App Dwg Rec'd"
-		};
-
-				for (int i = 0; i < headers.Length; i++)
-				{
-					SetupHeader(workSheet, 2, i + 1, headers[i], Color.FromArgb(91, 155, 213)); // Light blue
+					var workSheet = excel.Workbook.Worksheets.Add("Machine Schedules");
+					SetupMachineSchedulesWorksheet(workSheet, machineSchedules, options);
 				}
 
-				// Gantt chart headers (weeks 1-33 of 2025)
-				int colIndex = 11;
-				for (int week = 1; week <= 33; week++)
+				if (options.ReportType == ReportType.GanttSchedules || options.ReportType == ReportType.Both)
 				{
-					SetupHeader(workSheet, 2, colIndex++, week.ToString(), Color.FromArgb(155, 194, 230)); // Lighter blue gradient
+					var workSheet = excel.Workbook.Worksheets.Add("Gantt Schedules");
+					SetupGanttSchedulesWorksheet(workSheet, ganttSchedules, options);
 				}
-
-				// Special Notes header
-				SetupHeader(workSheet, 2, colIndex, "Special Notes", Color.FromArgb(91, 155, 213));
-
-				// Style header row
-				using (var headerRange = workSheet.Cells[2, 1, 2, 47])
-				{
-					headerRange.Style.Font.Name = "Calibri";
-					headerRange.Style.Font.Size = 11;
-					headerRange.Style.Font.Bold = true;
-					headerRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					headerRange.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
-					headerRange.Style.WrapText = true;
-				}
-				workSheet.Row(2).Height = 25;
-
-				// Load data
-				int row = 3;
-				foreach (var schedule in schedules)
-				{
-					workSheet.Cells[row, 1].Value = schedule.OrderNumber;
-					workSheet.Cells[row, 2].Value = schedule.Engineer;
-					workSheet.Cells[row, 3].Value = schedule.CustomerName;
-					workSheet.Cells[row, 4].Value = schedule.Quantity;
-					workSheet.Cells[row, 5].Value = schedule.Size;
-					workSheet.Cells[row, 6].Value = schedule.Class;
-					workSheet.Cells[row, 7].Value = schedule.SizeDeck;
-					workSheet.Cells[row, 8].Value = schedule.Media;
-					workSheet.Cells[row, 9].Value = schedule.SpareParts;
-					workSheet.Cells[row, 10].Value = schedule.ApprovedDrawingReceived.ToString("d-MMM-yy");
-
-					Console.WriteLine($"OrderNumber: {schedule.OrderNumber}, GanttData Count: {schedule.GanttData.Count}");
-					foreach (var milestone in schedule.GanttData)
-					{
-						Console.WriteLine($"Milestone: {milestone.MachineName}, Start: {milestone.StartDate}, End: {milestone.EndDate}");
-
-						int startWeek = GetWeekOfYear((DateTime)milestone.StartDate, WeekStartOption.Monday);
-						int endWeek = GetWeekOfYear((DateTime)milestone.EndDate, WeekStartOption.Monday);
-
-						Console.WriteLine($"Raw Start Week: {startWeek}, Raw End Week: {endWeek}");
-
-						int startCol = GetColumnFromWeek(startWeek);
-						int endCol = GetColumnFromWeek(endWeek);
-
-						Console.WriteLine($"Start Col: {startCol}, End Col: {endCol}");
-
-						if (startCol == -1 || endCol == -1 || startCol > 43 || endCol > 43)
-						{
-							Console.WriteLine($"Skipping milestone {milestone.MachineName} - out of range");
-							continue;
-						}
-
-						try
-						{
-							string colorHex = milestone.MilestoneClass.TrimStart('#');
-							Color milestoneColor;
-							try
-							{
-								milestoneColor = ColorTranslator.FromHtml($"#{colorHex}");
-							}
-							catch (Exception)
-							{
-								Console.WriteLine($"Invalid color format for {milestone.MilestoneClass}. Using default gray.");
-								milestoneColor = Color.Gray;
-							}
-
-							for (int col = startCol; col <= endCol && col <= 43; col++)
-							{
-								var cell = workSheet.Cells[row, col];
-								cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-								cell.Style.Fill.BackgroundColor.SetColor(milestoneColor);
-								cell.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(127, 127, 127)); // Gray border
-								cell.Style.Font.Size = 9;
-								cell.Style.Font.Name = "Calibri";
-
-								if (col == startCol)
-								{
-									cell.Value = milestone.MachineName.Split(" - ")[1];
-									cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-								}
-
-								Console.WriteLine($"Row: {row}, Col: {col}, Color: {milestone.MilestoneClass}, Value: {cell.Value}");
-							}
-						}
-						catch (Exception ex)
-						{
-							Console.WriteLine($"Error applying color for milestone {milestone.MachineName}: {ex.Message}");
-							continue;
-						}
-					}
-
-					// Assign Special Notes to column 47 with HTML stripped and ensure it fits
-					workSheet.Cells[row, 47].Value = schedule.SpecialNotes;
-					workSheet.Cells[row, 47].Style.WrapText = true; // Ensure text wraps
-					workSheet.Cells[row, 47].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-
-					row++;
-				}
-
-				// Style data rows
-				using (var dataRange = workSheet.Cells[3, 1, row - 1, 47])
-				{
-					dataRange.Style.Font.Name = "Calibri";
-					dataRange.Style.Font.Size = 10;
-					dataRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					dataRange.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
-					dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-				}
-
-				// Alternating row colors
-				for (int i = 3; i < row; i++)
-				{
-					using (var rowRange = workSheet.Cells[i, 1, i, 10]) // Static columns only
-					{
-						rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
-						rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(240, 248, 255) : Color.White); // AliceBlue for even rows
-					}
-				}
-
-				// Text wrapping and alignment for specific columns
-				int[] wrapTextColumns = { 3, 5, 6, 7, 47 };
-				foreach (int col in wrapTextColumns)
-				{
-					workSheet.Column(col).Style.WrapText = true;
-					workSheet.Column(col).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-				}
-				workSheet.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // QTY
-				workSheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Media
-				workSheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Spare Parts
-
-				// Column widths
-				workSheet.Cells.AutoFitColumns();
-				workSheet.Column(1).Width = 12;  // OR #
-				workSheet.Column(2).Width = 12;  // ENG.
-				workSheet.Column(3).Width = 25;  // Customer Name
-				workSheet.Column(4).Width = 6;   // QTY
-				workSheet.Column(5).Width = 15;  // Size
-				workSheet.Column(6).Width = 15;  // Class
-				workSheet.Column(7).Width = 15;  // SizeDeck
-				workSheet.Column(8).Width = 10;  // Media
-				workSheet.Column(9).Width = 14;  // Spare Parts
-				workSheet.Column(10).Width = 14; // App Dwg Rec'd
-				for (int i = 11; i <= 43; i++)   // Gantt chart columns
-				{
-					workSheet.Column(i).Width = 4; // Slightly wider for readability
-				}
-				workSheet.Column(47).Width = 40; // Increased width for Special Notes to accommodate longer text
-
-				// Freeze panes
-				workSheet.View.FreezePanes(3, 11);
-
-				// Add grid lines for better readability
-				workSheet.Cells[3, 11, row - 1, 43].Style.Border.Top.Style = ExcelBorderStyle.Hair;
-				workSheet.Cells[3, 11, row - 1, 43].Style.Border.Left.Style = ExcelBorderStyle.Hair;
 
 				try
 				{
 					byte[] theData = excel.GetAsByteArray();
-					return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Gantt Schedule.xlsx");
+					string fileName = options.ReportType == ReportType.MachineSchedules ? "Machine Schedule.xlsx" :
+									  options.ReportType == ReportType.GanttSchedules ? "Gantt Schedule.xlsx" :
+									  "Combined Schedules.xlsx";
+					return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
-					return BadRequest("Could not build and download the file.");
+					return BadRequest($"Could not build and download the file: {ex.Message}");
 				}
 			}
 		}
+		// Helper method to set up Machine Schedules worksheet
+		private void SetupMachineSchedulesWorksheet(ExcelWorksheet workSheet, List<MachineScheduleViewModel> schedules, ScheduleExportOptionsViewModel options)
+		{
+			// Title
+			workSheet.Cells[1, 1].Value = "Machine Schedule Report";
+			using (ExcelRange title = workSheet.Cells[1, 1, 1, 24])
+			{
+				title.Merge = true;
+				title.Style.Font.Bold = true;
+				title.Style.Font.Size = 18;
+				title.Style.Fill.PatternType = ExcelFillStyle.Solid;
+				title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 102, 204));
+				title.Style.Font.Color.SetColor(Color.White);
+				title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+			}
 
+			// Timestamp
+			DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+			using (ExcelRange timestamp = workSheet.Cells[2, 1, 2, 24])
+			{
+				timestamp.Merge = true;
+				timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
+				timestamp.Style.Font.Bold = true;
+				timestamp.Style.Font.Size = 14;
+				timestamp.Style.Fill.PatternType = ExcelFillStyle.Solid;
+				timestamp.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+				timestamp.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+			}
+
+			// Dynamic Headers
+			var headers = new List<(string Name, bool Include, Color? Color)>();
+			int colIndex = 1;
+			if (options.IncludeSalesOrderNumber) headers.Add(("Sales Order", true, Color.LightBlue));
+			if (options.IncludeSalesOrderDate) headers.Add(("Order Date", true, Color.LightBlue));
+			if (options.IncludeCustomerName) headers.Add(("Customer Name", true, Color.LightBlue));
+			if (options.IncludeMachineDescriptions) headers.Add(("Machine Description", true, Color.LightBlue));
+			if (options.IncludeSerialNumbers) headers.Add(("Serial Number", true, Color.LightBlue));
+			if (options.IncludeProductionOrderNumbers) headers.Add(("Production Order Number", true, Color.LightBlue));
+			if (options.IncludePackageReleaseDateE) headers.Add(("Package Release Expected", true, Color.LightBlue));
+			if (options.IncludePackageReleaseDateA) headers.Add(("Package Release Actual", true, Color.LightBlue));
+			if (options.IncludeVendorNames) headers.Add(("Vendors", true, Color.LightBlue));
+			if (options.IncludePoNumbers) headers.Add(("PO Number", true, Color.LightBlue));
+			if (options.IncludePoDueDates) headers.Add(("PO Due Date", true, Color.LightBlue));
+			if (options.IncludeDeliveryDates) headers.Add(("Delivery Date", true, Color.LightBlue));
+			if (options.IncludeMedia) headers.Add(("Media", true, Color.LightBlue));
+			if (options.IncludeSpareParts) headers.Add(("Spare Parts", true, Color.LightBlue));
+			if (options.IncludeBase) headers.Add(("Base", true, Color.LightBlue));
+			if (options.IncludeAirSeal) headers.Add(("Air Seal", true, Color.LightBlue));
+			if (options.IncludeCoatingLining) headers.Add(("Coating Lining", true, Color.LightBlue));
+			if (options.IncludeDisassembly) headers.Add(("Disassembly", true, Color.LightBlue));
+
+			// Add headers before Notes/Comments
+			for (int i = 0; i < headers.Count; i++)
+			{
+				workSheet.Cells[3, colIndex].Value = headers[i].Name;
+				workSheet.Cells[3, colIndex].Style.Font.Bold = true;
+				workSheet.Cells[3, colIndex].Style.Fill.PatternType = ExcelFillStyle.Solid;
+				workSheet.Cells[3, colIndex].Style.Fill.BackgroundColor.SetColor(headers[i].Color ?? Color.LightBlue);
+				workSheet.Cells[3, colIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+				colIndex++;
+			}
+
+			// Handle Notes/Comments Main Header and Sub-Headers
+			var noteHeaders = new List<(string Name, bool Include, Color Color)>
+	{
+		("PreOrder", options.IncludePreOrder, Color.FromArgb(255, 204, 0)),
+		("Scope", options.IncludeScope, Color.FromArgb(255, 153, 51)),
+		("Actual Hours", options.IncludeActualAssemblyHours, Color.FromArgb(153, 204, 255)),
+		("Budget Hours", options.IncludeReworkHours, Color.FromArgb(204, 255, 204)),
+		("NamePlate", options.IncludeNamePlate, Color.FromArgb(255, 204, 204))
+	};
+			var includedNoteHeaders = noteHeaders.Where(nh => nh.Include).ToList();
+
+			if (includedNoteHeaders.Any())
+			{
+				int notesStartCol = colIndex;
+				int notesEndCol = notesStartCol + includedNoteHeaders.Count - 1;
+
+				// Merge and style the main "Notes/Comments" header
+				using (var notesHeaderRange = workSheet.Cells[3, notesStartCol, 3, notesEndCol])
+				{
+					notesHeaderRange.Merge = true;
+					notesHeaderRange.Value = "Notes/Comments";
+					notesHeaderRange.Style.Font.Bold = true;
+					notesHeaderRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+					notesHeaderRange.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+					notesHeaderRange.Style.Border.BorderAround(ExcelBorderStyle.Thin);
+					notesHeaderRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				}
+
+				// Add sub-headers
+				int subCol = notesStartCol;
+				foreach (var nh in includedNoteHeaders)
+				{
+					workSheet.Cells[4, subCol].Value = nh.Name;
+					workSheet.Cells[4, subCol].Style.Font.Bold = true;
+					workSheet.Cells[4, subCol].Style.Font.Size = 11;
+					workSheet.Cells[4, subCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
+					workSheet.Cells[4, subCol].Style.Fill.BackgroundColor.SetColor(nh.Color);
+					workSheet.Cells[4, subCol].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+					workSheet.Cells[4, subCol].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					subCol++;
+				}
+				colIndex = notesEndCol + 1; // Update colIndex to point after the last sub-header
+			}
+
+			// Load Data Dynamically
+			int row = 5;
+			foreach (var schedule in schedules)
+			{
+				colIndex = 1;
+				if (options.IncludeSalesOrderNumber) workSheet.Cells[row, colIndex++].Value = schedule.SalesOrderNumber ?? "";
+				if (options.IncludeSalesOrderDate) workSheet.Cells[row, colIndex++].Value = schedule.SalesOrderDate ?? "";
+				if (options.IncludeCustomerName) workSheet.Cells[row, colIndex++].Value = schedule.CustomerName ?? "";
+				if (options.IncludeMachineDescriptions) workSheet.Cells[row, colIndex++].Value = schedule.MachineDescriptions ?? "";
+				if (options.IncludeSerialNumbers) workSheet.Cells[row, colIndex++].Value = schedule.SerialNumbers ?? "";
+				if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = schedule.ProductionOrderNumbers ?? "";
+				if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = schedule.PackageReleaseDateE ?? "";
+				if (options.IncludePackageReleaseDateA) workSheet.Cells[row, colIndex++].Value = schedule.PackageReleaseDateA ?? "";
+				if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = schedule.VendorNames ?? "";
+				if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = schedule.PoNumbers ?? "";
+				if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = schedule.PoDueDates ?? "";
+				if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = schedule.DeliveryDates ?? "";
+				if (options.IncludeMedia) workSheet.Cells[row, colIndex++].Value = schedule.Media ?? "";
+				if (options.IncludeSpareParts) workSheet.Cells[row, colIndex++].Value = schedule.SpareParts ?? "";
+				if (options.IncludeBase) workSheet.Cells[row, colIndex++].Value = schedule.Base ?? "";
+				if (options.IncludeAirSeal) workSheet.Cells[row, colIndex++].Value = schedule.AirSeal ?? "";
+				if (options.IncludeCoatingLining) workSheet.Cells[row, colIndex++].Value = schedule.CoatingLining ?? "";
+				if (options.IncludeDisassembly) workSheet.Cells[row, colIndex++].Value = schedule.Disassembly ?? "";
+				if (options.IncludePreOrder) workSheet.Cells[row, colIndex++].Value = schedule.PreOrder ?? "";
+				if (options.IncludeScope) workSheet.Cells[row, colIndex++].Value = schedule.Scope ?? "";
+				if (options.IncludeActualAssemblyHours) workSheet.Cells[row, colIndex++].Value = schedule.ActualAssemblyHours ?? "";
+				if (options.IncludeReworkHours) workSheet.Cells[row, colIndex++].Value = schedule.ReworkHours ?? "";
+				if (options.IncludeNamePlate) workSheet.Cells[row, colIndex++].Value = schedule.NamePlate ?? "";
+				row++;
+			}
+
+			// Borders and Styling
+			using (var range = workSheet.Cells[5, 1, row - 1, colIndex - 1])
+			{
+				range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+			}
+
+			// Text Wrapping for Selected Columns
+			colIndex = 1;
+			if (options.IncludeMachineDescriptions) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeSerialNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeProductionOrderNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludePoDueDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeDeliveryDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludePreOrder) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeScope) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeActualAssemblyHours) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeReworkHours) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeNamePlate) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+
+			// Column Widths (adjust dynamically based on included columns)
+			workSheet.Cells.AutoFitColumns();
+			colIndex = 1;
+			if (options.IncludeCustomerName) workSheet.Column(colIndex++).Width = 25; else colIndex++;
+			if (options.IncludeMachineDescriptions) workSheet.Column(colIndex++).Width = 20; else colIndex++;
+			if (options.IncludeSerialNumbers) workSheet.Column(colIndex++).Width = 20; else colIndex++;
+			if (options.IncludeProductionOrderNumbers) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludePackageReleaseDateE) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludePackageReleaseDateA) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Width = 30; else colIndex++;
+			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Width = 12; else colIndex++;
+			if (options.IncludePreOrder) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludeScope) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludeActualAssemblyHours) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludeReworkHours) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+			if (options.IncludeNamePlate) workSheet.Column(colIndex++).Width = 15; else colIndex++;
+
+			workSheet.View.FreezePanes(5, 1);
+		}
+		private void SetupGanttSchedulesWorksheet(ExcelWorksheet workSheet, List<GanttScheduleViewModel> schedules, ScheduleExportOptionsViewModel options)
+		{
+			// Title
+			workSheet.Cells[1, 1].Value = "Machinery Gantt Schedule";
+			using (ExcelRange title = workSheet.Cells[1, 1, 1, 47])
+			{
+				title.Merge = true;
+				title.Style.Font.Name = "Calibri";
+				title.Style.Font.Size = 20;
+				title.Style.Font.Bold = true;
+				title.Style.Fill.PatternType = ExcelFillStyle.Solid;
+				title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(31, 78, 121));
+				title.Style.Font.Color.SetColor(Color.White);
+				title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				title.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				title.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
+			}
+			workSheet.Row(1).Height = 30;
+
+			// Dynamic Headers
+			var headers = new List<(string Name, bool Include, Color Color)>();
+			int colIndex = 1;
+			if (options.IncludeOrderNumber) headers.Add(("OR #", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeEngineer) headers.Add(("ENG.", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeGanttCustomerName) headers.Add(("Customer Name", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeQuantity) headers.Add(("QTY", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeSize) headers.Add(("Size", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeClass) headers.Add(("Class", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeSizeDeck) headers.Add(("SizeDeck", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeGanttMedia) headers.Add(("Media", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeGanttSpareParts) headers.Add(("Spare Parts", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeApprovedDrawingReceived) headers.Add(("App Dwg Rec'd", true, Color.FromArgb(91, 155, 213)));
+
+			int staticCols = headers.Count;
+			if (options.IncludeGanttData)
+			{
+				for (int week = 1; week <= 33; week++)
+				{
+					headers.Add((week.ToString(), true, Color.FromArgb(155, 194, 230)));
+				}
+			}
+			if (options.IncludeSpecialNotes) headers.Add(("Special Notes", true, Color.FromArgb(91, 155, 213)));
+
+			// Add headers
+			for (int i = 0; i < headers.Count; i++)
+			{
+				workSheet.Cells[2, colIndex].Value = headers[i].Name;
+				workSheet.Cells[2, colIndex].Style.Font.Name = "Calibri";
+				workSheet.Cells[2, colIndex].Style.Font.Size = 11;
+				workSheet.Cells[2, colIndex].Style.Font.Bold = true;
+				workSheet.Cells[2, colIndex].Style.Fill.PatternType = ExcelFillStyle.Solid;
+				workSheet.Cells[2, colIndex].Style.Fill.BackgroundColor.SetColor(headers[i].Color);
+				workSheet.Cells[2, colIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+				colIndex++;
+			}
+
+			// Load Data Dynamically
+			int row = 3;
+			foreach (var schedule in schedules)
+			{
+				colIndex = 1;
+				if (options.IncludeOrderNumber) workSheet.Cells[row, colIndex++].Value = schedule.OrderNumber;
+				if (options.IncludeEngineer) workSheet.Cells[row, colIndex++].Value = schedule.Engineer;
+				if (options.IncludeGanttCustomerName) workSheet.Cells[row, colIndex++].Value = schedule.CustomerName;
+				if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = schedule.Quantity;
+				if (options.IncludeSize) workSheet.Cells[row, colIndex++].Value = schedule.Size;
+				if (options.IncludeClass) workSheet.Cells[row, colIndex++].Value = schedule.Class;
+				if (options.IncludeSizeDeck) workSheet.Cells[row, colIndex++].Value = schedule.SizeDeck;
+				if (options.IncludeGanttMedia) workSheet.Cells[row, colIndex++].Value = schedule.Media;
+				if (options.IncludeGanttSpareParts) workSheet.Cells[row, colIndex++].Value = schedule.SpareParts;
+				if (options.IncludeApprovedDrawingReceived) workSheet.Cells[row, colIndex++].Value = schedule.ApprovedDrawingReceived.ToString("d-MMM-yy");
+
+				if (options.IncludeGanttData && schedule.GanttData != null)
+				{
+					foreach (var milestone in schedule.GanttData)
+					{
+						int startWeek = GetWeekOfYear((DateTime)milestone.StartDate, WeekStartOption.Monday);
+						int endWeek = GetWeekOfYear((DateTime)milestone.EndDate, WeekStartOption.Monday);
+						int startCol = staticCols + startWeek; // Adjust for dynamic static columns
+						int endCol = staticCols + endWeek;
+
+						if (startCol >= colIndex && endCol <= staticCols + 33)
+						{
+							Color milestoneColor;
+							try
+							{
+								milestoneColor = ColorTranslator.FromHtml(milestone.MilestoneClass.TrimStart('#'));
+							}
+							catch
+							{
+								milestoneColor = Color.Gray;
+							}
+
+							for (int col = startCol; col <= endCol; col++)
+							{
+								var cell = workSheet.Cells[row, col];
+								cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+								cell.Style.Fill.BackgroundColor.SetColor(milestoneColor);
+								cell.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(127, 127, 127));
+								cell.Style.Font.Size = 9;
+								cell.Style.Font.Name = "Calibri";
+								if (col == startCol) cell.Value = milestone.MachineName.Split(" - ")[1];
+							}
+						}
+					}
+					colIndex = staticCols + 34; // Skip Gantt columns
+				}
+				if (options.IncludeSpecialNotes) workSheet.Cells[row, colIndex++].Value = schedule.SpecialNotes;
+
+				row++;
+			}
+
+			// Styling
+			using (var dataRange = workSheet.Cells[3, 1, row - 1, headers.Count])
+			{
+				dataRange.Style.Font.Name = "Calibri";
+				dataRange.Style.Font.Size = 10;
+				dataRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+				dataRange.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
+				dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+				dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+				dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+				dataRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+			}
+
+			// Alternating row colors for static columns
+			for (int i = 3; i < row; i++)
+			{
+				using (var rowRange = workSheet.Cells[i, 1, i, staticCols])
+				{
+					rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+					rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(240, 248, 255) : Color.White);
+				}
+			}
+
+			// Text Wrapping and Alignment
+			colIndex = 1;
+			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Style.WrapText = true;
+			if (options.IncludeSize) workSheet.Column(colIndex++).Style.WrapText = true;
+			if (options.IncludeClass) workSheet.Column(colIndex++).Style.WrapText = true;
+			if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Style.WrapText = true;
+			if (options.IncludeSpecialNotes) workSheet.Column(headers.Count).Style.WrapText = true;
+
+			// Column Widths
+			workSheet.Cells.AutoFitColumns();
+			colIndex = 1;
+			if (options.IncludeOrderNumber) workSheet.Column(colIndex++).Width = 12;
+			if (options.IncludeEngineer) workSheet.Column(colIndex++).Width = 12;
+			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Width = 25;
+			if (options.IncludeQuantity) workSheet.Column(colIndex++).Width = 6;
+			if (options.IncludeSize) workSheet.Column(colIndex++).Width = 15;
+			if (options.IncludeClass) workSheet.Column(colIndex++).Width = 15;
+			if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Width = 15;
+			if (options.IncludeGanttMedia) workSheet.Column(colIndex++).Width = 10;
+			if (options.IncludeGanttSpareParts) workSheet.Column(colIndex++).Width = 14;
+			if (options.IncludeApprovedDrawingReceived) workSheet.Column(colIndex++).Width = 14;
+			if (options.IncludeGanttData)
+			{
+				for (int i = staticCols + 1; i <= staticCols + 33; i++)
+					workSheet.Column(i).Width = 4;
+			}
+			if (options.IncludeSpecialNotes) workSheet.Column(headers.Count).Width = 40;
+
+			workSheet.View.FreezePanes(3, staticCols + 1);
+		}
+		// Helper method for header setup (from GanttSchedules)
+		private void SetupHeader(ExcelWorksheet workSheet, int row, int col, string value, Color bgColor)
+		{
+			workSheet.Cells[row, col].Value = value;
+			workSheet.Cells[row, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+			workSheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(bgColor);
+			workSheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+		}
+
+	
 		private static int GetColumnFromWeek(int week)
 		{
 			if (week >= 1 && week <= 33) // Weeks 1-33 of 2025
@@ -817,16 +1020,7 @@ namespace haver.Controllers
 			return -1;
 		}
 
-		private void SetupHeader(ExcelWorksheet worksheet, int row, int col, string value, Color bgColor)
-		{
-			worksheet.Cells[row, col].Value = value;
-			worksheet.Cells[row, col].Style.Font.Bold = true;
-			worksheet.Cells[row, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-			worksheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(bgColor);
-			worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(23, 54, 93));
-			worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-		}
-
+	
 		private static int GetWeekOfYear(DateTime date, WeekStartOption startOfWeek)
 		{
 			var cal = System.Globalization.CultureInfo.InvariantCulture.Calendar;
