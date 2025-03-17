@@ -17,41 +17,60 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
                 <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
-                <!-- Initials -->
-                <div class="form-group mb-3">
-                    <label asp-for="EngineerInitials" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Initials <span class="text-danger">*</span>
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's Initials."></i>
-                    </label>
-                    <input asp-for="EngineerInitials" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Initials" />
-                    <span asp-validation-for="EngineerInitials" class="text-danger"></span>
+
+                <div class="row">
+                    <!-- Initials -->
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="EngineerInitials" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Initials <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineer's Initials."></i>
+                        </label>
+                        <input asp-for="EngineerInitials" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Initials" />
+                        <span asp-validation-for="EngineerInitials" class="text-danger"></span>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="FirstName" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            First Name <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the engineer's First name."></i>
+                        </label>
+                        <input asp-for="FirstName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+               
+                <div class="row">
+
+                    <!-- Last Name -->
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="LastName" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Last Name <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the engineer's last name."></i>
+                        </label>
+                        <input asp-for="LastName" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group col-md-6 mb-3">
+                        <label asp-for="Email" class="control-label"
+                               style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Email <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the engineer's email address."></i>
+                        </label>
+                        <input asp-for="Email" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
 
-                <!-- Last Name -->
-                <div class="form-group mb-3">
-                    <label asp-for="LastName" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Last Name <span class="text-danger">*</span>
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the engineer's last name."></i>
-                    </label>
-                    <input asp-for="LastName" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-
-                <!-- Email -->
-                <div class="form-group mb-3">
-                    <label asp-for="Email" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Email <span class="text-danger">*</span>
-                        <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Edit the engineer's email address."></i>
-                    </label>
-                    <input asp-for="Email" class="form-control"
-                           style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">

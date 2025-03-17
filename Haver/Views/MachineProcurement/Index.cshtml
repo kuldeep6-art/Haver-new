@@ -13,11 +13,14 @@
 }
 
 
+
     @{
+   
         haver.Models.Machine machine = (haver.Models.Machine)ViewBag.Machine;
         <partial name="_MachineDetail" model="machine" />
         ViewData["Title"] = ViewData["ControllerFriendlyName"];
     }
+
 
     <h1 class="text-center my-4">Procurement Section</h1>
 
@@ -149,19 +152,20 @@
 
         <partial name="_PagingNavBar" />
 
-        <div class="mt-3">
-   
-             @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
-                            {
-                <a asp-action="Edit" asp-controller="Machine" asp-route-id="@machine.ID" class="btn no-print">
-                    Edit Machine @machine.SerialNumber
-                </a>
-                            }
+    <div class="mt-3">
 
-            <a href='@ViewData["returnURL"]' class="btn no-print">Back to Machine List</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
+        {
+            <a asp-action="Edit" asp-controller="Machine" asp-route-id="@machine.ID" class="btn no-print">
+                Edit Machine @machine.SerialNumber
+            </a>
+        }
+
+        <a href='@ViewData["returnURL"]' class="btn no-print">Back to Machine List</a>
 
 
-        </div>
+    </div>
+       
     </form>
 
 
