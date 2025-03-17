@@ -30,80 +30,81 @@ namespace haver.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SUser, bool? Active = null)
-        {
-            ViewData["Filtering"] = "btn-block invisible";
-            int numberFilters = 0;
+		public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SUser, bool? Active = null)
+		{
+			ViewData["Filtering"] = "btn-block invisible";
+			int numberFilters = 0;
+
+			// Get all employees, but let's use pagination
+			int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+			ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+
+			int pageIndex = page ?? 1; // Default to the first page if not provided
+
+			var query = _context.Employees
+								.Select(e => new EmployeeAdminVM
+								{
+									Email = e.Email,
+									Active = e.Active,
+									ID = e.ID,
+									FirstName = e.FirstName,
+									LastName = e.LastName,
+									Phone = e.Phone
+								});
+
+			if (!Active.HasValue)
+			{
+				Active = true;
+			}
+			query = query.Where(v => v.Active == Active.Value);
+			ViewBag.Status = Active.Value ? "Active" : "Inactive";
+
+		
+			if (!string.IsNullOrEmpty(SUser))
+			{
+				SUser = SUser.Trim().ToUpper();
+				query = query.Where(u =>
+					u.FirstName.ToUpper().Contains(SUser) ||
+					u.LastName.ToUpper().Contains(SUser));
+
+				numberFilters++;
+			}
+
+			// Count after filtering
+			var count = await query.CountAsync();
+
+			// Apply paging
+			var employees = await query
+								 .Skip((pageIndex - 1) * pageSize) // Skip items for previous pages
+								 .Take(pageSize) // Take the number of records for current page
+								 .ToListAsync();
+
+			// Retrieve roles for each employee
+			foreach (var e in employees)
+			{
+				var user = await _userManager.FindByEmailAsync(e.Email);
+				if (user != null)
+				{
+					e.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
+				}
+			}
+
+			// Track applied filters
+			if (numberFilters != 0)
+			{
+				ViewData["Filtering"] = " btn-danger";
+				ViewData["numberFilters"] = $"({numberFilters} Filter{(numberFilters > 1 ? "s" : "")} Applied)";
+			}
+
+			// Create PaginatedList and return the view
+			var pageData = new PaginatedList<EmployeeAdminVM>(employees, count, pageIndex, pageSize);
+			return View(pageData);
+		}
 
 
 
-            // Get all employees, but let's use pagination
-            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
-            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-
-            int pageIndex = page ?? 1; // Default to the first page if not provided
-
-            var query = _context.Employees
-                                .Select(e => new EmployeeAdminVM
-                                {
-                                    Email = e.Email,
-                                    Active = e.Active,
-                                    ID = e.ID,
-                                    FirstName = e.FirstName,
-                                    LastName = e.LastName,
-                                    Phone = e.Phone
-                                });
-
-
-            if (!Active.HasValue)
-            {
-                Active = true;
-            }
-            query = query.Where(v => v.Active == Active.Value);
-            ViewBag.Status = Active.Value ? "Active" : "Inactive";
-
-            // Apply paging
-            var count = await query.CountAsync(); // Get total count for pagination
-            var employees = await query
-                                 .Skip((pageIndex - 1) * pageSize) // Skip the items for previous pages
-                                 .Take(pageSize) // Take the page size number of records
-                                 .ToListAsync();
-
-            // Retrieve roles for each employee
-            foreach (var e in employees)
-            {
-                var user = await _userManager.FindByEmailAsync(e.Email);
-                if (user != null)
-                {
-                    e.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
-                }
-            }
-
-            if (!String.IsNullOrEmpty(SUser))
-            {
-                employees = employees.Where(u =>
-                    u.FirstName.ToUpper().Contains(SUser.ToUpper()) ||
-                    u.LastName.ToUpper().Contains(SUser.ToUpper()))
-                    .ToList();
-                numberFilters++;
-            }
-
-            //keep track of the number of filters 
-            if (numberFilters != 0)
-            {
-                ViewData["Filtering"] = " btn-danger";
-                ViewData["numberFilters"] = "(" + numberFilters.ToString()
-                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
-            }
-
-            // Create PaginatedList and return the view
-            var pageData = new PaginatedList<EmployeeAdminVM>(employees, count, pageIndex, pageSize);
-            return View(pageData);
-        }
-
-
-        // GET: Employee/Create
-        public IActionResult Create()
+		// GET: Employee/Create
+		public IActionResult Create()
         {
             EmployeeAdminVM employee = new EmployeeAdminVM();
             PopulateAssignedRoleData(employee);
