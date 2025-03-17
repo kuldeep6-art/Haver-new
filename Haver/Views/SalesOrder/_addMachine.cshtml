@@ -63,7 +63,7 @@
                         <!-- Production Order -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ProductionOrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.ProductionOrderNumber)
+                                @Html.DisplayNameFor(model => model.ProductionOrderNumber)
                             </label>
                             <input asp-for="ProductionOrderNumber" class="form-control" placeholder="Enter Production Order Number"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />

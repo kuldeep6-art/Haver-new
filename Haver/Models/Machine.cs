@@ -25,13 +25,13 @@ namespace haver.Models
         // Serial Number
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "Serial number is required.")]
-        public string? SerialNumber { get; set; }
+		[StringLength(8, ErrorMessage = "Order number must be exactly 8 digits.")]
+		public string? SerialNumber { get; set; }
 
         // Production Order Number
         [Display(Name = "Production Order Number")]
-        [Required(ErrorMessage = "Production order number is required.")]
         [StringLength(7, ErrorMessage = "Production order number must be exactly 7 digits.")]
-        public string? ProductionOrderNumber { get; set; }
+        public string? ProductionOrderNumber { get; set; } 
 
         [Display(Name = "Assembly Expected")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
