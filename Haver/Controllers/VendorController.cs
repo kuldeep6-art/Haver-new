@@ -24,6 +24,7 @@ namespace haver.Controllers
 		}
 
 		// GET: Vendor
+		[Authorize(Roles ="Admin,Procurement")]
 		public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname,
 			string? SearchString, string? actionButton, string sortDirection = "asc",
 			string sortField = "Name", bool? isActive = null)

@@ -23,6 +23,8 @@ namespace haver.Controllers
 		}
 
 		// GET: Engineer
+
+		[Authorize(Roles ="Admin,Engineering")]
 		public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString,
 			string? actionButton, string sortDirection = "asc", string sortField = "Last Name")
 		{
