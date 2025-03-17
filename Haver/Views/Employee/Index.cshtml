@@ -1,9 +1,48 @@
 ﻿@model IEnumerable<haver.ViewModels.EmployeeAdminVM>
 
-<h1 style="font-weight:bold;">USERS</h1>
-<hr />
+<h1 style="font-weight:bold;text-align:center;">Users</h1>
 
 <div class="text-danger">@TempData["message"]</div>
+
+@{
+    // Create route value dictionaries for each tab
+    var routeValues = new Dictionary<string, Dictionary<string, object>>
+            {
+                ["Active"] = new Dictionary<string, object> { ["Active"] = true },
+                ["Inactive"] = new Dictionary<string, object> { ["Active"] = false }
+            };
+
+    // Preserve existing query parameters (except 'Active' and 'page')
+    foreach (var key in Context.Request.Query.Keys.Where(k => k != "Active" && k != "page"))
+    {
+        foreach (var dict in routeValues.Values)
+        {
+            dict[key] = Context.Request.Query[key];
+        }
+    }
+
+    // Reset page number to 1 when switching tabs
+    foreach (var dict in routeValues.Values)
+    {
+        dict["page"] = 1;
+    }
+}
+
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Status == "Active" ? "active" : "")"
+           href="@Url.Action("Index", routeValues["Active"])">
+            <i class="fas fa-user-check"></i> Active
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Status == "Inactive" ? "active" : "")"
+           href="@Url.Action("Index", routeValues["Inactive"])">
+            <i class="fas fa-user-times"></i> Inactive
+        </a>
+    </li>
+</ul>
+
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn " role="button"
@@ -11,9 +50,35 @@
         <i class="fa-solid fa-plus"></i> Create New
     </a>
 </div>
-<form asp-action ="Index" method="get">
 
 
+
+<form asp-action="Index" method="get">
+
+
+            <div class="d-flex justify-content-end">
+                <p class="btn @ViewData["Filtering"]" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter";">
+                    @ViewData["numberFilters"]
+                </p>
+               
+            </div>
+
+    <div class="form-horizontal">
+        <div class="card card-body bg-custom-color mb-2">
+            <div class="row d-flex">
+                <div class="form-group col-md-5 ">
+                    <label class="control-label mb-1">Search by User Name:</label>
+                    @Html.TextBox("SUser", null, new { @class = "form-control", placeholder = "Enter the User Name" })
+
+                </div>
+               
+                <div class="form-group col-lg-4 col-md-7 col-sm-10 col-10 align-self-end">
+                    <input type="submit" name="actionButton" value="Filter" class="btn mt-4 ms-2" />
+                    <a asp-action="Index" class="btn btn-outline-dark mt-4 ms-4">Clear</a>
+                </div>
+            </div>
+        </div>
+    </div>
 <table class="table table-striped table-bordered table-hover shadow-sm">
     <thead class="bg-dark text-white text-center">
         <tr>
@@ -76,4 +141,37 @@
         margin-bottom: 20px;
         font-size: 24px;
     }
+
+    .nav-tabs {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .nav-item {
+        margin-right: 15px;
+    }
+
+    .nav-link {
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #001a3d;
+    }
+
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #0056b3;
+            text-decoration: none;
+        }
 </style>

@@ -159,17 +159,21 @@
         </div>
 
         <div>
-            @* <a asp-controller="Machine" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="ms-3 btn btn-sm" target="_blank">
-
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add Machine</a> *@
+         
+             @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
+                            {
 
             @if (Model?.Status != Status.Archived && Model?.Status != Status.Completed)
             {
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addMachineModal">
-                    &#x2795; Add Machine
-                </button>
+                    <button type="button" class="btn btn-outline-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addMachineModal"
+                            data-salesorderid="@Model?.ID">
+                        &#x2795; Add Machine
+                    </button>
             }
 
+                            }
 
         </div>
 
@@ -317,16 +321,13 @@
 </script>
 
     <script>
-
         $('#addMachineModal').on('show.bs.modal', function (event) {
-            
             var button = $(event.relatedTarget);
-            // Extract the SalesOrderID from the data attribute
             var salesOrderId = button.data('salesorderid');
 
-            // Set the value of the hidden input field in the modal
             var modal = $(this);
             modal.find('#SalesOrderID').val(salesOrderId);
+            modal.find('select[name="SalesOrderID"]').val(salesOrderId).change();
         });
     </script>
 

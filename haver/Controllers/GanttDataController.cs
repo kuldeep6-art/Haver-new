@@ -38,6 +38,8 @@ namespace haver.Controllers
         }
 
         // GET: GanttData
+
+        [Authorize(Roles ="Admin,Engineering,Production,PIC")]
         public async Task<IActionResult> Index(int? page, int? pageSizeID, DateTime? DtString,
             string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number", bool? isFinalized = null)
         {
