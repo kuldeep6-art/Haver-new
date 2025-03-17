@@ -1,0 +1,72 @@
+﻿@model haver.ViewModels.ScheduleExportOptionsViewModel;
+
+<h2>Export Schedules</h2>
+
+<form asp-action="DownloadSchedules" method="post">
+    <div class="form-group">
+        <label>Report Type:</label>
+        <select asp-for="ReportType" class="form-control">
+            <option value="MachineSchedules">Machine Schedules</option>
+            <option value="GanttSchedules">Gantt Schedules</option>
+            <option value="Both">Both</option>
+        </select>
+    </div>
+
+    <h3>Machine Schedule Columns</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-check"><input asp-for="IncludeSalesOrderNumber" class="form-check-input" /> <label>Sales Order Number</label></div>
+            <div class="form-check"><input asp-for="IncludeSalesOrderDate" class="form-check-input" /> <label>Sales Order Date</label></div>
+            <div class="form-check"><input asp-for="IncludeCustomerName" class="form-check-input" /> <label>Customer Name</label></div>
+            <div class="form-check"><input asp-for="IncludeMachineDescriptions" class="form-check-input" /> <label>Machine Descriptions</label></div>
+            <div class="form-check"><input asp-for="IncludeSerialNumbers" class="form-check-input" /> <label>Serial Numbers</label></div>
+            <div class="form-check"><input asp-for="IncludeProductionOrderNumbers" class="form-check-input" /> <label>Production Order Numbers</label></div>
+            <div class="form-check"><input asp-for="IncludePackageReleaseDateE" class="form-check-input" /> <label>Package Release Expected</label></div>
+            <div class="form-check"><input asp-for="IncludePackageReleaseDateA" class="form-check-input" /> <label>Package Release Actual</label></div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-check"><input asp-for="IncludeVendorNames" class="form-check-input" /> <label>Vendor Names</label></div>
+            <div class="form-check"><input asp-for="IncludePoNumbers" class="form-check-input" /> <label>PO Numbers</label></div>
+            <div class="form-check"><input asp-for="IncludePoDueDates" class="form-check-input" /> <label>PO Due Dates</label></div>
+            <div class="form-check"><input asp-for="IncludeDeliveryDates" class="form-check-input" /> <label>Delivery Dates</label></div>
+            <div class="form-check"><input asp-for="IncludeMedia" class="form-check-input" /> <label>Media</label></div>
+            <div class="form-check"><input asp-for="IncludeSpareParts" class="form-check-input" /> <label>Spare Parts</label></div>
+            <div class="form-check"><input asp-for="IncludeBase" class="form-check-input" /> <label>Base</label></div>
+            <div class="form-check"><input asp-for="IncludeAirSeal" class="form-check-input" /> <label>Air Seal</label></div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /> <label>Coating Lining</label></div>
+            <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /> <label>Disassembly</label></div>
+            <div class="form-check"><input asp-for="IncludePreOrder" class="form-check-input" /> <label>PreOrder</label></div>
+            <div class="form-check"><input asp-for="IncludeScope" class="form-check-input" /> <label>Scope</label></div>
+            <div class="form-check"><input asp-for="IncludeActualAssemblyHours" class="form-check-input" /> <label>Actual Assembly Hours</label></div>
+            <div class="form-check"><input asp-for="IncludeReworkHours" class="form-check-input" /> <label>Rework Hours</label></div>
+            <div class="form-check"><input asp-for="IncludeNamePlate" class="form-check-input" /> <label>Name Plate</label></div>
+            <div class="form-check"><input asp-for="IncludeNotes" class="form-check-input" /> <label>Notes</label></div>
+        </div>
+    </div>
+
+    <h3>Gantt Schedule Columns</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-check"><input asp-for="IncludeOrderNumber" class="form-check-input" /> <label>Order Number</label></div>
+            <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /> <label>Engineer</label></div>
+            <div class="form-check"><input asp-for="IncludeGanttCustomerName" class="form-check-input" /> <label>Customer Name</label></div>
+            <div class="form-check"><input asp-for="IncludeQuantity" class="form-check-input" /> <label>Quantity</label></div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-check"><input asp-for="IncludeSize" class="form-check-input" /> <label>Size</label></div>
+            <div class="form-check"><input asp-for="IncludeClass" class="form-check-input" /> <label>Class</label></div>
+            <div class="form-check"><input asp-for="IncludeSizeDeck" class="form-check-input" /> <label>Size Deck</label></div>
+            <div class="form-check"><input asp-for="IncludeGanttMedia" class="form-check-input" /> <label>Media</label></div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-check"><input asp-for="IncludeGanttSpareParts" class="form-check-input" /> <label>Spare Parts</label></div>
+            <div class="form-check"><input asp-for="IncludeApprovedDrawingReceived" class="form-check-input" /> <label>Approved Drawing Received</label></div>
+            <div class="form-check"><input asp-for="IncludeGanttData" class="form-check-input" /> <label>Gantt Data</label></div>
+            <div class="form-check"><input asp-for="IncludeSpecialNotes" class="form-check-input" /> <label>Special Notes</label></div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Export to Excel</button>
+</form>
