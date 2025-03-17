@@ -63,15 +63,11 @@
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-                        <i class="fa-solid fa-plus"></i> Create Machine Model
+                        Create Machine Model
                     </button>
-                </div>
-
-                <!-- Back to List -->
-                <div class="d-flex flex-column align-items-start gap-2 mt-3">
-                    <a asp-action="Index" class="btn btn-primary"
+                    <a href="@Url.Action("Index", "Engineer")" class="btn btn-primary"
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Machine Model List
+                        ⬅ Back to Machine Models List
                     </a>
                 </div>
             </form>
