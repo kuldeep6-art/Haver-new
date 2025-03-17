@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
 namespace haver.Controllers
 {
@@ -29,8 +30,11 @@ namespace haver.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SUser)
         {
+            ViewData["Filtering"] = "btn-block invisible";
+            int numberFilters = 0;
+
             // Get all employees, but let's use pagination
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
@@ -63,6 +67,23 @@ namespace haver.Controllers
                 {
                     e.UserRoles = (List<string>)await _userManager.GetRolesAsync(user);
                 }
+            }
+
+            if (!String.IsNullOrEmpty(SUser))
+            {
+                employees = employees.Where(u =>
+                    u.FirstName.ToUpper().Contains(SUser.ToUpper()) ||
+                    u.LastName.ToUpper().Contains(SUser.ToUpper()))
+                    .ToList();
+                numberFilters++;
+            }
+
+            //keep track of the number of filters 
+            if (numberFilters != 0)
+            {
+                ViewData["Filtering"] = " btn-danger";
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
             }
 
             // Create PaginatedList and return the view

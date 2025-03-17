@@ -11,9 +11,35 @@
         <i class="fa-solid fa-plus"></i> Create New
     </a>
 </div>
-<form asp-action ="Index" method="get">
 
 
+
+<form asp-action="Index" method="get">
+
+
+            <div class="d-flex justify-content-end">
+                <p class="btn @ViewData["Filtering"]" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter";">
+                    @ViewData["numberFilters"]
+                </p>
+               
+            </div>
+
+    <div class="form-horizontal">
+        <div class="card card-body bg-custom-color mb-2">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="form-group col-lg-4 col-md-5 col-sm-10 col-10">
+                    <label class="control-label mb-1">Find by User Name:</label>
+                    @Html.TextBox("SUser", null, new { @class = "form-control", placeholder = "Enter the User Name" })
+
+                </div>
+               
+                <div class="form-group col-lg-4 col-md-7 col-sm-10 col-10 align-self-end">
+                    <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary mt-4 ms-2" />
+                    <a asp-action="Index" class="btn btn-outline-dark mt-4 ms-4">Clear</a>
+                </div>
+            </div>
+        </div>
+    </div>
 <table class="table table-striped table-bordered table-hover shadow-sm">
     <thead class="bg-dark text-white text-center">
         <tr>
