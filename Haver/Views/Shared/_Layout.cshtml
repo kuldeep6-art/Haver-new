@@ -84,14 +84,8 @@
 						<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
 				</div>
 				}
-				<div class="dropdown">
-					<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-						Download Reports <i class="fa fa-plus"></i>
-					</a>
-					<div class="dropdown-content">
-						<a asp-area="" asp-controller="GanttData" asp-action="ExportSchedules">Download Gantt Schedule</a>
-					</div>
-				</div>
+
+				<a asp-area="" asp-controller="GanttData" asp-action="ExportSchedules">Download Report</a>
 
 				@if (User.IsInRole("Admin")){
 				<div>
