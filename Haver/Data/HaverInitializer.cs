@@ -129,10 +129,10 @@ namespace haver.Data
                     {
                         context.Machines.AddRange(
                             //new Machine { ID = 1,  ProductionOrderNumber = "3938472", SerialNumber = "HDCM-12345", SalesOrderID = 1 },
-                            new Machine { ID = 2,  ProductionOrderNumber = "3933442", SerialNumber = "PM-54321",  SalesOrderID = 2 },
-                            new Machine { ID = 3,  ProductionOrderNumber = "3987472", SerialNumber = "MX-98765",  SalesOrderID = 3 },
-                            new Machine { ID = 4,  ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", SalesOrderID = 4 },
-                            new Machine { ID = 5,  ProductionOrderNumber = "3975472", SerialNumber = "PR-11223",  SalesOrderID = 5 },
+                            new Machine { ID = 2, ProductionOrderNumber = "3933442", SerialNumber = "PM-54321", SalesOrderID = 2 },
+                            new Machine { ID = 3, ProductionOrderNumber = "3987472", SerialNumber = "MX-98765", SalesOrderID = 3 },
+                            new Machine { ID = 4, ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", SalesOrderID = 4 },
+                            new Machine { ID = 5, ProductionOrderNumber = "3975472", SerialNumber = "PR-11223", SalesOrderID = 5 },
                             new Machine { ID = 6, ProductionOrderNumber = "3933472", SerialNumber = "BLK-33445", SalesOrderID = 6 }
                         );
                         context.SaveChanges();
