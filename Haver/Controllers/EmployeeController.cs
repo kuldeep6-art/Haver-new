@@ -70,8 +70,10 @@ namespace haver.Controllers
 				numberFilters++;
 			}
 
-			// Count after filtering
-			var count = await query.CountAsync();
+          
+
+            // Count after filtering
+            var count = await query.CountAsync();
 
 			// Apply paging
 			var employees = await query
