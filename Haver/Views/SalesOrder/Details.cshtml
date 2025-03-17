@@ -159,9 +159,9 @@
         </div>
 
         <div>
-            @* <a asp-controller="Machine" asp-action="Create" asp-route-salesOrderId="@Model.ID" class="ms-3 btn btn-sm" target="_blank">
-
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add Machine</a> *@
+         
+             @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
+                            {
 
             @if (Model?.Status != Status.Archived && Model?.Status != Status.Completed)
             {
@@ -170,6 +170,7 @@
                 </button>
             }
 
+                            }
 
         </div>
 

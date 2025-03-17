@@ -2,11 +2,14 @@
 
 <h1 class="text-center my-4" aria-label="Machine Index">Machines</h1>
 
+ @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
+                    {
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn" aria-label="Create a new machine" data-bs-toggle="tooltip" title="Create a new machine">
         <i class="fa-solid fa-plus"></i> Add New @ViewData["ControllerFriendlyName"] 
     </a>
 </div>
+  }
 
 <form asp-action="Index" method="get" aria-label="Machine filter form">
     <div class="form-horizontal">
@@ -71,6 +74,8 @@
                     <td>@Html.DisplayFor(modelItem => item.MachineType.Description)</td>
                     <td>@Html.DisplayFor(modelItem => item.RToShipExp)</td>
                     <td class="text-center">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
+                            {
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.SerialNumber" data-bs-toggle="tooltip" title="Edit machine">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
@@ -79,8 +84,14 @@
                         </a>
                         <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.SerialNumber" data-bs-toggle="tooltip" title="Delete machine">
                             <i class="fa-solid fa-delete-left"></i> Delete
-                        </a>
-                    </td>
+                                </a>
+                            }else
+                            {
+                            <a asp-controller="MachineProcurement" asp-action="Index" asp-route-MachineID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" title="View details">
+                                <i class="fa-solid fa-circle-info"></i> Details
+                            </a>
+                            }
+                        </td>
                 </tr>
                 }
         </tbody>
