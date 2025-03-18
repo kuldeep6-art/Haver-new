@@ -56,6 +56,12 @@
     <div class="info-container mb-4">
         <div class="info-box p-3 bg-light border rounded mb-3">
             <dl class="row">
+                <dt class="col-md-3">
+                    @Html.DisplayNameFor(model => model.IsDraft)
+                </dt>
+                <dd class="col-md-3">
+                    @Html.DisplayFor(model => model.IsDraft)
+                </dd>
                 <dt class="col-md-3 text-dark">Order Number</dt>
                 <dd class="col-md-3">@Html.DisplayFor(model => model.OrderNumber)</dd>
 
@@ -163,15 +169,16 @@
              @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
                             {
 
-            @if (Model?.Status != Status.Archived && Model?.Status != Status.Completed)
-            {
+                @if (Model?.Status != Status.Archived && Model?.Status != Status.Completed && Model?.IsDraft == false)
+                {
                     <button type="button" class="btn btn-outline-secondary"
                             data-bs-toggle="modal"
                             data-bs-target="#addMachineModal"
                             data-salesorderid="@Model?.ID">
                         &#x2795; Add Machine
                     </button>
-            }
+                }
+
 
                             }
 

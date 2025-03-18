@@ -196,7 +196,7 @@ namespace haver.Controllers
                 EngReleased = m.SalesOrder?.EngPRel?.ToString("yyyy-MM-dd"),
                 //CustomerApproval = machine.SalesOrder?.AppDwgRel?.ToString("yyyy-MM-dd"),
                 //PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
-                PurchaseOrdersIssued = m.SalesOrder?.SoDate.ToString("yyy-MM-dd"),
+                PurchaseOrdersIssued = m.SalesOrder?.SoDate?.ToString("yyyy-MM-dd"),
                 //PurchaseOrdersDue = machine.SalesOrder?.
                 //SupplierPODue = machine.SalesOrder?.SupplierPODue?.ToString("yyyy-MM-dd"),  // ✅ Now included
                 //AssemblyStart = machine?.AssemblyStart?.ToString("yyyy-MM-dd"),  // ✅ Now included
@@ -526,8 +526,11 @@ namespace haver.Controllers
 					? so.Machines.Select(m => new MachineScheduleViewModel
 					{
 						SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
-						SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.ToShortDateString() ?? "N/A") : null,
-						CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+                        SalesOrderDate = options.IncludeSalesOrderDate
+    ? (so?.SoDate?.ToShortDateString() ?? "N/A")
+    : null,
+
+                        CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineType?.Description ?? "Unknown") : null,
 						SerialNumbers = options.IncludeSerialNumbers ? (m?.SerialNumber ?? "N/A") : null,
 						ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
@@ -561,8 +564,8 @@ namespace haver.Controllers
 					: new[] { new MachineScheduleViewModel
 			{
 				SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
-				SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.ToShortDateString() ?? "N/A") : null,
-				CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+                SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.HasValue == true ? so.SoDate.Value.ToShortDateString() : "N/A") : null,
+                CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 				Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 				SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 				Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,

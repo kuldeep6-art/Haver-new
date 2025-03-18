@@ -34,15 +34,18 @@ namespace haver.Models
         [StringLength(8, ErrorMessage = "Order number must be exactly 8 digits.")]
         public string? OrderNumber { get; set; }
 
+
         [Display(Name = "Customer")]
         [Required(ErrorMessage = "Enter the name of the customer related to this order")]
         public string CompanyName { get; set; } = "";
 
+        //for draft
+
+        //[Required(ErrorMessage = "Order date is required")]
         [Display(Name = "Order Date")]
-        [Required(ErrorMessage = "Order date is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime SoDate { get; set; } = DateTime.Now;
+        public DateTime? SoDate { get; set; }
 
         
         [Display(Name = "Price")]
@@ -56,11 +59,14 @@ namespace haver.Models
         [MaxLength(800, ErrorMessage = "Shipping terms cannot exceed 800 characters")]
         public string? ShippingTerms { get; set; }
 
+
+        //for draft
+
+        //[Required(ErrorMessage = "Enter the approval drawings expected date")]
         [Display(Name = "Approved Drawings Expected")]
-        [Required(ErrorMessage = "Enter the approval drawings expected date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime AppDwgExp { get; set; } = DateTime.Now;
+        public DateTime? AppDwgExp { get; set; }
 
         [Display(Name = "Approved Drawings Released")]
         [DataType(DataType.Date)]
@@ -149,9 +155,25 @@ namespace haver.Models
 
         public Status Status { get; set; } = Status.InProgress;
 
+        [Display(Name ="Draft Record")]
+        public bool IsDraft { get; set; } = false;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+        
+            if (!IsDraft)
+            { 
+                if (SoDate == null)
+                {
+                    yield return new ValidationResult("Order Date must be entered.", new[] { nameof(SoDate) });
+                }
+
+                if (AppDwgExp == null)
+                {
+                    yield return new ValidationResult("Drawings Expected Date must be entered.", new[] { nameof(AppDwgExp) });
+                }
+            }
+
             if (AppDwgRel != null && AppDwgRet != null && AppDwgRet < AppDwgRel)
             {
                 yield return new ValidationResult(
