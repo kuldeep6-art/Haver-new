@@ -81,7 +81,7 @@ namespace haver.Models
         [Display(Name = "Pre Orders Expected")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime? PreOExp { get; set; } = DateTime.Now; 
+        public DateTime? PreOExp { get; set; } 
 
         [Display(Name = "Pre Orders Released")]
         [DataType(DataType.Date)]
