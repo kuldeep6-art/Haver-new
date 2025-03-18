@@ -183,7 +183,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("ID,VendorID,MachineID,PONumber,ExpDueDate,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement, string SerialNumber)
+        public async Task<IActionResult> Add([Bind("ID,VendorID,MachineID,PONumber,PODueDate,PORcd,QualityICom,NcrRaised")] Procurement procurement, string SerialNumber)
         {
             try
             {
@@ -248,7 +248,7 @@ namespace haver.Controllers
 
             //Try updating it with the values posted
             if (await TryUpdateModelAsync<Procurement>(procurementToUpdate, "",
-              a => a.VendorID, a => a.MachineID, a => a.PONumber, a => a.ExpDueDate,
+              a => a.VendorID, a => a.MachineID, a => a.PONumber,
                  a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
             {
                 try

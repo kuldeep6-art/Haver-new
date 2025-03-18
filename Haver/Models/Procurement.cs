@@ -25,12 +25,6 @@ namespace haver.Models
         [StringLength(10, ErrorMessage = "Purchase Order number must be exactly 10 digits.")] 
         public string PONumber { get; set; } = "";
 
-        [Display(Name = "Purchase Orders Expected")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime? ExpDueDate { get; set; }
-
-
         [Display(Name = "Purchase Orders Due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
