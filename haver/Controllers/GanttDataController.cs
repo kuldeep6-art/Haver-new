@@ -550,9 +550,9 @@ namespace haver.Controllers
 						PoDueDates = options.IncludePoDueDates && m?.Procurements != null && m.Procurements.Any()
 							? string.Join(", ", m.Procurements.Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
 							: null,
-						DeliveryDates = options.IncludeDeliveryDates && m?.Procurements != null && m.Procurements.Any()
-							? string.Join(", ", m.Procurements.Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
-							: null,
+						//DeliveryDates = options.IncludeDeliveryDates && m?.Procurements != null && m.Procurements.Any()
+						//	? string.Join(", ", m.Procurements.Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
+						//	: null,
 						Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 						SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 						Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
@@ -701,7 +701,7 @@ namespace haver.Controllers
 			if (options.IncludeVendorNames) headers.Add(("Vendors", true, Color.LightBlue));
 			if (options.IncludePoNumbers) headers.Add(("PO Number", true, Color.LightBlue));
 			if (options.IncludePoDueDates) headers.Add(("PO Due Date", true, Color.LightBlue));
-			if (options.IncludeDeliveryDates) headers.Add(("Delivery Date", true, Color.LightBlue));
+			//if (options.IncludeDeliveryDates) headers.Add(("Delivery Date", true, Color.LightBlue));
 			if (options.IncludeMedia) headers.Add(("Media", true, Color.LightBlue));
 			if (options.IncludeSpareParts) headers.Add(("Spare Parts", true, Color.LightBlue));
 			if (options.IncludeBase) headers.Add(("Base", true, Color.LightBlue));
@@ -780,7 +780,7 @@ namespace haver.Controllers
 				if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = schedule.VendorNames ?? "";
 				if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = schedule.PoNumbers ?? "";
 				if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = schedule.PoDueDates ?? "";
-				if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = schedule.DeliveryDates ?? "";
+				//if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = schedule.DeliveryDates ?? "";
 				if (options.IncludeMedia) workSheet.Cells[row, colIndex++].Value = schedule.Media ?? "";
 				if (options.IncludeSpareParts) workSheet.Cells[row, colIndex++].Value = schedule.SpareParts ?? "";
 				if (options.IncludeBase) workSheet.Cells[row, colIndex++].Value = schedule.Base ?? "";
@@ -812,7 +812,7 @@ namespace haver.Controllers
 			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludePoDueDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
-			if (options.IncludeDeliveryDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			//if (options.IncludeDeliveryDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludePreOrder) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeScope) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeActualAssemblyHours) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
