@@ -180,6 +180,12 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group  col-md-6 mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsDraft" /> Draft Record (Checking this box saves the order as a draft record; required dates will not be mandatory.)
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -250,6 +256,7 @@
                
 
                 <div class="row">
+                    
                 <!-- Comments Section -->
                 <div class="form-group col-md-6 mb-4">
                     <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -284,13 +291,8 @@
 
                 <!-- Form Actions -->
                 <div class="form-group text-center">
-                    <button type="submit" name="saveAsDraft" value="true" class="btn mr-2"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;"
-                            onclick="return confirm('All required fields must be inputed before saving as draft. Are you sure you want to continue?');">
-                        <i class="fa-solid fa-floppy-disk"></i> Save as Draft
-                    </button>
 
-                    <button type="submit" name="saveAsDraft" value="false" class="btn  mr-2"
+                    <button type="submit" value="false" class="btn  mr-2"
                             style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
                         <i class="fa-solid fa-check"></i> Create Sales Order
                     </button>

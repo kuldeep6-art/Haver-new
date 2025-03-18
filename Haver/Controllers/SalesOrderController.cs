@@ -63,11 +63,11 @@ namespace haver.Controllers
                     salesOrders = salesOrders.Where(so => so.Status == Status.Completed);
                     break;
                 case "Draft":
-                    salesOrders = salesOrders.Where(so => so.Status == Status.Draft);
+                    salesOrders = salesOrders.Where(so => so.IsDraft == true);
                     break;
                 default:
                     // Active tab shows non-archived and non-completed
-                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed && so.Status!= Status.Draft);
+                    salesOrders = salesOrders.Where(so => so.Status != Status.Archived && so.Status != Status.Completed && so.IsDraft == false);
                     break;
             }
 
@@ -89,14 +89,16 @@ namespace haver.Controllers
                 salesOrders = salesOrders.Where(p => p.CompanyName.Contains(CString));
                 numberFilters++;
             }
-            if(DtString.HasValue)
+            if (DtString.HasValue)
             {
-                DateTime searchDae = DtString.Value.Date;
-                salesOrders = salesOrders.Where(s => s.SoDate.Year == searchDae.Year &&
-                                                s.SoDate.Month == searchDae.Month &&
-                                                s.SoDate.Day == searchDae.Day);
+                DateTime searchDate = DtString.Value.Date;
+                salesOrders = salesOrders.Where(s => s.SoDate.HasValue &&
+                                                     s.SoDate.Value.Year == searchDate.Year &&
+                                                     s.SoDate.Value.Month == searchDate.Month &&
+                                                     s.SoDate.Value.Day == searchDate.Day);
                 numberFilters++;
             }
+
 
             //Give feedback about the state of the filters
             if (numberFilters != 0)
@@ -202,23 +204,25 @@ namespace haver.Controllers
 		// GET: SalesOrder/Create
 		public IActionResult Create()
         {
+            var saleOrder = new SalesOrder();
+
             SalesOrder salesOrder = new SalesOrder();
             PopulateAssignedSpecialtyData(salesOrder);
            // PopulateDropDownLists();
 
             //Fetch available engineers from the database
             ViewBag.EngineersList = new MultiSelectList(_context.Engineers, "ID", "EngineerInitialsB");
-            return View();
+            return View(saleOrder);
         }
 
-		// POST: SalesOrder/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[Authorize(Roles = "Admin,Sales")]
-		[HttpPost]
+        // POST: SalesOrder/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Sales")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet," +
-            "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers, bool saveAsDraft)
+            "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,IsDraft")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
         {
             try
             {
@@ -232,16 +236,17 @@ namespace haver.Controllers
                // salesOrder.CustomerID = customer.ID;
                 UpdateSalesOrderEngineers(selectedOptions, salesOrder);
                 if (ModelState.IsValid)
-				{
-                    salesOrder.Status = saveAsDraft ? Status.Draft : Status.InProgress;
+                {
+                    
                     _context.Add(salesOrder);
-					await _context.SaveChangesAsync();
-                    TempData["Message"] = saveAsDraft ? "Sales Order saved as draft" : "Sales Order created successfully";
-                    // Redirect to Index if saved as Draft, otherwise go to Details
-                    return saveAsDraft
-                        ? RedirectToAction(nameof(Index))
-                        : RedirectToAction("Details", new { id = salesOrder.ID });
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] =  "Sales Order created successfully";
+
+                   
+                    return RedirectToAction("Details", new { id = salesOrder.ID });
                 }
+
             }
             catch (RetryLimitExceededException)
             {
@@ -314,7 +319,7 @@ namespace haver.Controllers
 			p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
 			p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
 			p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.Media, p => p.SpareParts,
-              p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly))
+              p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly, p => p.IsDraft))
 			{
 				try
                 {
@@ -393,26 +398,6 @@ namespace haver.Controllers
 		//}
 
 
-		[Authorize(Roles = "Admin,Sales")]
-		public async Task<IActionResult> Continue(int id)
-        {
-            var salesOrder = await _context.SalesOrders.FindAsync(id);
-            if (salesOrder == null)
-            {
-                return NotFound();
-            }
-
-            // Change status from Draft to InProgress
-            if (salesOrder.Status == Status.Draft)
-            {
-                salesOrder.Status = Status.InProgress;
-                _context.Update(salesOrder);
-                await _context.SaveChangesAsync();
-            }
-
-            // Redirect directly to Edit page
-            return RedirectToAction("Edit", new { id = salesOrder.ID });
-        }
 
 
 

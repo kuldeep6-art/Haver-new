@@ -185,6 +185,11 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
+                    <div class="form-group  col-md-6 mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsDraft" /> Draft Record (Checking this box saves the order as a draft record; required dates will not be mandatory.)
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -254,6 +259,8 @@
 
 
                 <div class="row">
+                   
+
                     <!-- Comments Section -->
                     <div class="form-group col-md-6 mb-4">
                         <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
