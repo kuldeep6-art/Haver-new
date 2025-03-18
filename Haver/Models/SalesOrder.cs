@@ -73,10 +73,9 @@ namespace haver.Models
         public DateTime? AppDwgRet { get; set; }
 
         [Display(Name = "Pre Orders Expected")]
-        [Required(ErrorMessage = "Enter the date pre orders are expected")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime PreOExp { get; set; } = DateTime.Now; //check the view 
+        public DateTime? PreOExp { get; set; } = DateTime.Now; 
 
         [Display(Name = "Pre Orders Released")]
         [DataType(DataType.Date)]
