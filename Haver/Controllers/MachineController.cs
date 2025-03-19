@@ -155,6 +155,7 @@ namespace haver.Controllers
         // GET: Machine/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -239,45 +240,58 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFromModal(Machine machine)
         {
-            //try
-            //{
-
-
+            try
+            {
                 if (!ModelState.IsValid)
                 {
-                    // Collect all error messages
                     var errors = ModelState.Values
                         .SelectMany(v => v.Errors)
                         .Select(e => e.ErrorMessage)
                         .ToList();
 
+                    if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    {
+                        return Json(new { success = false, errors });
+                    }
+
+                    TempData["Errors"] = errors;
+                    return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
                 }
+
                 _context.Machines.Add(machine);
                 await _context.SaveChangesAsync();
-
                 await CreateGanttForMachine(machine);
+
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, message = "Machine has been successfully created and Gantt record added.", redirectUrl = Url.Action("Details", "SalesOrder", new { id = machine.SalesOrderID }) });
+                }
+
                 TempData["Message"] = "Machine has been successfully created and Gantt record added.";
-
-                // Redirect to the SalesOrder Details page after success
                 return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
+            }
+            catch (DbUpdateException dex)
+            {
+                string errorMessage = "Unable to save changes. Try again, and if the problem persists, see your system administrator.";
 
-   //         }catch(DbUpdateException dex)
-   //         {
-			//	if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
-			//	{
-			//		ModelState.AddModelError("", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
-			//	}
-			//	else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
-			//	{
-			//		ModelState.AddModelError("", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
-			//	}
-			//	else
-			//	{
-			//		ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-			//	}
-			//}
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
+                {
+                    errorMessage = "Unable to save changes. Remember, you cannot have duplicate Serial Number.";
+                }
+                else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
+                {
+                    errorMessage = "Unable to save changes. Remember, you cannot have duplicate Production Order Number.";
+                }
+
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, errors = new List<string> { errorMessage } });
+                }
+
+                TempData["Errors"] = new List<string> { errorMessage };
+                return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
+            }
         }
-
 
 
 

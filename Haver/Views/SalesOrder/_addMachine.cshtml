@@ -10,6 +10,7 @@
                 <div class="modal-body">
                     <form  id="createMachineForm" asp-action="CreateFromModal" asp-controller="Machine" method="post">
                          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <ul id="ErrorList" class="text-danger"></ul>
                     @* <input type="hidden" id="SalesOrderID" name="SalesOrderID" /> *@
                     <ul id="ErrorList" class="text-danger"></ul>
 

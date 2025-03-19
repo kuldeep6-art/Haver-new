@@ -12,6 +12,9 @@
 
 }
 
+<div id="successMessageContainer"></div>
+
+
 <partial name="_addMachine" model="new haver.Models.Machine()" />
 
 
@@ -288,54 +291,74 @@
     }
 
 </script>
-<script>
-    $('#submitMachineCreate').click(function (event) {
-        event.preventDefault();
-        ClearErrors();
-
-        $.ajax({
-            type: "POST",
-            url: $('#createMachineForm').attr('action'),
-            data: $('#createMachineForm').serialize(),
-            success: function (response) {
-                if (response.success) {
-                    // Hide the modal
-                    $('#addMachineModal').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-
-                    // Redirect to the SalesOrder detail page
-                    window.location.href = response.redirectUrl;
-                }
-                else {
-                    error: function (xhr) {
-                        var errorMessages = [];
-                        switch (xhr.status) {
-                            case 401:
-                                errorMessages.push("You must be logged in first.");
-                                break;
-                            case 403:
-                                errorMessages.push("You are not authorized for this action.");
-                                break;
-                            default:
-                                errorMessages = xhr.responseText.split("|").slice(0, -1);
-                        }
-                        if (!errorMessages.some((str) => str !== "")) {
-                            errorMessages.push("Error: Unable to complete operation");
-                        }
-                        var ul = document.getElementById("ErrorList");
-                        for (var i = 0; i < errorMessages.length; i++) {
-                            var li = document.createElement("li");
-                            li.innerHTML = errorMessages[i];
-                            ul.appendChild(li);
-                        }
+    <script>
+        $('#submitMachineCreate').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $('#createMachineForm').attr('action'),
+                headers: { "X-Requested-With": "XMLHttpRequest" },
+                data: $('#createMachineForm').serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $('#addMachineModal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        localStorage.setItem("successMessage", response.message);  // Store message
+                        window.location.href = response.redirectUrl;
+                    } else {
+                        DisplayErrors(response.errors);
                     }
+                },
+                error: function (xhr) {
+                    let errorMessages = [];
+                    switch (xhr.status) {
+                        case 401:
+                            errorMessages.push("You must be logged in first.");
+                            break;
+                        case 403:
+                            errorMessages.push("You are not authorized for this action.");
+                            break;
+                        default:
+                            try {
+                                let response = JSON.parse(xhr.responseText);
+                                errorMessages = response.errors || ["Error: Unable to complete operation"];
+                            } catch (e) {
+                                errorMessages.push("Error: Unable to complete operation");
+                            }
+                    }
+                    DisplayErrors(errorMessages);
                 }
-            },
+            });
         });
-    });
 
-</script>
+        // Check for stored success message on page load
+        $(document).ready(function () {
+            let message = localStorage.getItem("successMessage");
+            if (message) {
+                $('#successMessageContainer').html(`
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                        <i class="fas fa-check-circle"></i> ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+                localStorage.removeItem("successMessage"); // Clear it
+            }
+        });
+
+        function ClearErrors() {
+            $('#ErrorList').empty();
+        }
+
+        function DisplayErrors(errors) {
+            var ul = $('#ErrorList');
+            ul.empty();
+            errors.forEach(function (error) {
+                ul.append('<li>' + error + '</li>');
+            });
+        }
+
+    </script>
 
     <script>
         $('#addMachineModal').on('show.bs.modal', function (event) {
