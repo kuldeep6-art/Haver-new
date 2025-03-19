@@ -12,6 +12,9 @@
 
 }
 
+<div id="successMessageContainer"></div>
+
+
 <partial name="_addMachine" model="new haver.Models.Machine()" />
 
 
@@ -301,7 +304,7 @@
                         $('#addMachineModal').modal('hide');
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();
-
+                        localStorage.setItem("successMessage", response.message);  // Store message
                         window.location.href = response.redirectUrl;
                     } else {
                         DisplayErrors(response.errors);
@@ -327,6 +330,20 @@
                     DisplayErrors(errorMessages);
                 }
             });
+        });
+
+        // Check for stored success message on page load
+        $(document).ready(function () {
+            let message = localStorage.getItem("successMessage");
+            if (message) {
+                $('#successMessageContainer').html(`
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                        <i class="fas fa-check-circle"></i> ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+                localStorage.removeItem("successMessage"); // Clear it
+            }
         });
 
         function ClearErrors() {
