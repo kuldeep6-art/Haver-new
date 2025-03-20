@@ -111,3 +111,61 @@ h2 {
     color: #ffffff;
     font-size: 16px;
 }
+
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+   
+
+    .navbar-text {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+
+
+    .login-container {
+        left: -6%;
+    }
+
+    .login-form {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .btn-primary {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar-text {
+        font-size: 16px;
+    }
+
+    .logo {
+        width: 100px;
+    }
+
+    .login-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .login-form {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .btn-primary {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
