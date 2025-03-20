@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +39,8 @@ namespace haver.Controllers
 
         // GET: GanttData
 
-        [Authorize(Roles ="Admin,Engineering,Production,PIC")]
+
+        [Authorize(Roles ="Admin,Engineering,Production,PIC,Sales")]
         public async Task<IActionResult> Index(int? page, int? pageSizeID,
             string? SearchString, string? actionButton, string sortDirection = "asc", string sortField = "Order Number", bool? isFinalized = null)
         {
@@ -214,6 +215,8 @@ namespace haver.Controllers
 
         // GET: GanttData/Create
         // GET: GanttData/Create
+
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         public IActionResult Create()
         {
             // Get all Sales Orders for selection
@@ -228,6 +231,7 @@ namespace haver.Controllers
         // POST: GanttData/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SalesOrderID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
@@ -297,6 +301,7 @@ namespace haver.Controllers
 
 
         // GET: GanttData/Edit/5
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -318,6 +323,7 @@ namespace haver.Controllers
         // POST: GanttData/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
@@ -423,6 +429,7 @@ namespace haver.Controllers
         }
 
         // GET: GanttData/Delete/5
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -442,6 +449,7 @@ namespace haver.Controllers
         }
 
         // POST: GanttData/Delete/5
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -1123,6 +1131,7 @@ namespace haver.Controllers
         //    return "default-task";
         //}
 
+        [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         public async Task<IActionResult> FinalizeGantt(int id)
         {
             var gantt = _context.GanttDatas.Find(id);
