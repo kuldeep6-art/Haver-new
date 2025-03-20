@@ -119,21 +119,21 @@
                                 {
                                     specList += s[i].Engineer.EngineerInitialsB + " <br />";
                                 }
-                                <a class="engineer-list text-info" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)" aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
-                                    @firstSpec <span class="badge bg-info">@specCount</span>
-                                </a>
-                                <div class="collapse" id="collapseSpecalty@(Model.ID)">
-                                    @Html.Raw(specList)
-                                </div>
+                                    <a class="engineer-list text-info" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(Model.ID)" aria-expanded="false" aria-controls="collapseSpecalty@(Model.ID)">
+                                        @firstSpec <span class="badge bg-info">@specCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseSpecalty@(Model.ID)">
+                                        @Html.Raw(specList)
+                                    </div>
                             }
                             else
                             {
-                                @firstSpec
+                                    @firstSpec
                             }
                         }
                         else
                         {
-                            <span class="text-muted">None assigned to this Sales Order</span>
+                                <span class="text-muted">None assigned to this Sales Order</span>
                         }
                     }
                 </dd>
@@ -208,7 +208,7 @@
                 <table class="table table-striped table-bordered table-hover shadow-sm procurement-table">
                     <thead class="bg-dark text-white text-center">
                         <tr>
-                            <th data-bs-toggle="tooltip" title="Machine Type and Serial Number">Machine Type & Serial Number</th>
+                            <th data-bs-toggle="tooltip" title="Machine Type and Serial Number">Machine Model & Serial Number</th>
                             <th data-bs-toggle="tooltip" title="Vendor supplying the machine parts">Vendor</th>
                             <th data-bs-toggle="tooltip" title="Purchase Order Number">PO Number</th>
                             <th data-bs-toggle="tooltip" title="Official PO Due Date">PO Due Date</th>
@@ -277,7 +277,7 @@
 </div>
 @section Scripts {
     @{
-        @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ValidationScriptsPartial")
     }
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -311,6 +311,7 @@
                     }
                 },
                 error: function (xhr) {
+                    console.error("XHR", xhr);
                     let errorMessages = [];
                     switch (xhr.status) {
                         case 401:
@@ -322,8 +323,10 @@
                         default:
                             try {
                                 let response = JSON.parse(xhr.responseText);
+                                console.error("Response", response);
                                 errorMessages = response.errors || ["Error: Unable to complete operation"];
                             } catch (e) {
+                                console.error("error", e);
                                 errorMessages.push("Error: Unable to complete operation");
                             }
                     }
