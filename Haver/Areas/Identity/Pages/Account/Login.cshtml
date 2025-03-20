@@ -6,6 +6,7 @@
 }
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="~/css/login.css" rel="stylesheet" type="text/css" />
 </head>
 <nav class="navbar">
@@ -22,7 +23,7 @@
         <form id="account" method="post">
             <h2>Login</h2>
             <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>x
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
             <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
