@@ -141,12 +141,15 @@
 
                         @if (!item.IsFinalized)
                         {
-                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
-                               aria-label="Edit gantt data @item.SalesOrder.OrderNumber"
-                               data-bs-toggle="tooltip" title="Edit Gantt Data">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                           @*  <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                            @if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1"
+                                aria-label="Edit gantt data @item.SalesOrder.OrderNumber"
+                                data-bs-toggle="tooltip" title="Edit Gantt Data">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            }
+                            @*  <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1"
                                aria-label="Delete gantt data @item.Machine.SalesOrder.OrderNumber"
                                data-bs-toggle="tooltip" title="Delete Gantt Data">
                                 <i class="fa-solid fa-delete-left"></i>
