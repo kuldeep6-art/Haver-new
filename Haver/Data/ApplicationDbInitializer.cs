@@ -113,8 +113,8 @@ namespace haver.Data
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "prourement@outlook.com",
-                                Email = "procurement@outlook.com",
+                                UserName = "pment@outlook.com",
+                                Email = "pment@outlook.com",
                                 EmailConfirmed = true
                             };
 

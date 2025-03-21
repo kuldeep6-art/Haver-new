@@ -78,7 +78,7 @@ namespace haver.Data
                           {
                               FirstName = "Kelly",
                               LastName = "Hunt",
-                              Email = "procurement@outlook.com"
+                              Email = "pment@outlook.com"
                           },
                           new Employee
                           {

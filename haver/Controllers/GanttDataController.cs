@@ -1059,7 +1059,7 @@ namespace haver.Controllers
 			var milestones = new List<(DateTime? Start, DateTime? End, string Name, string Color)>
 	{
 		(g.EngExpected, g.EngReleased, "Engineering Released to Customer", "#FABF8F"),
-		(g.CustomerApproval, g.PackageReleased, "Customer Approval Received", "#E26B0A"),
+		(g.AppDExp, g.AppDRcd, "Customer Approval Received", "#E26B0A"),
 		(g.PackageReleased, g.PackageReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
 		(g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "Purchase Orders Issued", "#8DB4E2"),
 		(g.SupplierPODue, g.SupplierPODue, "Supplier Purchase Orders Due", "#FF99CC"),
