@@ -25,7 +25,7 @@ namespace haver.Controllers
         }
 
         // GET: Machine
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, int? MachineTypeID, string? PoString, string? SerString,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? PoString, string? SerString,
             string? actionButton, string sortDirection = "asc", string sortField = "Serial Number")
         {
             //List of sort options.
@@ -40,16 +40,12 @@ namespace haver.Controllers
             PopulateDropDownLists();
 
             var machines = from s in _context.Machines
-                               .Include(m => m.MachineType)
 							  .Include(s => s.SalesOrder)
 							  .AsNoTracking()
 						   select s;
+            
+            
 
-            if (MachineTypeID.HasValue)
-            {
-                machines = machines.Where(p => p.MachineTypeID == MachineTypeID);
-                numberFilters++;
-            }
             if (!String.IsNullOrEmpty(PoString))
             {
                 machines = machines.Where(p => p.ProductionOrderNumber.ToUpper().Contains(PoString.ToUpper()));
@@ -122,7 +118,7 @@ namespace haver.Controllers
                 else
                 {
                     machines = machines
-                        .OrderBy(p => p.MachineType.Description);
+                        .OrderBy(p => p.Description);
                 }
             }
             else 
@@ -162,8 +158,8 @@ namespace haver.Controllers
             }
 
             var machine = await _context.Machines
-                .Include(m => m.MachineType)
                 .Include(m => m.SalesOrder)
+                .Include(m => m.MachineType)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (machine == null)
             {
@@ -198,7 +194,8 @@ namespace haver.Controllers
         // POST: Machine/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SerialNumber,ProductionOrderNumber,AssemblyExp,AssemblyStart,AssemblyComplete,RToShipExp,RToShipA,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
+        public async Task<IActionResult> Create([Bind("ID,MachineModel,SerialNumber,ProductionOrderNumber,AssemblyExp,AssemblyStart," +
+            "AssemblyComplete,RToShipExp,RToShipA,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
         {
             try
             {
@@ -472,7 +469,7 @@ namespace haver.Controllers
             return View(machine);
         }
 
-      
+
 
 
         public JsonResult GetMachineTypes(int? id)

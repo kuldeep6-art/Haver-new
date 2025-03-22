@@ -15,18 +15,19 @@ namespace haver.Models
         {
             get
             {
-                return MachineModel + " " +  "|" + " "+ SerialNumber;
+                return (MachineType?.Description ?? "Unknown Model") + " | " + (SerialNumber ?? "Unknown Serial");
             }
         }
+
 
 
         #endregion
 
 
-        // Serial Number
-        [Display(Name = "Machine Model")]
-        [Required(ErrorMessage = "Machine Model is required.")]
-        public string? MachineModel { get; set; }
+        //// Serial Number
+        //[Display(Name = "Machine Model")]
+        //[Required(ErrorMessage = "Machine Model is required.")]
+        //public string? MachineModel { get; set; }
 
 
         // Serial Number
@@ -131,7 +132,7 @@ namespace haver.Models
         public SalesOrder? SalesOrder { get; set; }
 
         // Foreign Key to MachineType
-        //[Display(Name = "Machine Model")]
+        [Display(Name = "Machine Model")]
         [Required(ErrorMessage = "Select the Machine Model")]
         public int MachineTypeID { get; set; }
         public MachineType? MachineType { get; set; }
