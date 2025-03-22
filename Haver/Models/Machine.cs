@@ -42,9 +42,10 @@ namespace haver.Models
         public string? ProductionOrderNumber { get; set; } 
 
         [Display(Name = "Assembly Expected")]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+		[Required(ErrorMessage = "Assembly Expected Date is required.")]
+		[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
-        public DateTime? AssemblyExp { get; set; }
+        public DateTime AssemblyExp { get; set; }
 
         [Display(Name = "Assembly Start")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
