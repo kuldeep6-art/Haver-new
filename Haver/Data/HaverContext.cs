@@ -87,15 +87,15 @@ namespace haver.Data
 
 
 
-			modelBuilder.Entity<Machine>()
-			  .HasOne<MachineType>(mse => mse.MachineType)
-			  .WithMany(e => e.Machines)
-			  .HasForeignKey(mse => mse.MachineTypeID)
-			  .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Machine>()
+              .HasOne<MachineType>(mse => mse.MachineType)
+              .WithMany(e => e.Machines)
+              .HasForeignKey(mse => mse.MachineTypeID)
+              .OnDelete(DeleteBehavior.Restrict);
 
-			//unique fields
+            //unique fields
 
-			modelBuilder.Entity<Customer>()
+            modelBuilder.Entity<Customer>()
                .HasIndex(c => c.Phone)
                .IsUnique();
 

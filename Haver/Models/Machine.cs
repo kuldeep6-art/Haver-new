@@ -10,17 +10,25 @@ namespace haver.Models
 
         #region SUMMARY PROPERTIES
 
-        [Display(Name = "Machine Type & Serial Number")]
+        [Display(Name = "Machine Model & Serial Number")]
         public string Description
         {
             get
             {
-                return (MachineType != null ? MachineType.Description : "Unknown Type") + " " +  "|" + " "+ SerialNumber;
+                return (MachineType?.Description ?? "Unknown Model") + " | " + (SerialNumber ?? "Unknown Serial");
             }
         }
 
 
+
         #endregion
+
+
+        //// Serial Number
+        //[Display(Name = "Machine Model")]
+        //[Required(ErrorMessage = "Machine Model is required.")]
+        //public string? MachineModel { get; set; }
+
 
         // Serial Number
         [Display(Name = "Serial Number")]
@@ -34,9 +42,10 @@ namespace haver.Models
         public string? ProductionOrderNumber { get; set; } 
 
         [Display(Name = "Assembly Expected")]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+		[Required(ErrorMessage = "Assembly Expected Date is required.")]
+		[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
-        public DateTime? AssemblyExp { get; set; }
+        public DateTime AssemblyExp { get; set; }
 
         [Display(Name = "Assembly Start")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
