@@ -26,12 +26,12 @@ namespace haver.Models
         //[DataType(DataType.Date)]
         //public DateTime? PreORel { get; set; }
 
-        [Display(Name = "Approval Drawing Expected")]
+        [Display(Name = "Approval Drawings Due")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? AppDExp { get; set; }
 
-        [Display(Name = "Approval Drawing Released")]
+        [Display(Name = "Approval Drawings Released")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? AppDRcd { get; set; }
@@ -41,40 +41,36 @@ namespace haver.Models
         [Display(Name = "Start of Week")]
         public WeekStartOption StartOfWeek { get; set; } = WeekStartOption.Monday; // Default to Monday
 
-        // Dynamically compute week number based on selected StartOfWeek (Monday or Friday)
         public int WeekNumber
         {
             get
             {
-                if (!AppDRcd.HasValue) return 0;
+                var today = DateTime.Today; 
                 var culture = CultureInfo.CurrentCulture;
-                return culture.Calendar.GetWeekOfYear(AppDRcd.Value,
+                return culture.Calendar.GetWeekOfYear(today,
                     culture.DateTimeFormat.CalendarWeekRule,
                     StartOfWeek == WeekStartOption.Monday ? DayOfWeek.Monday : DayOfWeek.Friday);
             }
         }
 
-        // Extract month
-        public string Month => AppDRcd?.ToString("MMMM") ?? "N/A";
-
-        // Extract day
-        public int? Day => AppDRcd?.Day;
+        public string Month => DateTime.Today.ToString("MMMM");
+        public int Day => DateTime.Today.Day;
 
         // Engineering Milestones  
-        [Display(Name = "Engineering Package Expected")]
+        [Display(Name = "Engineering Package Due")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? EngExpected { get; set; }
 
-        [Display(Name = "Engineering Released")]
+        [Display(Name = "Engineering Package Released")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? EngReleased { get; set; }
 
-        [Display(Name = "Customer Approval Received")]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        [DataType(DataType.Date)]
-        public DateTime? CustomerApproval { get; set; }
+        //[Display(Name = "Customer Approval Received")]
+        //[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        //[DataType(DataType.Date)]
+        //public DateTime? CustomerApproval { get; set; }
 
         // Procurement  
         [Display(Name = "Package Released to PIC/Spare Parts to Customer Service")]
@@ -148,17 +144,7 @@ namespace haver.Models
                 yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "AppDwgRet" });
             }
 
-            // Ensure CustomerApproval is after EngReleased
-            if (EngReleased.HasValue && CustomerApproval.HasValue && CustomerApproval.Value < EngReleased.Value)
-            {
-                yield return new ValidationResult("Customer Approval date must not be earlier than Engineering Released date.", new[] { "CustomerApproval" });
-            }
-
-            // Ensure PackageReleased is after CustomerApproval
-            if (CustomerApproval.HasValue && PackageReleased.HasValue && PackageReleased.Value < CustomerApproval.Value)
-            {
-                yield return new ValidationResult("Package Released date must not be earlier than Customer Approval date.", new[] { "PackageReleased" });
-            }
+           
 
             // Ensure ShipExpected is after PackageReleased
             if (PackageReleased.HasValue && ShipExpected.HasValue && ShipExpected.Value < PackageReleased.Value)
