@@ -117,18 +117,7 @@
 
                 <!-- Row 3: PurchaseOrdersIssued, PurchaseOrdersCompleted, SupplierPODue -->
                 <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label asp-for="CustomerApproval" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Customer Approval
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the customer approval date."></i>
-                            </label>
-                            <input asp-for="CustomerApproval" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="CustomerApproval" placeholder="Enter Customer Approval Date" />
-                            <span asp-validation-for="CustomerApproval" class="text-danger"></span>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="PackageReleased" class="control-label"
@@ -153,12 +142,6 @@
                             <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
                         </div>
                     </div>
-                    
-                   
-                </div>
-
-                <!-- Row 4: AssemblyStart, AssemblyComplete, ShipExpected -->
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="PurchaseOrdersCompleted" class="control-label"
@@ -171,6 +154,12 @@
                             <span asp-validation-for="PurchaseOrdersCompleted" class="text-danger"></span>
                         </div>
                     </div>
+                   
+                </div>
+
+                <!-- Row 4: AssemblyStart, AssemblyComplete, ShipExpected -->
+                <div class="row mb-3">
+                   
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="SupplierPODue" class="control-label"
@@ -195,9 +184,6 @@
                             <span asp-validation-for="AssemblyStart" class="text-danger"></span>
                         </div>
                     </div>
-                    
-                    </div>
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="AssemblyComplete" class="control-label"
@@ -210,6 +196,9 @@
                             <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
                         </div>
                     </div>
+                    </div>
+                <div class="row mb-3">
+                   
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="ShipExpected" class="control-label"
@@ -235,10 +224,6 @@
                         </div>
                         </div>
 
-                       
-                        </div>
-
-                <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="DeliveryExpected" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -250,6 +235,10 @@
                             <span asp-validation-for="DeliveryExpected" class="text-danger"></span>
                         </div>
                     </div>
+                        </div>
+
+                <div class="row mb-3">
+                   
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label asp-for="DeliveryActual" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">

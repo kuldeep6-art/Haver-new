@@ -234,7 +234,7 @@ namespace haver.Controllers
         [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SalesOrderID,AppDRcd,EngExpected,EngReleased,CustomerApproval,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
+        public async Task<IActionResult> Create([Bind("SalesOrderID,AppDRcd,EngExpected,EngReleased,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
         {
             try
             {
@@ -256,7 +256,6 @@ namespace haver.Controllers
                                 AppDRcd = ganttData.AppDRcd,
                                 EngExpected = ganttData.EngExpected,
                                 EngReleased = ganttData.EngReleased,
-                                CustomerApproval = ganttData.CustomerApproval,
                                 PackageReleased = ganttData.PackageReleased,
                                 PurchaseOrdersIssued = ganttData.PurchaseOrdersIssued,
                                 PurchaseOrdersCompleted = ganttData.PurchaseOrdersCompleted,
@@ -339,7 +338,7 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<GanttData>(gDataToUpdate, "",
-                 p => p.SalesOrderID, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased, p => p.CustomerApproval,
+                 p => p.SalesOrderID, p => p.AppDRcd, p => p.AppDExp, p => p.EngExpected, p => p.EngReleased,
                  p => p.PackageReleased, p => p.PurchaseOrdersIssued, p => p.PurchaseOrdersCompleted, p => p.PurchaseOrdersReceived,
                  p => p.SupplierPODue, p => p.AssemblyStart, p => p.AssemblyComplete, p => p.ShipExpected, p => p.ShipActual, p => p.DeliveryExpected,
                  p => p.DeliveryActual, p => p.Notes))
