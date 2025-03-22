@@ -78,12 +78,12 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? AppDwgRet { get; set; }
 
-        [Display(Name = "Pre Orders Expected")]
+        [Display(Name = "Pre-Orders Due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? PreOExp { get; set; } 
 
-        [Display(Name = "Pre Orders Released")]
+        [Display(Name = "Pre-Orders Released")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? PreORel { get; set; }
