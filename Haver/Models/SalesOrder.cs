@@ -172,6 +172,11 @@ namespace haver.Models
                 {
                     yield return new ValidationResult("Drawings Expected Date must be entered.", new[] { nameof(AppDwgExp) });
                 }
+
+                if (EngPExp == null)
+                {
+                    yield return new ValidationResult("Package Expected Date must be entered.", new[] { nameof(EngPExp) });
+                }
             }
 
             if (AppDwgRel != null && AppDwgRet != null && AppDwgRet < AppDwgRel)
