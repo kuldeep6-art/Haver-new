@@ -131,12 +131,23 @@ namespace haver.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					_context.Add(vendor);
-					await _context.SaveChangesAsync();
-					TempData["Message"] = "Vendor has been successfully created";
-					return RedirectToAction("Details", new { vendor.ID });
-				}
-			}
+                    _context.Add(vendor);
+                    await _context.SaveChangesAsync();
+
+                    // Log activity
+                    string userName = User.Identity?.Name ?? "Unknown User";
+                    _context.ActivityLogs.Add(new ActivityLog
+                    {
+                        Message = $"Vendor '{vendor.Name}' was created by {userName}.",
+                        Timestamp = DateTime.UtcNow
+                    });
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Vendor has been successfully created";
+                    return RedirectToAction("Details", new { vendor.ID });
+
+                }
+            }
 			catch (DbUpdateException dex)
 			{
 				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Vendors.Name"))
@@ -183,11 +194,22 @@ namespace haver.Controllers
 			{
 				try
 				{
-					await _context.SaveChangesAsync();
-					TempData["Message"] = "Vendor has been successfully Edited";
-					return RedirectToAction("Details", new { vendorToUpdate.ID });
-				}
-				catch (DbUpdateConcurrencyException)
+                    await _context.SaveChangesAsync();
+
+                    // Log activity
+                    string userName = User.Identity?.Name ?? "Unknown User";
+                    _context.ActivityLogs.Add(new ActivityLog
+                    {
+                        Message = $"Vendor '{vendorToUpdate.Name}' was edited by {userName}.",
+                        Timestamp = DateTime.UtcNow
+                    });
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Vendor has been successfully Edited";
+                    return RedirectToAction("Details", new { vendorToUpdate.ID });
+
+                }
+                catch (DbUpdateConcurrencyException)
 				{
 					if (!VendorExists(vendorToUpdate.ID))
 					{
@@ -244,9 +266,20 @@ namespace haver.Controllers
 					_context.Vendors.Remove(vendor);
 				}
 
-				await _context.SaveChangesAsync();
-				TempData["Message"] = "Vendor has been successfully deleted";
-				var returnUrl = ViewData["returnURL"]?.ToString();
+                await _context.SaveChangesAsync();
+
+                // Log activity
+                string userName = User.Identity?.Name ?? "Unknown User";
+                _context.ActivityLogs.Add(new ActivityLog
+                {
+                    Message = $"Vendor '{vendor.Name}' was deleted by {userName}.",
+                    Timestamp = DateTime.UtcNow
+                });
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = "Vendor has been successfully deleted";
+
+                var returnUrl = ViewData["returnURL"]?.ToString();
 				if (string.IsNullOrEmpty(returnUrl))
 				{
 					return RedirectToAction(nameof(Index));

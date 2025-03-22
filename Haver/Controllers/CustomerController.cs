@@ -129,7 +129,17 @@ namespace haver.Controllers
                 {
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
+
+                    string userName = User.Identity?.Name ?? "Unknown User";
+                    _context.ActivityLogs.Add(new ActivityLog
+                    {
+                        Message = $"Customer '{customer.CompanyName}' was created by {userName}.",
+                        Timestamp = DateTime.UtcNow
+                    });
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction("Details", new { customer.ID });
+
                 }
             }
             catch (DbUpdateException dex)
@@ -186,8 +196,18 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+
+                    string userName = User.Identity?.Name ?? "Unknown User";
+                    _context.ActivityLogs.Add(new ActivityLog
+                    {
+                        Message = $"Customer '{customerToUpdate.CompanyName}' was edited by {userName}.",
+                        Timestamp = DateTime.UtcNow
+                    });
+                    await _context.SaveChangesAsync();
+
                     TempData["Message"] = "Customer has been successfully Edited";
                     return RedirectToAction("Details", new { customerToUpdate.ID });
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -249,7 +269,17 @@ namespace haver.Controllers
                 }
 
                 await _context.SaveChangesAsync();
+
+                string userName = User.Identity?.Name ?? "Unknown User";
+                _context.ActivityLogs.Add(new ActivityLog
+                {
+                    Message = $"Customer '{customer.CompanyName}' was deleted by {userName}.",
+                    Timestamp = DateTime.UtcNow
+                });
+                await _context.SaveChangesAsync();
+
                 var returnUrl = ViewData["returnURL"]?.ToString();
+
                 if (string.IsNullOrEmpty(returnUrl))
                 {
                     return RedirectToAction(nameof(Index));

@@ -53,6 +53,7 @@ namespace haver.Data
         public DbSet<GanttTask> GanttTasks { get; set; }
         public DbSet<GanttMilestone> GanttMilestones { get; set; }
 
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
 
         public DbSet<GanttData> GanttDatas { get; set; }
 
