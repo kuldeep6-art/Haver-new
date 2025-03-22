@@ -63,12 +63,12 @@ namespace haver.Models
         //for draft
 
         //[Required(ErrorMessage = "Enter the approval drawings expected date")]
-        [Display(Name = "Approved Drawings Expected")]
+        [Display(Name = "Approval Drawings Due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? AppDwgExp { get; set; }
 
-        [Display(Name = "Approved Drawings Released")]
+        [Display(Name = "Approval Drawings Released")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? AppDwgRel { get; set; }
@@ -88,7 +88,7 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? PreORel { get; set; }
 
-        [Display(Name = "Engineering Package Expected")]
+        [Display(Name = "Engineering Package Due")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? EngPExp { get; set; }
