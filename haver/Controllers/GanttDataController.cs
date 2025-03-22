@@ -852,11 +852,11 @@ namespace haver.Controllers
 				title.Style.Font.Size = 20;
 				title.Style.Font.Bold = true;
 				title.Style.Fill.PatternType = ExcelFillStyle.Solid;
-				title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(31, 78, 121));
+				title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 32, 96)); // Darker blue
 				title.Style.Font.Color.SetColor(Color.White);
 				title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 				title.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-				title.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
+				title.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(0, 32, 96));
 			}
 			workSheet.Row(1).Height = 30;
 
@@ -875,17 +875,59 @@ namespace haver.Controllers
 			if (options.IncludeApprovedDrawingReceived) headers.Add(("App Dwg Rec'd", true, Color.FromArgb(91, 155, 213)));
 
 			int staticCols = headers.Count;
+
+			// Add week numbers and dates for Gantt data
 			if (options.IncludeGanttData)
 			{
+				DateTime startDate = new DateTime(DateTime.Now.Year, 7, 1); // Adjust this as needed
 				for (int week = 1; week <= 33; week++)
 				{
-					headers.Add((week.ToString(), true, Color.FromArgb(155, 194, 230)));
+					int weekNumber = GetWeekOfYear(startDate, WeekStartOption.Monday);
+					headers.Add((weekNumber.ToString(), true, Color.FromArgb(189, 215, 238))); // Week number
+
+					// Add the week number in row 2
+					workSheet.Cells[2, staticCols + week].Value = weekNumber;
+					workSheet.Cells[2, staticCols + week].Style.Font.Name = "Calibri";
+					workSheet.Cells[2, staticCols + week].Style.Font.Size = 11;
+					workSheet.Cells[2, staticCols + week].Style.Font.Bold = true;
+					workSheet.Cells[2, staticCols + week].Style.Fill.PatternType = ExcelFillStyle.Solid;
+					workSheet.Cells[2, staticCols + week].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(189, 215, 238));
+					workSheet.Cells[2, staticCols + week].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+					// Add the corresponding date in row 3
+					workSheet.Cells[3, staticCols + week].Value = startDate.ToString("M-d");
+					workSheet.Cells[3, staticCols + week].Style.Font.Name = "Calibri";
+					workSheet.Cells[3, staticCols + week].Style.Font.Size = 9;
+					workSheet.Cells[3, staticCols + week].Style.Fill.PatternType = ExcelFillStyle.Solid;
+					workSheet.Cells[3, staticCols + week].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(189, 215, 238));
+					workSheet.Cells[3, staticCols + week].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+					startDate = startDate.AddDays(7);
 				}
 			}
-			if (options.IncludeSpecialNotes) headers.Add(("Special Notes", true, Color.FromArgb(91, 155, 213)));
 
-			// Add headers
-			for (int i = 0; i < headers.Count; i++)
+			// Add Special Notes header
+			if (options.IncludeSpecialNotes)
+			{
+				headers.Add(("Special Notes", true, Color.FromArgb(91, 155, 213)));
+				int specialNotesCol = staticCols + 33 + 1; // After the 33 week columns
+				workSheet.Cells[2, specialNotesCol].Value = "Special Notes";
+				workSheet.Cells[2, specialNotesCol].Style.Font.Name = "Calibri";
+				workSheet.Cells[2, specialNotesCol].Style.Font.Size = 11;
+				workSheet.Cells[2, specialNotesCol].Style.Font.Bold = true;
+				workSheet.Cells[2, specialNotesCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
+				workSheet.Cells[2, specialNotesCol].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(91, 155, 213));
+				workSheet.Cells[2, specialNotesCol].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+				// Add empty cell in row 3 for alignment
+				workSheet.Cells[3, specialNotesCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
+				workSheet.Cells[3, specialNotesCol].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(91, 155, 213));
+				workSheet.Cells[3, specialNotesCol].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+			}
+
+			// Add static headers (OR #, ENG., etc.) in row 2
+			colIndex = 1;
+			for (int i = 0; i < staticCols; i++)
 			{
 				workSheet.Cells[2, colIndex].Value = headers[i].Name;
 				workSheet.Cells[2, colIndex].Style.Font.Name = "Calibri";
@@ -897,8 +939,16 @@ namespace haver.Controllers
 				colIndex++;
 			}
 
-			// Load Data Dynamically
-			int row = 3;
+			// Add empty cells in row 3 for static columns
+			for (int i = 1; i <= staticCols; i++)
+			{
+				workSheet.Cells[3, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+				workSheet.Cells[3, i].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(91, 155, 213));
+				workSheet.Cells[3, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+			}
+
+			// Data rows start from row 4
+			int row = 4;
 			foreach (var schedule in schedules)
 			{
 				colIndex = 1;
@@ -927,11 +977,38 @@ namespace haver.Controllers
 							Color milestoneColor;
 							try
 							{
-								milestoneColor = ColorTranslator.FromHtml(milestone.MilestoneClass.TrimStart('#'));
+								string hexCode = milestone.MilestoneClass?.Trim();
+								if (!string.IsNullOrEmpty(hexCode))
+								{
+									hexCode = hexCode.TrimStart('#');
+									if (System.Text.RegularExpressions.Regex.IsMatch(hexCode, @"^[0-9A-Fa-f]{6}$"))
+									{
+										int r = Convert.ToInt32(hexCode.Substring(0, 2), 16);
+										int g = Convert.ToInt32(hexCode.Substring(2, 2), 16);
+										int b = Convert.ToInt32(hexCode.Substring(4, 2), 16);
+										milestoneColor = Color.FromArgb(r, g, b);
+									}
+									else if (System.Text.RegularExpressions.Regex.IsMatch(hexCode, @"^[0-9A-Fa-f]{3}$"))
+									{
+										int r = Convert.ToInt32(hexCode.Substring(0, 1) + hexCode.Substring(0, 1), 16);
+										int g = Convert.ToInt32(hexCode.Substring(1, 1) + hexCode.Substring(1, 1), 16);
+										int b = Convert.ToInt32(hexCode.Substring(2, 1) + hexCode.Substring(2, 1), 16);
+										milestoneColor = Color.FromArgb(r, g, b);
+									}
+									else
+									{
+										throw new FormatException("Invalid hex code format.");
+									}
+								}
+								else
+								{
+									throw new ArgumentNullException("MilestoneClass is null or empty.");
+								}
 							}
-							catch
+							catch (Exception ex)
 							{
-								milestoneColor = Color.Gray;
+								Console.WriteLine($"Error parsing hex code '{milestone.MilestoneClass}': {ex.Message}");
+								milestoneColor = Color.FromArgb(200, 200, 200);
 							}
 
 							for (int col = startCol; col <= endCol; col++)
@@ -948,18 +1025,24 @@ namespace haver.Controllers
 					}
 					colIndex = staticCols + 34; // Skip Gantt columns
 				}
-				if (options.IncludeSpecialNotes) workSheet.Cells[row, colIndex++].Value = schedule.SpecialNotes;
+
+				// Add Special Notes data
+				if (options.IncludeSpecialNotes)
+				{
+					workSheet.Cells[row, colIndex].Value = schedule.SpecialNotes;
+					colIndex++;
+				}
 
 				row++;
 			}
 
 			// Styling
-			using (var dataRange = workSheet.Cells[3, 1, row - 1, headers.Count])
+			using (var dataRange = workSheet.Cells[4, 1, row - 1, headers.Count])
 			{
 				dataRange.Style.Font.Name = "Calibri";
 				dataRange.Style.Font.Size = 10;
 				dataRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-				dataRange.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(23, 54, 93));
+				dataRange.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(0, 32, 96));
 				dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
 				dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
 				dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -967,12 +1050,12 @@ namespace haver.Controllers
 			}
 
 			// Alternating row colors for static columns
-			for (int i = 3; i < row; i++)
+			for (int i = 4; i < row; i++)
 			{
 				using (var rowRange = workSheet.Cells[i, 1, i, staticCols])
 				{
 					rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
-					rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(240, 248, 255) : Color.White);
+					rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(219, 229, 241) : Color.White);
 				}
 			}
 
@@ -982,7 +1065,11 @@ namespace haver.Controllers
 			if (options.IncludeSize) workSheet.Column(colIndex++).Style.WrapText = true;
 			if (options.IncludeClass) workSheet.Column(colIndex++).Style.WrapText = true;
 			if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Style.WrapText = true;
-			if (options.IncludeSpecialNotes) workSheet.Column(headers.Count).Style.WrapText = true;
+			if (options.IncludeSpecialNotes)
+			{
+				int specialNotesCol = staticCols + 33 + 1;
+				workSheet.Column(specialNotesCol).Style.WrapText = true;
+			}
 
 			// Column Widths
 			workSheet.Cells.AutoFitColumns();
@@ -1002,11 +1089,15 @@ namespace haver.Controllers
 				for (int i = staticCols + 1; i <= staticCols + 33; i++)
 					workSheet.Column(i).Width = 4;
 			}
-			if (options.IncludeSpecialNotes) workSheet.Column(headers.Count).Width = 40;
+			if (options.IncludeSpecialNotes)
+			{
+				int specialNotesCol = staticCols + 33 + 1;
+				workSheet.Column(specialNotesCol).Width = 40;
+			}
 
-			workSheet.View.FreezePanes(3, staticCols + 1);
+			// Adjust freeze panes to include the Special Notes column in the scrollable area
+			workSheet.View.FreezePanes(4, staticCols + 1);
 		}
-		// Helper method for header setup (from GanttSchedules)
 		private void SetupHeader(ExcelWorksheet workSheet, int row, int col, string value, Color bgColor)
 		{
 			workSheet.Cells[row, col].Value = value;
