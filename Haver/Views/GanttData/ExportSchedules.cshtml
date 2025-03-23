@@ -56,15 +56,16 @@
         </div>
         <div class="col-md-4">
             <div class="form-check"><input asp-for="IncludeMachineModel" class="form-check-input" /> <label>Machine Model</label></div>
-@*              <div class="form-check"><input asp-for="IncludeSize" class="form-check-input" /> <label>Size</label></div>
-             <div class="form-check"><input asp-for="IncludeClass" class="form-check-input" /> <label>Class</label></div>
-             <div class="form-check"><input asp-for="IncludeSizeDeck" class="form-check-input" /> <label>Size Deck</label></div>
-             <div class="form-check"><input asp-for="IncludeGanttMedia" class="form-check-input" /> <label>Media</label></div> *@
-        </div>
-        <div class="col-md-4">
+             <div class="form-check"><input asp-for="IncludeGanttMedia" class="form-check-input" /> <label>Media</label></div>
             <div class="form-check"><input asp-for="IncludeGanttSpareParts" class="form-check-input" /> <label>Spare Parts</label></div>
             <div class="form-check"><input asp-for="IncludeApprovedDrawingReceived" class="form-check-input" /> <label>Approved Drawing Received</label></div>
-            <div class="form-check"><input asp-for="IncludeGanttData" class="form-check-input" /> <label>Gantt Data</label></div>
+            @*    <div class="form-check"><input asp-for="IncludeSize" class="form-check-input" /> <label>Size</label></div>
+            <div class="form-check"><input asp-for="IncludeClass" class="form-check-input" /> <label>Class</label></div>
+            <div class="form-check"><input asp-for="IncludeSizeDeck" class="form-check-input" /> <label>Size Deck</label></div> *@
+        </div>
+        <div class="col-md-4">
+
+            <div class="form-check"><input asp-for="IncludeGanttData" class="form-check-input" /> <label>Gantt Chart</label></div>
             <div class="form-check"><input asp-for="IncludeSpecialNotes" class="form-check-input" /> <label>Special Notes</label></div>
         </div>
     </div>
