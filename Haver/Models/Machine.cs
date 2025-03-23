@@ -39,13 +39,13 @@ namespace haver.Models
         // Production Order Number
         [Display(Name = "Production Order Number")]
         [StringLength(7, ErrorMessage = "Production order number must be exactly 7 digits.")]
-        public string? ProductionOrderNumber { get; set; } 
+        public string? ProductionOrderNumber { get; set; }
 
         [Display(Name = "Assembly Expected")]
-		[Required(ErrorMessage = "Assembly Expected Date is required.")]
-		[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+        [Required(ErrorMessage = "Assembly Expected Date is required.")]
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
-        public DateTime AssemblyExp { get; set; }
+        public DateTime? AssemblyExp { get; set; } 
 
         [Display(Name = "Assembly Start")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
