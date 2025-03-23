@@ -14,35 +14,127 @@
         <p class="lead">Today is @DateTime.Now.ToString("dddd, MMMM dd, yyyy")</p>
     </div>
 
+    @{
+        var isAdmin = User.IsInRole("Admin");
+        var isSales = User.IsInRole("Sales");
+        var isProcurement = User.IsInRole("Procurement");
+        var isPIC = User.IsInRole("PIC");
+        var isProduction = User.IsInRole("Production");
+    }
+
     <div class="row g-4 justify-content-center mb-5">
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="dashboard-card">
-                <a asp-controller="SalesOrder" asp-action="Create">
-                    <i class="fas fa-plus-circle"></i>
-                    <h3>Create Sales Order</h3>
-                    <p>Start a new sales order and add required details.</p>
-                </a>
+
+        <!-- Admin Role -->
+        @if (isAdmin)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="SalesOrder" asp-action="Create">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Create Sales Order</h3>
+                        <p>Start a new sales order and add required details.</p>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="dashboard-card">
-                <a asp-controller="GanttData" asp-action="Index">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h3>View Gantt Schedules</h3>
-                    <p>Assign and manage Gantt schedules for orders.</p>
-                </a>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="GanttData" asp-action="Index">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>View Gantt Schedules</h3>
+                        <p>Manage schedules for orders.</p>
+                    </a>
+                </div>
             </div>
-        </div>
+        }
+
+        <!-- Sales Role -->
+        @if (isSales)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="SalesOrder" asp-action="Create">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Create Sales Order</h3>
+                        <p>Start a new sales order and add required details.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="GanttData" asp-action="Index">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>View Gantt Schedules</h3>
+                        <p>See details of all Gantt Schedules.</p>
+                    </a>
+                </div>
+            </div>
+        }
+
+        <!-- Procurement Role -->
+        @if (isProcurement)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="Vendor" asp-action="Create">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Add a New Vendor</h3>
+                        <p>Add a new vendor and add required details.</p>
+                    </a>
+                </div>
+            </div>
+        }
+
+        <!-- PIC Role -->
+        @if (isPIC)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="SalesOrder" asp-action="Index">
+                        <i class="fas fa-box"></i>
+                        <h3>View Sales Orders</h3>
+                        <p>See details of all sales orders.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="Machine" asp-action="Index">
+                        <i class="fas fa-cogs"></i>
+                        <h3>View Machines</h3>
+                        <p>Start details of all machines.</p>
+                    </a>
+                </div>
+            </div>
+        }
+
+        <!-- Production Role -->
+        @if (isProduction)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="Machine" asp-action="Create">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Add a New Machine</h3>
+                        <p>Add a new machine and add required details.</p>
+                    </a>
+                </div>
+            </div>
+        }
+
+        <!-- Common Report Download (for all users) -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="dashboard-card">
                 <a asp-controller="GanttData" asp-action="ExportSchedules">
                     <i class="fas fa-file-download"></i>
                     <h3>Download Reports</h3>
-                    <p>Export Gantt schedules and reports for archiving.</p>
+                    <p>Export schedules and reports.</p>
                 </a>
             </div>
         </div>
+
     </div>
+
+
 
     <div class="row justify-content-center mb-4">
         <div class="col-md-10">
