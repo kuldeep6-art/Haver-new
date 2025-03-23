@@ -538,11 +538,11 @@ namespace haver.Controllers
     : null,
 
                         CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
-						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineType?.Description ?? "Unknown") : null,
+						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineModel ?? "Unknown") : null,
 						SerialNumbers = options.IncludeSerialNumbers ? (m?.SerialNumber ?? "N/A") : null,
 						ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
 						PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
-						PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToString() ?? "N/A") : null,
+						PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
 						VendorNames = options.IncludeVendorNames && m?.Procurements != null && m.Procurements.Any()
 							? string.Join(", ", m.Procurements.Select(p => p?.Vendor?.Name ?? "N/A"))
 							: null,
@@ -612,9 +612,12 @@ namespace haver.Controllers
 						: null,
 					CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 					Quantity = options.IncludeQuantity ? (so?.Machines?.Count() ?? 0) : 0,
-					Size = options.IncludeSize && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Size ?? "N/A")) : null,
-					Class = options.IncludeClass && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Class ?? "N/A")) : null,
-					SizeDeck = options.IncludeSizeDeck && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Deck ?? "N/A")) : null,
+                    MachineModel = options.IncludeMachineModel && so?.Machines != null
+    ? string.Join(", ", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
+    : null,
+     //               Size = options.IncludeSize && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Size ?? "N/A")) : null,
+					//Class = options.IncludeClass && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Class ?? "N/A")) : null,
+					//SizeDeck = options.IncludeSizeDeck && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Deck ?? "N/A")) : null,
 					Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 					SpareParts = options.IncludeGanttSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 					ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
@@ -695,7 +698,7 @@ namespace haver.Controllers
 			if (options.IncludeSalesOrderNumber) headers.Add(("Sales Order", true, Color.LightBlue));
 			if (options.IncludeSalesOrderDate) headers.Add(("Order Date", true, Color.LightBlue));
 			if (options.IncludeCustomerName) headers.Add(("Customer Name", true, Color.LightBlue));
-			if (options.IncludeMachineDescriptions) headers.Add(("Machine Description", true, Color.LightBlue));
+			if (options.IncludeMachineDescriptions) headers.Add(("Machine Model", true, Color.LightBlue));
 			if (options.IncludeSerialNumbers) headers.Add(("Serial Number", true, Color.LightBlue));
 			if (options.IncludeProductionOrderNumbers) headers.Add(("Production Order Number", true, Color.LightBlue));
 			if (options.IncludePackageReleaseDateE) headers.Add(("Package Release Expected", true, Color.LightBlue));
@@ -865,10 +868,11 @@ namespace haver.Controllers
 			if (options.IncludeOrderNumber) headers.Add(("OR #", true, Color.FromArgb(91, 155, 213)));
 			if (options.IncludeEngineer) headers.Add(("ENG.", true, Color.FromArgb(91, 155, 213)));
 			if (options.IncludeGanttCustomerName) headers.Add(("Customer Name", true, Color.FromArgb(91, 155, 213)));
-			if (options.IncludeQuantity) headers.Add(("QTY", true, Color.FromArgb(91, 155, 213)));
-			if (options.IncludeSize) headers.Add(("Size", true, Color.FromArgb(91, 155, 213)));
-			if (options.IncludeClass) headers.Add(("Class", true, Color.FromArgb(91, 155, 213)));
-			if (options.IncludeSizeDeck) headers.Add(("SizeDeck", true, Color.FromArgb(91, 155, 213)));
+            if (options.IncludeMachineModel) headers.Add(("Machine Model", true, Color.FromArgb(91, 155, 213)));
+            if (options.IncludeQuantity) headers.Add(("QTY", true, Color.FromArgb(91, 155, 213)));
+			//if (options.IncludeSize) headers.Add(("Size", true, Color.FromArgb(91, 155, 213)));
+			//if (options.IncludeClass) headers.Add(("Class", true, Color.FromArgb(91, 155, 213)));
+			//if (options.IncludeSizeDeck) headers.Add(("SizeDeck", true, Color.FromArgb(91, 155, 213)));
 			if (options.IncludeGanttMedia) headers.Add(("Media", true, Color.FromArgb(91, 155, 213)));
 			if (options.IncludeGanttSpareParts) headers.Add(("Spare Parts", true, Color.FromArgb(91, 155, 213)));
 			if (options.IncludeApprovedDrawingReceived) headers.Add(("App Dwg Rec'd", true, Color.FromArgb(91, 155, 213)));
@@ -954,10 +958,11 @@ namespace haver.Controllers
 				if (options.IncludeOrderNumber) workSheet.Cells[row, colIndex++].Value = schedule.OrderNumber;
 				if (options.IncludeEngineer) workSheet.Cells[row, colIndex++].Value = schedule.Engineer;
 				if (options.IncludeGanttCustomerName) workSheet.Cells[row, colIndex++].Value = schedule.CustomerName;
-				if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = schedule.Quantity;
-				if (options.IncludeSize) workSheet.Cells[row, colIndex++].Value = schedule.Size;
-				if (options.IncludeClass) workSheet.Cells[row, colIndex++].Value = schedule.Class;
-				if (options.IncludeSizeDeck) workSheet.Cells[row, colIndex++].Value = schedule.SizeDeck;
+                if (options.IncludeMachineModel) workSheet.Cells[row, colIndex++].Value = schedule.MachineModel;
+                if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = schedule.Quantity;
+				//if (options.IncludeSize) workSheet.Cells[row, colIndex++].Value = schedule.Size;
+				//if (options.IncludeClass) workSheet.Cells[row, colIndex++].Value = schedule.Class;
+				//if (options.IncludeSizeDeck) workSheet.Cells[row, colIndex++].Value = schedule.SizeDeck;
 				if (options.IncludeGanttMedia) workSheet.Cells[row, colIndex++].Value = schedule.Media;
 				if (options.IncludeGanttSpareParts) workSheet.Cells[row, colIndex++].Value = schedule.SpareParts;
 				if (options.IncludeApprovedDrawingReceived) workSheet.Cells[row, colIndex++].Value = schedule.ApprovedDrawingReceived.ToString("d-MMM-yy");
@@ -1061,9 +1066,9 @@ namespace haver.Controllers
 			// Text Wrapping and Alignment
 			colIndex = 1;
 			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Style.WrapText = true;
-			if (options.IncludeSize) workSheet.Column(colIndex++).Style.WrapText = true;
-			if (options.IncludeClass) workSheet.Column(colIndex++).Style.WrapText = true;
-			if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Style.WrapText = true;
+			//if (options.IncludeSize) workSheet.Column(colIndex++).Style.WrapText = true;
+			//if (options.IncludeClass) workSheet.Column(colIndex++).Style.WrapText = true;
+			//if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Style.WrapText = true;
 			if (options.IncludeSpecialNotes)
 			{
 				int specialNotesCol = staticCols + 33 + 1;
@@ -1076,10 +1081,11 @@ namespace haver.Controllers
 			if (options.IncludeOrderNumber) workSheet.Column(colIndex++).Width = 12;
 			if (options.IncludeEngineer) workSheet.Column(colIndex++).Width = 12;
 			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Width = 25;
-			if (options.IncludeQuantity) workSheet.Column(colIndex++).Width = 6;
-			if (options.IncludeSize) workSheet.Column(colIndex++).Width = 15;
-			if (options.IncludeClass) workSheet.Column(colIndex++).Width = 15;
-			if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Width = 15;
+            if (options.IncludeMachineModel) workSheet.Column(colIndex++).Width = 25;
+            if (options.IncludeQuantity) workSheet.Column(colIndex++).Width = 6;
+			//if (options.IncludeSize) workSheet.Column(colIndex++).Width = 15;
+			//if (options.IncludeClass) workSheet.Column(colIndex++).Width = 15;
+			//if (options.IncludeSizeDeck) workSheet.Column(colIndex++).Width = 15;
 			if (options.IncludeGanttMedia) workSheet.Column(colIndex++).Width = 10;
 			if (options.IncludeGanttSpareParts) workSheet.Column(colIndex++).Width = 14;
 			if (options.IncludeApprovedDrawingReceived) workSheet.Column(colIndex++).Width = 14;

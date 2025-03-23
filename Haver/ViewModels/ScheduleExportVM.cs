@@ -35,9 +35,11 @@
 		public bool IncludeEngineer { get; set; } = true;
 		public bool IncludeGanttCustomerName { get; set; } = true;
 		public bool IncludeQuantity { get; set; } = true;
-		public bool IncludeSize { get; set; } = true;
-		public bool IncludeClass { get; set; } = true;
-		public bool IncludeSizeDeck { get; set; } = true;
+		
+		public bool IncludeMachineModel { get; set; } = true;	
+		//public bool IncludeSize { get; set; } = true;
+		//public bool IncludeClass { get; set; } = true;
+		//public bool IncludeSizeDeck { get; set; } = true;
 		public bool IncludeGanttMedia { get; set; } = true;
 		public bool IncludeGanttSpareParts { get; set; } = true;
 		public bool IncludeApprovedDrawingReceived { get; set; } = true;

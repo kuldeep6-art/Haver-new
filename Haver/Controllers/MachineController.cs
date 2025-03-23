@@ -113,12 +113,12 @@ namespace haver.Controllers
                 if (sortDirection == "asc")
                 {
                     machines = machines
-                        .OrderByDescending(p => p.MachineType.Description);
+                        .OrderByDescending(p => p.MachineModel);
                 }
                 else
                 {
                     machines = machines
-                        .OrderBy(p => p.Description);
+                        .OrderBy(p => p.MachineModel);
                 }
             }
             else 
@@ -368,7 +368,7 @@ namespace haver.Controllers
 				return NotFound();
 			}
 
-            if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "",
+            if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "", p => p.MachineModel,
                   p => p.SerialNumber, p => p.ProductionOrderNumber,p => p.AssemblyExp,p => p.AssemblyStart,p => p.AssemblyComplete,
               p => p.RToShipExp, p => p.RToShipA,
               p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,

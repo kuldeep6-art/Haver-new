@@ -15,7 +15,8 @@ namespace haver.Models
         {
             get
             {
-                return (MachineType?.Description ?? "Unknown Model") + " | " + (SerialNumber ?? "Unknown Serial");
+                return MachineModel + " | " + (SerialNumber ?? "Unknown Serial");
+                //return (MachineType?.Description ?? "Unknown Model") + " | " + (SerialNumber ?? "Unknown Serial");
             }
         }
 
@@ -24,10 +25,10 @@ namespace haver.Models
         #endregion
 
 
-        //// Serial Number
-        //[Display(Name = "Machine Model")]
-        //[Required(ErrorMessage = "Machine Model is required.")]
-        //public string? MachineModel { get; set; }
+        // Serial Number
+        [Display(Name = "Machine Model")]
+        [Required(ErrorMessage = "Machine Model is required.")]
+        public string MachineModel { get; set; } = "";
 
 
         // Serial Number
@@ -134,8 +135,8 @@ namespace haver.Models
 
         // Foreign Key to MachineType
         [Display(Name = "Machine Model")]
-        [Required(ErrorMessage = "Select the Machine Model")]
-        public int MachineTypeID { get; set; }
+       // [Required(ErrorMessage = "Select the Machine Model")]
+        public int? MachineTypeID { get; set; }
         public MachineType? MachineType { get; set; }
 
         // One-to-Many: A Machine can have multiple Procurements
