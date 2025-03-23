@@ -19,7 +19,7 @@
                         <div class="row">
                             <!-- Machine Type -->
                             <div class="form-group col-md-4 mb-3">
-                                <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                               @*  <label asp-for="MachineTypeID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                     <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineTypeID)
                                     <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
                                 </label>
@@ -27,14 +27,14 @@
                                         style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
                                         asp-items="ViewBag.MachineTypeID"></select>
                                 <span asp-validation-for="MachineTypeID" class="text-danger d-block mt-1"></span>
-
+ *@
                            
-                           @*  <label asp-for="MachineModel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.MachineModel)
+                            <label asp-for="MachineModel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                @Html.DisplayNameFor(model => model.MachineModel)
                             </label>
-                            <input asp-for="MachineModel" class="form-control" placeholder="Enter Machine Model"
+                            <input asp-for="MachineModel" class="form-control" placeholder="Enter Class - Size x Deck"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                            <span asp-validation-for="MachineModel" class="text-danger"></span> *@
+                            <span asp-validation-for="MachineModel" class="text-danger"></span>
                             </div>
 
 
