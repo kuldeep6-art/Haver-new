@@ -538,7 +538,7 @@ namespace haver.Controllers
     : null,
 
                         CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
-						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineType?.Description ?? "Unknown") : null,
+						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineModel ?? "Unknown") : null,
 						SerialNumbers = options.IncludeSerialNumbers ? (m?.SerialNumber ?? "N/A") : null,
 						ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
 						PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
@@ -695,7 +695,7 @@ namespace haver.Controllers
 			if (options.IncludeSalesOrderNumber) headers.Add(("Sales Order", true, Color.LightBlue));
 			if (options.IncludeSalesOrderDate) headers.Add(("Order Date", true, Color.LightBlue));
 			if (options.IncludeCustomerName) headers.Add(("Customer Name", true, Color.LightBlue));
-			if (options.IncludeMachineDescriptions) headers.Add(("Machine Description", true, Color.LightBlue));
+			if (options.IncludeMachineDescriptions) headers.Add(("Machine Model", true, Color.LightBlue));
 			if (options.IncludeSerialNumbers) headers.Add(("Serial Number", true, Color.LightBlue));
 			if (options.IncludeProductionOrderNumbers) headers.Add(("Production Order Number", true, Color.LightBlue));
 			if (options.IncludePackageReleaseDateE) headers.Add(("Package Release Expected", true, Color.LightBlue));

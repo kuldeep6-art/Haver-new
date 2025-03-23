@@ -67,7 +67,7 @@
                     <td>@Html.DisplayFor(modelItem => item.SerialNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.ProductionOrderNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.SalesOrder.OrderNumber)</td>
-                    <td>@Html.DisplayFor(modelItem => item.MachineType.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MachineModel)</td>
                     <td>@Html.DisplayFor(modelItem => item.RToShipExp)</td>
                     <td class="text-center">
                             @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
