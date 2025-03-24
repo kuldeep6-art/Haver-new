@@ -365,6 +365,18 @@ namespace haver.Controllers
                             gDataToUpdate.SalesOrder.AppDwgRel = gDataToUpdate.AppDRcd;
                             isUpdated = true;
                         }
+
+                        if (gDataToUpdate.EngExpected != null && gDataToUpdate.SalesOrder.EngPExp != gDataToUpdate.EngExpected)
+                        {
+                            gDataToUpdate.SalesOrder.EngPExp = gDataToUpdate.EngExpected;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.EngReleased != null && gDataToUpdate.SalesOrder.EngPRel != gDataToUpdate.EngReleased)
+                        {
+                            gDataToUpdate.SalesOrder.EngPRel = gDataToUpdate.EngReleased;
+                            isUpdated = true;
+                        }
                     }
 
                     if (isUpdated)

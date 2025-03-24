@@ -34,7 +34,6 @@ namespace haver.Models
         // Serial Number
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "Serial number is required.")]
-		[StringLength(8, ErrorMessage = "Order number must be exactly 8 digits.")]
 		public string? SerialNumber { get; set; }
 
         // Production Order Number
