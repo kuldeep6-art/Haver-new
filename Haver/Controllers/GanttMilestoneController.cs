@@ -63,11 +63,21 @@ namespace haver.Controllers
             {
                 _context.Add(ganttMilestone);
                 await _context.SaveChangesAsync();
+
+                _context.ActivityLogs.Add(new ActivityLog
+                {
+                    Message = $"Milestone '{ganttMilestone.MilestoneName}' created for Task ID {ganttMilestone.GanttTaskID}.",
+                    Timestamp = DateTime.UtcNow
+                });
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["GanttTaskID"] = new SelectList(_context.GanttTasks, "ID", "ID", ganttMilestone.GanttTaskID);
             return View(ganttMilestone);
         }
+
 
         // GET: GanttMilestone/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -104,6 +114,14 @@ namespace haver.Controllers
                 {
                     _context.Update(ganttMilestone);
                     await _context.SaveChangesAsync();
+
+                    _context.ActivityLogs.Add(new ActivityLog
+                    {
+                        Message = $"Milestone '{ganttMilestone.MilestoneName}' (ID {ganttMilestone.ID}) updated.",
+                        Timestamp = DateTime.UtcNow
+                    });
+
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,9 +136,11 @@ namespace haver.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["GanttTaskID"] = new SelectList(_context.GanttTasks, "ID", "ID", ganttMilestone.GanttTaskID);
             return View(ganttMilestone);
         }
+
 
         // GET: GanttMilestone/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -150,11 +170,20 @@ namespace haver.Controllers
             if (ganttMilestone != null)
             {
                 _context.GanttMilestones.Remove(ganttMilestone);
+                await _context.SaveChangesAsync();
+
+                _context.ActivityLogs.Add(new ActivityLog
+                {
+                    Message = $"Milestone '{ganttMilestone.MilestoneName}' (ID {ganttMilestone.ID}) deleted.",
+                    Timestamp = DateTime.UtcNow
+                });
+
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool GanttMilestoneExists(int id)
         {

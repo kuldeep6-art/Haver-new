@@ -187,24 +187,27 @@ namespace haver.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     _context.Add(procurement);
                     await _context.SaveChangesAsync();
+                    await LogActivity($"Procurement {procurement.PONumber} added for Machine {procurement.MachineID}");
+
+                    await _context.SaveChangesAsync();
+
                     return Redirect(ViewData["returnURL"].ToString());
                 }
             }
             catch (DbUpdateException)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
-                    "persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
             PopulateDropDownLists(procurement);
             ViewData["SerialNumber"] = SerialNumber;
             return View(procurement);
         }
+
 
         // GET: MachineProcurement/Edit/5
         public async Task<IActionResult> Update(int? id)
@@ -240,24 +243,26 @@ namespace haver.Controllers
                 .Include(a => a.Machine)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            //Check that you got it or exit with a not found error
             if (procurementToUpdate == null)
             {
                 return NotFound();
             }
 
-            //Try updating it with the values posted
             if (await TryUpdateModelAsync<Procurement>(procurementToUpdate, "",
-              a => a.VendorID, a => a.MachineID, a => a.PONumber,
-                 a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
+                a => a.VendorID, a => a.MachineID, a => a.PONumber,
+                a => a.PODueDate, a => a.PORcd, a => a.QualityICom, a => a.NcrRaised))
             {
                 try
                 {
                     _context.Update(procurementToUpdate);
                     await _context.SaveChangesAsync();
+
+                    await LogActivity($"Procurement {procurementToUpdate.PONumber} updated");
+
+                    await _context.SaveChangesAsync();
+
                     return Redirect(ViewData["returnURL"].ToString());
                 }
-
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ProcurementExists(procurementToUpdate.ID))
@@ -271,13 +276,14 @@ namespace haver.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
-                        "persists see your system administrator.");
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
+
             PopulateDropDownLists(procurementToUpdate);
             return View(procurementToUpdate);
         }
+
 
         // GET: MachineProcurement/Delete/5
         public async Task<IActionResult> Remove(int? id)
@@ -311,19 +317,37 @@ namespace haver.Controllers
 
             try
             {
-                _context.Procurements.Remove(procurement);
-                await _context.SaveChangesAsync();
+                if (procurement != null)
+                {
+                    _context.Procurements.Remove(procurement);
+                    await _context.SaveChangesAsync();
+
+                    await LogActivity($"Procurement {procurement.PONumber} deleted");
+
+                    await _context.SaveChangesAsync();
+                }
+
                 return Redirect(ViewData["returnURL"].ToString());
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem " +
-                    "persists see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
             return View(procurement);
         }
 
-		private SelectList VendorSelectList(int? id)
+        private async Task LogActivity(string message)
+        {
+            string userName = User.Identity?.Name ?? "Unknown User";
+            _context.ActivityLogs.Add(new ActivityLog
+            {
+                Message = $"{message} by {userName}.",
+                Timestamp = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+        }
+
+        private SelectList VendorSelectList(int? id)
 		{
 			var dQuery = from d in _context.Vendors
 						 where d.IsActive // Only include active vendors

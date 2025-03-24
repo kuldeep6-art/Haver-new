@@ -191,7 +191,7 @@ namespace haver.Controllers
             return View(machine);
         }
 
-     
+
 
         // POST: Machine/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -200,18 +200,19 @@ namespace haver.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,MachineModel,SerialNumber,ProductionOrderNumber,AssemblyExp,AssemblyStart," +
-            "AssemblyComplete,RToShipExp,RToShipA,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
+    "AssemblyComplete,RToShipExp,RToShipA,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //Add the machine to the database
                     _context.Add(machine);
                     await _context.SaveChangesAsync();
 
-                    // Create the corresponding Gantt record
                     await CreateGanttForMachine(machine);
+
+                    await LogActivity($"Machine {machine.SerialNumber} created under Sales Order {machine.SalesOrderID}");
+                    await _context.SaveChangesAsync();
 
                     // Set a message and redirect
                     TempData["Message"] = "Machine has been successfully created and Gantt record added.";
@@ -233,11 +234,11 @@ namespace haver.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
                 }
             }
-          
 
             PopulateDropDownLists(machine);
             return View(machine);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFromModal(Machine machine)
@@ -361,28 +362,31 @@ namespace haver.Controllers
 
         // POST: Machine/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
-			var machinesToUpdate = await _context.Machines.FirstOrDefaultAsync(p => p.ID == id);
+            var machinesToUpdate = await _context.Machines.FirstOrDefaultAsync(p => p.ID == id);
 
-			if (machinesToUpdate == null)
-			{
-				return NotFound();
-			}
+            if (machinesToUpdate == null)
+            {
+                return NotFound();
+            }
 
             if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "", p => p.MachineModel,
-                  p => p.SerialNumber, p => p.ProductionOrderNumber,p => p.AssemblyExp,p => p.AssemblyStart,p => p.AssemblyComplete,
-              p => p.RToShipExp, p => p.RToShipA,
-              p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,
-              p => p.PreOrder, p => p.Scope, p => p.SalesOrderID, p => p.MachineTypeID))
+                  p => p.SerialNumber, p => p.ProductionOrderNumber, p => p.AssemblyExp, p => p.AssemblyStart, p => p.AssemblyComplete,
+                  p => p.RToShipExp, p => p.RToShipA,
+                  p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,
+                  p => p.PreOrder, p => p.Scope, p => p.SalesOrderID, p => p.MachineTypeID))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
-                    //TempData["Message"] = "Machine has been successfully Edited";
+
+                    await LogActivity($"Machine {machinesToUpdate.SerialNumber} was updated");
+
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machinesToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
@@ -412,9 +416,10 @@ namespace haver.Controllers
                     }
                 }
             }
-				PopulateDropDownLists(machinesToUpdate);
-				return View(machinesToUpdate);
-			}
+
+            PopulateDropDownLists(machinesToUpdate);
+            return View(machinesToUpdate);
+        }
 
         // GET: Machine/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -444,15 +449,20 @@ namespace haver.Controllers
             var machine = await _context.Machines
                  .Include(s => s.SalesOrder)
                  .Include(m => m.MachineType)
-                  .FirstOrDefaultAsync(m => m.ID == id);
+                 .FirstOrDefaultAsync(m => m.ID == id);
 
             try
             {
                 if (machine != null)
                 {
                     _context.Machines.Remove(machine);
+
+                    await LogActivity($"Machine {machine.SerialNumber} was deleted");
+
+
+                    await _context.SaveChangesAsync();
                 }
-                await _context.SaveChangesAsync();
+
                 var returnUrl = ViewData["returnURL"]?.ToString();
                 if (string.IsNullOrEmpty(returnUrl))
                 {
@@ -464,7 +474,7 @@ namespace haver.Controllers
             {
                 if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
                 {
-                    ModelState.AddModelError("", "Unable to Delete Machine.  Remember, you cannot delete a Machine attached to a Sales Order");
+                    ModelState.AddModelError("", "Unable to Delete Machine. Remember, you cannot delete a Machine attached to a Sales Order");
                 }
                 else
                 {
@@ -473,6 +483,7 @@ namespace haver.Controllers
             }
             return View(machine);
         }
+
 
 
 
@@ -518,9 +529,16 @@ namespace haver.Controllers
                 "MachineOrderDetail"
             );
         }
-
-
-      
+        private async Task LogActivity(string message)
+        {
+            string userName = User.Identity?.Name ?? "Unknown User";
+            _context.ActivityLogs.Add(new ActivityLog
+            {
+                Message = $"{message} by {userName}.",
+                Timestamp = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+        }
 
         private bool MachineExists(int id)
         {

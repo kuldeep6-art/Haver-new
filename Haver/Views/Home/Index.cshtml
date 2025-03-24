@@ -2,267 +2,296 @@
 @model List<ActivityLog>
 
 @{
-    ViewData["Title"] = "Dashboard";
-    var fullName = HttpContextAccessor.HttpContext.Request.Cookies["userName"]
-        ?? User.Identity?.Name
-        ?? "User";
+	ViewData["Title"] = "Dashboard";
+	var fullName = HttpContextAccessor.HttpContext.Request.Cookies["userName"]
+		?? User.Identity?.Name
+		?? "User";
 }
 
 <div class="container-fluid px-5 py-4">
-    <div class="text-center mb-4">
-        <h1 class="display-5 fw-bold">Welcome back, @fullName!</h1>
-        <p class="lead">Today is @DateTime.Now.ToString("dddd, MMMM dd, yyyy")</p>
-    </div>
+	<div class="text-center mb-4">
+		<h1 class="display-5 fw-bold">Welcome back, @fullName!</h1>
+		<p class="lead">Today is @DateTime.Now.ToString("dddd, MMMM dd, yyyy")</p>
+	</div>
 
-    @{
-        var isAdmin = User.IsInRole("Admin");
-        var isSales = User.IsInRole("Sales");
-        var isProcurement = User.IsInRole("Procurement");
-        var isPIC = User.IsInRole("PIC");
-        var isProduction = User.IsInRole("Production");
+	@{
+		var isAdmin = User.IsInRole("Admin");
+		var isSales = User.IsInRole("Sales");
+		var isProcurement = User.IsInRole("Procurement");
+		var isPIC = User.IsInRole("PIC");
+		var isProduction = User.IsInRole("Production");
 
-        // Check if the user has no specific role
-        var hasNoRole = !(isAdmin || isSales || isProcurement || isPIC || isProduction);
-    }
+		// Check if the user has no specific role
+		var hasNoRole = !(isAdmin || isSales || isProcurement || isPIC || isProduction);
+	}
 
-    <div class="row g-4 justify-content-center mb-5">
-        @if (isAdmin)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="SalesOrder" asp-action="Create">
-                        <i class="fas fa-plus-circle"></i>
-                        <h3>Create Sales Order</h3>
-                        <p>Start a new sales order and add required details.</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="GanttData" asp-action="Index">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h3>View Gantt Schedules</h3>
-                        <p>Manage schedules for orders.</p>
-                    </a>
-                </div>
-            </div>
-        }
+	<div class="row g-4 justify-content-center mb-5">
+		@if (isAdmin)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="SalesOrder" asp-action="Create">
+						<i class="fas fa-plus-circle"></i>
+						<h3>Create Sales Order</h3>
+						<p>Start a new sales order and add required details.</p>
+					</a>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="GanttData" asp-action="Index">
+						<i class="fas fa-calendar-alt"></i>
+						<h3>View Gantt Schedules</h3>
+						<p>Manage schedules for orders.</p>
+					</a>
+				</div>
+			</div>
+		}
 
-        @if (isSales)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="SalesOrder" asp-action="Create">
-                        <i class="fas fa-plus-circle"></i>
-                        <h3>Create Sales Order</h3>
-                        <p>Start a new sales order and add required details.</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="GanttData" asp-action="Index">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h3>View Gantt Schedules</h3>
-                        <p>See details of all Gantt Schedules.</p>
-                    </a>
-                </div>
-            </div>
-        }
+		@if (isSales)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="SalesOrder" asp-action="Create">
+						<i class="fas fa-plus-circle"></i>
+						<h3>Create Sales Order</h3>
+						<p>Start a new sales order and add required details.</p>
+					</a>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="GanttData" asp-action="Index">
+						<i class="fas fa-calendar-alt"></i>
+						<h3>View Gantt Schedules</h3>
+						<p>See details of all Gantt Schedules.</p>
+					</a>
+				</div>
+			</div>
+		}
 
-        @if (isProcurement)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="Vendor" asp-action="Create">
-                        <i class="fas fa-plus-circle"></i>
-                        <h3>Add a New Vendor</h3>
-                        <p>Add a new vendor and add required details.</p>
-                    </a>
-                </div>
-            </div>
-        }
+		@if (isProcurement)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="Vendor" asp-action="Create">
+						<i class="fas fa-plus-circle"></i>
+						<h3>Add a New Vendor</h3>
+						<p>Add a new vendor and add required details.</p>
+					</a>
+				</div>
+			</div>
+		}
 
-        @if (isPIC)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="SalesOrder" asp-action="Index">
-                        <i class="fas fa-box"></i>
-                        <h3>View Sales Orders</h3>
-                        <p>See details of all sales orders.</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="Machine" asp-action="Index">
-                        <i class="fas fa-cogs"></i>
-                        <h3>View Machines</h3>
-                        <p>See details of all machines.</p>
-                    </a>
-                </div>
-            </div>
-        }
+		@if (isPIC)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="SalesOrder" asp-action="Index">
+						<i class="fas fa-box"></i>
+						<h3>View Sales Orders</h3>
+						<p>See details of all sales orders.</p>
+					</a>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="Machine" asp-action="Index">
+						<i class="fas fa-cogs"></i>
+						<h3>View Machines</h3>
+						<p>See details of all machines.</p>
+					</a>
+				</div>
+			</div>
+		}
 
-        @if (isProduction)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="Machine" asp-action="Create">
-                        <i class="fas fa-plus-circle"></i>
-                        <h3>Add a New Machine</h3>
-                        <p>Add a new machine and add required details.</p>
-                    </a>
-                </div>
-            </div>
-        }
-
-
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="dashboard-card">
-                <a asp-controller="GanttData" asp-action="ExportSchedules">
-                    <i class="fas fa-file-download"></i>
-                    <h3>Download Reports</h3>
-                    <p>Export schedules and reports.</p>
-                </a>
-            </div>
-        </div>
-
-        @if (hasNoRole)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="dashboard-card">
-                    <a asp-controller="SalesOrder" asp-action="Index">
-                        <i class="fas fa-box"></i>
-                        <h3>View Sales Orders</h3>
-                        <p>See details of all sales orders.</p>
-                    </a>
-                </div>
-            </div>
-        }
-    </div>
+		@if (isProduction)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="Machine" asp-action="Create">
+						<i class="fas fa-plus-circle"></i>
+						<h3>Add a New Machine</h3>
+						<p>Add a new machine and add required details.</p>
+					</a>
+				</div>
+			</div>
+		}
 
 
+		<div class="col-12 col-md-6 col-lg-4">
+			<div class="dashboard-card">
+				<a asp-controller="GanttData" asp-action="ExportSchedules">
+					<i class="fas fa-file-download"></i>
+					<h3>Download Reports</h3>
+					<p>Export schedules and reports.</p>
+				</a>
+			</div>
+		</div>
 
-     @if (isAdmin)
-        {
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-10">
-            <div class="recent-activity p-4 rounded shadow-sm bg-white">
-                <h4 class="mb-3 fw-bold text-dark">Recent Activity</h4>
-                <ul class="list-unstyled activity-list">
-                    @foreach (var activity in Model)
-                    {
-                        <li class="mb-2">
-                            <span class="activity-label">@activity.Timestamp.ToLocalTime().ToString("g"):</span>
-                            @activity.Message
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
-        }
+		@if (hasNoRole)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="SalesOrder" asp-action="Index">
+						<i class="fas fa-box"></i>
+						<h3>View Sales Orders</h3>
+						<p>See details of all sales orders.</p>
+					</a>
+				</div>
+			</div>
+		}
+	</div>
 
-    <div class="text-center mt-5">
-        <p id="year">&copy; <span id="currentYear"></span></p>
-    </div>
+
+
+	@if (isAdmin)
+	{
+		<div class="row justify-content-center mb-4">
+			<div class="col-md-10">
+				<div class="recent-activity p-4 rounded shadow-sm bg-white">
+					<h4 class="mb-3 fw-bold text-dark">Recent Activity</h4>
+					<div id="activityContainer" class="activity-container">
+						<ul class="list-unstyled activity-list">
+							@foreach (var activity in Model)
+							{
+								<li class="mb-2">
+									<span class="activity-label">@activity.Timestamp.ToLocalTime().ToString("g"):</span>
+									@activity.Message
+								</li>
+							}
+						</ul>
+					</div>
+					<button id="toggleActivityBtn" class="btn btn-primary mt-3">Show More</button>
+				</div>
+			</div>
+		</div>
+	}
+
+
+	<div class="text-center mt-5">
+		<p id="year">&copy; <span id="currentYear"></span></p>
+	</div>
 </div>
 
 <style>
-    body {
-        background-color: #f8f9fa;
-        color: #001b40;
-    }
+	body {
+		background-color: #f8f9fa;
+		color: #001b40;
+	}
 
-    #year {
-        font-weight: bold;
-    }
+	#year {
+		font-weight: bold;
+	}
 
-    .dashboard-card {
-        background: linear-gradient(135deg, #001b40, #004080);
-        border-radius: 12px;
-        padding: 35px 25px;
-        text-align: center;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s, box-shadow 0.3s;
-        height: 100%;
-    }
+	.dashboard-card {
+		background: linear-gradient(135deg, #001b40, #004080);
+		border-radius: 12px;
+		padding: 35px 25px;
+		text-align: center;
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+		transition: transform 0.3s, box-shadow 0.3s;
+		height: 100%;
+	}
 
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
+		.dashboard-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+		}
 
-        .dashboard-card a {
-            text-decoration: none;
-            color: #ffffff;
-            display: block;
-        }
+		.dashboard-card a {
+			text-decoration: none;
+			color: #ffffff;
+			display: block;
+		}
 
-        .dashboard-card i {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: #ffcc00;
-        }
+		.dashboard-card i {
+			font-size: 40px;
+			margin-bottom: 15px;
+			color: #ffcc00;
+		}
 
-        .dashboard-card h3 {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+		.dashboard-card h3 {
+			font-size: 22px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
 
-        .dashboard-card p {
-            font-size: 15px;
-            opacity: 0.85;
-        }
+		.dashboard-card p {
+			font-size: 15px;
+			opacity: 0.85;
+		}
 
-    .recent-activity h4 {
-        font-weight: bold;
-        color: #001b40;
-    }
+	.recent-activity h4 {
+		font-weight: bold;
+		color: #001b40;
+	}
 
-    .activity-list li {
-        font-size: 15px;
-        line-height: 1.6;
-        border-left: 4px solid #004080;
-        padding-left: 10px;
-        margin-left: 5px;
-    }
+	.activity-list li {
+		font-size: 15px;
+		line-height: 1.6;
+		border-left: 4px solid #004080;
+		padding-left: 10px;
+		margin-left: 5px;
+	}
 
-    .activity-label {
-        font-weight: 600;
-        color: #004080;
-        margin-right: 5px;
-    }
+	.activity-label {
+		font-weight: 600;
+		color: #004080;
+		margin-right: 5px;
+	}
 
-    .stat-box {
-        background-color: #ffffff;
-        border: 1px solid #cfd8dc;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        transition: all 0.2s ease-in-out;
-    }
+	.activity-container {
+		max-height: 200px;
+		overflow: hidden;
+		transition: max-height 0.3s ease-in-out;
+	}
 
-        .stat-box:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-        }
+		.activity-container.expanded {
+			max-height: none;
+		}
 
-        .stat-box h5 {
-            margin-bottom: 5px;
-            color: #001b40;
-            font-weight: 600;
-        }
+	.stat-box {
+		background-color: #ffffff;
+		border: 1px solid #cfd8dc;
+		border-radius: 10px;
+		padding: 20px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+		transition: all 0.2s ease-in-out;
+	}
 
-        .stat-box p {
-            font-size: 20px;
-            font-weight: bold;
-            color: #004080;
-        }
+		.stat-box:hover {
+			transform: scale(1.03);
+			box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+		}
+
+		.stat-box h5 {
+			margin-bottom: 5px;
+			color: #001b40;
+			font-weight: 600;
+		}
+
+		.stat-box p {
+			font-size: 20px;
+			font-weight: bold;
+			color: #004080;
+		}
 </style>
 <script>
-    document.getElementById("currentYear").textContent = new Date().getFullYear();
+	document.addEventListener("DOMContentLoaded", function () {
+		const activityContainer = document.getElementById("activityContainer");
+		const toggleBtn = document.getElementById("toggleActivityBtn");
+
+		toggleBtn.addEventListener("click", function () {
+			if (activityContainer.classList.contains("expanded")) {
+				activityContainer.classList.remove("expanded");
+				toggleBtn.textContent = "Show All";
+			} else {
+				activityContainer.classList.add("expanded");
+				toggleBtn.textContent = "Show Less";
+			}
+		});
+	});
+
+	document.getElementById("currentYear").textContent = new Date().getFullYear();
 </script>

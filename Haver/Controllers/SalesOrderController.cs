@@ -223,7 +223,8 @@ namespace haver.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet," +
-            "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,IsDraft")] SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
+    "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,IsDraft")]
+    SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
         {
             try
             {
@@ -234,44 +235,45 @@ namespace haver.Controllers
                     _context.Customers.Add(customer);
                     await _context.SaveChangesAsync();
                 }
-               // salesOrder.CustomerID = customer.ID;
+
                 UpdateSalesOrderEngineers(selectedOptions, salesOrder);
+
                 if (ModelState.IsValid)
                 {
-                    
                     _context.Add(salesOrder);
                     await _context.SaveChangesAsync();
 
-                    TempData["Message"] =  "Sales Order created successfully";
+                    await LogActivity($"Sales Order '{salesOrder.OrderNumber}' created for customer '{salesOrder.CompanyName}'");
 
-                   
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Sales Order created successfully";
                     return RedirectToAction("Details", new { id = salesOrder.ID });
                 }
-
             }
             catch (RetryLimitExceededException)
             {
-                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again later.");
             }
             catch (DbUpdateException dex)
-			{
-				if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-				{
-					ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
-				}
-				else
-				{
-					ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-				}
-                
+            {
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+                {
+                    ModelState.AddModelError("OrderNumber", "Unable to save changes. Duplicate Order Number is not allowed.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again later.");
+                }
             }
+
             PopulateAssignedSpecialtyData(salesOrder);
-           // PopulateDropDownLists(salesOrder);          
             return View(salesOrder);
         }
 
 
-		[Authorize(Roles = "Admin,Sales")]
+
+        [Authorize(Roles = "Admin,Sales")]
 
 		// GET: SalesOrder/Edit/5
 		public async Task<IActionResult> Edit(int? id)
@@ -297,35 +299,40 @@ namespace haver.Controllers
 
 
 
-		// POST: SalesOrder/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[Authorize(Roles = "Admin,Sales")]
-		[HttpPost]
+        // POST: SalesOrder/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Sales")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string[] selectedOptions)
         {
-			var salesOrderToUpdate = await _context.SalesOrders
-				.Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
-				.FirstOrDefaultAsync(p => p.ID == id);
+            var salesOrderToUpdate = await _context.SalesOrders
+                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
+                .FirstOrDefaultAsync(p => p.ID == id);
 
-			if (salesOrderToUpdate == null)
-			{
-				return NotFound();
-			}
+            if (salesOrderToUpdate == null)
+            {
+                return NotFound();
+            }
 
             UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
 
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
-			p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
-			p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
-			p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.Media, p => p.SpareParts,
-              p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly, p => p.IsDraft))
-			{
-				try
+                p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
+                p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
+                p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.Media, p => p.SpareParts,
+                p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly, p => p.IsDraft))
+            {
+                try
                 {
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Sales Order has been successfully edited";
+
+                    await LogActivity($"Sales Order '{salesOrderToUpdate.OrderNumber}' for customer '{salesOrderToUpdate.CompanyName}' was updated");
+
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = "Sales Order successfully updated";
                     return RedirectToAction("Details", new { salesOrderToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
@@ -338,24 +345,24 @@ namespace haver.Controllers
                     {
                         throw;
                     }
-				}
-				catch (DbUpdateException dex)
-				{
-					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-					{
-						ModelState.AddModelError("OrderNumber", "Unable to save changes. Remember, you cannot have duplicate Order Number.");
-					}
-					else
-					{
-						ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-					}
-				}
+                }
+                catch (DbUpdateException dex)
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+                    {
+                        ModelState.AddModelError("OrderNumber", "Duplicate Order Number is not allowed.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again later.");
+                    }
+                }
+            }
 
-			}
             PopulateAssignedSpecialtyData(salesOrderToUpdate);
-            //PopulateDropDownLists(salesOrderToUpdate);
-			return View(salesOrderToUpdate);
-		}
+            return View(salesOrderToUpdate);
+        }
+
 
         // GET: SalesOrder/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -376,34 +383,48 @@ namespace haver.Controllers
             return View(salesOrder);
         }
 
-		// POST: SalesOrder/Delete/5
-		[Authorize(Roles = "Admin,Sales")]
-		[HttpPost, ActionName("Delete")]
+        // POST: SalesOrder/Delete/5
+        [Authorize(Roles = "Admin,Sales")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var salesOrder = await _context.SalesOrders.FindAsync(id);
-            if (salesOrder != null)
-            {
-                _context.SalesOrders.Remove(salesOrder);
-            }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (salesOrder != null)
+                {
+                    _context.SalesOrders.Remove(salesOrder);
+                    await _context.SaveChangesAsync();
+
+                    await LogActivity($"Sales Order '{salesOrder.OrderNumber}' for customer '{salesOrder.CompanyName}' was deleted");
+
+                    await _context.SaveChangesAsync();
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to delete Sales Order. It may be linked to other records.");
+                return View(salesOrder);
+            }
         }
 
 
-		//private void PopulateDropDownLists(SalesOrder? salesOrder = null)
-		//{
-		//	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
-		//}
+
+        //private void PopulateDropDownLists(SalesOrder? salesOrder = null)
+        //{
+        //	ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "CompanyName");
+        //}
 
 
 
 
 
-		// GET: SalesOrder/Archive/5
-		[Authorize(Roles = "Admin,Sales")]
+        // GET: SalesOrder/Archive/5
+        [Authorize(Roles = "Admin,Sales")]
 		public async Task<IActionResult> Archive(int id)
         {
             var salesOrder = await _context.SalesOrders
@@ -618,6 +639,17 @@ namespace haver.Controllers
                 }
             }
         }
+        private async Task LogActivity(string message)
+        {
+            string userName = User.Identity?.Name ?? "Unknown User";
+            _context.ActivityLogs.Add(new ActivityLog
+            {
+                Message = $"{message} by {userName}.",
+                Timestamp = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+        }
+
         private bool SalesOrderExists(int id)
         {
             return _context.SalesOrders.Any(e => e.ID == id);

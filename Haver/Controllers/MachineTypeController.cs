@@ -112,10 +112,15 @@ namespace haver.Controllers
         {
             try
             {
-				if (ModelState.IsValid)
-				{
-					_context.Add(machineType);
-					await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(machineType);
+                    await _context.SaveChangesAsync();
+
+                    await LogActivity($"Machine Type '{machineType.Class} - {machineType.Size} - {machineType.Deck}' was created");
+
+                    await _context.SaveChangesAsync();
+
                     var returnUrl = ViewData["returnURL"]?.ToString();
                     if (string.IsNullOrEmpty(returnUrl))
                     {
@@ -123,7 +128,7 @@ namespace haver.Controllers
                     }
                     return Redirect(returnUrl);
                 }
-			}
+            }
             catch (DbUpdateException dex)
             {
                 ExceptionMessageVM msg = new();
@@ -157,24 +162,9 @@ namespace haver.Controllers
                 ModelState.AddModelError(msg.ErrProperty, msg.ErrMessage);
             }
 
-            //Decide if we need to send the Validaiton Errors directly to the client
-            if (!ModelState.IsValid && Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            {
-                //Was an AJAX request so build a message with all validation errors
-                string errorMessage = "";
-                foreach (var modelState in ViewData.ModelState.Values)
-                {
-                    foreach (ModelError error in modelState.Errors)
-                    {
-                        errorMessage += error.ErrorMessage + "|";
-                    }
-                }
-                //Note: returning a BadRequest results in HTTP Status code 400
-                return BadRequest(errorMessage);
-            }
-
             return View(machineType);
         }
+
 
         // GET: MachineType/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -199,21 +189,24 @@ namespace haver.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id)
         {
-			var machinetypeToUpdate = await _context.MachineTypes.FirstOrDefaultAsync(c => c.ID == id);
+            var machinetypeToUpdate = await _context.MachineTypes.FirstOrDefaultAsync(c => c.ID == id);
 
+            if (machinetypeToUpdate == null)
+            {
+                return NotFound();
+            }
 
-			if (machinetypeToUpdate == null)
-			{
-				return NotFound();
-			}
-			if (await TryUpdateModelAsync<MachineType>(machinetypeToUpdate, "",
-						p => p.Class, p => p.Size, p => p.Deck))
-			{
-				try
+            if (await TryUpdateModelAsync<MachineType>(machinetypeToUpdate, "",
+                        p => p.Class, p => p.Size, p => p.Deck))
+            {
+                try
                 {
                     await _context.SaveChangesAsync();
-					return RedirectToAction(nameof(Index));
-				}
+                    await LogActivity($"Machine Type '{machinetypeToUpdate.Class} - {machinetypeToUpdate.Size} - {machinetypeToUpdate.Deck}' was edited");
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!MachineTypeExists(machinetypeToUpdate.ID))
@@ -225,8 +218,8 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-				catch (DbUpdateException dex)
-				{
+                catch (DbUpdateException dex)
+                {
                     var baseExceptionMessage = dex.GetBaseException().Message;
                     if (baseExceptionMessage.Contains("UNIQUE"))
                     {
@@ -239,11 +232,11 @@ namespace haver.Controllers
                         ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                     }
                 }
+            }
 
-
-			}
-			return View(machinetypeToUpdate);
+            return View(machinetypeToUpdate);
         }
+
 
         // GET: MachineType/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -272,33 +265,46 @@ namespace haver.Controllers
 
             try
             {
-				if (machineType != null)
-				{
-					_context.MachineType.Remove(machineType);
-				}
+                if (machineType != null)
+                {
+                    _context.MachineType.Remove(machineType);
+                    await _context.SaveChangesAsync();
 
-				await _context.SaveChangesAsync();
-				var returnUrl = ViewData["returnURL"]?.ToString();
-				if (string.IsNullOrEmpty(returnUrl))
-				{
-					return RedirectToAction(nameof(Index));
-				}
-				return Redirect(returnUrl);
-			}
+                    await LogActivity($"Machine Type '{machineType.Class} - {machineType.Size} - {machineType.Deck}' was deleted");
+
+                    await _context.SaveChangesAsync();
+                }
+
+                var returnUrl = ViewData["returnURL"]?.ToString();
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return Redirect(returnUrl);
+            }
             catch (DbUpdateException dex)
             {
                 ExceptionMessageVM msg = new();
                 if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
                 {
                     msg.ErrProperty = "";
-                    msg.ErrMessage = "Unable to Delete " + ViewData["ControllerFriendlyName"] +
-                        ". Remember, you cannot delete a " + ViewData["ControllerFriendlyName"] +
-                        "that has related records.";
+                    msg.ErrMessage = "Unable to Delete. This Machine Type is associated with existing records.";
                 }
 
                 ModelState.AddModelError(msg.ErrProperty, msg.ErrMessage);
             }
             return View(machineType);
+        }
+
+        private async Task LogActivity(string message)
+        {
+            string userName = User.Identity?.Name ?? "Unknown User";
+            _context.ActivityLogs.Add(new ActivityLog
+            {
+                Message = $"{message} by {userName}.",
+                Timestamp = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
         }
 
         private bool MachineTypeExists(int id)

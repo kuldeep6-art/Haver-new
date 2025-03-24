@@ -64,6 +64,7 @@ namespace haver.Controllers
             {
                 _context.Add(ganttTask);
                 await _context.SaveChangesAsync();
+                await LogActivity($"Gantt Task '{ganttTask.SalesOrder.OrderNumber}' was created");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SalesOrderID"] = new SelectList(_context.SalesOrders, "ID", "OrderNumber", ganttTask.SalesOrderID);
@@ -104,6 +105,7 @@ namespace haver.Controllers
                 try
                 {
                     _context.Update(ganttTask);
+                    await LogActivity($"Gantt Task '{ganttTask.SalesOrder.OrderNumber}' was edited");
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -152,7 +154,7 @@ namespace haver.Controllers
             {
                 _context.GanttTasks.Remove(ganttTask);
             }
-
+            await LogActivity($"Gantt Task '{ganttTask.SalesOrder.OrderNumber}' was deleted");
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -207,10 +209,11 @@ namespace haver.Controllers
                 {
                     foreach (var milestone in task.GanttMilestones)
                     {
-                        milestone.Progress = model.Progress.Value;  // ✅ Now works!
+                        milestone.Progress = model.Progress.Value; 
                     }
                 }
 
+                await LogActivity($"Gantt Task '{task.SalesOrder.OrderNumber}' was updated");
                 await _context.SaveChangesAsync();
                 return Ok(new { message = "Task updated successfully." });
             }
@@ -220,6 +223,16 @@ namespace haver.Controllers
             }
         }
 
+        private async Task LogActivity(string message)
+        {
+            string userName = User.Identity?.Name ?? "Unknown User";
+            _context.ActivityLogs.Add(new ActivityLog
+            {
+                Message = $"{message} by {userName}.",
+                Timestamp = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+        }
 
         private bool GanttTaskExists(int id)
         {
