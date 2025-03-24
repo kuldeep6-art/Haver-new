@@ -364,38 +364,40 @@
     </script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Autofill button handler
-        document.getElementById('autofillButton').addEventListener('click', function (e) {
-            e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function () {
+            // Autofill button handler
+            document.getElementById('autofillButton').addEventListener('click', function (e) {
+                e.preventDefault();
 
-            // Dropdowns
-            document.querySelector('#MachineTypeID').selectedIndex = 1;
+                // Input fields
+                document.querySelector('#MachineModel').value = 'T-500 4 x 10 1D';
+                document.querySelector('#SerialNumber').value = 'TEST-12345';
+                document.querySelector('#ProductionOrderNumber').value = '0978341';
 
-            // Input fields
-            document.querySelector('#SerialNumber').value = 'TEST-12345';
-            document.querySelector('#ProductionOrderNumber').value = 'PO-67890';
+                // Date fields (format: YYYY-MM-DD)
+                const nextWeek = new Date();
+                nextWeek.setDate(nextWeek.getDate() + 7);
+                document.querySelector('#RToShipExp').value = nextWeek.toISOString().split('T')[0];
+                document.querySelector('#RToShipA').value = new Date().toISOString().split('T')[0];
 
-            // Date fields (format: YYYY-MM-DD)
-            const nextWeek = new Date();
-            nextWeek.setDate(nextWeek.getDate() + 7);
-            document.querySelector('#RToShipExp').value = nextWeek.toISOString().split('T')[0];
-            document.querySelector('#RToShipA').value = new Date().toISOString().split('T')[0];
+                document.querySelector('#AssemblyExp').value = new Date().toISOString().split('T')[0];
 
-            // Nameplate dropdown
-            document.querySelector('#Nameplate').value = 'Yes';
 
-            // Numeric fields
-            document.querySelector('#BudgetedHours').value = 40;
-            document.querySelector('#ActualAssemblyHours').value = 45;
-            document.querySelector('#ReworkHours').value = 5;
+                // Nameplate dropdown
+                document.querySelector('#Nameplate').value = 'Yes';
 
-            // Summernote fields (assuming you're using Summernote editor)
-            $('#PreOrder').summernote('code', '<p>Test pre-order specifications</p>');
-            $('#Scope').summernote('code', '<p>Test scope details</p>');
+                // Numeric fields
+                document.querySelector('#BudgetedHours').value = 40;
+                document.querySelector('#ActualAssemblyHours').value = 45;
+                document.querySelector('#ReworkHours').value = 5;
+
+                // Summernote fields (assuming you're using Summernote editor)
+                $('#PreOrder').summernote('code', '<p>Test pre-order specifications</p>');
+                $('#Scope').summernote('code', '<p>Test scope details</p>');
+            });
         });
-    });
-</script>
+
+    </script>
 
     <script>
         $('#addMachineModal').on('show.bs.modal', function (event) {
