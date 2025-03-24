@@ -227,7 +227,7 @@ namespace haver.Controllers
         {
             try
             {
-                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CompanyName == salesOrder.CompanyName);
+                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CompanyName.ToUpper() == salesOrder.CompanyName.ToUpper());
                 if (customer == null)
                 {
                     customer = new Customer { CompanyName = salesOrder.CompanyName };
@@ -457,25 +457,28 @@ namespace haver.Controllers
             return RedirectToAction(nameof(Index));  // Redirect back to the Index page after restoring.
         }
 
-		
-		//Return customer name suggestions
-		public async Task<JsonResult> GetCompanyName(string term)
+
+        //Return customer name suggestions
+        public async Task<JsonResult> GetCompanyName(string term)
         {
             if (string.IsNullOrEmpty(term))
             {
                 return Json(new List<string>());
             }
 
+            term = term.ToUpper(); // Convert input to uppercase
+
             var companyNames = await _context.Customers
-                .Where(c => c.CompanyName.Contains(term))
-                .Select(c => c.CompanyName)
+                .Where(c => c.CompanyName.ToUpper().Contains(term))
+                .Select(c => c.CompanyName) // Keep original casing
                 .Take(10)
                 .ToListAsync();
 
             return Json(companyNames);
         }
 
-		[Authorize(Roles = "Admin,Sales")]
+
+        [Authorize(Roles = "Admin,Sales")]
 		public async Task<IActionResult> Complete(int id)
         {
             var salesOrder = await _context.SalesOrders
