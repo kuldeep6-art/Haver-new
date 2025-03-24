@@ -519,6 +519,7 @@ namespace haver.Controllers
 		[HttpPost]
 		public IActionResult DownloadSchedules(ScheduleExportOptionsViewModel options)
 		{
+			// Fetch sales orders with related data
 			var salesOrders = _context.SalesOrders
 				.Include(so => so.Machines).ThenInclude(m => m.MachineType)
 				.Include(so => so.Machines).ThenInclude(m => m.Procurements).ThenInclude(p => p.Vendor)
@@ -533,11 +534,10 @@ namespace haver.Controllers
 					? so.Machines.Select(m => new MachineScheduleViewModel
 					{
 						SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
-                        SalesOrderDate = options.IncludeSalesOrderDate
-    ? (so?.SoDate?.ToShortDateString() ?? "N/A")
-    : null,
-
-                        CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+						SalesOrderDate = options.IncludeSalesOrderDate
+							? (so?.SoDate?.ToShortDateString() ?? "N/A")
+							: null,
+						CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 						MachineDescriptions = options.IncludeMachineDescriptions ? (m?.MachineModel ?? "Unknown") : null,
 						SerialNumbers = options.IncludeSerialNumbers ? (m?.SerialNumber ?? "N/A") : null,
 						ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
@@ -552,27 +552,26 @@ namespace haver.Controllers
 						PoDueDates = options.IncludePoDueDates && m?.Procurements != null && m.Procurements.Any()
 							? string.Join(", ", m.Procurements.Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
 							: null,
-						//DeliveryDates = options.IncludeDeliveryDates && m?.Procurements != null && m.Procurements.Any()
-						//	? string.Join(", ", m.Procurements.Select(p => p.ExpDueDate.HasValue ? p.ExpDueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
-						//	: null,
 						Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 						SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 						Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
 						AirSeal = options.IncludeAirSeal ? (so?.AirSeal ?? false ? "Yes" : "No") : null,
 						CoatingLining = options.IncludeCoatingLining ? (so?.CoatingLining ?? false ? "Yes" : "No") : null,
 						Disassembly = options.IncludeDisassembly ? (so?.Disassembly ?? false ? "Yes" : "No") : null,
+						Comments = options.IncludeNotes
+							? (!string.IsNullOrEmpty(so?.Comments) ? Regex.Replace(so.Comments, "<.*?>", string.Empty) : "N/A") // Ensure "N/A" if null/empty
+							: null,
 						PreOrder = options.IncludePreOrder ? (!string.IsNullOrEmpty(m?.PreOrder) ? Regex.Replace(m.PreOrder, "<.*?>", string.Empty) : "N/A") : null,
 						Scope = options.IncludeScope ? (!string.IsNullOrEmpty(m?.Scope) ? Regex.Replace(m.Scope, "<.*?>", string.Empty) : "N/A") : null,
 						ActualAssemblyHours = options.IncludeActualAssemblyHours ? (m?.ActualAssemblyHours != null ? $"{m.ActualAssemblyHours} hrs" : "N/A") : null,
 						ReworkHours = options.IncludeReworkHours ? (m?.ReworkHours != null ? $"{m.ReworkHours} hrs" : "N/A") : null,
 						NamePlate = options.IncludeNamePlate ? (m?.Nameplate?.ToString() ?? "N/A") : null
-						// Removed Notes property
 					})
 					: new[] { new MachineScheduleViewModel
 			{
 				SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
-                SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.HasValue == true ? so.SoDate.Value.ToShortDateString() : "N/A") : null,
-                CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.HasValue == true ? so.SoDate.Value.ToShortDateString() : "N/A") : null,
+						CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 				Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 				SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 				Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
@@ -580,7 +579,10 @@ namespace haver.Controllers
 				CoatingLining = options.IncludeCoatingLining ? (so?.CoatingLining ?? false ? "Yes" : "No") : null,
 				Disassembly = options.IncludeDisassembly ? (so?.Disassembly ?? false ? "Yes" : "No") : null,
 				PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
-				PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToString() ?? "N/A") : null
+				PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
+				Comments = options.IncludeNotes
+					? (!string.IsNullOrEmpty(so?.Comments) ? Regex.Replace(so.Comments, "<.*?>", string.Empty) : "N/A") // Ensure "N/A" if null/empty
+                    : null
 			} })
 				.ToList();
 
@@ -612,14 +614,10 @@ namespace haver.Controllers
 						: null,
 					CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 					Quantity = options.IncludeQuantity ? (so?.Machines?.Count() ?? 0) : 0,
-                    MachineModel = options.IncludeMachineModel && so?.Machines != null
-    ? string.Join("\n", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
-    : null,
-
-                    //               Size = options.IncludeSize && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Size ?? "N/A")) : null,
-                    //Class = options.IncludeClass && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Class ?? "N/A")) : null,
-                    //SizeDeck = options.IncludeSizeDeck && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Deck ?? "N/A")) : null,
-                    Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
+					MachineModel = options.IncludeMachineModel && so?.Machines != null
+						? string.Join("\n", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
+						: null,
+					Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 					SpareParts = options.IncludeGanttSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 					ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
 					GanttData = options.IncludeGanttData && ganttDataLookup.ContainsKey(so?.ID ?? 0) ? ganttDataLookup[so.ID] : null,
@@ -663,13 +661,12 @@ namespace haver.Controllers
 					return BadRequest($"Could not build and download the file: {ex.Message}");
 				}
 			}
-		}
-		// Helper method to set up Machine Schedules worksheet
+		}// Helper method to set up Machine Schedules worksheet
 		private void SetupMachineSchedulesWorksheet(ExcelWorksheet workSheet, List<MachineScheduleViewModel> schedules, ScheduleExportOptionsViewModel options)
 		{
-			// Title
+			// Title (unchanged)
 			workSheet.Cells[1, 1].Value = "Machine Schedule Report";
-			using (ExcelRange title = workSheet.Cells[1, 1, 1, 24])
+			using (ExcelRange title = workSheet.Cells[1, 1, 1, 25])
 			{
 				title.Merge = true;
 				title.Style.Font.Bold = true;
@@ -680,9 +677,9 @@ namespace haver.Controllers
 				title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 			}
 
-			// Timestamp
+			// Timestamp (unchanged)
 			DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-			using (ExcelRange timestamp = workSheet.Cells[2, 1, 2, 24])
+			using (ExcelRange timestamp = workSheet.Cells[2, 1, 2, 25])
 			{
 				timestamp.Merge = true;
 				timestamp.Value = "Created: " + localDate.ToString("yyyy-MM-dd HH:mm");
@@ -695,7 +692,6 @@ namespace haver.Controllers
 
 			// Dynamic Headers
 			var headers = new List<(string Name, bool Include, Color? Color)>();
-			int colIndex = 1;
 			if (options.IncludeSalesOrderNumber) headers.Add(("Sales Order", true, Color.LightBlue));
 			if (options.IncludeSalesOrderDate) headers.Add(("Order Date", true, Color.LightBlue));
 			if (options.IncludeCustomerName) headers.Add(("Customer Name", true, Color.LightBlue));
@@ -707,26 +703,26 @@ namespace haver.Controllers
 			if (options.IncludeVendorNames) headers.Add(("Vendors", true, Color.LightBlue));
 			if (options.IncludePoNumbers) headers.Add(("PO Number", true, Color.LightBlue));
 			if (options.IncludePoDueDates) headers.Add(("PO Due Date", true, Color.LightBlue));
-			//if (options.IncludeDeliveryDates) headers.Add(("Delivery Date", true, Color.LightBlue));
 			if (options.IncludeMedia) headers.Add(("Media", true, Color.LightBlue));
 			if (options.IncludeSpareParts) headers.Add(("Spare Parts", true, Color.LightBlue));
 			if (options.IncludeBase) headers.Add(("Base", true, Color.LightBlue));
 			if (options.IncludeAirSeal) headers.Add(("Air Seal", true, Color.LightBlue));
 			if (options.IncludeCoatingLining) headers.Add(("Coating Lining", true, Color.LightBlue));
 			if (options.IncludeDisassembly) headers.Add(("Disassembly", true, Color.LightBlue));
+			if (options.IncludeNotes) headers.Add(("Comments", true, Color.LightBlue)); // Fixed condition
 
-			// Add headers before Notes/Comments
-			for (int i = 0; i < headers.Count; i++)
+			int colIndex = 1;
+			foreach (var header in headers)
 			{
-				workSheet.Cells[3, colIndex].Value = headers[i].Name;
+				workSheet.Cells[3, colIndex].Value = header.Name;
 				workSheet.Cells[3, colIndex].Style.Font.Bold = true;
 				workSheet.Cells[3, colIndex].Style.Fill.PatternType = ExcelFillStyle.Solid;
-				workSheet.Cells[3, colIndex].Style.Fill.BackgroundColor.SetColor(headers[i].Color ?? Color.LightBlue);
+				workSheet.Cells[3, colIndex].Style.Fill.BackgroundColor.SetColor(header.Color ?? Color.LightBlue);
 				workSheet.Cells[3, colIndex].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 				colIndex++;
 			}
 
-			// Handle Notes/Comments Main Header and Sub-Headers
+			// Notes Sub-Headers
 			var noteHeaders = new List<(string Name, bool Include, Color Color)>
 	{
 		("PreOrder", options.IncludePreOrder, Color.FromArgb(255, 204, 0)),
@@ -742,11 +738,10 @@ namespace haver.Controllers
 				int notesStartCol = colIndex;
 				int notesEndCol = notesStartCol + includedNoteHeaders.Count - 1;
 
-				// Merge and style the main "Notes/Comments" header
 				using (var notesHeaderRange = workSheet.Cells[3, notesStartCol, 3, notesEndCol])
 				{
 					notesHeaderRange.Merge = true;
-					notesHeaderRange.Value = "Notes/Comments";
+					notesHeaderRange.Value = "Notes";
 					notesHeaderRange.Style.Font.Bold = true;
 					notesHeaderRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
 					notesHeaderRange.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
@@ -754,7 +749,6 @@ namespace haver.Controllers
 					notesHeaderRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 				}
 
-				// Add sub-headers
 				int subCol = notesStartCol;
 				foreach (var nh in includedNoteHeaders)
 				{
@@ -767,10 +761,10 @@ namespace haver.Controllers
 					workSheet.Cells[4, subCol].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 					subCol++;
 				}
-				colIndex = notesEndCol + 1; // Update colIndex to point after the last sub-header
+				colIndex = notesEndCol + 1;
 			}
 
-			// Load Data Dynamically
+			// Load Data
 			int row = 5;
 			foreach (var schedule in schedules)
 			{
@@ -786,13 +780,13 @@ namespace haver.Controllers
 				if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = schedule.VendorNames ?? "";
 				if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = schedule.PoNumbers ?? "";
 				if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = schedule.PoDueDates ?? "";
-				//if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = schedule.DeliveryDates ?? "";
 				if (options.IncludeMedia) workSheet.Cells[row, colIndex++].Value = schedule.Media ?? "";
 				if (options.IncludeSpareParts) workSheet.Cells[row, colIndex++].Value = schedule.SpareParts ?? "";
 				if (options.IncludeBase) workSheet.Cells[row, colIndex++].Value = schedule.Base ?? "";
 				if (options.IncludeAirSeal) workSheet.Cells[row, colIndex++].Value = schedule.AirSeal ?? "";
 				if (options.IncludeCoatingLining) workSheet.Cells[row, colIndex++].Value = schedule.CoatingLining ?? "";
 				if (options.IncludeDisassembly) workSheet.Cells[row, colIndex++].Value = schedule.Disassembly ?? "";
+				if (options.IncludeNotes) workSheet.Cells[row, colIndex++].Value = schedule.Comments ?? ""; // Added Comments
 				if (options.IncludePreOrder) workSheet.Cells[row, colIndex++].Value = schedule.PreOrder ?? "";
 				if (options.IncludeScope) workSheet.Cells[row, colIndex++].Value = schedule.Scope ?? "";
 				if (options.IncludeActualAssemblyHours) workSheet.Cells[row, colIndex++].Value = schedule.ActualAssemblyHours ?? "";
@@ -802,32 +796,48 @@ namespace haver.Controllers
 			}
 
 			// Borders and Styling
-			using (var range = workSheet.Cells[5, 1, row - 1, colIndex - 1])
+			if (row > 5) // Only apply if there's data
 			{
-				range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-				range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-				range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-				range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				using (var range = workSheet.Cells[5, 1, row - 1, colIndex - 1])
+				{
+					range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				}
 			}
 
-			// Text Wrapping for Selected Columns
+			// Text Wrapping
 			colIndex = 1;
+			if (options.IncludeSalesOrderNumber) colIndex++;
+			if (options.IncludeSalesOrderDate) colIndex++;
+			if (options.IncludeCustomerName) colIndex++;
 			if (options.IncludeMachineDescriptions) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeSerialNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeProductionOrderNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludePackageReleaseDateE) colIndex++;
+			if (options.IncludePackageReleaseDateA) colIndex++;
 			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludePoDueDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
-			//if (options.IncludeDeliveryDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
+			if (options.IncludeMedia) colIndex++;
+			if (options.IncludeSpareParts) colIndex++;
+			if (options.IncludeBase) colIndex++;
+			if (options.IncludeAirSeal) colIndex++;
+			if (options.IncludeCoatingLining) colIndex++;
+			if (options.IncludeDisassembly) colIndex++;
+			if (options.IncludeNotes) colIndex++;
 			if (options.IncludePreOrder) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeScope) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeActualAssemblyHours) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeReworkHours) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 			if (options.IncludeNamePlate) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
 
-			// Column Widths (adjust dynamically based on included columns)
+			// Column Widths
 			workSheet.Cells.AutoFitColumns();
 			colIndex = 1;
+			if (options.IncludeSalesOrderNumber) colIndex++;
+			if (options.IncludeSalesOrderDate) colIndex++;
 			if (options.IncludeCustomerName) workSheet.Column(colIndex++).Width = 25; else colIndex++;
 			if (options.IncludeMachineDescriptions) workSheet.Column(colIndex++).Width = 20; else colIndex++;
 			if (options.IncludeSerialNumbers) workSheet.Column(colIndex++).Width = 20; else colIndex++;
@@ -836,6 +846,14 @@ namespace haver.Controllers
 			if (options.IncludePackageReleaseDateA) workSheet.Column(colIndex++).Width = 15; else colIndex++;
 			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Width = 30; else colIndex++;
 			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Width = 12; else colIndex++;
+			if (options.IncludePoDueDates) colIndex++;
+			if (options.IncludeMedia) colIndex++;
+			if (options.IncludeSpareParts) colIndex++;
+			if (options.IncludeBase) colIndex++;
+			if (options.IncludeAirSeal) colIndex++;
+			if (options.IncludeCoatingLining) colIndex++;
+			if (options.IncludeDisassembly) colIndex++;
+			if (options.IncludeNotes) colIndex++;
 			if (options.IncludePreOrder) workSheet.Column(colIndex++).Width = 15; else colIndex++;
 			if (options.IncludeScope) workSheet.Column(colIndex++).Width = 15; else colIndex++;
 			if (options.IncludeActualAssemblyHours) workSheet.Column(colIndex++).Width = 15; else colIndex++;
