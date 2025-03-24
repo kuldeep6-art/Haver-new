@@ -67,19 +67,19 @@
                 <dt class="col-md-2">Customer</dt>
                 <dd class="col-md-2">@Model.GanttData.Machine.SalesOrder.CompanyName</dd>
 
-                <dt class="col-md-2">Approval Drawings Released</dt>
-                <dd class="col-md-2">@Model.GanttData.AppDRcd?.ToString("MMM dd, yyyy")</dd>
-
                 <dt class="col-md-2">Approval Drawings Expected</dt>
                 <dd class="col-md-2">@Model.GanttData.AppDExp?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-2">Engineering Expected</dt>
+                    <dt class="col-md-2">Approval Drawings Released</dt>
+                    <dd class="col-md-2">@Model.GanttData.AppDRcd?.ToString("MMM dd, yyyy")</dd>
+
+                <dt class="col-md-2">Engineering Package Expected</dt>
                 <dd class="col-md-2">@Model.GanttData.EngExpected?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-2">Engineering Released</dt>
+                <dt class="col-md-2">Engineering Package Released</dt>
                 <dd class="col-md-2">@Model.GanttData.EngReleased?.ToString("MMM dd, yyyy")</dd>
 
-                <dt class="col-md-2">Package Released</dt>
+                <dt class="col-md-2">Package Released to PIC</dt>
                 <dd class="col-md-2">@Model.GanttData.PackageReleased?.ToString("MMM dd, yyyy")</dd>
 
                 <dt class="col-md-2">Purchase Orders Expected</dt>
