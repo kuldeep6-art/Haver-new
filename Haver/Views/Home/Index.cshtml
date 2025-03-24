@@ -20,11 +20,12 @@
         var isProcurement = User.IsInRole("Procurement");
         var isPIC = User.IsInRole("PIC");
         var isProduction = User.IsInRole("Production");
+
+        // Check if the user has no specific role
+        var hasNoRole = !(isAdmin || isSales || isProcurement || isPIC || isProduction);
     }
 
     <div class="row g-4 justify-content-center mb-5">
-
-        <!-- Admin Role -->
         @if (isAdmin)
         {
             <div class="col-12 col-md-6 col-lg-4">
@@ -47,7 +48,6 @@
             </div>
         }
 
-        <!-- Sales Role -->
         @if (isSales)
         {
             <div class="col-12 col-md-6 col-lg-4">
@@ -70,7 +70,6 @@
             </div>
         }
 
-        <!-- Procurement Role -->
         @if (isProcurement)
         {
             <div class="col-12 col-md-6 col-lg-4">
@@ -84,7 +83,6 @@
             </div>
         }
 
-        <!-- PIC Role -->
         @if (isPIC)
         {
             <div class="col-12 col-md-6 col-lg-4">
@@ -101,13 +99,12 @@
                     <a asp-controller="Machine" asp-action="Index">
                         <i class="fas fa-cogs"></i>
                         <h3>View Machines</h3>
-                        <p>Start details of all machines.</p>
+                        <p>See details of all machines.</p>
                     </a>
                 </div>
             </div>
         }
 
-        <!-- Production Role -->
         @if (isProduction)
         {
             <div class="col-12 col-md-6 col-lg-4">
@@ -121,7 +118,7 @@
             </div>
         }
 
-        <!-- Common Report Download (for all users) -->
+
         <div class="col-12 col-md-6 col-lg-4">
             <div class="dashboard-card">
                 <a asp-controller="GanttData" asp-action="ExportSchedules">
@@ -132,10 +129,24 @@
             </div>
         </div>
 
+        @if (hasNoRole)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="dashboard-card">
+                    <a asp-controller="SalesOrder" asp-action="Index">
+                        <i class="fas fa-box"></i>
+                        <h3>View Sales Orders</h3>
+                        <p>See details of all sales orders.</p>
+                    </a>
+                </div>
+            </div>
+        }
     </div>
 
 
 
+     @if (isAdmin)
+        {
     <div class="row justify-content-center mb-4">
         <div class="col-md-10">
             <div class="recent-activity p-4 rounded shadow-sm bg-white">
@@ -152,6 +163,7 @@
             </div>
         </div>
     </div>
+        }
 
     <div class="text-center mt-5">
         <p id="year">&copy; <span id="currentYear"></span></p>
