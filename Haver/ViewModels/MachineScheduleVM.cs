@@ -25,5 +25,6 @@
 		public string ActualAssemblyHours { get; set; }
 		public string ReworkHours { get; set; }
 		public string NamePlate { get; set; }
+		public string Comments { get; set; }
 	}
 }
