@@ -844,9 +844,9 @@ SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.HasValue == true ? 
 			if (options.IncludeProductionOrderNumbers) workSheet.Column(colIndex++).Width = 15; else colIndex++;
 			if (options.IncludePackageReleaseDateE) workSheet.Column(colIndex++).Width = 15; else colIndex++;
 			if (options.IncludePackageReleaseDateA) workSheet.Column(colIndex++).Width = 15; else colIndex++;
-			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Width = 30; else colIndex++;
+			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Width = 21; else colIndex++;
 			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Width = 12; else colIndex++;
-			if (options.IncludePoDueDates) colIndex++;
+			if (options.IncludePoDueDates) workSheet.Column(colIndex++).Width = 12; else colIndex++;
 			if (options.IncludeMedia) colIndex++;
 			if (options.IncludeSpareParts) colIndex++;
 			if (options.IncludeBase) colIndex++;
