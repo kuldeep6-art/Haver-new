@@ -25,7 +25,7 @@ namespace haver.Controllers
         }
 
         // GET: Machine
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? PoString, string? SerString,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? MMString, string? PoString, string? SerString,
             string? actionButton, string sortDirection = "asc", string sortField = "Serial Number")
         {
             //List of sort options.
@@ -43,8 +43,13 @@ namespace haver.Controllers
 							  .Include(s => s.SalesOrder)
 							  .AsNoTracking()
 						   select s;
-            
-            
+
+
+            if (!String.IsNullOrEmpty(MMString))
+            {
+                machines = machines.Where(p => p.MachineModel.ToUpper().Contains(MMString.ToUpper()));
+                numberFilters++;
+            }
 
             if (!String.IsNullOrEmpty(PoString))
             {

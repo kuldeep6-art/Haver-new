@@ -30,7 +30,7 @@
  *@
                            
                             <label asp-for="MachineModel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                @Html.DisplayNameFor(model => model.MachineModel)
+                                @Html.DisplayNameFor(model => model.MachineModel)  <span class="text-danger">*</span>
                             </label>
                             <input asp-for="MachineModel" class="form-control" placeholder="Enter Class - Size x Deck"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -42,7 +42,7 @@
                         <!-- Sales Order -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="SalesOrderID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.SalesOrderID)
+                                @Html.DisplayNameFor(model => model.SalesOrderID) <span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
                             </label>
                             <div class="readonly-dropdown">
@@ -58,7 +58,7 @@
                         <!-- Serial Number -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="SerialNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.SerialNumber)
+                                @Html.DisplayNameFor(model => model.SerialNumber)  <span class="text-danger">*</span>
                             </label>
                             <input asp-for="SerialNumber" class="form-control" placeholder="Enter Serial Number"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
@@ -81,7 +81,7 @@
                         <!-- RToShipExp -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="RToShipExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.RToShipExp)
+                                @Html.DisplayNameFor(model => model.RToShipExp)  <span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Expected shipping date"></i>
                             </label>
                             <input asp-for="RToShipExp" class="form-control"
@@ -117,7 +117,7 @@
 
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="AssemblyExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                @Html.DisplayNameFor(model => model.AssemblyExp)
+                                @Html.DisplayNameFor(model => model.AssemblyExp)  <span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Assembly Expected Date"></i>
                             </label>
                             <input asp-for="AssemblyExp" class="form-control"
