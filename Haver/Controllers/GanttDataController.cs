@@ -362,6 +362,12 @@ namespace haver.Controllers
                             isUpdated = true;
                         }
 
+                        if (gDataToUpdate.EngExpected != null && gDataToUpdate.SalesOrder.EngPExp != gDataToUpdate.EngExpected)
+                        {
+                            gDataToUpdate.SalesOrder.EngPExp = gDataToUpdate.EngExpected;
+                            isUpdated = true;
+                        }
+
                         if (gDataToUpdate.EngReleased != null && gDataToUpdate.SalesOrder.EngPRel != gDataToUpdate.EngReleased)
                         {
                             gDataToUpdate.SalesOrder.EngPRel = gDataToUpdate.EngReleased;
