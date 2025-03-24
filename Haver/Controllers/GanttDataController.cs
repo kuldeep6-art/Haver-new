@@ -613,12 +613,13 @@ namespace haver.Controllers
 					CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
 					Quantity = options.IncludeQuantity ? (so?.Machines?.Count() ?? 0) : 0,
                     MachineModel = options.IncludeMachineModel && so?.Machines != null
-    ? string.Join(", ", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
+    ? string.Join("\n", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
     : null,
-     //               Size = options.IncludeSize && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Size ?? "N/A")) : null,
-					//Class = options.IncludeClass && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Class ?? "N/A")) : null,
-					//SizeDeck = options.IncludeSizeDeck && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Deck ?? "N/A")) : null,
-					Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
+
+                    //               Size = options.IncludeSize && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Size ?? "N/A")) : null,
+                    //Class = options.IncludeClass && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Class ?? "N/A")) : null,
+                    //SizeDeck = options.IncludeSizeDeck && so?.Machines != null ? string.Join(", ", so.Machines.Select(m => m?.MachineType?.Deck ?? "N/A")) : null,
+                    Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
 					SpareParts = options.IncludeGanttSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
 					ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
 					GanttData = options.IncludeGanttData && ganttDataLookup.ContainsKey(so?.ID ?? 0) ? ganttDataLookup[so.ID] : null,
