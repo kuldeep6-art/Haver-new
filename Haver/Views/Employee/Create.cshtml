@@ -66,37 +66,41 @@
          
 
                 <!-- User Roles -->
-                <div class="form-group mb-3">
-                    <label asp-for="UserRoles" class="control-label"
-                           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Roles
-                    </label>
-                    <table class="table">
-                        <tr>
-                            @{
-                                int cnt = 0;
-                                List<haver.ViewModels.RoleVM> roles = ViewBag.Roles;
-                                foreach (var role in roles)
-                                {
-                                    if (cnt++ % 3 == 0)
-                                    {
-                            @:</tr><tr>
-                                    }
-                                    @:<td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                   id="@role.RoleName-CheckBox"
-                                                   name="selectedRoles"
-                                                   value="@role.RoleName"
-                                                   @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) />
-                                            <label class="form-check-label" for="@role.RoleName-CheckBox">@role.RoleName  &nbsp;&nbsp;</label>
-                                        </div>
-                                    @:</td>
-                                }
-                            @:</tr>
-                        }
-                    </table>
-                </div>
+               <div class="form-group mb-3">
+    <label asp-for="UserRoles" class="control-label"
+           style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+      Roles (Please use the switch buttons below to add or remove a user from a role.)
+    </label>
+    <table class="table">
+        <tr>
+            @{
+                int cnt = 0;
+                List<haver.ViewModels.RoleVM> roles = ViewBag.Roles;
+                foreach (var role in roles)
+                {
+                    if (cnt++ % 3 == 0)
+                    {
+            @:</tr><tr>
+                    }
+                    @:<td>
+                        <div class="form-check form-switch" style="cursor: pointer;">
+                            <input class="form-check-input" type="checkbox"
+                                   id="@role.RoleName-CheckBox"
+                                   name="selectedRoles"
+                                   value="@role.RoleName"
+                                   @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) 
+                                   style="transition: background-color 0.3s, transform 0.2s;"/>
+                            <label class="form-check-label" for="@role.RoleName-CheckBox" 
+                                   style="font-weight: bold; cursor: pointer; color: #0056b3;">
+                                @role.RoleName &nbsp;&nbsp;
+                            </label>
+                        </div>
+                    @:</td>
+                }
+            @:</tr>
+        }
+    </table>
+</div>
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
