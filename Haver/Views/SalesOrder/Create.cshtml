@@ -110,6 +110,16 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"/>
                         <span asp-validation-for="AppDwgExp" class="text-danger"></span>
                     </div>
+                    <!-- EngPExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Engineering Package Due <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package expected Date"></i>
+                        </label>
+                        <input asp-for="EngPExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="EngPExp" class="text-danger"></span>
+                    </div>
 
                     <!-- AppDwgRel -->
                     <div class="form-group col-md-4 mb-3">
@@ -122,6 +132,13 @@
                         <span asp-validation-for="AppDwgRel" class="text-danger"></span>
                     </div>
 
+                    
+
+                    
+                </div>
+
+                <!-- Fourth Row -->
+                <div class="row">
                     <!-- AppDwgRet -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRet" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -132,12 +149,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AppDwgRet" class="text-danger"></span>
                     </div>
-
-                    
-                </div>
-
-                <!-- Fourth Row -->
-                <div class="row">
                     <!-- PreOExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="PreOExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -160,16 +171,8 @@
                         <span asp-validation-for="PreORel" class="text-danger"></span>
                     </div>
 
-                    <!-- EngPExp -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Engineering Package Due <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package expected Date"></i>
-                        </label>
-                        <input asp-for="EngPExp" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="EngPExp" class="text-danger"></span>
-                    </div>
+                   
+                   
                     <!-- EngPRel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
