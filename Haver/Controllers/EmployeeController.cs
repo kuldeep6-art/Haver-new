@@ -166,7 +166,6 @@ namespace haver.Controllers
             return View(employeeAdminVM);
         }
 
-
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -219,30 +218,53 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            // Store original values for logging
-            bool previousActiveStatus = employeeToUpdate.Active;
-            string previousEmail = employeeToUpdate.Email;
+            //Note the current Email and Active Status
+            bool ActiveStatus = employeeToUpdate.Active;
+            string databaseEmail = employeeToUpdate.Email;
+
 
             if (await TryUpdateModelAsync<Employee>(employeeToUpdate, "",
-                e => e.FirstName, e => e.LastName, e => e.Phone, e => e.Email, e => e.Active))
+                e => e.FirstName, e => e.LastName, e => e.Phone, e => e.Email,  e => e.Active))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
+                    //Save successful so go on to related changes
 
-                    if (employeeToUpdate.Active != previousActiveStatus)
+                    //Check for changes in the Active state
+                    if (employeeToUpdate.Active == false && ActiveStatus == true)
                     {
-                        string status = employeeToUpdate.Active ? "reactivated" : "deactivated";
-                        await LogActivity($"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} was {status}");
+                        //Deactivating them so delete the IdentityUser
+                        //This deletes the user's login from the security system
+                        await DeleteIdentityUser(employeeToUpdate.Email);
+
+                    }
+                    else if (employeeToUpdate.Active == true && ActiveStatus == false)
+                    {
+                        //You reactivating the user, create them and
+                        //give them the selected roles
+                        InsertIdentityUser(employeeToUpdate.Email, selectedRoles);
+                    }
+                    else if (employeeToUpdate.Active == true && ActiveStatus == true)
+                    {
+                        //No change to Active status so check for a change in Email
+                        //If you Changed the email, Delete the old login and create a new one
+                        //with the selected roles
+                        if (employeeToUpdate.Email != databaseEmail)
+                        {
+                            //Add the new login with the selected roles
+                            InsertIdentityUser(employeeToUpdate.Email, selectedRoles);
+
+                            //This deletes the user's old login from the security system
+                            await DeleteIdentityUser(databaseEmail);
+                        }
+                        else
+                        {
+                            //Finially, Still Active and no change to Email so just Update
+                            await UpdateUserRoles(selectedRoles, employeeToUpdate.Email);
+                        }
                     }
 
-                    if (employeeToUpdate.Email != previousEmail)
-                    {
-                        await LogActivity($"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} updated their email from {previousEmail} to {employeeToUpdate.Email}");
-                    }
-
-
-                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -268,7 +290,7 @@ namespace haver.Controllers
                     }
                 }
             }
-
+            //We are here because something went wrong and need to redisplay
             EmployeeAdminVM employeeAdminVM = new EmployeeAdminVM
             {
                 Email = employeeToUpdate.Email,
