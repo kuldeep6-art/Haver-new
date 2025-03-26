@@ -88,7 +88,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="UserRoles" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Roles
+                         Roles (Please use the switch buttons below to add or remove a user from a role.)
                     </label>
                     <table class="table">
                         <tr>
@@ -108,7 +108,8 @@
                                                    name="selectedRoles"
                                                    value="@role.RoleName"
                                                    @(Html.Raw(role.Assigned ? "checked=\"checked\"" : "")) />
-                                            <label class="form-check-label" for="@role.RoleName-CheckBox">@role.RoleName  &nbsp;&nbsp;</label>
+                                            <label class="form-check-label" for="@role.RoleName-CheckBox"  style="font-weight: bold; cursor: pointer; color: #0056b3;">
+                                            @role.RoleName  &nbsp;&nbsp;</label>
                                         </div>
                                     @:</td>
                                 }
