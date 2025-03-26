@@ -166,7 +166,6 @@ namespace haver.Controllers
             return View(employeeAdminVM);
         }
 
-
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -219,30 +218,83 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            // Store original values for logging
-            bool previousActiveStatus = employeeToUpdate.Active;
-            string previousEmail = employeeToUpdate.Email;
+            // Note the current Email and Active Status
+            bool ActiveStatus = employeeToUpdate.Active;
+            string databaseEmail = employeeToUpdate.Email;
 
-            if (await TryUpdateModelAsync<Employee>(employeeToUpdate, "",
+            // Get the currently logged-in admin
+            var loggedInUser = User.Identity.Name;
+
+            // Check if the user being edited is the logged-in admin
+            bool isEditingSelf = employeeToUpdate.Email == loggedInUser;
+
+            // Get the roles of the user being edited
+            var user = await _userManager.FindByEmailAsync(employeeToUpdate.Email);
+            var userRoles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
+
+            // Check if they are the only active admin
+            bool isOnlyAdmin = userRoles.Contains("Admin") &&
+                (await _userManager.GetUsersInRoleAsync("Admin")).Count == 1;
+
+            // Create the EmployeeAdminVM instance for the view
+            var employeeAdminVM = new EmployeeAdminVM
+            {
+                ID = employeeToUpdate.ID,
+                Email = employeeToUpdate.Email,
+                Active = employeeToUpdate.Active,
+                FirstName = employeeToUpdate.FirstName,
+                LastName = employeeToUpdate.LastName,
+                Phone = employeeToUpdate.Phone,
+                UserRoles = userRoles.ToList() // Ensure the roles are passed correctly
+            };
+
+            if (isOnlyAdmin && isEditingSelf)
+            {
+                // Prevent deactivation or admin role removal
+                if (!Active)
+                {
+                    ModelState.AddModelError("", "You cannot deactivate yourself because you are the only admin.");
+                    PopulateAssignedRoleData(employeeAdminVM);
+                    return View(employeeAdminVM);
+                }
+
+                if (!selectedRoles.Contains("Admin"))
+                {
+                    ModelState.AddModelError("", "You cannot remove yourself from the Admin role because you are the only admin.");
+                    PopulateAssignedRoleData(employeeAdminVM);
+                    return View(employeeAdminVM);
+                }
+            }
+
+            if (await TryUpdateModelAsync(employeeToUpdate, "",
                 e => e.FirstName, e => e.LastName, e => e.Phone, e => e.Email, e => e.Active))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
 
-                    if (employeeToUpdate.Active != previousActiveStatus)
+                    // Handle Active status changes
+                    if (employeeToUpdate.Active == false && ActiveStatus == true)
                     {
-                        string status = employeeToUpdate.Active ? "reactivated" : "deactivated";
-                        await LogActivity($"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} was {status}");
+                        await DeleteIdentityUser(employeeToUpdate.Email);
+                    }
+                    else if (employeeToUpdate.Active == true && ActiveStatus == false)
+                    {
+                        InsertIdentityUser(employeeToUpdate.Email, selectedRoles);
+                    }
+                    else if (employeeToUpdate.Active == true && ActiveStatus == true)
+                    {
+                        if (employeeToUpdate.Email != databaseEmail)
+                        {
+                            InsertIdentityUser(employeeToUpdate.Email, selectedRoles);
+                            await DeleteIdentityUser(databaseEmail);
+                        }
+                        else
+                        {
+                            await UpdateUserRoles(selectedRoles, employeeToUpdate.Email);
+                        }
                     }
 
-                    if (employeeToUpdate.Email != previousEmail)
-                    {
-                        await LogActivity($"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} updated their email from {previousEmail} to {employeeToUpdate.Email}");
-                    }
-
-
-                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -269,22 +321,11 @@ namespace haver.Controllers
                 }
             }
 
-            EmployeeAdminVM employeeAdminVM = new EmployeeAdminVM
-            {
-                Email = employeeToUpdate.Email,
-                Active = employeeToUpdate.Active,
-                ID = employeeToUpdate.ID,
-                FirstName = employeeToUpdate.FirstName,
-                LastName = employeeToUpdate.LastName,
-                Phone = employeeToUpdate.Phone
-            };
-            foreach (var role in selectedRoles)
-            {
-                employeeAdminVM.UserRoles.Add(role);
-            }
+            // Ensure we populate roles again before returning the view
             PopulateAssignedRoleData(employeeAdminVM);
             return View(employeeAdminVM);
         }
+
 
         private void PopulateAssignedRoleData(EmployeeAdminVM employee)
         {//Prepare checkboxes for all Roles
