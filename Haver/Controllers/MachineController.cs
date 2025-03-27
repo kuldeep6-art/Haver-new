@@ -267,7 +267,7 @@ namespace haver.Controllers
 
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = true, message = "Machine has been successfully created and Gantt record added.", redirectUrl = Url.Action("Details", "SalesOrder", new { id = machine.SalesOrderID }) });
+                    return Json(new { success = true, message = "Machine has been successfully created and Gantt record added.", redirectUrl = Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID }) });
                 }
 
                 TempData["Message"] = "Machine has been successfully created and Gantt record added.";
