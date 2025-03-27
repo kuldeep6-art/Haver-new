@@ -68,12 +68,6 @@ namespace haver.Data
                              LastName = "Flintstone",
                              Email = "sales@outlook.com"
                          },
-                         new Employee
-                         {
-                             FirstName = "Betty",
-                             LastName = "Rubble",
-                             Email = "user@outlook.com"
-                         },
                           new Employee
                           {
                               FirstName = "Kelly",

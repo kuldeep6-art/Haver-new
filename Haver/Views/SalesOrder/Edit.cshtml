@@ -60,6 +60,42 @@
 
                 <!-- Second Row -->
                 <div class="row">
+                    <!-- AppDwgExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawings due date"></i>
+                        </label>
+                        <input asp-for="AppDwgExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
+                    </div>
+
+                    <!-- EngPExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.EngPExp) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package due Date"></i>
+                        </label>
+                        <input asp-for="EngPExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="EngPExp" class="text-danger"></span>
+                    </div>
+
+                    <!-- Shipping Terms -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.ShippingTerms)
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Shipping terms and conditions"></i>
+                        </label>
+                        <input asp-for="ShippingTerms" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="ShippingTerms" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Third Row -->
+                <div class="row">
                     <!-- Price -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -86,42 +122,7 @@
                         </select>
                         <span asp-validation-for="Currency" class="text-danger"></span>
                     </div>
-
-                    <!-- Shipping Terms -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.ShippingTerms)
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Shipping terms and conditions"></i>
-                        </label>
-                        <input asp-for="ShippingTerms" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="ShippingTerms" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Third Row -->
-                <div class="row">
-                    <!-- AppDwgExp -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawings expected date"></i>
-                        </label>
-                        <input asp-for="AppDwgExp" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
-                    </div>
-
-                    <!-- EngPExp -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.EngPExp) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package Expected Date"></i>
-                        </label>
-                        <input asp-for="EngPExp" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="EngPExp" class="text-danger"></span>
-                    </div>
+                   
 
                     <!-- AppDwgRel -->
                     <div class="form-group col-md-4 mb-3">
