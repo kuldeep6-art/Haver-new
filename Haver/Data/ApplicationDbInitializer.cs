@@ -157,18 +157,18 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "PIC").Wait();
                             }
                         }
-                        if (userManager.FindByEmailAsync("user@outlook.com").Result == null)
-                        {
-                            IdentityUser user = new IdentityUser
-                            {
-                                UserName = "user@outlook.com",
-                                Email = "user@outlook.com",
-                                EmailConfirmed = true
-                            };
+                        //if (userManager.FindByEmailAsync("user@outlook.com").Result == null)
+                        //{
+                        //    IdentityUser user = new IdentityUser
+                        //    {
+                        //        UserName = "user@outlook.com",
+                        //        Email = "user@outlook.com",
+                        //        EmailConfirmed = true
+                        //    };
 
-                            IdentityResult result = userManager.CreateAsync(user, defaultPassword).Result;
-                            //Not in any role
-                        }
+                        //    IdentityResult result = userManager.CreateAsync(user, defaultPassword).Result;
+                        //    //Not in any role
+                        //}
                     }
                     catch (Exception ex)
                     {
