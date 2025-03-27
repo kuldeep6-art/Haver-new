@@ -47,14 +47,57 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
+                            <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                @Html.DisplayNameFor(model => model.StartOfWeek)
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
+                            </label>
+                            <select asp-for="StartOfWeek" class="form-control"
+                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                    asp-items="Html.GetEnumSelectList<WeekStartOption>()"></select>
+                            <span asp-validation-for="StartOfWeek" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
                             <label asp-for="AppDExp" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Approval Drawings Due 
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Approval Drawings Due Date"></i>
+                              @*   <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Approval Drawings Due Date"></i> *@
                             </label>
                             <input asp-for="AppDExp" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AppDRcd" placeholder="Enter Approval Drawings Due" />
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AppDRcd" placeholder="Enter Approval Drawings Due" readonly/>
                             <span asp-validation-for="AppDExp" class="text-danger"></span>
+                        </div>
+                    </div>
+                   
+                   
+                    
+                </div>
+
+            
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="EngExpected" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Engineering Package Due
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Due date."></i>
+                            </label>
+                            <input asp-for="EngExpected" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngExpected" placeholder="Enter Engineering Package Expected Date" readonly />
+                            <span asp-validation-for="EngExpected" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PurchaseOrdersIssued" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Purchase Orders Issued
+                                @* <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were issued."></i> *@
+                            </label>
+                            <input asp-for="PurchaseOrdersIssued" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersIssued" placeholder="Enter Purchase Orders Issued Date" readonly />
+                            <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -69,36 +112,14 @@
                             <span asp-validation-for="AppDRcd" class="text-danger"></span>
                         </div>
                     </div>
-                    
+
+                   
+                   
                     
                 </div>
 
-            
+                <!-- Row 3: PurchaseOrdersIssued, PurchaseOrdersCompleted, SupplierPODue -->
                 <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                @Html.DisplayNameFor(model => model.StartOfWeek)
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
-                            </label>
-                            <select asp-for="StartOfWeek" class="form-control"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    asp-items="Html.GetEnumSelectList<WeekStartOption>()"></select>
-                            <span asp-validation-for="StartOfWeek" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label asp-for="EngExpected" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Engineering Package Due
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Due date."></i>
-                            </label>
-                            <input asp-for="EngExpected" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngExpected" placeholder="Enter Engineering Package Expected Date" />
-                            <span asp-validation-for="EngExpected" class="text-danger"></span>
-                        </div>
-                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="EngReleased" class="control-label"
@@ -111,12 +132,6 @@
                             <span asp-validation-for="EngReleased" class="text-danger"></span>
                         </div>
                     </div>
-                   
-                    
-                </div>
-
-                <!-- Row 3: PurchaseOrdersIssued, PurchaseOrdersCompleted, SupplierPODue -->
-                <div class="row mb-3">
                     
                     <div class="col-md-4">
                         <div class="form-group">
@@ -130,18 +145,7 @@
                             <span asp-validation-for="PackageReleased" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label asp-for="PurchaseOrdersIssued" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Purchase Orders Issued
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were issued."></i>
-                            </label>
-                            <input asp-for="PurchaseOrdersIssued" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersIssued" placeholder="Enter Purchase Orders Issued Date" />
-                            <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
-                        </div>
-                    </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="PurchaseOrdersCompleted" class="control-label"
