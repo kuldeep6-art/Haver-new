@@ -12,7 +12,7 @@
 
 }
 
-
+<div id="successMessageContainer"></div>
 
     @{
    
@@ -162,13 +162,27 @@
        
     </form>
 
-
 @section Scripts {
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+    </script>
+
+    <script>
+         $(document).ready(function () {
+            let message = localStorage.getItem("successMessage");
+            if (message) {
+                $('#successMessageContainer').html(`
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                        <i class="fas fa-check-circle"></i> ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+                localStorage.removeItem("successMessage"); // Clear it
+            }
+        });
     </script>
 }
 
