@@ -35,11 +35,14 @@
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
 
+        @if (User.IsInRole("Admin") || User.IsInRole("Procurement") || User.IsInRole("PIC"))
+				{
         <a asp-controller="MachineProcurement" asp-action="Add"
            asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
            class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information" style="height:40px;">
             <i class="fa-solid fa-plus"></i> Add Procurement
         </a>
+                }
     </div>
 
 
@@ -103,6 +106,8 @@
                             NCR
                         </button>
                     </th>
+                     @if (User.IsInRole("Admin") || User.IsInRole("Procurement") || User.IsInRole("PIC"))
+				{
                     <th class="text-center">
                       
                            @*  <a asp-controller="MachineProcurement" asp-action="Add"
@@ -113,6 +118,7 @@
 
                             Actions
                     </th>
+                }
                 </tr>
             </thead>
             <tbody>
@@ -126,7 +132,9 @@
                         <td>@Html.DisplayFor(modelItem => item.QualityICom)</td>
                         <td>@Html.DisplayFor(modelItem => item.NcrRaised)</td>
                         <td class="text-center">
-             
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Procurement") || User.IsInRole("PIC"))
+                        {
                                 <a asp-controller="MachineProcurement" asp-action="Update" asp-route-id="@item.ID"
                                    class="btn btn-sm no-print" role="button"
                                    data-bs-toggle="tooltip" title="Edit Procurement">
@@ -137,6 +145,8 @@
                                    data-bs-toggle="tooltip" title="Delete Procurement">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
+
+                        }
                           
                         </td>
                     </tr>

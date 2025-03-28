@@ -1,17 +1,30 @@
 ﻿@model haver.Models.Machine
 
+ @if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("PIC") || User.IsInRole("Sales"))
+				{
 <strong>*You can click the sales order number to add more machines to the sales order or view its details.*</strong>
+                }
 <div class="info-container">
     <div class="info-box p-3 bg-light border rounded mb-3">
        
         <dl class="row">
             <dt class="col-md-3">Sales Order</dt>
+            @if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("PIC") || User.IsInRole("Sales"))
+				{
             <dd class="col-md-3">
                 <a href="@Url.Action("Details", "SalesOrder", new { id = Model.SalesOrder.ID })"
                    data-bs-toggle="tooltip" title="View Sales Order Details" target="_blank">
                     @Html.DisplayFor(model => model.SalesOrder.OrderNumber)
                 </a>
-            </dd>
+                </dd>
+            }
+            else
+            {
+                <dd class="col-md-3">
+                   
+                        @Html.DisplayFor(model => model.SalesOrder.OrderNumber)
+                </dd>
+            }
             <dt class="col-md-3">Machine Model</dt>
             <dd class="col-md-3">@Html.DisplayFor(model => Model.MachineModel)</dd>
 

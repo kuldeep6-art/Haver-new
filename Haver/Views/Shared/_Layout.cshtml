@@ -44,28 +44,20 @@
 				
 
 					<!-- Sales Order Links -->
+				@if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("PIC") || User.IsInRole("Sales"))
+				{
 					<div>
 						<a asp-area="" asp-controller="SalesOrder" asp-action="Index">Sales Orders</a>
 				</div>
+				}
 
-			
-				<!-- Machine Type Link -->
-				@* <div class="dropdown">
-					<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-						Machine <i class="fa fa-plus"></i>
-					</a>
-					<div class="dropdown-content">
-						<a asp-area="" asp-controller="MachineType" asp-action="Index">Machine Models</a>
-						<a asp-area="" asp-controller="Machine" asp-action="Index">Machine Instances</a>
-					</div>
-				</div> *@
-
+		
 				<div>
 						<a asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
 				</div>
 
 				<!-- Gantt Chart -->
-				@if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC") || User.IsInRole("Sales"))
+				@if (User.IsInRole("Admin") || User.IsInRole("Production") || User.IsInRole("PIC") || User.IsInRole("Sales"))
 				{
 					<div>
 						<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
@@ -73,7 +65,7 @@
 				}
 
 
-				@if (User.IsInRole("Admin") || User.IsInRole("Procurement"))
+				@if ( User.IsInRole("Procurement"))
 				{
 
 					<!-- Vendor Links -->
@@ -83,7 +75,7 @@
 
 				}
 
-				@if (User.IsInRole("Admin") || User.IsInRole("Engineering"))
+				@if ( User.IsInRole("Engineering"))
 				{
 					<!-- Engineer Links -->
 					<div>
@@ -99,6 +91,20 @@
 					<a asp-area="" asp-controller="Employee" asp-action="Index">Users</a>
 				</div>
 	}
+
+		@if (User.IsInRole("Admin")){
+				<!--Lookup Values -->
+				 <div class="dropdown">
+					<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+						Lookup Values<i class="fa fa-plus"></i>
+					</a>
+					<div class="dropdown-content">
+						<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
+						<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
+					</div>
+				</div> 
+			}
+
 
 			
 			</div>
