@@ -394,7 +394,7 @@ namespace haver.Controllers
 
                     await _context.SaveChangesAsync();
                     TempData["Message"] = "Gantt Data successfully updated.";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { gDataToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -4,7 +4,17 @@
     ViewData["Title"] = "Gantt Data Details";
 }
 
+@if (TempData["Message"] != null)
+{
+    <div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fas fa-check-circle"></i>
+        @TempData["Message"]
 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+}
 
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
