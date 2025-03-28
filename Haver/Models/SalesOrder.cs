@@ -98,36 +98,36 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? EngPRel { get; set; }
 
-        // Checkbox Options
-        [Display(Name = "Installed Media")]
-        public bool Media { get; set; }
+        //// Checkbox Options
+        //[Display(Name = "Installed Media")]
+        //public bool Media { get; set; }
 
-        [Display(Name = "Spare Parts")]
-        public bool SpareParts { get; set; }
+        //[Display(Name = "Spare Parts")]
+        //public bool SpareParts { get; set; }
 
-        [Display(Name = "Spare Media")]
-        public bool SparePMedia { get; set; }
+        //[Display(Name = "Spare Media")]
+        //public bool SparePMedia { get; set; }
 
-        //Base Annotations
+        ////Base Annotations
 
-        [Display(Name = "Base")]
-        public bool Base { get; set; }
+        //[Display(Name = "Base")]
+        //public bool Base { get; set; }
 
-        //Air Seal Annotations
+        ////Air Seal Annotations
 
-        [Display(Name = "Air Seal")]
-        public bool AirSeal { get; set; }
+        //[Display(Name = "Air Seal")]
+        //public bool AirSeal { get; set; }
 
-        //Coating Lining Annotations
+        ////Coating Lining Annotations
 
-        [Display(Name = "Coating/Lining")]
-        public bool CoatingLining { get; set; }
+        //[Display(Name = "Coating/Lining")]
+        //public bool CoatingLining { get; set; }
 
-        //Dissembly Annotations
+        ////Dissembly Annotations
 
-        [Display(Name = "Disassembly")]
-        [Required(ErrorMessage = "Disassembly is required")]
-        public bool Disassembly { get; set; }
+        //[Display(Name = "Disassembly")]
+        //[Required(ErrorMessage = "Disassembly is required")]
+        //public bool Disassembly { get; set; }
 
 
         //[Display(Name = "Customer")]

@@ -223,7 +223,7 @@ namespace haver.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet," +
-    "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,Media,SpareParts,SparePMedia,Base,AirSeal,CoatingLining,Disassembly,IsDraft")]
+    "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,IsDraft")]
     SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
         {
             try
@@ -321,8 +321,7 @@ namespace haver.Controllers
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
                 p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
                 p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
-                p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.Media, p => p.SpareParts,
-                p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining, p => p.Disassembly, p => p.IsDraft))
+                p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
             {
                 try
                 {

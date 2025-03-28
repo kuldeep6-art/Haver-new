@@ -200,7 +200,7 @@ namespace haver.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,MachineModel,SerialNumber,ProductionOrderNumber,AssemblyExp,AssemblyStart," +
-    "AssemblyComplete,RToShipExp,RToShipA,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
+    "AssemblyComplete,RToShipExp,RToShipA,Media,SpareParts,SparePMedia,Base,Airseal,CoatingLining,Disassembly,BudgetedHours,ActualAssemblyHours,ReworkHours,Nameplate,PreOrder,Scope,SalesOrderID,MachineTypeID")] Machine machine)
         {
             try
             {
@@ -374,8 +374,8 @@ namespace haver.Controllers
 
             if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "", p => p.MachineModel,
                   p => p.SerialNumber, p => p.ProductionOrderNumber, p => p.AssemblyExp, p => p.AssemblyStart, p => p.AssemblyComplete,
-                  p => p.RToShipExp, p => p.RToShipA,
-                  p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,
+                  p => p.RToShipExp, p => p.RToShipA, p => p.Media,p => p.SpareParts, p => p.SparePMedia, p => p.Base, p => p.AirSeal,
+                  p => p.CoatingLining, p => p.Disassembly, p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,
                   p => p.PreOrder, p => p.Scope, p => p.SalesOrderID, p => p.MachineTypeID))
             {
                 try
