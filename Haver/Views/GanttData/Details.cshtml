@@ -288,7 +288,7 @@
         }
         /* Adjust SVG height */
         .gantt-container svg {
-            height: 100px !important; /* Shrink empty space */
+            height: 120px !important; /* Shrink empty space */
         }
 
        /*   .handle {
@@ -307,9 +307,12 @@
          cursor: not-allowed !important; 
 }*/
 
-.bar{
-    cursor:pointer;
-}
+        .bar {
+            cursor: pointer;
+            height: 24px;
+        }
+
+
 
         .gantt-task-popup {
             position: absolute;
@@ -340,6 +343,9 @@
 
         .handle {
             display: none;
+        }
+        .bar-progress{
+            border-radius:0;
         }
 
     </style>
