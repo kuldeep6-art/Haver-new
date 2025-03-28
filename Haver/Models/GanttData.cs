@@ -83,7 +83,7 @@ namespace haver.Models
         [DataType(DataType.Date)]
         public DateTime? PurchaseOrdersIssued { get; set; }
 
-        [Display(Name = "Purchase Orders Due")]
+        [Display(Name = "Purchase Orders Issued")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? PurchaseOrdersCompleted { get; set; }

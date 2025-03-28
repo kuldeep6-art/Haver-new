@@ -102,7 +102,7 @@ using (var scope = app.Services.CreateScope())
 	var services = scope.ServiceProvider;
 
 	// Call Initialize with UseMigrations set to true
-	HaverInitializer.Initialize(services, DeleteDatabase: false, UseMigrations: true);
+	HaverInitializer.Initialize(services, DeleteDatabase: true, UseMigrations: true);
 
     ApplicationDbInitializer.Initialize(serviceProvider: services,
         UseMigrations: true, SeedSampleData: true);
