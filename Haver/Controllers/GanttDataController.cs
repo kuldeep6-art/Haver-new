@@ -394,7 +394,7 @@ namespace haver.Controllers
 
                     await _context.SaveChangesAsync();
                     TempData["Message"] = "Gantt Data successfully updated.";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { gDataToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -551,12 +551,13 @@ namespace haver.Controllers
                         PoDueDates = options.IncludePoDueDates && m?.Procurements != null && m.Procurements.Any()
                             ? string.Join(", ", m.Procurements.Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
                             : null,
-                        Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
-                        SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
-                        Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
-                        AirSeal = options.IncludeAirSeal ? (so?.AirSeal ?? false ? "Yes" : "No") : null,
-                        CoatingLining = options.IncludeCoatingLining ? (so?.CoatingLining ?? false ? "Yes" : "No") : null,
-                        Disassembly = options.IncludeDisassembly ? (so?.Disassembly ?? false ? "Yes" : "No") : null,
+                        Media = options.IncludeMedia ? (m?.Media ?? false ? "" : "") : null,
+                        SpareParts = options.IncludeSpareParts ? (m?.SpareParts ?? false ? "✔" : "") : null,
+                        Base = options.IncludeBase ? (m?.Base ?? false ? "✓" : "") : null,
+                        AirSeal = options.IncludeAirSeal ? (m?.AirSeal ?? false ? "✓" : "") : null,
+                        CoatingLining = options.IncludeCoatingLining ? (m?.CoatingLining ?? false ? "✓" : "") : null,
+                        Disassembly = options.IncludeDisassembly ? (m?.Disassembly ?? false ? "✓" : "") : null,
+
                         Comments = options.IncludeNotes
                             ? (!string.IsNullOrEmpty(so?.Comments) ? Regex.Replace(so.Comments, "<.*?>", string.Empty) : "N/A") // Ensure "N/A" if null/empty
                             : null,
@@ -571,12 +572,12 @@ namespace haver.Controllers
                 SalesOrderNumber = options.IncludeSalesOrderNumber ? (so?.OrderNumber ?? "") : null,
 SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.HasValue == true ? so.SoDate.Value.ToShortDateString() : "N/A") : null,
                         CustomerName = options.IncludeCustomerName ? (so?.CompanyName ?? "Unknown") : null,
-                Media = options.IncludeMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
-                SpareParts = options.IncludeSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
-                Base = options.IncludeBase ? (so?.Base ?? false ? "Yes" : "No") : null,
-                AirSeal = options.IncludeAirSeal ? (so?.AirSeal ?? false ? "Yes" : "No") : null,
-                CoatingLining = options.IncludeCoatingLining ? (so?.CoatingLining ?? false ? "Yes" : "No") : null,
-                Disassembly = options.IncludeDisassembly ? (so?.Disassembly ?? false ? "Yes" : "No") : null,
+Media = options.IncludeMedia ? (so.Machines.Any(m => m.Media) ? "✓" : "") : null,
+    SpareParts = options.IncludeSpareParts ? (so.Machines.Any(m => m.SpareParts) ? "✓" : "") : null,
+    Base = options.IncludeBase ? (so.Machines.Any(m => m.Base) ? "✓" : "") : null,
+    AirSeal = options.IncludeAirSeal ? (so.Machines.Any(m => m.AirSeal) ? "✓" : "") : null,
+    CoatingLining = options.IncludeCoatingLining ? (so.Machines.Any(m => m.CoatingLining) ? "✓" : "") : null,
+    Disassembly = options.IncludeDisassembly ? (so.Machines.Any(m => m.Disassembly) ? "✓" : "") : null,
                 PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
                 PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
                 Comments = options.IncludeNotes
@@ -616,8 +617,8 @@ SalesOrderDate = options.IncludeSalesOrderDate ? (so?.SoDate.HasValue == true ? 
                     MachineModel = options.IncludeMachineModel && so?.Machines != null
                         ? string.Join("\n", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
                         : null,
-                    Media = options.IncludeGanttMedia ? (so?.Media ?? false ? "Yes" : "No") : null,
-                    SpareParts = options.IncludeGanttSpareParts ? (so?.SpareParts ?? false ? "Yes" : "No") : null,
+                    Media = options.IncludeGanttMedia ? (so.Machines.Any(m => m.Media) ? "Yes" : "No") : null,
+                    SpareParts = options.IncludeGanttSpareParts ? (so.Machines.Any(m => m.SpareParts) ? "Yes" : "No") : null,
                     ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
                     GanttData = options.IncludeGanttData && ganttDataLookup.ContainsKey(so?.ID ?? 0) ? ganttDataLookup[so.ID] : null,
                     SpecialNotes = options.IncludeSpecialNotes && ganttDataLookup.ContainsKey(so?.ID ?? 0) && ganttDataLookup[so.ID].Any()

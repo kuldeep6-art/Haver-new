@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using haver.Data;
 
@@ -10,9 +11,11 @@ using haver.Data;
 namespace haver.Data.HaverMigrations
 {
     [DbContext(typeof(HaverContext))]
-    partial class HaverContextModelSnapshot : ModelSnapshot
+    [Migration("20250328152420_umupm")]
+    partial class umupm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -543,6 +546,9 @@ namespace haver.Data.HaverMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("AirSeal")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("AppDwgExp")
                         .HasColumnType("TEXT");
 
@@ -551,6 +557,12 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<DateTime?>("AppDwgRet")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("Base")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("CoatingLining")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Comments")
                         .HasColumnType("TEXT");
@@ -572,6 +584,9 @@ namespace haver.Data.HaverMigrations
                     b.Property<int?>("CustomerID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Disassembly")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("EngPExp")
                         .HasColumnType("TEXT");
 
@@ -579,6 +594,9 @@ namespace haver.Data.HaverMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsDraft")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Media")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("OrderNumber")
@@ -601,6 +619,12 @@ namespace haver.Data.HaverMigrations
 
                     b.Property<DateTime?>("SoDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("SparePMedia")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SpareParts")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
