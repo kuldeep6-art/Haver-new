@@ -87,9 +87,14 @@
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
                         ⬅ Back to Vendor List
                     </a>
+                    
+@if (User.IsInRole("Admin") )
+				{
+
                     <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
                         Edit
                     </a>
+                }
                 </div>
             </div>
         </div>

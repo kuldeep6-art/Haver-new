@@ -42,12 +42,15 @@
 </ul>
 
 
+@if (User.IsInRole("Admin") )
+				{
 
 <div class="d-flex justify-content-between align-items-center mb-3">
 	<a asp-action="Create" class="btn" aria-label="Create a new vendor" data-bs-toggle="tooltip" title="Create a new vendor">
 		<i class="fa-solid fa-plus"></i> Add New @ViewData["ControllerFriendlyName"]
 	</a>
 </div>
+}
 
 <form asp-action="Index" method="get" aria-label="Vendor filter form">
 	<div class="form-horizontal">
@@ -107,28 +110,45 @@
 						<td>@Html.DisplayFor(modelItem => item.Email)</td>
 						<td class="text-center actions-cell">
 								<div class="d-flex flex-wrap justify-content-center gap-2">
-							@if (item.IsActive)
-							{
-							<a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit vendor @item.Name" data-bs-toggle="tooltip" title="Edit vendor">
-								<i class="fa-solid fa-pen-to-square"></i> Edit
-							</a>
-							<a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of vendor @item.Name" data-bs-toggle="tooltip" title="View details">
+
+									
+
+										@if (item.IsActive)
+										{
+										@if (User.IsInRole("Admin"))
+										{
+											<a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit vendor @item.Name" data-bs-toggle="tooltip" title="Edit vendor">
+												<i class="fa-solid fa-pen-to-square"></i> Edit
+											</a>
+										}
+										
+
+
+										<a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of vendor @item.Name" data-bs-toggle="tooltip" title="View details">
 								<i class="fa-solid fa-circle-info"></i> Details
 							</a>
 
-							
+
+										@if (User.IsInRole("Admin"))
+										{
+
 								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Deactivate @item.Name" data-bs-toggle="tooltip" title="Deactivate vendor"
 								   onclick="return confirm('Are you sure you want to mark this vendor as inactive. If yes the vendor wont be available unless you mark it as active.?');">
 									<i class="fa-solid fa-power-off"></i> Deactivate
 								</a>
 							}
+									}
 							else
 							{
+
+										@if (User.IsInRole("Admin"))
+										{
 
 								<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Activate @item.Name" data-bs-toggle="tooltip" title="Activate vendor"
 								   onclick="return confirm('Are you sure you want to mark this vendor as active?');">
 									<i class="fa-solid fa-power-off"></i> Activate
 								</a>
+										}
 							}
 							</div>
 						</td>
