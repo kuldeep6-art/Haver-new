@@ -44,9 +44,12 @@
 				
 
 					<!-- Sales Order Links -->
+				@if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("PIC") || User.IsInRole("Sales"))
+				{
 					<div>
 						<a asp-area="" asp-controller="SalesOrder" asp-action="Index">Sales Orders</a>
 				</div>
+				}
 
 			
 				<!-- Machine Type Link -->
