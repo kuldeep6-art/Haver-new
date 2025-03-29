@@ -1,9 +1,19 @@
 ﻿@model IEnumerable<haver.Models.Customer>
 
+@{
+    var message = TempData["Message"] as string;
+}
 
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
+}
 
-<h1 class="text-center my-4" aria-label="Customer Index">Customer</h1>
+<h1 class="text-center my-4" aria-label="Customer Index">Customers</h1>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <a asp-action="Create" class="btn" aria-label="Create a new customer" data-bs-toggle="tooltip" title="Create a new customer">
@@ -21,15 +31,11 @@
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
             <div class="card card-body bg-light">
                 <div class="row">
-                    <div class="form-group col-md-4">
                         <div class="form-group col-md-4">
                             <label class="form-label fw-bold" for="SearchCname">Search by Company Name:</label>
                             @Html.TextBox("SearchCname", null, new { @class = "form-control", placeholder = "Enter Company Name", aria_label = "Enter company name to search" })
                         </div>
 
-                        <label class="form-label fw-bold" for="SearchString">Search by Name:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter  Name", aria_label = "Enter  name to search" })
-                    </div>
                     <div class="form-group col-md-4 align-self-end">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
                         <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
@@ -68,9 +74,9 @@
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit customer @item.CompanyName" data-bs-toggle="tooltip" title="Edit customer">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of customer @item.CompanyName" data-bs-toggle="tooltip" title="View details">
+                       @*  <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of customer @item.CompanyName" data-bs-toggle="tooltip" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
-                        </a>
+                        </a> *@
                         <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete customer @item.CompanyName" data-bs-toggle="tooltip" title="Delete customer">
                             <i class="fa-solid fa-delete-left"></i> Delete
                         </a>

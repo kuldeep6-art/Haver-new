@@ -57,30 +57,11 @@
 				</div>
 
 				<!-- Gantt Chart -->
-				@if (User.IsInRole("Admin") || User.IsInRole("Production") || User.IsInRole("PIC") || User.IsInRole("Sales"))
+				@if (User.IsInRole("Admin") || User.IsInRole("Production") || User.IsInRole("PIC"))
 				{
 					<div>
 						<a asp-area="" asp-controller="GanttData" asp-action="Index">Gantt</a>
 					</div>
-				}
-
-
-				@if ( User.IsInRole("Procurement"))
-				{
-
-					<!-- Vendor Links -->
-					<div>
-						<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
-				</div>
-
-				}
-
-				@if ( User.IsInRole("Engineering"))
-				{
-					<!-- Engineer Links -->
-					<div>
-						<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
-				</div>
 				}
 
 				
@@ -99,6 +80,7 @@
 						Lookup Values<i class="fa fa-plus"></i>
 					</a>
 					<div class="dropdown-content">
+							<a asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
 						<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
 						<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
 					</div>

@@ -23,7 +23,7 @@ namespace haver.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString, string? SearchCname,
+        public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname,
             string? actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
             string[] sortOptions = new[] { "Company Name", "Phone", "Name" };
@@ -137,10 +137,10 @@ namespace haver.Controllers
                         Timestamp = DateTime.UtcNow
                     });
                     await _context.SaveChangesAsync();
+					TempData["Message"] = "Customer has been successfully Created";
+					return RedirectToAction(nameof(Index));
 
-                    return RedirectToAction("Details", new { customer.ID });
-
-                }
+				}
             }
             catch (DbUpdateException dex)
             {
@@ -206,9 +206,9 @@ namespace haver.Controllers
                     await _context.SaveChangesAsync();
 
                     TempData["Message"] = "Customer has been successfully Edited";
-                    return RedirectToAction("Details", new { customerToUpdate.ID });
+					return RedirectToAction(nameof(Index));
 
-                }
+				}
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!CustomerExists(customerToUpdate.ID))
