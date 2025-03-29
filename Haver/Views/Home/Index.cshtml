@@ -23,6 +23,9 @@
 
 		// Check if the user has no specific role
 		var hasNoRole = !(isAdmin || isSales || isProcurement || isPIC || isProduction);
+
+		//Set activity time to Eastern time in Ontario
+		var easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 	}
 
 	<div class="row g-4 justify-content-center mb-5">
@@ -155,8 +158,9 @@
 						<ul class="list-unstyled activity-list">
 							@foreach (var activity in Model)
 							{
+								var localTime = TimeZoneInfo.ConvertTimeFromUtc(activity.Timestamp, easternTimeZone);
 								<li class="mb-2">
-									<span class="activity-label">@activity.Timestamp.ToLocalTime().ToString("g"):</span>
+									<span class="activity-label">@localTime.ToString("g"):</span>
 									@activity.Message
 								</li>
 							}
