@@ -248,6 +248,25 @@ namespace haver.Controllers
                 UserRoles = userRoles.ToList() // Ensure the roles are passed correctly
             };
 
+            if (isEditingSelf)
+            {
+                // Prevent deactivation of self
+                if (!Active)
+                {
+                    ModelState.AddModelError("", "You cannot deactivate your own account.");
+                    PopulateAssignedRoleData(employeeAdminVM);
+                    return View(employeeAdminVM);
+                }
+
+                // Prevent removing self from Admin role
+                if (!selectedRoles.Contains("Admin"))
+                {
+                    ModelState.AddModelError("", "You cannot remove yourself from the Admin role.");
+                    PopulateAssignedRoleData(employeeAdminVM);
+                    return View(employeeAdminVM);
+                }
+            }
+
             if (isOnlyAdmin && isEditingSelf)
             {
                 // Prevent deactivation or admin role removal
