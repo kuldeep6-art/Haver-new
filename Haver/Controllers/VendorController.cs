@@ -105,7 +105,8 @@ namespace haver.Controllers
                     await LogActivity($"Vendor '{vendor.Name}' was created");
 
                     TempData["Message"] = "Vendor has been successfully created";
-                    return RedirectToAction("Details", new { vendor.ID });
+                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction("Details", new { vendor.ID });
                 }
             }
             catch (DbUpdateException dex)
@@ -140,7 +141,8 @@ namespace haver.Controllers
                     await LogActivity($"Vendor '{vendorToUpdate.Name}' was edited");
 
                     TempData["Message"] = "Vendor has been successfully edited";
-                    return RedirectToAction("Details", new { vendorToUpdate.ID });
+                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction("Details", new { vendorToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -201,12 +203,19 @@ namespace haver.Controllers
             var vendor = await _context.Vendors.FindAsync(id);
             if (vendor == null) return NotFound();
 
+            //Toggle vendor status
             vendor.IsActive = !vendor.IsActive;
             _context.Update(vendor);
             await _context.SaveChangesAsync();
 
+        
             string status = vendor.IsActive ? "activated" : "deactivated";
             await LogActivity($"Vendor '{vendor.Name}' was {status}");
+
+         
+            TempData["Message"] = vendor.IsActive
+                ? $"Vendor '{vendor.Name}' has been successfully activated."
+                : $"Vendor '{vendor.Name}' has been successfully deactivated.";
 
             return RedirectToAction(nameof(Index));
         }

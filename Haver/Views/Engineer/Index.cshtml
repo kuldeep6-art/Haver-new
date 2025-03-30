@@ -8,6 +8,18 @@
 
 <h1 style="font-weight:bold;text-align:center;" aria-label="Engineer Index">Engineers</h1>
 
+@if (TempData["Message"] != null)
+{
+    <div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fas fa-check-circle"></i>
+        @TempData["Message"]
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+}
+
 
 @if (User.IsInRole("Admin") )
 				{
@@ -79,9 +91,9 @@
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                             </a>
                         }
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of engineer @item.FirstName @item.LastName" data-bs-toggle="tooltip" title="View details">
+                      @*   <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of engineer @item.FirstName @item.LastName" data-bs-toggle="tooltip" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
-                        </a>
+                        </a> *@
 
                         @if (User.IsInRole("Admin"))
                         {
