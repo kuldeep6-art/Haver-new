@@ -9,30 +9,30 @@ namespace haver.Models
 
         // Machine Description
 
-        #region SUMMARY PROPERTY
+        //#region SUMMARY PROPERTY
         
-        public string Description { get {
-                return Class + "-" + Size + " " + Deck;
+        //public string Description { get {
+        //        return Class + "-" + Size + " " + Deck;
             
-            }
-        }
+        //    }
+        //}
 
-        #endregion
-
-
-        [Display(Name = "Machine Class")]
-        [Required(ErrorMessage = "Machine class is required.")]
-        public string? Class {  get; set; }
+        //#endregion
 
 
-        [Display(Name = "Machine Size")]
-        [Required(ErrorMessage = "Machine size is required.")]
-        public string? Size {  get; set; }
+        [Display(Name = "Machine Model")]
+        [Required(ErrorMessage = "Machine Model is required.")]
+        public string? Description {  get; set; }
 
 
-        [Display(Name = "Machine Deck")]
-        [Required(ErrorMessage = "Machine deck is required.")]
-        public string? Deck {  get; set; }
+        //[Display(Name = "Machine Size")]
+        //[Required(ErrorMessage = "Machine size is required.")]
+        //public string? Size {  get; set; }
+
+
+        //[Display(Name = "Machine Deck")]
+        //[Required(ErrorMessage = "Machine deck is required.")]
+        //public string? Deck {  get; set; }
 
         public ICollection<Machine> Machines { get; set; } = new HashSet<Machine>();
     }

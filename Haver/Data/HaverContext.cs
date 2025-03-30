@@ -128,14 +128,19 @@ namespace haver.Data
             .HasIndex(a => new { a.Email })
             .IsUnique();
 
+            modelBuilder.Entity<MachineType>()
+          .HasIndex(a => new { a.Description })
+          .IsUnique();
+
+
             modelBuilder.Entity<Engineer>()
                 .HasIndex(pr => new { pr.FirstName, pr.LastName })
                 .IsUnique();
 
 
-            modelBuilder.Entity<MachineType>()
-                .HasIndex(pr => new { pr.Class, pr.Size, pr.Deck })
-                .IsUnique();
+            //modelBuilder.Entity<MachineType>()
+            //    .HasIndex(pr => new { pr.Class, pr.Size, pr.Deck })
+            //    .IsUnique();
 
 
 

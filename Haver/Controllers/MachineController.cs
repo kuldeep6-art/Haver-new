@@ -204,6 +204,15 @@ namespace haver.Controllers
         {
             try
             {
+                var mmodel = await _context.MachineTypes.FirstOrDefaultAsync(c => c.Description.ToUpper() == machine.MachineModel.ToUpper());
+                if (mmodel == null)
+                {
+                    mmodel = new MachineType { Description = machine.MachineModel };
+                    _context.MachineType.Add(mmodel);
+                    await _context.SaveChangesAsync();
+                }
+
+
                 if (ModelState.IsValid)
                 {
                     _context.Add(machine);
@@ -245,6 +254,7 @@ namespace haver.Controllers
         {
             try
             {
+                //  Validate model
                 if (!ModelState.IsValid)
                 {
                     var errors = ModelState.Values
@@ -261,13 +271,33 @@ namespace haver.Controllers
                     return RedirectToAction("Details", "SalesOrder", new { id = machine.SalesOrderID });
                 }
 
+                // Check if MachineType exists AFTER validation passes
+                var mmodel = await _context.MachineTypes.FirstOrDefaultAsync(c => c.Description.ToUpper() == machine.MachineModel.ToUpper());
+                if (mmodel == null)
+                {
+                    mmodel = new MachineType { Description = machine.MachineModel };
+                    _context.MachineType.Add(mmodel);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Assign MachineTypeID to Machine
+                machine.MachineTypeID = mmodel.ID;
+
+                // Save Machine only after validation and MachineType are handled
+
+
                 _context.Machines.Add(machine);
                 await _context.SaveChangesAsync();
                 await CreateGanttForMachine(machine);
 
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = true, message = "Machine has been successfully created and Gantt record added. You can add procurement records down below", redirectUrl = Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID }) });
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Machine has been successfully created and Gantt record added. You can add procurement records down below",
+                        redirectUrl = Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })
+                    });
                 }
 
                 TempData["Message"] = "Machine has been successfully created and Gantt record added.";
@@ -304,7 +334,7 @@ namespace haver.Controllers
         // Method to create Gantt record for the newly created machine
         public async Task CreateGanttForMachine(Machine machine)
         {
-            // Step 1: Retrieve the Sales Order that the machine belongs to, including related machines and procurements
+            // Retrieve the Sales Order that the machine belongs to, including related machines and procurements
             var salesOrder = await _context.SalesOrders
                 .Include(so => so.Machines)   // Include related Machines
                 .ThenInclude(m => m.Procurements)  // Include related Procurements for each machine
@@ -312,10 +342,10 @@ namespace haver.Controllers
 
             if (salesOrder != null)
             {
-                // Step 2: Retrieve the Procurement related to this specific machine (if it exists)
+                // Retrieve the Procurement related to this specific machine (if it exists)
                 var procurement = machine.Procurements.FirstOrDefault();
 
-                // Step 3: Create a Gantt record for the machine
+                // Create a Gantt record for the machine
                 var gantt = new GanttData
                 {
                     SalesOrderID = machine.SalesOrderID,
@@ -334,7 +364,7 @@ namespace haver.Controllers
                     ShipActual = machine.RToShipA
                 };
 
-                // Step 4: Add the Gantt record to the database
+                // Add the Gantt record to the database
                 _context.GanttDatas.Add(gantt);
                 await _context.SaveChangesAsync();
             }
@@ -485,12 +515,30 @@ namespace haver.Controllers
 
 
 
+        //Return machine model suggestions
+        public async Task<JsonResult> GetMachineModel(string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return Json(new List<string>());
+            }
+
+            term = term.ToUpper(); // Convert input to uppercase
+
+            var machineModels = await _context.MachineTypes
+                .Where(c => c.Description.ToUpper().Contains(term))
+                .Select(c => c.Description) // Keep original casing
+                .Take(10)
+                .ToListAsync();
+
+            return Json(machineModels);
+        }
 
 
         public JsonResult GetMachineTypes(int? id)
         {
             var types = _context.MachineTypes
-                .OrderBy(m => m.Class)
+                .OrderBy(m => m.Description)
                 .Select(m => new
                 {
                     value = m.ID,
@@ -507,7 +555,7 @@ namespace haver.Controllers
             return new SelectList(_context
                 .MachineTypes
                 .AsEnumerable()
-                .OrderBy(m => m.Class),
+                .OrderBy(m => m.Description),
                 "ID",
                 "Description",
                 selectedId);
