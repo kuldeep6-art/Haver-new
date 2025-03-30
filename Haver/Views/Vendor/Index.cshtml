@@ -1,6 +1,18 @@
 ﻿@model IEnumerable<haver.Models.Vendor>
 
 <h1 style="font-weight:bold;text-align:center;">Vendors</h1>
+@if (TempData["Message"] != null)
+{
+	<div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+		<i class="fas fa-check-circle"></i>
+		@TempData["Message"]
+
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+
+
+}
+
 
 @{
 	// Create route value dictionaries for each tab
@@ -124,10 +136,10 @@
 										
 
 
-										<a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of vendor @item.Name" data-bs-toggle="tooltip" title="View details">
-								<i class="fa-solid fa-circle-info"></i> Details
+										@*  <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of vendor @item.Name" data-bs-toggle="tooltip" title="View details">
+								<i class="fa-solid fa-circle-info"></i> Details 
 							</a>
-
+ *@
 
 										@if (User.IsInRole("Admin"))
 										{
