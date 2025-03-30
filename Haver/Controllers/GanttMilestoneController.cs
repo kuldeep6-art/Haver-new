@@ -67,7 +67,7 @@ namespace haver.Controllers
                 _context.ActivityLogs.Add(new ActivityLog
                 {
                     Message = $"Milestone '{ganttMilestone.MilestoneName}' created for Task ID {ganttMilestone.GanttTaskID}.",
-                    Timestamp = DateTime.UtcNow
+                    Timestamp = DateTime.Now
                 });
 
                 await _context.SaveChangesAsync();
