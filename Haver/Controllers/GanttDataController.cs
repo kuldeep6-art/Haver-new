@@ -276,7 +276,7 @@ namespace haver.Controllers
                         _context.ActivityLogs.Add(new ActivityLog
                         {
                             Message = $"Gantt Data created for Sales Order {ganttData.SalesOrderID}.",
-                            Timestamp = DateTime.UtcNow
+                            Timestamp = DateTime.Now
                         });
 
                         await _context.SaveChangesAsync();

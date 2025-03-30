@@ -228,7 +228,7 @@ namespace haver.Controllers
             _context.ActivityLogs.Add(new ActivityLog
             {
                 Message = $"{message} by {userName}.",
-                Timestamp = DateTime.UtcNow
+                Timestamp = DateTime.Now
             });
             await _context.SaveChangesAsync();
         }
