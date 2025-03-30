@@ -68,43 +68,97 @@
             <dd class="col-md-3">@Html.DisplayFor(model => Model.CreatedOn)</dd>
 
             </dl>
-            <dl class="row opts">
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Media)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.Media)</dd>
+        <!-- Options Section Accordion -->
+        <div class="accordion mb-3" id="optionsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOptions">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOptions" aria-expanded="true" aria-controls="collapseOptions">
+                        <b>Selected Options</b>
+                    </button>
+                </h2>
+                <div id="collapseOptions" class="accordion-collapse collapse" aria-labelledby="headingOptions" data-bs-parent="#optionsAccordion">
+                    <div class="accordion-body p-2">
+                        <dl class="row opts">
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Media)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.Media)</dd>
 
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.SpareParts)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.SpareParts)</dd>
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.SpareParts)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.SpareParts)</dd>
 
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.SparePMedia)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.SparePMedia)</dd>
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.SparePMedia)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.SparePMedia)</dd>
 
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.CoatingLining)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.CoatingLining)</dd>
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.CoatingLining)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.CoatingLining)</dd>
 
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Base)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.Base)</dd>
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Base)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.Base)</dd>
 
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.AirSeal)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.AirSeal)</dd>
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.AirSeal)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.AirSeal)</dd>
 
-                <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Disassembly)</dt>
-                <dd class="col-md-2">@Html.DisplayFor(model => Model.Disassembly)</dd>
+                            <dt class="col-md-2">@Html.DisplayNameFor(model => Model.Disassembly)</dt>
+                            <dd class="col-md-2">@Html.DisplayFor(model => Model.Disassembly)</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            </dl>
+        <!-- Pre-order and Scope Section Accordion -->
+        <div class="accordion mb-3" id="preOrderAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingPreOrder">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePreOrder" aria-expanded="true" aria-controls="collapsePreOrder">
+                        <b>Pre-order and Scope Information</b>
+                    </button>
+                </h2>
+                <div id="collapsePreOrder" class="accordion-collapse collapse" aria-labelledby="headingPreOrder" data-bs-parent="#preOrderAccordion">
+                    <div class="accordion-body p-2">
+                        <dl class="row">
+                            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.PreOrder)</dt>
+                            <dd class="col-md-9">@Html.Raw(Model.PreOrder)</dd>
 
-        <p class="fw-bold" style="text-align:center;font-size:20px;">Pre-order and Scope Information</p>
-
-    <dl class="row">
-           
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.PreOrder)</dt>
-            <dd class="col-md-3">@Html.Raw(Model.PreOrder)</dd>
-
-            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Scope)</dt>
-            <dd class="col-md-3">@Html.Raw(Model.Scope)</dd>
-        
-        </dl>
+                            <dt class="col-md-3">@Html.DisplayNameFor(model => Model.Scope)</dt>
+                            <dd class="col-md-9">@Html.Raw(Model.Scope)</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     </div>
 
-  
+@section Head {
+    <style>
+        /* Accordion Button Styling */
+        .accordion-button {
+            background-color: #f8f9fa;
+            color: #0C2340;
+            font-weight: bold;
+        }
+
+            .accordion-button:hover {
+                background-color: #e9ecef;
+            }
+
+        /* Accordion Body Styling */
+        .accordion-body {
+            padding: 12px 15px;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Compact layout for options and pre-order */
+        dt, dd {
+            margin-bottom: 6px;
+        }
+
+        /* Add shadow to accordion for a modern look */
+        .accordion-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+}
