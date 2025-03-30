@@ -67,17 +67,17 @@
         document.querySelector('[name="CoatingLining"]').checked = Math.random() > 0.5;
         document.querySelector('[name="Disassembly"]').checked = Math.random() > 0.5;
 
-        // Summernote fields (for PreOrder and Scope)
-        if ($('#PreOrder').length) {
-            $('#PreOrder').summernote('code', '<p>Random pre-order specifications generated</p>');
-        } else {
-            console.warn('Summernote PreOrder not found');
-        }
+        //// Summernote fields (for PreOrder and Scope)
+        //if ($('#PreOrder').length) {
+        //    $('#PreOrder').summernote('code', '<p>Random pre-order specifications generated</p>');
+        //} else {
+        //    console.warn('Summernote PreOrder not found');
+        //}
 
-        if ($('#Scope').length) {
-            $('#Scope').summernote('code', '<p>Random scope details generated</p>');
-        } else {
-            console.warn('Summernote Scope not found');
-        }
+        //if ($('#Scope').length) {
+        //    $('#Scope').summernote('code', '<p>Random scope details generated</p>');
+        //} else {
+        //    console.warn('Summernote Scope not found');
+        //}
     });
 });
