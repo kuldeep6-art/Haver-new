@@ -124,3 +124,41 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    .form-check-input {
+        width: 100px;
+        height: 18px;
+        cursor: pointer;
+        background-color: #0C2340; /* Default color when off */
+        border: 2px solid #fff;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .form-check-input:not(:checked) {
+        background-color: lightcoral; /* Light red for OFF state */
+        border-color: #0C2340;
+ 
+    }
+
+    .form-check-input:checked {
+        background-color: #28a745; /* Green for ON state */
+        border-color: #28a745;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.8);
+    }
+
+    .form-check-input:checked:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+    }
+    .form-check-label {
+        font-weight: bold;
+        cursor: pointer;
+        color: #0056b3;
+        transition: color 0.3s;
+    }
+
+    .form-check-label:hover {
+        color: #28a745; 
+    }
+</style>
