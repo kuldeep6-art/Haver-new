@@ -204,6 +204,15 @@ namespace haver.Controllers
         {
             try
             {
+                var mmodel = await _context.MachineTypes.FirstOrDefaultAsync(c => c.Description.ToUpper() == machine.MachineModel.ToUpper());
+                if (mmodel == null)
+                {
+                    mmodel = new MachineType { Description = machine.MachineModel };
+                    _context.MachineType.Add(mmodel);
+                    await _context.SaveChangesAsync();
+                }
+
+
                 if (ModelState.IsValid)
                 {
                     _context.Add(machine);
@@ -485,12 +494,30 @@ namespace haver.Controllers
 
 
 
+        //Return machine model suggestions
+        public async Task<JsonResult> GetMachineModel(string term)
+        {
+            if (string.IsNullOrEmpty(term))
+            {
+                return Json(new List<string>());
+            }
+
+            term = term.ToUpper(); // Convert input to uppercase
+
+            var machineModels = await _context.MachineTypes
+                .Where(c => c.Description.ToUpper().Contains(term))
+                .Select(c => c.Description) // Keep original casing
+                .Take(10)
+                .ToListAsync();
+
+            return Json(machineModels);
+        }
 
 
         public JsonResult GetMachineTypes(int? id)
         {
             var types = _context.MachineTypes
-                .OrderBy(m => m.Class)
+                .OrderBy(m => m.Description)
                 .Select(m => new
                 {
                     value = m.ID,
@@ -507,7 +534,7 @@ namespace haver.Controllers
             return new SelectList(_context
                 .MachineTypes
                 .AsEnumerable()
-                .OrderBy(m => m.Class),
+                .OrderBy(m => m.Description),
                 "ID",
                 "Description",
                 selectedId);

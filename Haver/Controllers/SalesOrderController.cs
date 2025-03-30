@@ -542,7 +542,7 @@ namespace haver.Controllers
             return new SelectList(_context
               .MachineTypes
               .AsEnumerable()
-              .OrderBy(m => m.Class),
+              .OrderBy(m => m.Description),
               "ID",
               "Description",
               selectedId);

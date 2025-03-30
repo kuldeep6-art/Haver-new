@@ -108,7 +108,7 @@ namespace haver.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Class,Size,Deck")] MachineType machineType)
+        public async Task<IActionResult> Create([Bind("ID,Description")] MachineType machineType)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace haver.Controllers
                     _context.Add(machineType);
                     await _context.SaveChangesAsync();
 
-                    await LogActivity($"Machine Type '{machineType.Class} - {machineType.Size} - {machineType.Deck}' was created");
+                    await LogActivity($"Machine Type '{machineType.Description}' was created");
 
                     await _context.SaveChangesAsync();
 
@@ -136,23 +136,23 @@ namespace haver.Controllers
 
                 if (baseMessage.Contains("UNIQUE"))
                 {
-                    if (baseMessage.Contains("Class"))
+                    if (baseMessage.Contains("Description"))
                     {
-                        msg.ErrProperty = "Class";
-                        ModelState.AddModelError("Class", "Machine Model Combination should be Unique");
+                        msg.ErrProperty = "Description";
+                        ModelState.AddModelError("Description", "Machine Model Combination should be Unique");
                     }
 
-                    if (baseMessage.Contains("Size"))
-                    {
-                        msg.ErrProperty = "Size";
-                        ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
-                    }
+                    //if (baseMessage.Contains("Size"))
+                    //{
+                    //    msg.ErrProperty = "Size";
+                    //    ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
+                    //}
 
-                    if (baseMessage.Contains("Deck"))
-                    {
-                        msg.ErrProperty = "Deck";
-                        ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
-                    }
+                    //if (baseMessage.Contains("Deck"))
+                    //{
+                    //    msg.ErrProperty = "Deck";
+                    //    ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
+                    //}
                 }
                 else
                 {
@@ -197,12 +197,12 @@ namespace haver.Controllers
             }
 
             if (await TryUpdateModelAsync<MachineType>(machinetypeToUpdate, "",
-                        p => p.Class, p => p.Size, p => p.Deck))
+                        p => p.Description))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
-                    await LogActivity($"Machine Type '{machinetypeToUpdate.Class} - {machinetypeToUpdate.Size} - {machinetypeToUpdate.Deck}' was edited");
+                    await LogActivity($"Machine Type '{machinetypeToUpdate.Description}' was edited");
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
@@ -223,9 +223,9 @@ namespace haver.Controllers
                     var baseExceptionMessage = dex.GetBaseException().Message;
                     if (baseExceptionMessage.Contains("UNIQUE"))
                     {
-                        ModelState.AddModelError("Class", "Machine Model Combination should be Unique");
-                        ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
-                        ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
+                        ModelState.AddModelError("Description", "Machine Model Combination should be Unique");
+                        //ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
+                        //ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
                     }
                     else
                     {
@@ -270,7 +270,7 @@ namespace haver.Controllers
                     _context.MachineType.Remove(machineType);
                     await _context.SaveChangesAsync();
 
-                    await LogActivity($"Machine Type '{machineType.Class} - {machineType.Size} - {machineType.Deck}' was deleted");
+                    await LogActivity($"Machine Type '{machineType.Description}' was deleted");
 
                     await _context.SaveChangesAsync();
                 }

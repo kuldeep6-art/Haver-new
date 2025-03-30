@@ -23,18 +23,18 @@
 
                 <!-- Machine Class -->
                 <div class="form-group mb-3">
-                    <label asp-for="Class" class="control-label"
+                    <label asp-for="Description" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                        Class <span class="text-danger">*</span>
+                       Description <span class="text-danger">*</span>
                         <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the machine Class."></i>
                     </label>
-                    <input asp-for="Class" class="form-control"
+                    <input asp-for="Description" class="form-control"
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                           placeholder="Enter Machine Class" />
-                    <span asp-validation-for="Class" class="text-danger"></span>
+                           placeholder="Enter Machine Description" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
+              @*   <div class="form-group mb-3">
                     <label asp-for="Size" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                         Size <span class="text-danger">*</span>
@@ -57,7 +57,7 @@
                            style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
                            placeholder="Enter Machine Deck" />
                     <span asp-validation-for="Deck" class="text-danger"></span>
-                </div>
+                </div> *@
 
                 <!-- Submit Button -->
                 <div class="form-group text-center">
