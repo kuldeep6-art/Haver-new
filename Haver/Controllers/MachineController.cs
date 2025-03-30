@@ -254,6 +254,15 @@ namespace haver.Controllers
         {
             try
             {
+                var mmodel = await _context.MachineTypes.FirstOrDefaultAsync(c => c.Description.ToUpper() == machine.MachineModel.ToUpper());
+                if (mmodel == null)
+                {
+                    mmodel = new MachineType { Description = machine.MachineModel };
+                    _context.MachineType.Add(mmodel);
+                    await _context.SaveChangesAsync();
+                }
+
+
                 if (!ModelState.IsValid)
                 {
                     var errors = ModelState.Values
