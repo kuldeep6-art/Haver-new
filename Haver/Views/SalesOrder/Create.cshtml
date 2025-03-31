@@ -383,6 +383,24 @@
         });
     </script>
 
+          <script>
+        //Adds autocomplete for entering company name
+        $(document).ready(function () {
+            $("#companyNameInput").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/SalesOrder/GetCompanyName',
+                        data: { term: request.term },
+                        success: function (data) {
+                            response(data);  // Pass the results back to the autocomplete
+                        }
+                    });
+                },
+                minLength: 1 // Set to 2 or higher to limit the suggestions
+            });
+        });
+
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
