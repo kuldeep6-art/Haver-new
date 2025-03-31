@@ -224,7 +224,7 @@ namespace haver.Controllers
                     await _context.SaveChangesAsync();
 
                     // Set a message and redirect
-                    TempData["Message"] = "Machine has been successfully created and Gantt record added.";
+                    TempData["Message"] = "Machine has been successfully created and Gantt record added. You can add procurement records down below";
                     return RedirectToAction("Index", "MachineProcurement", new { MachineID = machine.ID });
                 }
             }
@@ -416,6 +416,7 @@ namespace haver.Controllers
 
                     await _context.SaveChangesAsync();
 
+                    TempData["Message"] = "Machine has been successfully edited.";
                     return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machinesToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
