@@ -650,26 +650,24 @@ namespace haver.Controllers
 				}
 			}
             var ganttSchedules = salesOrders
-   .Select(so => new GanttScheduleViewModel
-   {
-       OrderNumber = options.IncludeOrderNumber ? (so?.OrderNumber ?? "") : null,
-       Engineer = options.IncludeEngineer && so?.SalesOrderEngineers?.FirstOrDefault()?.Engineer != null
-   ? $"{so.SalesOrderEngineers.FirstOrDefault().Engineer.FirstName?[0]} {so.SalesOrderEngineers.FirstOrDefault().Engineer.LastName?[0]}"
-   : null,
-       CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
-       Quantity = options.IncludeQuantity ? (so?.Machines?.Count() ?? 0) : 0,
-       MachineModel = options.IncludeMachineModel && so?.Machines != null
-   ? string.Join("\n", so.Machines.Select(m => m?.MachineModel ?? "Unknown"))
-   : null,
-       Media = options.IncludeGanttMedia ? (so.Machines.Any(m => m.Media) ? "Yes" : "No") : null,
-       SpareParts = options.IncludeGanttSpareParts ? (so.Machines.Any(m => m.SpareParts) ? "Yes" : "No") : null,
-       ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
-       GanttData = options.IncludeGanttData && ganttDataLookup.ContainsKey(so?.ID ?? 0) ? ganttDataLookup[so.ID] : null,
-       SpecialNotes = options.IncludeSpecialNotes && ganttDataLookup.ContainsKey(so?.ID ?? 0) && ganttDataLookup[so.ID].Any()
-   ? string.Join("; ", ganttDataLookup[so.ID].Where(g => !string.IsNullOrEmpty(g?.Notes)).Select(g => Regex.Replace(g.Notes, "<.*?>", string.Empty)).Distinct())
-   : null
-   })
-   .ToList();
+  .SelectMany(so => so.Machines.Select(m => new GanttScheduleViewModel
+  {
+      OrderNumber = options.IncludeOrderNumber ? (so?.OrderNumber ?? "") : null,
+      Engineer = options.IncludeEngineer && so?.SalesOrderEngineers?.FirstOrDefault()?.Engineer != null
+          ? $"{so.SalesOrderEngineers.FirstOrDefault().Engineer.FirstName?[0]} {so.SalesOrderEngineers.FirstOrDefault().Engineer.LastName?[0]}"
+          : null,
+      CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
+      Quantity = options.IncludeQuantity ? 1 : 0,  // Each row is for one machine
+      MachineModel = options.IncludeMachineModel ? (m?.MachineModel ?? "Unknown") : null,  // ✅ Each machine gets its own row
+      Media = options.IncludeGanttMedia ? (m.Media ? "Yes" : "No") : null,
+      SpareParts = options.IncludeGanttSpareParts ? (m.SpareParts ? "Yes" : "No") : null,
+      ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
+      GanttData = options.IncludeGanttData && ganttDataLookup.ContainsKey(so?.ID ?? 0) ? ganttDataLookup[so.ID].Where(g => g.ID == m.ID).ToList() : null,
+      SpecialNotes = options.IncludeSpecialNotes && ganttDataLookup.ContainsKey(so?.ID ?? 0) && ganttDataLookup[so.ID].Any(g => g.ID == m.ID)
+          ? string.Join("; ", ganttDataLookup[so.ID].Where(g => g.ID == m.ID && !string.IsNullOrEmpty(g?.Notes)).Select(g => Regex.Replace(g.Notes, "<.*?>", string.Empty)).Distinct())
+          : null
+  }))
+  .ToList();
 
             if ((options.ReportType == ReportType.MachineSchedules && !machineSchedules.Any()) ||
 				(options.ReportType == ReportType.GanttSchedules && !ganttSchedules.Any()) ||
