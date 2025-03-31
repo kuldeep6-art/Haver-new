@@ -927,123 +927,113 @@ namespace haver.Controllers
 
 		private void SetupGanttSchedulesWorksheet(ExcelWorksheet workSheet, List<GanttScheduleViewModel> schedules, ScheduleExportOptionsViewModel options)
 		{
+			if (workSheet == null) throw new ArgumentNullException(nameof(workSheet));
+			if (schedules == null) throw new ArgumentNullException(nameof(schedules));
+			if (options == null) throw new ArgumentNullException(nameof(options));
+
 			// Title
 			workSheet.Cells[1, 1].Value = "Machinery Gantt Schedule";
 			using (ExcelRange title = workSheet.Cells[1, 1, 1, 47])
 			{
 				title.Merge = true;
-				title.Style.Font.Name = "Arial";
+				title.Style.Font.Name = "Calibri";
 				title.Style.Font.Size = 20;
 				title.Style.Font.Bold = true;
 				title.Style.Fill.PatternType = ExcelFillStyle.Solid;
-				title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(34, 45, 67)); // Deep slate blue
+				title.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 32, 96));
 				title.Style.Font.Color.SetColor(Color.White);
 				title.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-				title.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(20, 25, 40));
+				title.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 			}
 			workSheet.Row(1).Height = 30;
 
-			// Headers Setup
+			// Dynamic Headers
 			var headers = new List<(string Name, bool Include, Color Color)>();
 			int colIndex = 1;
-			if (options.IncludeOrderNumber) headers.Add(("OR #", true, Color.FromArgb(120, 180, 220))); // Soft sky blue
-			if (options.IncludeEngineer) headers.Add(("ENG", true, Color.FromArgb(120, 180, 220)));
-			if (options.IncludeGanttCustomerName) headers.Add(("Customer", true, Color.FromArgb(120, 180, 220)));
-			if (options.IncludeMachineModel) headers.Add(("Model", true, Color.FromArgb(120, 180, 220)));
-			if (options.IncludeQuantity) headers.Add(("QTY", true, Color.FromArgb(120, 180, 220)));
-			if (options.IncludeGanttMedia) headers.Add(("Media", true, Color.FromArgb(120, 180, 220)));
-			if (options.IncludeGanttSpareParts) headers.Add(("Spares", true, Color.FromArgb(120, 180, 220)));
-			if (options.IncludeApprovedDrawingReceived) headers.Add(("App Dwg Rec'd", true, Color.FromArgb(120, 180, 220)));
+			if (options.IncludeOrderNumber) headers.Add(("OR #", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeEngineer) headers.Add(("ENG.", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeGanttCustomerName) headers.Add(("Customer", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeMachineModel) headers.Add(("Machine Model", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeQuantity) headers.Add(("QTY", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeGanttMedia) headers.Add(("Media", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeGanttSpareParts) headers.Add(("Spare Parts", true, Color.FromArgb(91, 155, 213)));
+			if (options.IncludeApprovedDrawingReceived) headers.Add(("Dwg Rec'd", true, Color.FromArgb(91, 155, 213)));
 
 			int staticCols = headers.Count;
 
-			// Gantt Data Headers with Corrected Dates
+			// Add week numbers and dates for Gantt data
 			if (options.IncludeGanttData)
 			{
 				DateTime startDate = new DateTime(DateTime.Now.Year, 7, 1);
 				for (int week = 1; week <= 33; week++)
 				{
 					int weekNumber = GetWeekOfYear(startDate, WeekStartOption.Monday);
-					headers.Add((weekNumber.ToString(), true, Color.FromArgb(180, 230, 255))); // Very light blue
 
-					// Row 2: Week Number
-					workSheet.Cells[2, staticCols + week].Value = $"W{weekNumber}";
-					workSheet.Cells[2, staticCols + week].Style.Font.Name = "Arial";
+					// Week number header
+					workSheet.Cells[2, staticCols + week].Value = weekNumber;
+					workSheet.Cells[2, staticCols + week].Style.Font.Name = "Calibri";
 					workSheet.Cells[2, staticCols + week].Style.Font.Size = 10;
 					workSheet.Cells[2, staticCols + week].Style.Font.Bold = true;
 					workSheet.Cells[2, staticCols + week].Style.Fill.PatternType = ExcelFillStyle.Solid;
-					workSheet.Cells[2, staticCols + week].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(180, 230, 255));
-					workSheet.Cells[2, staticCols + week].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(80, 120, 160));
+					workSheet.Cells[2, staticCols + week].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(221, 235, 247));
+					workSheet.Cells[2, staticCols + week].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-					// Row 3: Date (MMM-dd)
-					workSheet.Cells[3, staticCols + week].Value = startDate.ToString("MMM-dd");
-					workSheet.Cells[3, staticCols + week].Style.Font.Name = "Arial";
-					workSheet.Cells[3, staticCols + week].Style.Font.Size = 9;
+					// Date header
+					workSheet.Cells[3, staticCols + week].Value = startDate.ToString("M/d");
+					workSheet.Cells[3, staticCols + week].Style.Font.Name = "Calibri";
+					workSheet.Cells[3, staticCols + week].Style.Font.Size = 8;
 					workSheet.Cells[3, staticCols + week].Style.Fill.PatternType = ExcelFillStyle.Solid;
-					workSheet.Cells[3, staticCols + week].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(200, 240, 255));
-					workSheet.Cells[3, staticCols + week].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(80, 120, 160));
-					workSheet.Cells[3, staticCols + week].Style.TextRotation = 45;
+					workSheet.Cells[3, staticCols + week].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(221, 235, 247));
+					workSheet.Cells[3, staticCols + week].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
 					startDate = startDate.AddDays(7);
 				}
 			}
 
-			// Special Notes Header
+			// Add Special Notes header if needed
 			if (options.IncludeSpecialNotes)
 			{
-				headers.Add(("Special Notes", true, Color.FromArgb(120, 180, 220)));
-				int specialNotesCol = staticCols + 33 + 1;
-				workSheet.Cells[2, specialNotesCol].Value = "Special Notes";
-				workSheet.Cells[2, specialNotesCol].Style.Font.Name = "Arial";
+				int specialNotesCol = staticCols + 34;
+				workSheet.Cells[2, specialNotesCol].Value = "Notes";
+				workSheet.Cells[2, specialNotesCol].Style.Font.Name = "Calibri";
 				workSheet.Cells[2, specialNotesCol].Style.Font.Size = 11;
 				workSheet.Cells[2, specialNotesCol].Style.Font.Bold = true;
 				workSheet.Cells[2, specialNotesCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
-				workSheet.Cells[2, specialNotesCol].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(120, 180, 220));
-				workSheet.Cells[2, specialNotesCol].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(80, 120, 160));
+				workSheet.Cells[2, specialNotesCol].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(91, 155, 213));
+				workSheet.Cells[2, specialNotesCol].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
+				// Empty cell for alignment
 				workSheet.Cells[3, specialNotesCol].Style.Fill.PatternType = ExcelFillStyle.Solid;
-				workSheet.Cells[3, specialNotesCol].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(140, 200, 240));
-				workSheet.Cells[3, specialNotesCol].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(80, 120, 160));
+				workSheet.Cells[3, specialNotesCol].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(91, 155, 213));
 			}
 
-			// Static Headers Styling
+			// Add static headers in row 2
 			colIndex = 1;
-			for (int i = 0; i < staticCols; i++)
+			foreach (var header in headers)
 			{
-				var cell = workSheet.Cells[2, colIndex];
-				cell.Value = headers[i].Name;
-				cell.Style.Font.Name = "Arial";
-				cell.Style.Font.Size = 11;
-				cell.Style.Font.Bold = true;
-				cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-				cell.Style.Fill.BackgroundColor.SetColor(headers[i].Color);
-				cell.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(80, 120, 160));
-				cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+				workSheet.Cells[2, colIndex].Value = header.Name;
+				workSheet.Cells[2, colIndex].Style.Font.Name = "Calibri";
+				workSheet.Cells[2, colIndex].Style.Font.Size = 11;
+				workSheet.Cells[2, colIndex].Style.Font.Bold = true;
+				workSheet.Cells[2, colIndex].Style.Fill.PatternType = ExcelFillStyle.Solid;
+				workSheet.Cells[2, colIndex].Style.Fill.BackgroundColor.SetColor(header.Color);
+				workSheet.Cells[2, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 				colIndex++;
 			}
 
+			// Empty cells in row 3 for static columns
 			for (int i = 1; i <= staticCols; i++)
 			{
 				workSheet.Cells[3, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
-				workSheet.Cells[3, i].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(140, 200, 240));
-				workSheet.Cells[3, i].Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.FromArgb(80, 120, 160));
+				workSheet.Cells[3, i].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(91, 155, 213));
 			}
 
-			// Premium Gantt Colors and Design
-			var milestoneColors = new List<(Color Base, Color Highlight)>
-	{
-		(Color.FromArgb(46, 204, 113), Color.FromArgb(88, 230, 147)),  // Emerald Green
-        (Color.FromArgb(52, 152, 219), Color.FromArgb(94, 175, 240)),  // Sky Blue
-        (Color.FromArgb(155, 89, 182), Color.FromArgb(187, 143, 206)), // Amethyst Purple
-        (Color.FromArgb(230, 126, 34), Color.FromArgb(245, 166, 87)),  // Tangerine Orange
-        (Color.FromArgb(231, 76, 60), Color.FromArgb(245, 120, 110)),  // Coral Red
-        (Color.FromArgb(26, 188, 156), Color.FromArgb(72, 219, 191))   // Turquoise
-    };
-			int colorIndex = 0;
-
+			// Data rows
 			int row = 4;
 			foreach (var schedule in schedules)
 			{
+				if (schedule == null) continue;
+
 				colIndex = 1;
 				if (options.IncludeOrderNumber) workSheet.Cells[row, colIndex++].Value = schedule.OrderNumber;
 				if (options.IncludeEngineer) workSheet.Cells[row, colIndex++].Value = schedule.Engineer;
@@ -1052,12 +1042,15 @@ namespace haver.Controllers
 				if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = schedule.Quantity;
 				if (options.IncludeGanttMedia) workSheet.Cells[row, colIndex++].Value = schedule.Media;
 				if (options.IncludeGanttSpareParts) workSheet.Cells[row, colIndex++].Value = schedule.SpareParts;
-				if (options.IncludeApprovedDrawingReceived) workSheet.Cells[row, colIndex++].Value = schedule.ApprovedDrawingReceived.ToString("d-MMM-yy");
+				if (options.IncludeApprovedDrawingReceived )
+					workSheet.Cells[row, colIndex++].Value = schedule.ApprovedDrawingReceived.ToString("MMM-dd");
 
 				if (options.IncludeGanttData && schedule.GanttData != null)
 				{
 					foreach (var milestone in schedule.GanttData)
 					{
+						if (milestone?.StartDate == null || milestone?.EndDate == null) continue;
+
 						int startWeek = GetWeekOfYear((DateTime)milestone.StartDate, WeekStartOption.Monday);
 						int endWeek = GetWeekOfYear((DateTime)milestone.EndDate, WeekStartOption.Monday);
 						int startCol = staticCols + startWeek;
@@ -1065,159 +1058,128 @@ namespace haver.Controllers
 
 						if (startCol >= colIndex && endCol <= staticCols + 33)
 						{
-							(Color Base, Color Highlight) colorPair;
-							try
-							{
-								string hexCode = milestone.MilestoneClass?.Trim();
-								if (!string.IsNullOrEmpty(hexCode))
-								{
-									hexCode = hexCode.TrimStart('#');
-									if (System.Text.RegularExpressions.Regex.IsMatch(hexCode, @"^[0-9A-Fa-f]{6}$"))
-									{
-										int r = Convert.ToInt32(hexCode.Substring(0, 2), 16);
-										int g = Convert.ToInt32(hexCode.Substring(2, 2), 16);
-										int b = Convert.ToInt32(hexCode.Substring(4, 2), 16);
-										colorPair = (Color.FromArgb(r, g, b), Color.FromArgb(
-											Math.Min(255, r + 40),
-											Math.Min(255, g + 40),
-											Math.Min(255, b + 40)));
-									}
-									else if (System.Text.RegularExpressions.Regex.IsMatch(hexCode, @"^[0-9A-Fa-f]{3}$"))
-									{
-										int r = Convert.ToInt32(hexCode.Substring(0, 1) + hexCode.Substring(0, 1), 16);
-										int g = Convert.ToInt32(hexCode.Substring(1, 1) + hexCode.Substring(1, 1), 16);
-										int b = Convert.ToInt32(hexCode.Substring(2, 1) + hexCode.Substring(2, 1), 16);
-										colorPair = (Color.FromArgb(r, g, b), Color.FromArgb(
-											Math.Min(255, r + 40),
-											Math.Min(255, g + 40),
-											Math.Min(255, b + 40)));
-									}
-									else
-									{
-										throw new FormatException("Invalid hex code format.");
-									}
-								}
-								else
-								{
-									colorPair = milestoneColors[colorIndex % milestoneColors.Count];
-									colorIndex++;
-								}
-							}
-							catch (Exception ex)
-							{
-								Console.WriteLine($"Error parsing hex code '{milestone.MilestoneClass}': {ex.Message}");
-								colorPair = milestoneColors[colorIndex % milestoneColors.Count];
-								colorIndex++;
-							}
+							Color milestoneColor = GetMilestoneColor(milestone.MilestoneClass);
 
-							int rangeLength = endCol - startCol + 1;
 							for (int col = startCol; col <= endCol; col++)
 							{
 								var cell = workSheet.Cells[row, col];
-								double gradientFactor = rangeLength > 1 ? (double)(col - startCol) / (rangeLength - 1) : 0.5;
-								int r = (int)(colorPair.Base.R + (colorPair.Highlight.R - colorPair.Base.R) * gradientFactor);
-								int g = (int)(colorPair.Base.G + (colorPair.Highlight.G - colorPair.Base.G) * gradientFactor);
-								int b = (int)(colorPair.Base.B + (colorPair.Highlight.B - colorPair.Base.B) * gradientFactor);
-								Color cellColor = Color.FromArgb(r, g, b);
-
-								// Premium styling
 								cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
-								cell.Style.Fill.BackgroundColor.SetColor(cellColor);
-								// Subtle diagonal pattern for texture
-								if (rangeLength > 1 && col == startCol + (rangeLength / 2))
-								{
-									cell.Style.Fill.PatternType = ExcelFillStyle.LightUp;
-									cell.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 255, 255, 20)); // Very faint white overlay
-								}
-
-								// Enhanced borders
-								cell.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-								cell.Style.Border.Top.Color.SetColor(Color.FromArgb(60, 60, 60));
-								cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-								cell.Style.Border.Bottom.Color.SetColor(Color.FromArgb(60, 60, 60));
-								cell.Style.Border.Left.Style = col == startCol ? ExcelBorderStyle.Medium : ExcelBorderStyle.Thin;
-								cell.Style.Border.Left.Color.SetColor(col == startCol ? Color.FromArgb(20, 20, 20) : Color.FromArgb(120, 120, 120));
-								cell.Style.Border.Right.Style = col == endCol ? ExcelBorderStyle.Medium : ExcelBorderStyle.Thin;
-								cell.Style.Border.Right.Color.SetColor(col == endCol ? Color.FromArgb(20, 20, 20) : Color.FromArgb(120, 120, 120));
+								cell.Style.Fill.BackgroundColor.SetColor(milestoneColor);
 							}
 						}
 					}
-					colIndex = staticCols + 34;
 				}
 
+				// Special Notes
 				if (options.IncludeSpecialNotes)
 				{
-					workSheet.Cells[row, colIndex].Value = schedule.SpecialNotes;
-					colIndex++;
+					workSheet.Cells[row, staticCols + 34].Value = schedule.SpecialNotes;
+					workSheet.Cells[row, staticCols + 34].Style.WrapText = true;
+					workSheet.Cells[row, staticCols + 34].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 				}
 
 				row++;
 			}
 
-			// Data Range Styling
+			// Styling for all data cells
+			int lastCol = staticCols + (options.IncludeGanttData ? 33 : 0) + (options.IncludeSpecialNotes ? 1 : 0);
 			if (row > 4)
 			{
-				using (var dataRange = workSheet.Cells[4, 1, row - 1, headers.Count])
+				using (var dataRange = workSheet.Cells[4, 1, row - 1, lastCol])
 				{
-					dataRange.Style.Font.Name = "Arial";
+					dataRange.Style.Font.Name = "Calibri";
 					dataRange.Style.Font.Size = 10;
 					dataRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					dataRange.Style.Border.BorderAround(ExcelBorderStyle.Medium, Color.FromArgb(34, 45, 67));
-					dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					dataRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 				}
 
+				// Alternating row colors for static columns
 				for (int i = 4; i < row; i++)
 				{
 					using (var rowRange = workSheet.Cells[i, 1, i, staticCols])
 					{
 						rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
-						rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(240, 245, 250) : Color.FromArgb(255, 255, 255));
+						rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(242, 242, 242) : Color.White);
 					}
 				}
 			}
 
-			// Text Wrapping
-			colIndex = 1;
-			if (options.IncludeOrderNumber) colIndex++;
-			if (options.IncludeEngineer) colIndex++;
-			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
-			if (options.IncludeMachineModel) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
-			if (options.IncludeQuantity) colIndex++;
-			if (options.IncludeGanttMedia) colIndex++;
-			if (options.IncludeGanttSpareParts) colIndex++;
-			if (options.IncludeApprovedDrawingReceived) colIndex++;
-			if (options.IncludeSpecialNotes)
-			{
-				int specialNotesCol = staticCols + 33 + 1;
-				workSheet.Column(specialNotesCol).Style.WrapText = true;
-			}
-
 			// Column Widths
-			workSheet.Cells.AutoFitColumns();
 			colIndex = 1;
-			if (options.IncludeOrderNumber) workSheet.Column(colIndex++).Width = 12; else colIndex++;
-			if (options.IncludeEngineer) workSheet.Column(colIndex++).Width = 8; else colIndex++;
-			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Width = 25; else colIndex++;
-			if (options.IncludeMachineModel) workSheet.Column(colIndex++).Width = 20; else colIndex++;
-			if (options.IncludeQuantity) workSheet.Column(colIndex++).Width = 6; else colIndex++;
-			if (options.IncludeGanttMedia) workSheet.Column(colIndex++).Width = 10; else colIndex++;
-			if (options.IncludeGanttSpareParts) workSheet.Column(colIndex++).Width = 10; else colIndex++;
-			if (options.IncludeApprovedDrawingReceived) workSheet.Column(colIndex++).Width = 14; else colIndex++;
+			if (options.IncludeOrderNumber) workSheet.Column(colIndex++).Width = 8;
+			if (options.IncludeEngineer) workSheet.Column(colIndex++).Width = 8;
+			if (options.IncludeGanttCustomerName) workSheet.Column(colIndex++).Width = 20;
+			if (options.IncludeMachineModel) workSheet.Column(colIndex++).Width = 20;
+			if (options.IncludeQuantity) workSheet.Column(colIndex++).Width = 5;
+			if (options.IncludeGanttMedia) workSheet.Column(colIndex++).Width = 8;
+			if (options.IncludeGanttSpareParts) workSheet.Column(colIndex++).Width = 12;
+			if (options.IncludeApprovedDrawingReceived) workSheet.Column(colIndex++).Width = 10;
+
 			if (options.IncludeGanttData)
 			{
 				for (int i = staticCols + 1; i <= staticCols + 33; i++)
-					workSheet.Column(i).Width = 7; // Wider for better visibility
-			}
-			if (options.IncludeSpecialNotes)
-			{
-				int specialNotesCol = staticCols + 33 + 1;
-				workSheet.Column(specialNotesCol).Width = 40;
+					workSheet.Column(i).Width = 3.5; // Narrower columns for cleaner Gantt chart
 			}
 
+			if (options.IncludeSpecialNotes)
+			{
+				workSheet.Column(staticCols + 34).Width = 30;
+				workSheet.Column(staticCols + 34).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+				workSheet.Column(staticCols + 34).Style.WrapText = true;
+			}
+
+			// Freeze headers and static columns
 			workSheet.View.FreezePanes(4, staticCols + 1);
+
+			// Add thin borders to all cells for better readability
+			if (row > 1)
+			{
+				using (var allCells = workSheet.Cells[1, 1, row - 1, lastCol])
+				{
+					allCells.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					allCells.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					allCells.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					allCells.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+				}
+			}
+		}
+
+		private Color GetMilestoneColor(string hexCode)
+		{
+			if (string.IsNullOrWhiteSpace(hexCode))
+				return Color.FromArgb(200, 200, 200); // Default gray
+
+			try
+			{
+				hexCode = hexCode.Trim().TrimStart('#');
+
+				if (hexCode.Length == 3)
+				{
+					// Expand shorthand (e.g., "03F" to "0033FF")
+					hexCode = $"{hexCode[0]}{hexCode[0]}{hexCode[1]}{hexCode[1]}{hexCode[2]}{hexCode[2]}";
+				}
+
+				if (hexCode.Length == 6)
+				{
+					int r = Convert.ToInt32(hexCode.Substring(0, 2), 16);
+					int g = Convert.ToInt32(hexCode.Substring(2, 2), 16);
+					int b = Convert.ToInt32(hexCode.Substring(4, 2), 16);
+					return Color.FromArgb(r, g, b);
+				}
+			}
+			catch (Exception)
+			{
+				// Log exception in production code if needed
+			}
+
+			return Color.FromArgb(200, 200, 200); // Default gray
+		}
+
+		private Color GetContrastColor(Color backgroundColor)
+		{
+			// Calculate luminance to determine if background is dark
+			double luminance = (0.299 * backgroundColor.R + 0.587 * backgroundColor.G + 0.114 * backgroundColor.B) / 255;
+			return luminance > 0.5 ? Color.Black : Color.White;
 		}
 		private void SetupHeader(ExcelWorksheet workSheet, int row, int col, string value, Color bgColor)
         {
