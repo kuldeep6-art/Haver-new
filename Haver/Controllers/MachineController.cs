@@ -342,8 +342,8 @@ namespace haver.Controllers
 
             if (salesOrder != null)
             {
-                // Retrieve the Procurement related to this specific machine (if it exists)
-                var procurement = machine.Procurements.FirstOrDefault();
+                //// Retrieve the Procurement related to this specific machine (if it exists)
+                //var procurement = machine.Procurements.FirstOrDefault();
 
                 // Create a Gantt record for the machine
                 var gantt = new GanttData
@@ -356,8 +356,8 @@ namespace haver.Controllers
                     //PreOExp = salesOrder.PreOExp,
                     EngExpected = salesOrder.EngPExp,
                     EngReleased = salesOrder.EngPRel,
-					PurchaseOrdersIssued = machine.Procurements.Min(po => po.PODueDate),
-					PurchaseOrdersCompleted = machine.Procurements.Max(po => po.PORcd),
+					PurchaseOrdersIssued = null,
+					PurchaseOrdersCompleted =null,
                     AssemblyStart = machine.AssemblyStart,
                     AssemblyComplete = machine.AssemblyComplete,
                     ShipExpected = machine.RToShipExp,
@@ -418,6 +418,8 @@ namespace haver.Controllers
 
                     TempData["Message"] = "Machine has been successfully edited.";
                     return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machinesToUpdate.ID });
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
