@@ -138,25 +138,25 @@ namespace haver.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 
-            // Ensure EngReleased is after EngExpected
-            if (EngExpected.HasValue && EngReleased.HasValue && EngReleased.Value < EngExpected.Value)
-            {
-                yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "AppDwgRet" });
-            }
+            //// Ensure EngReleased is after EngExpected
+            //if (EngExpected.HasValue && EngReleased.HasValue && EngReleased.Value < EngExpected.Value)
+            //{
+            //    yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "AppDwgRet" });
+            //}
 
            
 
-            // Ensure ShipExpected is after PackageReleased
-            if (PackageReleased.HasValue && ShipExpected.HasValue && ShipExpected.Value < PackageReleased.Value)
-            {
-                yield return new ValidationResult("Ship Expected date must not be earlier than Package Released date.", new[] { "ShipExpected" });
-            }
+            //// Ensure ShipExpected is after PackageReleased
+            //if (PackageReleased.HasValue && ShipExpected.HasValue && ShipExpected.Value < PackageReleased.Value)
+            //{
+            //    yield return new ValidationResult("Ship Expected date must not be earlier than Package Released date.", new[] { "ShipExpected" });
+            //}
 
-            // Ensure DeliveryExpected is after ShipExpected
-            if (ShipExpected.HasValue && DeliveryExpected.HasValue && DeliveryExpected.Value < ShipExpected.Value)
-            {
-                yield return new ValidationResult("Delivery Expected date must not be earlier than Ship Expected date.", new[] { "DeliveryExpected" });
-            }
+            //// Ensure DeliveryExpected is after ShipExpected
+            //if (ShipExpected.HasValue && DeliveryExpected.HasValue && DeliveryExpected.Value < ShipExpected.Value)
+            //{
+            //    yield return new ValidationResult("Delivery Expected date must not be earlier than Ship Expected date.", new[] { "DeliveryExpected" });
+            //}
 
         
             if (AssemblyStart.HasValue && AssemblyComplete.HasValue && AssemblyComplete.Value < AssemblyStart.Value)

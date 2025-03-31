@@ -380,6 +380,25 @@ namespace haver.Controllers
                         }
                     }
 
+                    if (gDataToUpdate.Machine != null)
+                    {
+                        if (gDataToUpdate.AssemblyStart.HasValue && gDataToUpdate.Machine.AssemblyStart != gDataToUpdate.AssemblyStart.Value)
+                        {
+                            gDataToUpdate.Machine.AssemblyStart= gDataToUpdate.AssemblyStart.Value;
+                            isUpdated = true;
+                        }
+
+                        if (gDataToUpdate.AssemblyComplete.HasValue && gDataToUpdate.Machine.AssemblyComplete != gDataToUpdate.AssemblyComplete.Value)
+                        {
+                            gDataToUpdate.Machine.AssemblyComplete = gDataToUpdate.AssemblyComplete.Value;
+                            isUpdated = true;
+                        }
+
+
+                    }
+
+
+
                     if (isUpdated)
                     {
                         await _context.SaveChangesAsync();
