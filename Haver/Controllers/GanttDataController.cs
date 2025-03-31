@@ -496,7 +496,7 @@ namespace haver.Controllers
             return View(ganttData);
         }
 
-
+     
 
         //public IActionResult Chart()
         //{

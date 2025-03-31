@@ -195,6 +195,9 @@ namespace haver.Controllers
 
                     await _context.SaveChangesAsync();
 
+                    //update procurement dates for gantt
+                    await UpdateGanttProcurementDates(procurement.MachineID);
+
                     return Redirect(ViewData["returnURL"].ToString());
                 }
             }
@@ -261,6 +264,8 @@ namespace haver.Controllers
 
                     await _context.SaveChangesAsync();
 
+                    await UpdateGanttProcurementDates(procurementToUpdate.MachineID);
+
                     return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (DbUpdateConcurrencyException)
@@ -282,6 +287,54 @@ namespace haver.Controllers
 
             PopulateDropDownLists(procurementToUpdate);
             return View(procurementToUpdate);
+        }
+
+        public async Task UpdateGanttProcurementDates(int? machineId)
+        {
+            // Handle null machineId safely
+            if (machineId == null || machineId == 0)
+            {
+                Console.WriteLine("Invalid MachineID. Cannot update Gantt.");
+                return;
+            }
+
+            // Get the machine and include Procurements to load related records
+            var machine = await _context.Machines
+                .Include(m => m.Procurements)
+                .FirstOrDefaultAsync(m => m.ID == machineId);
+
+            // Check if machine or procurements are null or empty
+            if (machine != null && machine.Procurements != null && machine.Procurements.Any())
+            {
+                // Get the min and max dates for procurement safely
+                var procurementStart = machine.Procurements.Min(po => po.PODueDate);
+                var procurementEnd = machine.Procurements.Max(po => po.PORcd);
+
+                // Get the corresponding Gantt record for the machine
+                var ganttRecord = await _context.GanttDatas
+                    .FirstOrDefaultAsync(g => g.MachineID == machineId);
+
+                if (ganttRecord != null)
+                {
+                    // Update the procurement dates in the Gantt
+                    ganttRecord.PurchaseOrdersIssued = procurementStart;
+                    ganttRecord.PurchaseOrdersCompleted = procurementEnd;
+
+                    // Save the updated Gantt record
+                    _context.GanttDatas.Update(ganttRecord);
+                    await _context.SaveChangesAsync();
+
+                    Console.WriteLine($"Gantt updated for MachineID {machineId}. Start: {procurementStart}, End: {procurementEnd}");
+                }
+                else
+                {
+                    Console.WriteLine($"No Gantt record found for MachineID {machineId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No procurement records found or procurement is null for this machine.");
+            }
         }
 
 
@@ -335,6 +388,8 @@ namespace haver.Controllers
             }
             return View(procurement);
         }
+
+      
 
         private async Task LogActivity(string message)
         {
