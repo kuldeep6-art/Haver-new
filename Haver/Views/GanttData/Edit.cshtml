@@ -88,6 +88,19 @@
                             <span asp-validation-for="EngExpected" class="text-danger"></span>
                         </div>
                     </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PurchaseOrdersIssued" class="control-label"
+                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                Purchase Orders Issued
+                                @* <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were issued."></i> *@
+                            </label>
+                            <input asp-for="PurchaseOrdersIssued" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersIssued" placeholder="Enter Purchase Orders Issued Date"  readonly/>
+                            <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label asp-for="AppDRcd" class="control-label"
@@ -101,18 +114,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label asp-for="EngReleased" class="control-label"
-                                   style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Engineering Package Released
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineering package release date."></i>
-                            </label>
-                            <input asp-for="EngReleased" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngReleased" placeholder="Enter Engineering Release Date" />
-                            <span asp-validation-for="EngReleased" class="text-danger"></span>
-                        </div>
-                    </div>
+                    
 
                     
 
@@ -125,14 +127,14 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label asp-for="PurchaseOrdersIssued" class="control-label"
+                            <label asp-for="EngReleased" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                Purchase Orders Issued
-                                @* <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were issued."></i> *@
+                                Engineering Package Released
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineering package release date."></i>
                             </label>
-                            <input asp-for="PurchaseOrdersIssued" class="form-control"
-                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersIssued" placeholder="Enter Purchase Orders Issued Date" />
-                            <span asp-validation-for="PurchaseOrdersIssued" class="text-danger"></span>
+                            <input asp-for="EngReleased" class="form-control"
+                                   style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngReleased" placeholder="Enter Engineering Release Date" />
+                            <span asp-validation-for="EngReleased" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
