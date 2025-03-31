@@ -416,6 +416,7 @@ namespace haver.Controllers
 
                     await _context.SaveChangesAsync();
 
+                    TempData["Message"] = "Machine has been successfully edited.";
                     return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machinesToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
