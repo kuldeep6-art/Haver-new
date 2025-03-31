@@ -394,6 +394,31 @@ namespace haver.Controllers
                             isUpdated = true;
                         }
 
+                        if (gDataToUpdate.PurchaseOrdersCompleted != null && gDataToUpdate.MachineID != null)
+                        {
+                            // Find the latest procurement record for the machine
+                            var latestProcurement = await _context.Procurements
+                                .Where(po => po.MachineID == gDataToUpdate.MachineID)
+                                .OrderByDescending(po => po.PORcd) // Get the most recent record
+                                .FirstOrDefaultAsync();
+
+                            if (latestProcurement != null && latestProcurement.PORcd != gDataToUpdate.PurchaseOrdersCompleted)
+                            {
+                                // Update the procurement's PORcd (received date) to match the new Gantt date
+                                latestProcurement.PORcd = gDataToUpdate.PurchaseOrdersCompleted;
+
+                                // Save the updated procurement record
+                                _context.Procurements.Update(latestProcurement);
+                                await _context.SaveChangesAsync();
+
+                                Console.WriteLine($"Procurement record {latestProcurement.PONumber} updated with new PORcd: {latestProcurement.PORcd}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("No procurement records found or no changes to update.");
+                            }
+                        }
+
 
                     }
 
