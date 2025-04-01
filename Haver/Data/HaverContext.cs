@@ -59,6 +59,7 @@ namespace haver.Data
 
         public DbSet<Employee> Employees { get; set; }
 
+        public DbSet<UserSelection> UserSelections { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

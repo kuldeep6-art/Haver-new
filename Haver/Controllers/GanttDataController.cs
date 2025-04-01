@@ -521,7 +521,7 @@ namespace haver.Controllers
             return View(ganttData);
         }
 
-     
+
 
         //public IActionResult Chart()
         //{
@@ -542,13 +542,33 @@ namespace haver.Controllers
         //    return View(ganttData);
         //}
 
+        //      [HttpGet]
+        //public IActionResult ExportSchedules()
+        //{
+        //	var options = LoadOptionsFromSession() ?? new ScheduleExportOptionsViewModel();
+
+
+        //	return View("ExportSchedules", options);
+        //}
+
         [HttpGet]
-		public IActionResult ExportSchedules()
-		{
-			var options = LoadOptionsFromSession() ?? new ScheduleExportOptionsViewModel();
-			return View("ExportSchedules", options);
-		}
-		public IActionResult Chart()
+        public IActionResult ExportSchedules()
+        {
+            // Load current options from session or create a new instance
+            var options = LoadOptionsFromSession() ?? new ScheduleExportOptionsViewModel();
+
+            // Load last 5 selections from the database
+            var savedSelections = LoadSelectionsFromDatabase();
+
+            // Pass the selections to the view
+            ViewBag.SavedSelections = savedSelections;
+
+            // Return the view with options
+            return View("ExportSchedules", options);
+        }
+
+
+        public IActionResult Chart()
         {
             var ganttData = _context.GanttDatas
                 .Include(g => g.SalesOrder)
@@ -561,17 +581,76 @@ namespace haver.Controllers
             return View(ganttData);
         }
 
+
+
+        private void SaveSelectionToDatabase(ScheduleExportOptionsViewModel options)
+        {
+            // Convert the current selection to JSON
+            var selectionJson = JsonSerializer.Serialize(options);
+
+            var newSelection = new UserSelection
+            {
+                SelectionJson = selectionJson,
+                CreatedAt = DateTime.UtcNow // Set current timestamp
+            };
+
+            // Save the selection to the database
+            _context.UserSelections.Add(newSelection);
+            _context.SaveChanges();
+
+            // Keep only the last 5 selections by deleting older entries
+            var selectionsToDelete = _context.UserSelections
+                .OrderByDescending(s => s.CreatedAt)
+                .Skip(5)
+                .ToList();
+
+            if (selectionsToDelete.Any())
+            {
+                _context.UserSelections.RemoveRange(selectionsToDelete);
+                _context.SaveChanges();
+            }
+        }
+
+        private List<ScheduleExportOptionsViewModel> LoadSelectionsFromDatabase()
+        {
+            var selections = _context.UserSelections
+                .OrderByDescending(s => s.CreatedAt) // Get the most recent 5 selections
+                .Take(5)
+                .ToList();
+
+            // Deserialize and return as a list of ScheduleExportOptionsViewModel
+            return selections
+                .Select(s => JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(s.SelectionJson))
+                .Where(s => s != null) // Ensure no null entries
+                .ToList();
+        }
+
+
+
         [HttpPost]
 		public IActionResult DownloadSchedules(ScheduleExportOptionsViewModel options)
 		{
-			// Load previously saved options from session if this is not a form submission (i.e., options is default/empty)
-			if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
-			{
-				options = LoadOptionsFromSession() ?? new ScheduleExportOptionsViewModel();
-			}
+            // Load previously saved options from the database if no form submission
+            if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
+            {
+                if(options != null)
+                {
+                    SaveSelectionToDatabase(options);
+                }
 
-			// Fetch sales orders with related data (unchanged)
-			var salesOrders = _context.SalesOrders
+                var savedSelections = LoadSelectionsFromDatabase();
+                if (savedSelections.Any())
+                {
+                    options = savedSelections.First(); // Load the most recent selection
+                }
+                else
+                {
+                    options = new ScheduleExportOptionsViewModel(); // Fallback if nothing is found
+                }
+            }
+
+            // Fetch sales orders with related data (unchanged)
+            var salesOrders = _context.SalesOrders
 				.Include(so => so.Machines).ThenInclude(m => m.MachineType)
 				.Include(so => so.Machines).ThenInclude(m => m.Procurements).ThenInclude(p => p.Vendor)
 				.Include(so => so.SalesOrderEngineers).ThenInclude(se => se.Engineer)
@@ -579,7 +658,7 @@ namespace haver.Controllers
 				.AsNoTracking()
 				.AsEnumerable();
 
-			// Machine Schedules Data (unchanged)
+			// Machine Schedules Data 
 			var machineSchedules = salesOrders
 				.SelectMany(so => so.Machines != null && so.Machines.Any()
 					? so.Machines.Select(m => new MachineScheduleViewModel
@@ -601,8 +680,8 @@ namespace haver.Controllers
 						PoDueDates = options.IncludePoDueDates && m?.Procurements != null && m.Procurements.Any()
 							? string.Join(", ", m.Procurements.Select(p => p.PODueDate.HasValue ? p.PODueDate.Value.ToString("yyyy-MM-dd") : "N/A"))
 							: null,
-						Media = options.IncludeMedia ? (m?.Media ?? false ? "✔" : "") : null,
-						SpareParts = options.IncludeSpareParts ? (m?.SpareParts ?? false ? "✔" : "") : null,
+						Media = options.IncludeMedia ? (m?.Media ?? false ? "✓" : "") : null,
+						SpareParts = options.IncludeSpareParts ? (m?.SpareParts ?? false ? "✓" : "") : null,
 						Base = options.IncludeBase ? (m?.Base ?? false ? "✓" : "") : null,
 						AirSeal = options.IncludeAirSeal ? (m?.AirSeal ?? false ? "✓" : "") : null,
 						CoatingLining = options.IncludeCoatingLining ? (m?.CoatingLining ?? false ? "✓" : "") : null,
@@ -658,7 +737,7 @@ namespace haver.Controllers
           : null,
       CustomerName = options.IncludeGanttCustomerName ? (so?.CompanyName ?? "Unknown") : null,
       Quantity = options.IncludeQuantity ? 1 : 0,  // Each row is for one machine
-      MachineModel = options.IncludeMachineModel ? (m?.MachineModel ?? "Unknown") : null,  // ✅ Each machine gets its own row
+      MachineModel = options.IncludeMachineModel ? (m?.MachineModel ?? "Unknown") : null,  //  Each machine gets its own row
       Media = options.IncludeGanttMedia ? (m.Media ? "Yes" : "No") : null,
       SpareParts = options.IncludeGanttSpareParts ? (m.SpareParts ? "Yes" : "No") : null,
       ApprovedDrawingReceived = options.IncludeApprovedDrawingReceived ? (so?.AppDwgExp ?? DateTime.MinValue) : DateTime.MinValue,
@@ -679,7 +758,7 @@ namespace haver.Controllers
 			// Save options to session if this is a form submission
 			if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
 			{
-				SaveOptionsToSession(options);
+				SaveSelectionToDatabase(options);
 			}
 
 			using (ExcelPackage excel = new ExcelPackage())
@@ -931,12 +1010,12 @@ namespace haver.Controllers
 			if (options.IncludeVendorNames) workSheet.Column(colIndex++).Width = 25; else colIndex++;
 			if (options.IncludePoNumbers) workSheet.Column(colIndex++).Width = 15; else colIndex++;
 			if (options.IncludePoDueDates) workSheet.Column(colIndex++).Width = 15; else colIndex++;
-			if (options.IncludeMedia) workSheet.Column(colIndex++).Width = 8; else colIndex++;
-			if (options.IncludeSpareParts) workSheet.Column(colIndex++).Width = 8; else colIndex++;
-			if (options.IncludeBase) workSheet.Column(colIndex++).Width = 8; else colIndex++;
-			if (options.IncludeAirSeal) workSheet.Column(colIndex++).Width = 8; else colIndex++;
-			if (options.IncludeCoatingLining) workSheet.Column(colIndex++).Width = 8; else colIndex++;
-			if (options.IncludeDisassembly) workSheet.Column(colIndex++).Width = 8; else colIndex++;
+			if (options.IncludeMedia) workSheet.Column(colIndex++).Width = 10; else colIndex++;
+			if (options.IncludeSpareParts) workSheet.Column(colIndex++).Width = 10; else colIndex++;
+			if (options.IncludeBase) workSheet.Column(colIndex++).Width = 10; else colIndex++;
+			if (options.IncludeAirSeal) workSheet.Column(colIndex++).Width = 10; else colIndex++;
+			if (options.IncludeCoatingLining) workSheet.Column(colIndex++).Width = 10; else colIndex++;
+			if (options.IncludeDisassembly) workSheet.Column(colIndex++).Width = 10; else colIndex++;
 			if (options.IncludeNotes) workSheet.Column(colIndex++).Width = 30; else colIndex++;
 			if (options.IncludePreOrder) workSheet.Column(colIndex++).Width = 20; else colIndex++;
 			if (options.IncludeScope) workSheet.Column(colIndex++).Width = 20; else colIndex++;
