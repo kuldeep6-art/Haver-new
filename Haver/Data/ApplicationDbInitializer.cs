@@ -61,12 +61,12 @@ namespace haver.Data
                     {
                         string defaultPassword = "Pa55w@rd";
 
-                        if (userManager.FindByEmailAsync("admin@outlook.com").Result == null)
+                        if (userManager.FindByEmailAsync("admin@haverniagara.com").Result == null)
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "admin@outlook.com",
-                                Email = "admin@outlook.com",
+                                UserName = "admin@haverniagara.com",
+                                Email = "admin@haverniagara.com",
                                 EmailConfirmed = true
                             };
 
@@ -77,12 +77,12 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "Admin").Wait();
                             }
                         }
-                        if (userManager.FindByEmailAsync("sales@outlook.com").Result == null)
+                        if (userManager.FindByEmailAsync("sales@haverniagara.com").Result == null)
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "sales@outlook.com",
-                                Email = "sales@outlook.com",
+                                UserName = "sales@haverniagara.com",
+                                Email = "sales@haverniagara.com",
                                 EmailConfirmed = true
                             };
 
@@ -93,12 +93,12 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "Sales").Wait();
                             }
                         }
-                        if (userManager.FindByEmailAsync("engineering@outlook.com").Result == null)
+                        if (userManager.FindByEmailAsync("engineering@haverniagara.com").Result == null)
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "engineering@outlook.com",
-                                Email = "engineering@outlook.com",
+                                UserName = "engineering@haverniagara.com",
+                                Email = "engineering@haverniagara.com",
                                 EmailConfirmed = true
                             };
 
@@ -109,12 +109,12 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "Engineering").Wait();
                             }
                         }
-                        if (userManager.FindByEmailAsync("procurement@outlook.com").Result == null)
+                        if (userManager.FindByEmailAsync("procurement@haverniagara.com").Result == null)
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "pment@outlook.com",
-                                Email = "pment@outlook.com",
+                                UserName = "pment@haverniagara.com",
+                                Email = "pment@haverniagara.com",
                                 EmailConfirmed = true
                             };
 
@@ -125,12 +125,12 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "Procurement").Wait();
                             }
                         }
-                        if (userManager.FindByEmailAsync("production@outlook.com").Result == null)
+                        if (userManager.FindByEmailAsync("production@haverniagara.com").Result == null)
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "production@outlook.com",
-                                Email = "production@outlook.com",
+                                UserName = "production@haverniagara.com",
+                                Email = "production@haverniagara.com",
                                 EmailConfirmed = true
                             };
 
@@ -141,12 +141,12 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "Production").Wait();
                             }
                         }
-                        if (userManager.FindByEmailAsync("pic@outlook.com").Result == null)
+                        if (userManager.FindByEmailAsync("pic@haverniagara.com").Result == null)
                         {
                             IdentityUser user = new IdentityUser
                             {
-                                UserName = "pic@outlook.com",
-                                Email = "pic@outlook.com",
+                                UserName = "pic@haverniagara.com",
+                                Email = "pic@haverniagara.com",
                                 EmailConfirmed = true
                             };
 
@@ -157,12 +157,12 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "PIC").Wait();
                             }
                         }
-                        //if (userManager.FindByEmailAsync("user@outlook.com").Result == null)
+                        //if (userManager.FindByEmailAsync("user@haverniagara.com").Result == null)
                         //{
                         //    IdentityUser user = new IdentityUser
                         //    {
-                        //        UserName = "user@outlook.com",
-                        //        Email = "user@outlook.com",
+                        //        UserName = "user@haverniagara.com",
+                        //        Email = "user@haverniagara.com",
                         //        EmailConfirmed = true
                         //    };
 

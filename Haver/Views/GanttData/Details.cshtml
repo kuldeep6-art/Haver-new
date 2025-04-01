@@ -344,9 +344,13 @@
         .handle {
             display: none;
         }
-        .bar-progress{
-            border-radius:0;
+        .bar, .bar-progress, .bar-wrapper rect{
+            rx:0 !important;
+            ry: 0 !important;
+            border-radius: 0 !important;
+            shape-rendering: crispEdges !important;
         }
+
 
     </style>
 }

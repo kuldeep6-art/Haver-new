@@ -60,37 +60,37 @@ namespace haver.Data
                          {
                              FirstName = "Gregory",
                              LastName = "House",
-                             Email = "admin@outlook.com"
+                             Email = "admin@haverniagara.com"
                          },
                          new Employee
                          {
                              FirstName = "Fred",
                              LastName = "Flintstone",
-                             Email = "sales@outlook.com"
+                             Email = "sales@haverniagara.com"
                          },
                           new Employee
                           {
                               FirstName = "Kelly",
                               LastName = "Hunt",
-                              Email = "pment@outlook.com"
+                              Email = "pment@haverniagara.com"
                           },
                           new Employee
                           {
                               FirstName = "Klay",
                               LastName = "Log",
-                              Email = "production@outlook.com"
+                              Email = "production@haverniagara.com"
                           },
                           new Employee
                           {
                               FirstName = "Gody",
                               LastName = "Lakes",
-                              Email = "pic@outlook.com"
+                              Email = "pic@haverniagara.com"
                           },
                             new Employee
                             {
                                 FirstName = "Siu",
                                 LastName = "Chris",
-                                Email = "engineering@outlook.com"
+                                Email = "engineering@haverniagara.com"
                             }
                          );
 
