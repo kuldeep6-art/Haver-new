@@ -45,6 +45,10 @@
 		public bool IncludeApprovedDrawingReceived { get; set; } = true;
 		public bool IncludeGanttData { get; set; } = true;
 		public bool IncludeSpecialNotes { get; set; } = true;
+
+		public DateTime CreatedAt {  get; set; } = DateTime.Now;
+
+		public List<ScheduleExportOptionsViewModel> PreviousSelections { get; set; } = new List<ScheduleExportOptionsViewModel>();
 	}
 
 	public enum ReportType
