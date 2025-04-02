@@ -970,6 +970,8 @@ namespace haver.Controllers
 						rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(245, 245, 245) : Color.White);
 					}
 				}
+
+               
 			}
 
 			colIndex = 1;
@@ -1191,7 +1193,12 @@ namespace haver.Controllers
 						rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(242, 242, 242) : Color.White);
 					}
 				}
-			}
+
+                for (int i = 4; i < row; i++)
+                {
+                    workSheet.Row(i).Height = 25;
+                }
+            }
 
 			// Column Widths
 			colIndex = 1;
