@@ -58,6 +58,16 @@
 
                 <!-- Second Row -->
                 <div class="row">
+                    <!-- EngPExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Engineering Package Due <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package due Date"></i>
+                        </label>
+                        <input asp-for="EngPExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="EngPExp" class="text-danger"></span>
+                    </div>
 
                     <!-- AppDwgExp -->
                     <div class="form-group col-md-4 mb-3">
@@ -69,16 +79,23 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AppDwgExp" class="text-danger"></span>
                     </div>
-                    <!-- EngPExp -->
+                    <!-- EngPRel -->
                     <div class="form-group col-md-4 mb-3">
-                        <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Engineering Package Due <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package due Date"></i>
+                        <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Engineering Package Released
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package release Date"></i>
                         </label>
-                        <input asp-for="EngPExp" class="form-control"
+                        <input asp-for="EngPRel" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="EngPExp" class="text-danger"></span>
+                        <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
+                  
+                  
+                   
+                </div>
+
+                <!-- Third Row -->
+                <div class="row">
 
                     <!-- AppDwgRel -->
                     <div class="form-group col-md-4 mb-3">
@@ -91,11 +108,7 @@
                         <span asp-validation-for="AppDwgRel" class="text-danger"></span>
                     </div>
 
-                   
-                </div>
 
-                <!-- Third Row -->
-                <div class="row">
                     <!-- AppDwgRet -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRet" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -107,16 +120,7 @@
                         <span asp-validation-for="AppDwgRet" class="text-danger"></span>
                     </div>
 
-                    <!-- EngPRel -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            Engineering Package Released
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Engineering package release Date"></i>
-                        </label>
-                        <input asp-for="EngPRel" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="EngPRel" class="text-danger"></span>
-                    </div>
+                   
 
                    
                     <!-- PreOExp -->
