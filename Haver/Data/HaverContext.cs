@@ -43,7 +43,6 @@ namespace haver.Data
         public DbSet<SalesOrder> SalesOrders { get; set; }
         public DbSet<Machine> Machines { get; set; }
         public DbSet<Engineer> Engineers { get; set; }
-        public DbSet<PackageRelease> PackageReleases { get; set; }
         public DbSet<SalesOrderEngineer> SalesOrderEngineers { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Procurement> Procurements { get; set; }
@@ -145,10 +144,6 @@ namespace haver.Data
 
 
 
-
-            modelBuilder.Entity<PackageRelease>()
-                .HasIndex(pr => new { pr.Name, pr.SalesOrderID })
-                .IsUnique();
 
             //composite keys for many to many     
             modelBuilder.Entity<SalesOrderEngineer>()
