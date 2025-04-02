@@ -149,10 +149,6 @@ namespace haver.Models
       
         [Display(Name = "Notes/Comments")]
         public string? Comments { get; set; }
-
-        [Display(Name = "Package Release Information")]
-        public PackageRelease? PackageRelease { get; set; } // Navigation property to PackageRelease
-
         public Status Status { get; set; } = Status.InProgress;
 
         [Display(Name ="Draft Record")]
