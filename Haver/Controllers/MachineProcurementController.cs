@@ -199,7 +199,9 @@ namespace haver.Controllers
                     await UpdateGanttProcurementDates(procurement.MachineID);
 
                     var salesOrderUrl = Url.Action("Details", "SalesOrder", new { id = procurement.Machine.SalesOrderID });
-                    TempData["SuccessMessage"] = $"Procurement {procurement.PONumber} added successfully for Machine {procurement.MachineID}. You can now <a href=\"{salesOrderUrl}\">click here</a> to view the Sales Order details, add another machine, or update the sales order.";
+                    TempData["SuccessMessage"] = $"Procurement {procurement.PONumber} successfully added for Machine (Serial Number: {procurement.Machine.SerialNumber}). " +
+                         $"You can <a href=\"{salesOrderUrl}\">click here</a> to view the Sales Order details, add another machine, or update the order.";
+
 
 
                     return Redirect(ViewData["returnURL"].ToString());
