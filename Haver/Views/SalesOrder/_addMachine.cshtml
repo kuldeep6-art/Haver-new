@@ -37,23 +37,40 @@
                             <span asp-validation-for="MachineModel" class="text-danger"></span>
                             </div>
 
-
-
-                        <!-- Sales Order -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="SalesOrderID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.SalesOrderID) <span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
                             </label>
                             <div class="readonly-dropdown">
-                            <select asp-for="SalesOrderID" class="form-control"
-                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
-                                    asp-items="ViewBag.SalesOrderID">
-                                <option value="" disabled selected>Select Sales Order</option>
-                            </select>
+                                <select asp-for="SalesOrderID" class="form-control readonly-dropdown"
+                                        style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" asp-items="ViewBag.SalesOrderID">
+                                    <option value="" disabled selected>Select Sales Order</option>
+                                </select>
                             </div>
                             <span asp-validation-for="SalesOrderID" class="text-danger d-block mt-1"></span>
                         </div>
+
+                        <!-- Sales Order -dropdown->
+                            @* <div class="form-group col-md-4 mb-3">
+                                <label asp-for="SalesOrderID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                                    @Html.DisplayNameFor(model => model.SalesOrderID) <span class="text-danger">*</span>
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Associated sales order"></i>
+                                </label>
+                                <div class="readonly-dropdown">
+                                <select asp-for="SalesOrderID" class="form-control"
+                                        style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
+                                        asp-items="ViewBag.SalesOrderID">
+                                    <option value="" disabled selected>Select Sales Order</option>
+                                </select>
+                                </div>
+                                <span asp-validation-for="SalesOrderID" class="text-danger d-block mt-1"></span>
+                            </div>
+  *@
+
+
+
+
 
                         <!-- Serial Number -->
                         <div class="form-group col-md-4 mb-3">
@@ -294,25 +311,13 @@
             border: 1px solid #ccc;
             position: absolute;
         }
-    </style>
 
-    <style>
-        .readonly-dropdown {
-            position: relative;
-        }
 
-            .readonly-dropdown::after {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: transparent;
-                cursor: not-allowed;
-            }
+     
+       
 
     </style>
+
 }
 
 

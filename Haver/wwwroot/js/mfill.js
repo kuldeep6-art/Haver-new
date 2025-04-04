@@ -38,25 +38,10 @@
         document.querySelector('#AssemblyStart').value = assemblyStart;
         document.querySelector('#AssemblyComplete').value = assemblyComplete;
 
-        // Nameplate dropdown (random yes or no)
-        const nameplateOptions = ['Yes', 'No'];
-        document.querySelector('#Nameplate').value = nameplateOptions[Math.floor(Math.random() * nameplateOptions.length)];
-
         // Numeric fields with random hours
         document.querySelector('#BudgetedHours').value = Math.floor(Math.random() * (100 - 30 + 1)) + 30; // Random between 30 and 100
         document.querySelector('#ActualAssemblyHours').value = Math.floor(Math.random() * (120 - 40 + 1)) + 40; // Random between 40 and 120
         document.querySelector('#ReworkHours').value = Math.floor(Math.random() * (10 - 1 + 1)) + 1; // Random between 1 and 10
-
-        // Dropdown selections for SalesOrderID and MachineTypeID (set second option if available)
-        let salesOrderOption = document.querySelector('#SalesOrderID option:nth-child(2)');
-        let machineTypeOption = document.querySelector('#MachineTypeID option:nth-child(2)');
-
-        if (salesOrderOption) {
-            document.querySelector('#SalesOrderID').value = salesOrderOption.value;
-        }
-        if (machineTypeOption) {
-            document.querySelector('#MachineTypeID').value = machineTypeOption.value;
-        }
 
         // Checkboxes (randomly checked or unchecked)
         document.querySelector('[name="Media"]').checked = Math.random() > 0.5;
@@ -67,17 +52,6 @@
         document.querySelector('[name="CoatingLining"]').checked = Math.random() > 0.5;
         document.querySelector('[name="Disassembly"]').checked = Math.random() > 0.5;
 
-        //// Summernote fields (for PreOrder and Scope)
-        //if ($('#PreOrder').length) {
-        //    $('#PreOrder').summernote('code', '<p>Random pre-order specifications generated</p>');
-        //} else {
-        //    console.warn('Summernote PreOrder not found');
-        //}
-
-        //if ($('#Scope').length) {
-        //    $('#Scope').summernote('code', '<p>Random scope details generated</p>');
-        //} else {
-        //    console.warn('Summernote Scope not found');
-        //}
+        
     });
 });
