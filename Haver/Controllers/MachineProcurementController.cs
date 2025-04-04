@@ -272,6 +272,9 @@ namespace haver.Controllers
 
                     await UpdateGanttProcurementDates(procurementToUpdate.MachineID);
 
+                    var salesOrderUrl = Url.Action("Details", "SalesOrder", new { id = procurementToUpdate.Machine.SalesOrderID });
+                    TempData["SuccessMessage"] = $"Procurement {procurementToUpdate.PONumber} successfully edited for Machine (Serial Number: {procurementToUpdate.Machine.SerialNumber}). " +
+                         $"You can <a href=\"{salesOrderUrl}\">click here</a> to view the Sales Order details, add another machine, or update the order.";
                     return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (DbUpdateConcurrencyException)
