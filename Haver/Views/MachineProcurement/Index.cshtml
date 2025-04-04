@@ -45,6 +45,13 @@
                 }
     </div>
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @Html.Raw(TempData["SuccessMessage"])
+        </div>
+    }
+
 
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
             <div class="card card-body bg-light">
