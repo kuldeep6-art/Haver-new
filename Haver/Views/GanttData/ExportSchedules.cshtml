@@ -98,13 +98,33 @@
                 </div>
             </div>
         </div>
+        <div class="mb-3 d-flex gap-2">
+            <button type="submit" class="btn btn-lg shadow-sm">
+                <i class="bi bi-file-earmark-excel-fill"></i> Export to Excel
+            </button>
+            <button type="button" id="selectAllBtn" class="btn btn-sm shadow-sm">
+                <i class="bi bi-check2-square"></i> Select All
+            </button>
+            <button type="button" id="deselectAllBtn" class="btn btn-sm shadow-sm">
+                <i class="bi bi-x-square"></i> Deselect All
+            </button>
+        </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-lg shadow-sm">
-            <i class="bi bi-file-earmark-excel-fill"></i> Export to Excel
-        </button>
     </form>
 </div>
+
+<script>
+    document.getElementById('selectAllBtn').addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = true);
+    });
+
+    document.getElementById('deselectAllBtn').addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+    });
+</script>
+
 
 <!-- JavaScript Section for Applying Selection -->
 <script>
