@@ -28,7 +28,7 @@ namespace haver.Controllers
         public async Task<IActionResult> Index(int? MachineID, int? VendorID, int? page, int? pageSizeID, string actionButton,
             string SearchString, string sortDirection = "desc", string sortField = "PoNumber")
         {
-            //Get the URL with the last filter, sort and page parameters from THE PATIENTS Index View
+            //Get the URL with the last filter, sort and page parameters from the machine Index View
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Machine");
 
             if (!MachineID.HasValue)

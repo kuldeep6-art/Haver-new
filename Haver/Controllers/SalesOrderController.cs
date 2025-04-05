@@ -38,7 +38,7 @@ namespace haver.Controllers
         {
             //List of sort options.
             //NOTE: make sure this array has matching values to the column headings
-            string[] sortOptions = new[] { "Order Number", "Customer" };
+            string[] sortOptions = new[] { "Order Number", "Customer", "Order Date", "Engineers" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -157,7 +157,20 @@ namespace haver.Controllers
                             .OrderByDescending(p => p.OrderNumber);
                     }
                 }
-                else
+				else if (sortField == "Order Date")
+				{
+					if (sortDirection == "asc")
+					{
+						salesOrders = salesOrders
+							.OrderBy(p => p.SoDate);
+					}
+					else
+					{
+						salesOrders = salesOrders
+							.OrderByDescending(p => p.SoDate);
+					}
+				}
+				else
                 {
                     if (sortDirection == "asc")
                     {
