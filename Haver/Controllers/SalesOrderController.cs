@@ -123,34 +123,56 @@ namespace haver.Controllers
                 }
             }
 
-            //Now we know which field and direction to sort by
-            if (sortField == "Customer")
+            if (String.IsNullOrEmpty(actionButton))
             {
-                if (sortDirection == "asc")
+                salesOrders = salesOrders.OrderByDescending(p => p.CreatedOn);
+            }
+            else
+            {
+                //Now we know which field and direction to sort by
+                if (sortField == "Customer")
                 {
-                    salesOrders = salesOrders
-                        .OrderByDescending(p => p.CompanyName);
+                    if (sortDirection == "asc")
+                    {
+                        salesOrders = salesOrders
+                            .OrderByDescending(p => p.CompanyName);
+                    }
+                    else
+                    {
+                        salesOrders = salesOrders
+                            .OrderBy(p => p.CompanyName);
+                    }
+                }
+
+                else if (sortField == "Order Numer")
+                {
+                    if (sortDirection == "asc")
+                    {
+                        salesOrders = salesOrders
+                            .OrderBy(p => p.OrderNumber);
+                    }
+                    else
+                    {
+                        salesOrders = salesOrders
+                            .OrderByDescending(p => p.OrderNumber);
+                    }
                 }
                 else
                 {
-                    salesOrders = salesOrders
-                        .OrderBy(p => p.CompanyName);
+                    if (sortDirection == "asc")
+                    {
+                        salesOrders = salesOrders
+                            .OrderBy(p => p.CreatedOn);
+                    }
+                    else
+                    {
+                        salesOrders = salesOrders
+                            .OrderByDescending(p => p.CreatedOn);
+                    }
                 }
             }
 
-            else //Sorting by Patient Name
-            {
-                if (sortDirection == "asc")
-                {
-                    salesOrders = salesOrders
-                        .OrderBy(p => p.OrderNumber);
-                }
-                else
-                {
-                    salesOrders = salesOrders
-                        .OrderByDescending(p => p.OrderNumber);
-                }
-            }
+           
             //Set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
