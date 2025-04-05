@@ -352,8 +352,6 @@ namespace haver.Controllers
                     MachineID = machine.ID,
                     AppDExp = salesOrder.AppDwgExp,
                     AppDRcd = salesOrder.AppDwgRel,
-                    //PreORel = salesOrder.PreORel,
-                    //PreOExp = salesOrder.PreOExp,
                     EngExpected = salesOrder.EngPExp,
                     EngReleased = salesOrder.EngPRel,
 					PurchaseOrdersIssued = null,
@@ -370,10 +368,32 @@ namespace haver.Controllers
             }
         }
 
+		public async Task UpdateGanttForMachine(Machine machine)
+		{
+			var gantt = await _context.GanttDatas.FirstOrDefaultAsync(g => g.MachineID == machine.ID);
+			if (gantt != null)
+			{
+				gantt.AssemblyStart = machine.AssemblyStart;
+				gantt.AssemblyComplete = machine.AssemblyComplete;
+				gantt.ShipExpected = machine.RToShipExp;
+				gantt.ShipActual = machine.RToShipA;
+
+				var salesOrder = await _context.SalesOrders.FirstOrDefaultAsync(s => s.ID == machine.SalesOrderID);
+				if (salesOrder != null)
+				{
+					gantt.AppDExp = salesOrder.AppDwgExp;
+					gantt.AppDRcd = salesOrder.AppDwgRel;
+					gantt.EngExpected = salesOrder.EngPExp;
+					gantt.EngReleased = salesOrder.EngPRel;
+				}
+
+				await _context.SaveChangesAsync();
+			}
+		}
 
 
-        // GET: Machine/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		// GET: Machine/Edit/5
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -411,6 +431,8 @@ namespace haver.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+
+                    await UpdateGanttForMachine(machinesToUpdate);
 
                     await LogActivity($"Machine {machinesToUpdate.SerialNumber} was updated");
 
