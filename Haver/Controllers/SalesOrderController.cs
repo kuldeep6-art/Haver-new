@@ -86,7 +86,7 @@ namespace haver.Controllers
             }
             if (!String.IsNullOrEmpty(CString))
             {
-                salesOrders = salesOrders.Where(p => p.CompanyName.Contains(CString));
+                salesOrders = salesOrders.Where(p => p.CompanyName.ToUpper().Contains(CString.ToUpper()));
                 numberFilters++;
             }
             if (DtString.HasValue)
