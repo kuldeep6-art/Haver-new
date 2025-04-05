@@ -207,9 +207,16 @@ namespace haver.Controllers
                     return Redirect(ViewData["returnURL"].ToString());
                 }
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dex)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Procurements.PONumber"))
+                {
+                    ModelState.AddModelError("PONumber", "Unable to save changes. Remember, you cannot have duplicate PO Numbers.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
 
             PopulateDropDownLists(procurement);
@@ -288,9 +295,17 @@ namespace haver.Controllers
                         throw;
                     }
                 }
-                catch (DbUpdateException)
+                catch (DbUpdateException dex)
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Procurements.PONumber"))
+                    {
+                        ModelState.AddModelError("PONumber", "Unable to save changes. Remember, you cannot have duplicate PO Numbers.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }     
                 }
             }
 

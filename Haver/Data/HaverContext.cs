@@ -132,6 +132,10 @@ namespace haver.Data
           .HasIndex(a => new { a.Description })
           .IsUnique();
 
+            modelBuilder.Entity<Procurement>()
+            .HasIndex(a => new { a.PONumber })
+            .IsUnique();
+
 
             modelBuilder.Entity<Engineer>()
                 .HasIndex(pr => new { pr.FirstName, pr.LastName })
