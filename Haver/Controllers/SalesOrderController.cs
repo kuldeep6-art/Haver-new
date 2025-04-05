@@ -333,72 +333,90 @@ namespace haver.Controllers
 
 
 
-        // POST: SalesOrder/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin,Sales")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions)
-        {
-            var salesOrderToUpdate = await _context.SalesOrders
-                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
-                .FirstOrDefaultAsync(p => p.ID == id);
+		// POST: SalesOrder/Edit/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[Authorize(Roles = "Admin,Sales")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, string[] selectedOptions)
+		{
+			var salesOrderToUpdate = await _context.SalesOrders
+				.Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
+				.FirstOrDefaultAsync(p => p.ID == id);
 
-            if (salesOrderToUpdate == null)
-            {
-                return NotFound();
-            }
+			if (salesOrderToUpdate == null)
+			{
+				return NotFound();
+			}
 
-            UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
+			// Update assigned engineers
+			UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
 
-            if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
-                p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
-                p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel, p => p.EngPExp,
-                p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
-            {
-                try
-                {
-                    await _context.SaveChangesAsync();
+			if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
+				p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
+				p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel,
+				p => p.EngPExp, p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
+			{
+				try
+				{
+					// Save SalesOrder updates
+					await _context.SaveChangesAsync();
 
-                    await LogActivity($"Sales Order '{salesOrderToUpdate.OrderNumber}' for customer '{salesOrderToUpdate.CompanyName}' was updated");
+					// Log activity
+					await LogActivity($"Sales Order '{salesOrderToUpdate.OrderNumber}' for customer '{salesOrderToUpdate.CompanyName}' was updated");
 
-                    await _context.SaveChangesAsync();
+					// Update all related Gantt records
+					var relatedGantts = await _context.GanttDatas
+						.Where(g => g.SalesOrderID == salesOrderToUpdate.ID)
+						.ToListAsync();
 
-                    TempData["Message"] = "Sales Order successfully updated";
-                    return RedirectToAction("Details", new { salesOrderToUpdate.ID });
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SalesOrderExists(salesOrderToUpdate.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                catch (DbUpdateException dex)
-                {
-                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-                    {
-                        ModelState.AddModelError("OrderNumber", "Duplicate Order Number is not allowed.");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Unable to save changes. Try again later.");
-                    }
-                }
-            }
+					foreach (var gantt in relatedGantts)
+					{
+						gantt.AppDExp = salesOrderToUpdate.AppDwgExp;
+						gantt.AppDRcd = salesOrderToUpdate.AppDwgRel;
+						gantt.EngExpected = salesOrderToUpdate.EngPExp;
+						gantt.EngReleased = salesOrderToUpdate.EngPRel;
+					}
 
-            PopulateAssignedSpecialtyData(salesOrderToUpdate);
-            return View(salesOrderToUpdate);
-        }
+					await _context.SaveChangesAsync(); // Save Gantt updates
+					await LogActivity($"Gantt milestones updated for Sales Order '{salesOrderToUpdate.OrderNumber}'");
+
+					TempData["Message"] = "Sales Order successfully updated";
+					return RedirectToAction("Details", new { salesOrderToUpdate.ID });
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!SalesOrderExists(salesOrderToUpdate.ID))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				catch (DbUpdateException dex)
+				{
+					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+					{
+						ModelState.AddModelError("OrderNumber", "Duplicate Order Number is not allowed.");
+					}
+					else
+					{
+						ModelState.AddModelError("", "Unable to save changes. Try again later.");
+					}
+				}
+			}
+
+			// Re-populate engineers if update fails
+			PopulateAssignedSpecialtyData(salesOrderToUpdate);
+			return View(salesOrderToUpdate);
+		}
 
 
-        // GET: SalesOrder/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+		// GET: SalesOrder/Delete/5
+		public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
