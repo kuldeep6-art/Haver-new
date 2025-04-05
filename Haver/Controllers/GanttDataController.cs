@@ -1059,9 +1059,15 @@ namespace haver.Controllers
 				if (options.IncludeNotes) workSheet.Cells[row, colIndex++].Value = item.Machine?.Comments;
 				if (options.IncludeEngineer) workSheet.Cells[row, colIndex++].Value = item.Gantt?.Engineer;
 				if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = item.Gantt?.Quantity;
-				if (options.IncludeApprovedDrawingReceived) workSheet.Cells[row, colIndex++].Value = item.Gantt?.ApprovedDrawingReceived == DateTime.MinValue ? null : item.Gantt.ApprovedDrawingReceived.ToString("MMM-dd-yyyy");
+                if (options.IncludeApprovedDrawingReceived)
+                {
+                    var date = item.Gantt?.ApprovedDrawingReceived;
+                    workSheet.Cells[row, colIndex++].Value = (date.HasValue && date.Value != DateTime.MinValue)
+                        ? date.Value.ToString("MMM-dd-yyyy")
+                        : null;
+                }
 
-				if (options.IncludeGanttData && item.Gantt?.GanttData != null)
+                if (options.IncludeGanttData && item.Gantt?.GanttData != null)
 				{
 					ApplyAllMilestonesToGantt(workSheet, row, staticCols, item.Gantt.GanttData, options);
 				}
