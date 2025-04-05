@@ -20,6 +20,7 @@
 		var isProcurement = User.IsInRole("Procurement");
 		var isPIC = User.IsInRole("PIC");
 		var isProduction = User.IsInRole("Production");
+		var isEngineering = User.IsInRole("Engineering");
 
 		// Check if the user has no specific role
 		var hasNoRole = !(isAdmin || isSales || isProcurement || isPIC || isProduction);
@@ -92,6 +93,20 @@
 		}
 
 		@if (isProduction)
+		{
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="dashboard-card">
+					<a asp-controller="Machine" asp-action="Create">
+						<i class="fas fa-plus-circle"></i>
+						<h3>Add a New Machine</h3>
+						<p>Add a new machine and add required details.</p>
+					</a>
+				</div>
+			</div>
+		}
+
+
+		@if (isEngineering)
 		{
 			<div class="col-12 col-md-6 col-lg-4">
 				<div class="dashboard-card">
