@@ -58,7 +58,7 @@ namespace haver.Controllers
             }
             if (!String.IsNullOrEmpty(SerString))
             {
-                machines = machines.Where(p => p.SerialNumber.Contains(SerString));
+                machines = machines.Where(p => p.SerialNumber.ToUpper().Contains(SerString.ToUpper()));
                 numberFilters++;
             }
           
