@@ -140,6 +140,84 @@ namespace haver.Controllers
             return View(pagedData);
         }
 
+
+        // GET: MachineProcurement/All
+        [Authorize]
+        public async Task<IActionResult> All(int? VendorID, int? page, int? pageSizeID, string actionButton,
+            string SearchString, string sortDirection = "desc", string sortField = "PONumber")
+        {
+            PopulateDropDownLists();
+
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;
+
+            string[] sortOptions = new[] { "PONumber", "Vendor" };
+
+            var procurements = _context.Procurements
+                .Include(p => p.Vendor)
+                .Include(p => p.Machine)
+                    .ThenInclude(m => m.SalesOrder)
+                .AsQueryable();
+
+            if (VendorID.HasValue)
+            {
+                procurements = procurements.Where(p => p.VendorID == VendorID);
+                numberFilters++;
+            }
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                procurements = procurements.Where(p => p.PONumber.ToUpper().Contains(SearchString.ToUpper()));
+                numberFilters++;
+            }
+
+            if (numberFilters != 0)
+            {
+                ViewData["Filtering"] = "btn-danger";
+                ViewData["numberFilters"] = $"({numberFilters} Filter{(numberFilters > 1 ? "s" : "")} Applied)";
+            }
+
+            // Handle sorting
+            if (!string.IsNullOrEmpty(actionButton))
+            {
+                page = 1;
+
+                if (sortOptions.Contains(actionButton))
+                {
+                    if (actionButton == sortField)
+                    {
+                        sortDirection = sortDirection == "asc" ? "desc" : "asc";
+                    }
+                    sortField = actionButton;
+                }
+            }
+
+            if (sortField == "Vendor")
+            {
+                procurements = sortDirection == "asc"
+                    ? procurements.OrderBy(p => p.Vendor.Name)
+                    : procurements.OrderByDescending(p => p.Vendor.Name);
+            }
+            else
+            {
+                procurements = sortDirection == "asc"
+                    ? procurements.OrderBy(p => p.PONumber)
+                    : procurements.OrderByDescending(p => p.PONumber);
+            }
+
+            ViewData["sortField"] = sortField;
+            ViewData["sortDirection"] = sortDirection;
+
+            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
+            ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
+
+            var pagedData = await PaginatedList<Procurement>.CreateAsync(procurements.AsNoTracking(), page ?? 1, pageSize);
+
+            return View("All",pagedData); // use a new view named All.cshtml
+        }
+
+
+
         // GET: MachineProcurement/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -308,7 +386,6 @@ namespace haver.Controllers
                     }     
                 }
             }
-
             PopulateDropDownLists(procurementToUpdate);
             return View(procurementToUpdate);
         }

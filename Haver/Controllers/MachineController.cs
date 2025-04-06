@@ -86,57 +86,64 @@ namespace haver.Controllers
                 }
             }
 
-            //Now we know which field and direction to sort by
-            if (sortField == "Production Order Number")
+            if (String.IsNullOrEmpty(actionButton))
             {
-                if (sortDirection == "asc")
-                {
-                    machines = machines
-                        .OrderByDescending(p => p.ProductionOrderNumber);
-                }
-                else
-                {
-                    machines = machines
-                        .OrderBy(p => p.ProductionOrderNumber);
-                }
+                machines = machines.OrderByDescending(p => p.CreatedOn);
             }
-            else if (sortField == "Sales Order")
+            else
             {
-                if (sortDirection == "asc")
+                //Now we know which field and direction to sort by
+                if (sortField == "Production Order Number")
                 {
-                    machines = machines
-                        .OrderByDescending(p => p.SalesOrder.OrderNumber);
+                    if (sortDirection == "asc")
+                    {
+                        machines = machines
+                            .OrderByDescending(p => p.ProductionOrderNumber);
+                    }
+                    else
+                    {
+                        machines = machines
+                            .OrderBy(p => p.ProductionOrderNumber);
+                    }
+                }
+                else if (sortField == "Sales Order")
+                {
+                    if (sortDirection == "asc")
+                    {
+                        machines = machines
+                            .OrderByDescending(p => p.SalesOrder.OrderNumber);
+                    }
+                    else
+                    {
+                        machines = machines
+                            .OrderBy(p => p.SalesOrder.OrderNumber);
+                    }
+                }
+                else if (sortField == "Machine Model")
+                {
+                    if (sortDirection == "asc")
+                    {
+                        machines = machines
+                            .OrderByDescending(p => p.MachineModel);
+                    }
+                    else
+                    {
+                        machines = machines
+                            .OrderBy(p => p.MachineModel);
+                    }
                 }
                 else
                 {
-                    machines = machines
-                        .OrderBy(p => p.SalesOrder.OrderNumber);
-                }
-            }
-            else if (sortField == "Machine Model")
-            {
-                if (sortDirection == "asc")
-                {
-                    machines = machines
-                        .OrderByDescending(p => p.MachineModel);
-                }
-                else
-                {
-                    machines = machines
-                        .OrderBy(p => p.MachineModel);
-                }
-            }
-            else 
-            {
-                if (sortDirection == "asc")
-                {
-                    machines = machines
-                        .OrderByDescending(p => p.SerialNumber);
-                }
-                else
-                {
-                    machines = machines
-                        .OrderBy(p => p.SerialNumber);
+                    if (sortDirection == "asc")
+                    {
+                        machines = machines
+                            .OrderByDescending(p => p.SerialNumber);
+                    }
+                    else
+                    {
+                        machines = machines
+                            .OrderBy(p => p.SerialNumber);
+                    }
                 }
             }
 
