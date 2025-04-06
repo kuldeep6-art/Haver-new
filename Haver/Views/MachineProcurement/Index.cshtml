@@ -22,8 +22,8 @@
     }
 
 
-    <h1 class="text-center my-4">Procurement Section</h1>
-
+<h1 style="font-weight:bold;text-align:center;">Procurement Section</h1>
+<p style="font-weight:bold;">*You can always use the 'Add Procurement' button to add more procurement records, including vendors, PO numbers, dates, and other details.*</p>
     <form asp-action="Index" method="get" class="mb-4">
         <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
         <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
@@ -225,4 +225,8 @@
         background-color: transparent;
     }
 
+    h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
 </style>
