@@ -213,7 +213,7 @@ namespace haver.Controllers
 
             var pagedData = await PaginatedList<Procurement>.CreateAsync(procurements.AsNoTracking(), page ?? 1, pageSize);
 
-            return View("All", pagedData); // use a new view named All.cshtml
+            return View(pagedData); // use a new view named All.cshtml
         }
 
 
