@@ -58,10 +58,14 @@
 						<a asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
 				</div>
 
-				<div>
-					<a asp-area="" asp-controller="MachineProcurement" asp-action="All">Procurement</a>
+				@if (User.IsInRole("Admin") || User.IsInRole("Production") || User.IsInRole("Proocurement"))
+				{
+
+					<div>
+						<a asp-area="" asp-controller="MachineProcurement" asp-action="All">Procurement</a>
 				</div>
 
+				}
 				<!-- Gantt Chart -->
 				@if (User.IsInRole("Admin") || User.IsInRole("Production") || User.IsInRole("PIC"))
 				{
