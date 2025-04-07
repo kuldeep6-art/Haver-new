@@ -410,6 +410,7 @@ namespace haver.Controllers
                 // Get the min and max dates for procurement safely
                 var procurementStart = machine.Procurements.Min(po => po.PODueDate);
                 var procurementEnd = machine.Procurements.Max(po => po.PORcd);
+                var spoDue = machine.Procurements.Max(po => po.PODueDate);
 
                 // Get the corresponding Gantt record for the machine
                 var ganttRecord = await _context.GanttDatas
@@ -420,6 +421,7 @@ namespace haver.Controllers
                     // Update the procurement dates in the Gantt
                     ganttRecord.PurchaseOrdersIssued = procurementStart;
                     ganttRecord.PurchaseOrdersCompleted = procurementEnd;
+                    ganttRecord.SupplierPODue = spoDue;
 
                     // Save the updated Gantt record
                     _context.GanttDatas.Update(ganttRecord);

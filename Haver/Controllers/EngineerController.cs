@@ -28,7 +28,7 @@ namespace haver.Controllers
 		public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchString,
 			string? actionButton, string sortDirection = "asc", string sortField = "Last Name")
 		{
-			string[] sortOptions = new[] { "Last Name", "First Name", "Phone" };
+			string[] sortOptions = new[] { "Last Name", "First Name", "Engineer Initials", "Email" };
 			ViewData["Filtering"] = "btn-outline-secondary";
 			int numberFilters = 0;
 
@@ -72,7 +72,30 @@ namespace haver.Controllers
 					engineers = engineers.OrderBy(p => p.FirstName);
 				}
 			}
-			else
+            else if(sortField == "Engineer Initials")
+                 
+            {
+                if (sortDirection == "asc")
+                {
+                    engineers = engineers.OrderByDescending(p => p.EngineerInitials);
+                }
+                else
+                {
+                    engineers = engineers.OrderBy(p => p.EngineerInitials);
+                }
+            }
+            else if (sortField == "Email")
+            {
+                if (sortDirection == "asc")
+                {
+                    engineers = engineers.OrderByDescending(p => p.Email);
+                }
+                else
+                {
+                    engineers = engineers.OrderBy(p => p.Email);
+                }
+            }
+            else
 			{
 				if (sortDirection == "asc")
 				{

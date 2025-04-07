@@ -19,11 +19,14 @@
         <div class="col-md-10 offset-md-1">
             <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Sales Order">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="RowVersion" />
                 <input type="hidden" asp-for="ID" />
                 <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
                 <!-- First Row -->
                 <div class="row">
+
                     <!-- Order Number -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -59,6 +62,16 @@
 
                 <!-- Second Row -->
                 <div class="row">
+                    <!-- AppDwgExp -->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawings due date"></i>
+                        </label>
+                        <input asp-for="AppDwgExp" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
+                    </div>
                     <!-- EngPExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -70,16 +83,7 @@
                         <span asp-validation-for="EngPExp" class="text-danger"></span>
                     </div>
 
-                    <!-- AppDwgExp -->
-                    <div class="form-group col-md-4 mb-3">
-                        <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                            @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Drawings due date"></i>
-                        </label>
-                        <input asp-for="AppDwgExp" class="form-control"
-                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
-                        <span asp-validation-for="AppDwgExp" class="text-danger"></span>
-                    </div>
+                  
                     <!-- EngPRel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">

@@ -339,7 +339,7 @@ namespace haver.Controllers
 		[Authorize(Roles = "Admin,Sales")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, string[] selectedOptions)
+		public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion)
 		{
 			var salesOrderToUpdate = await _context.SalesOrders
 				.Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
@@ -350,10 +350,13 @@ namespace haver.Controllers
 				return NotFound();
 			}
 
-			// Update assigned engineers
-			UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
+            //Put the original RowVersion value in the OriginalValues collection for the entity
+            _context.Entry(salesOrderToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
-			if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
+            // Update assigned engineers
+            UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
+
+            if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
 				p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
 				p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel,
 				p => p.EngPExp, p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
@@ -385,18 +388,19 @@ namespace haver.Controllers
 					TempData["Message"] = "Sales Order successfully updated";
 					return RedirectToAction("Details", new { salesOrderToUpdate.ID });
 				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!SalesOrderExists(salesOrderToUpdate.ID))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				catch (DbUpdateException dex)
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SalesOrderExists(salesOrderToUpdate.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                            + "was modified by another user. Please go back and refresh.");
+                    }
+                }
+                catch (DbUpdateException dex)
 				{
 					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
 					{
