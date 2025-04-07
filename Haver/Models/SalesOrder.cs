@@ -45,7 +45,7 @@ namespace haver.Models
         [Display(Name = "Order Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        public DateTime? SoDate { get; set; }
+        public DateTime? SoDate { get; set; } = DateTime.Today;
 
         
         [Display(Name = "Price")]
@@ -97,6 +97,10 @@ namespace haver.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? EngPRel { get; set; }
+
+        [ScaffoldColumn(false)]
+        [Timestamp]
+        public Byte[]? RowVersion { get; set; }//Added for concurrency
 
         //// Checkbox Options
         //[Display(Name = "Installed Media")]
