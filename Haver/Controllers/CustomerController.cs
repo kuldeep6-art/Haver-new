@@ -26,7 +26,7 @@ namespace haver.Controllers
         public async Task<IActionResult> Index(int? page, int? pageSizeID, string? SearchCname,
             string? actionButton, string sortDirection = "asc", string sortField = "Customer")
         {
-            string[] sortOptions = new[] { "Company Name", "Phone", "Name" };
+            string[] sortOptions = new[] { "Company Name", "Company Phone Number" };
 
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -34,7 +34,7 @@ namespace haver.Controllers
 
             var customers = from m in _context.Customers
                         .AsNoTracking()
-                         select m;
+                            select m;
 
             if (!String.IsNullOrEmpty(SearchCname))
             {
@@ -79,10 +79,22 @@ namespace haver.Controllers
                     customers = customers
                         .OrderBy(p => p.CompanyName);
                 }
+            } else if (sortField == "Company Phone Number")
+            {
+                if (sortDirection == "asc")
+                {
+                    customers = customers
+                        .OrderByDescending(p => p.Phone);
+                }
+                else
+                {
+                    customers = customers
+                        .OrderBy(p => p.Phone);
+                }
             }
 
-            //Set sort for next time
-            ViewData["sortField"] = sortField;
+                //Set sort for next time
+                ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
