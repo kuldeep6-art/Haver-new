@@ -97,11 +97,6 @@
                         @(Model.GanttData.EngReleased.HasValue ? Model.GanttData.EngReleased.Value.ToString("MMM dd, yyyy") : "N/A")
                     </dd>
 
-                    <dt class="col-md-3">Package Released to PIC</dt>
-                    <dd class="col-md-3">
-                        @(Model.GanttData.PackageReleased.HasValue ? Model.GanttData.PackageReleased.Value.ToString("MMM dd, yyyy") : "N/A")
-                    </dd>
-
                     <dt class="col-md-3">Purchase Orders Due</dt>
                     <dd class="col-md-3">
                         @(Model.GanttData.PurchaseOrdersIssued.HasValue ? Model.GanttData.PurchaseOrdersIssued.Value.ToString("MMM dd, yyyy") : "N/A")
