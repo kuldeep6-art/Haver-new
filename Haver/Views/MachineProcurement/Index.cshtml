@@ -137,10 +137,11 @@
                         <td>@Html.DisplayFor(modelItem => item.PORcd)</td>
                         <td>@Html.DisplayFor(modelItem => item.QualityICom)</td>
                         <td>@Html.DisplayFor(modelItem => item.NcrRaised)</td>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Procurement") || User.IsInRole("PIC"))
+                    {
                         <td class="text-center">
 
-                        @if (User.IsInRole("Admin") || User.IsInRole("Procurement") || User.IsInRole("PIC"))
-                        {
+                       
                                 <a asp-controller="MachineProcurement" asp-action="Update" asp-route-id="@item.ID"
                                    class="btn btn-sm no-print" role="button"
                                    data-bs-toggle="tooltip" title="Edit Procurement">
@@ -152,9 +153,10 @@
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
 
-                        }
+                        
                           
                         </td>
+                    }
                     </tr>
                 }
             </tbody>
