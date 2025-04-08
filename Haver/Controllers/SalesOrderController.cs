@@ -339,7 +339,7 @@ namespace haver.Controllers
 		[Authorize(Roles = "Admin,Sales")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion)
+		public async Task<IActionResult> Edit(int id, string[] selectedOptions)
 		{
 			var salesOrderToUpdate = await _context.SalesOrders
 				.Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
@@ -349,9 +349,6 @@ namespace haver.Controllers
 			{
 				return NotFound();
 			}
-
-            //Put the original RowVersion value in the OriginalValues collection for the entity
-            _context.Entry(salesOrderToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
             // Update assigned engineers
             UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
@@ -393,11 +390,7 @@ namespace haver.Controllers
                     if (!SalesOrderExists(salesOrderToUpdate.ID))
                     {
                         return NotFound();
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
-                            + "was modified by another user. Please go back and refresh.");
+
                     }
                 }
                 catch (DbUpdateException dex)
