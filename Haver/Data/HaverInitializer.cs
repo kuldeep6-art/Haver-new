@@ -127,61 +127,49 @@ namespace haver.Data
                         );
                         context.SaveChanges();
                     }
+                    // 5. Seed Engineers
+                    if (!context.Engineers.Any())
+                    {
+                        context.Engineers.AddRange(
+                            new Engineer { ID = 1, FirstName = "Ethan", LastName = "Jones",EngineerInitials="EJ",Email="ej@outlook.com" },
+                            new Engineer { ID = 2, FirstName = "Chloe", LastName = "Homp", EngineerInitials = "CH", Email = "ch@outlook.com" },
+                            new Engineer { ID = 3, FirstName = "Cady", LastName = "Tank", EngineerInitials = "CT", Email = "ct@outlook.com" },
+                            new Engineer { ID = 4, FirstName = "Lucy", LastName = "Hills", EngineerInitials = "LI", Email = "li@outlook.com" },
+                             new Engineer { ID = 5, FirstName = "Joe", LastName = "Roe", EngineerInitials = "JR", Email = "jr@outlook.com" },
+                              new Engineer { ID = 6, FirstName = "Rose", LastName = "Kelly", EngineerInitials = "RK", Email = "rk@outlook.com" },
+                               new Engineer { ID = 7, FirstName = "Maddy", LastName = "Camp", EngineerInitials = "MC", Email = "mc@outlook.com" },
+                                new Engineer { ID = 8, FirstName = "Roy", LastName = "Jon", EngineerInitials = "RJ", Email = "rj@outlook.com" },
+                                 new Engineer { ID = 9, FirstName = "Klay", LastName = "Lot", EngineerInitials = "KL", Email = "kl@outlook.com" },
+                                  new Engineer { ID = 10, FirstName = "Eddie", LastName = "Hearn", EngineerInitials = "EH", Email = "eH@outlook.com" },
+                                   new Engineer { ID = 11, FirstName = "Loe", LastName = "Hoy", EngineerInitials = "LH", Email = "lh@outlook.com" }
+                        );
+                        context.SaveChanges();
+                    }
+
+                   
 
                     // 3. Seed Sales Orders (Each customer gets 2)
                     if (!context.SalesOrders.Any())
                     {
                         context.SalesOrders.AddRange(
-                            new SalesOrder { ID = 1, OrderNumber = "10430736", SoDate = DateTime.Parse("2025-02-21") },
-                            new SalesOrder { ID = 2, OrderNumber = "10430754", SoDate = DateTime.Parse("2025-02-17") },
-                            new SalesOrder { ID = 3, OrderNumber = "10430709", SoDate = DateTime.Parse("2025-02-18") },
-                            new SalesOrder { ID = 4, OrderNumber = "10430798", SoDate = DateTime.Parse("2025-02-23") },
-                            new SalesOrder { ID = 5, OrderNumber = "10430765", SoDate = DateTime.Parse("2025-02-22") },
-                            new SalesOrder { ID = 6, OrderNumber = "10430792", SoDate = DateTime.Parse("2025-02-20") }
+                            new SalesOrder { ID = 1, OrderNumber = "10430736", SoDate = DateTime.Parse("2025-02-21"), CompanyName = "FMI" },
+                            new SalesOrder { ID = 2, OrderNumber = "10430754", SoDate = DateTime.Parse("2025-02-17"), CompanyName = "Rio Tinto Sorel" },
+                            new SalesOrder { ID = 3, OrderNumber = "10430709", SoDate = DateTime.Parse("2025-02-18"), CompanyName = "Intradco" },
+                            new SalesOrder { ID = 4, OrderNumber = "10430798", SoDate = DateTime.Parse("2025-02-23"), CompanyName = "United Taconite" },
+                            new SalesOrder { ID = 5, OrderNumber = "10430765", SoDate = DateTime.Parse("2025-02-22"), CompanyName = "Direct Reduction Iron" },
+                            new SalesOrder { ID = 6, OrderNumber = "10430792", SoDate = DateTime.Parse("2025-02-20"), CompanyName = "Kumtor" }
                         );
                         context.SaveChanges();
                     }
 
-                    // 4. Seed Machines (Linked to Sales Orders)
-                    if (!context.Machines.Any())
-                    {
-                        context.Machines.AddRange(
-                            //new Machine { ID = 1,  ProductionOrderNumber = "3938472", SerialNumber = "HDCM-12345", SalesOrderID = 1 },
-                            new Machine { ID = 2, ProductionOrderNumber = "3933442", SerialNumber = "PM-54321", SalesOrderID = 2 },
-                            new Machine { ID = 3, ProductionOrderNumber = "3987472", SerialNumber = "MX-98765", SalesOrderID = 3 },
-                            new Machine { ID = 4, ProductionOrderNumber = "3930972", SerialNumber = "GTX-56789", SalesOrderID = 4 },
-                            new Machine { ID = 5, ProductionOrderNumber = "3975472", SerialNumber = "PR-11223", SalesOrderID = 5 },
-                            new Machine { ID = 6, ProductionOrderNumber = "3933472", SerialNumber = "BLK-33445", SalesOrderID = 6 }
-                        );
-                        context.SaveChanges();
-                    }
+                  
+                  
 
-                    // 5. Seed Engineers
-                    if (!context.Engineers.Any())
-                    {
-                        context.Engineers.AddRange(
-                            new Engineer { ID = 1, FirstName = "Ethan", LastName = "Jones" },
-                            new Engineer { ID = 2, FirstName = "Sophia", LastName = "Smith" },
-                            new Engineer { ID = 3, FirstName = "Liam", LastName = "Brown" },
-                            new Engineer { ID = 4, FirstName = "Olivia", LastName = "Taylor" }
-                        );
-                        context.SaveChanges();
-                    }
+        
 
-                    // 6. Seed SalesOrderEngineers (Multiple engineers per Sales Order)
-                    if (!context.SalesOrderEngineers.Any())
-                    {
-                        context.SalesOrderEngineers.AddRange(
-                            new SalesOrderEngineer { SalesOrderID = 1, EngineerID = 1 },
-                            new SalesOrderEngineer { SalesOrderID = 1, EngineerID = 2 },
-                            new SalesOrderEngineer { SalesOrderID = 2, EngineerID = 3 },
-                            new SalesOrderEngineer { SalesOrderID = 3, EngineerID = 1 },
-                            new SalesOrderEngineer { SalesOrderID = 4, EngineerID = 2 },
-                            new SalesOrderEngineer { SalesOrderID = 5, EngineerID = 4 },
-                            new SalesOrderEngineer { SalesOrderID = 6, EngineerID = 3 }
-                        );
-                        context.SaveChanges();
-                    }
+                  
+
+
 
                 }
                 catch (Exception ex)
