@@ -55,7 +55,12 @@ namespace haver.Data
                             new Customer { ID = 2,Phone = "4375509876", CompanyName = "Coloured Aggregates" },
                             new Customer { ID = 3, Phone = "4162235566", CompanyName = "Bright Mining" },
                             new Customer { ID = 4,  Phone = "9058873321", CompanyName = "Rock Solid Ltd" },
-                            new Customer { ID = 5, Phone = "6479981123", CompanyName = "Granite Works" }
+                            new Customer { ID = 5, Phone = "6479981123", CompanyName = "Granite Works" },
+                             new Customer { ID = 6, Phone = "9086766565", CompanyName = "FMI" },
+                              new Customer { ID = 7, Phone = "5764768797", CompanyName = "Rio Tinto Sorel" },
+                               new Customer { ID = 8, Phone = "8768909876", CompanyName = "Coast Aggregates" },
+                                new Customer { ID = 9, Phone = "5489097654", CompanyName = "Intradco" },
+                                 new Customer { ID = 10, Phone = "2897650987", CompanyName = "United Taconite" }
                         );
                         context.SaveChanges();
                     }
@@ -113,7 +118,12 @@ namespace haver.Data
                             new Vendor { ID = 2, Name = "PROCESS GROUP", Phone = "2876581056", Email = "orders@processgroup.com" },
                             new Vendor { ID = 3, Name = "STEELWORKS INC.", Phone = "4167789988", Email = "sales@steelworks.com" },
                             new Vendor { ID = 4, Name = "MINING SUPPLY CO.", Phone = "9056623344", Email = "info@miningsupply.com" },
-                            new Vendor { ID = 5, Name = "MEGA METALS", Phone = "6478885544", Email = "orders@megametals.com" }
+                            new Vendor { ID = 5, Name = "MEGA METALS", Phone = "6478885544", Email = "orders@megametals.com" },
+                            new Vendor { ID = 6, Name = "Rosta Inc", Phone = "2837462374", Email = "orders@rosta.com" },
+                            new Vendor { ID = 7, Name = "Niagara Rubber Supply", Phone = "2342321213", Email = "orders@nrs.com" },
+                            new Vendor { ID = 8, Name = "Right Machine", Phone = "2341212131", Email = "orders@rm.com" },
+                            new Vendor { ID = 9, Name = "Martin Sprocket", Phone = "1241213131", Email = "orders@ms.com" },
+                            new Vendor { ID = 10, Name = "Precision Metalworks", Phone = "1214131311", Email = "orders@pm.com" }
                         );
                         context.SaveChanges();
                     }
