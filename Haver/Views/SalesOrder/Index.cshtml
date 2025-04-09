@@ -73,7 +73,7 @@
                     {
 <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- Create button remains the same -->
-    <a asp-action="Create" class="btn" aria-label="Create a new sales order" data-bs-toggle="tooltip" title="Create a new sales order">
+    <a asp-action="Create" class="btn" aria-label="Create a new sales order" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Create a new sales order">
         <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
     </a>
 </div>
@@ -113,8 +113,8 @@
                         @Html.TextBox("DtString", null, new { @class = "form-control", placeholder = "Search by Order Date", aria_label = "Search by Order Date", type="date" })
                     </div>
                     <div class="form-group col-md-4 align-self-end">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
-                        <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
+                        <input type="submit" name="actionButton" value="Filter" class="btn" aria-label="Apply filter" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Apply filter" />
+                        <a asp-action="Index" class="btn" aria-label="Clear filter" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Clear filter">Clear</a>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                 @foreach (var field in new[] { "Order Number", "Order Date", "Customer", })
                 {
                     <th class="align-middle">
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sort by @field">
                             @field
                             @if (ViewData["sortField"]?.ToString() == field)
                             {
@@ -189,30 +189,30 @@
                             @if (item.Status == Status.Completed)
                             {
                                 <span class="badge bg-success">Completed</span>
-                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of  @item.OrderNumber" data-bs-toggle="tooltip" title="Complete">
+                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of  @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Complete">
                                     <i class="fa-solid fa-circle-info"></i> Details
                                 </a>
                             }
                             else if (item.Status == Status.Archived)
                             {
                                 <span class="badge bg-secondary">Archived</span>
-                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                                     <i class="fa-solid fa-circle-info"></i> Details
                                 </a>
-                                <a asp-action="Restore" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="Restore @item.OrderNumber" data-bs-toggle="tooltip" title="Restore"
+                                <a asp-action="Restore" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="Restore @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Restore"
                                 onclick="return confirm('Are you sure you want to restore this sales order?');">
                                     <i class="fas fa-trash-restore"></i> Restore
                                 </a>
                             }
                             else
                             {
-                                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.OrderNumber" data-bs-toggle="tooltip" title="Edit Order">
+                                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Order">
                                     <i class="fa-solid fa-pen-to-square"></i> Edit
                                 </a>
-                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                                     <i class="fa-solid fa-circle-info"></i> Details
                                 </a>
-                                <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" title="Archive sales order" onclick="return confirm('Are you sure you want to archive this sales order?');">
+                                <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Archive sales order" onclick="return confirm('Are you sure you want to archive this sales order?');">
                                     <i class="fa-solid fa-box-archive"></i> Archive
                                 </a>
                             
@@ -233,7 +233,7 @@
                             {
                                 <span class="badge bg-success">Completed</span>
                             }
-                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" title="View details">
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                                 <i class="fa-solid fa-circle-info"></i> Details
                             </a>
                         </td>
