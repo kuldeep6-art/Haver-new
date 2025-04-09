@@ -9,11 +9,12 @@ body {
 }
 
 .login-container {
-    position: relative;
-    width: 450px;
-    left:33%;
-    right:50%;
+    width: 100%;
+    max-width: 450px;
+    margin: 100px auto; /* vertically separate from navbar and center */
+    padding: 20px;
 }
+
 
 .logo {
     position: absolute;
@@ -114,46 +115,53 @@ h2 {
 
 
 /* Responsive adjustments */
-@media screen and (max-width: 768px) {
-   
+@media screen and (max-width: 992px) {
+    .login-container {
+        width: 90%;
+        margin: 100px auto;
+    }
 
     .navbar-text {
         font-size: 18px;
-        margin-bottom: 10px;
     }
 
+    .logo {
+        width: 150px;
+    }
+}
 
+@media screen and (max-width: 768px) {
+    .navbar-text {
+        font-size: 16px;
+    }
 
-    .login-container {
-        left: -6%;
+    .logo {
+        width: 120px;
     }
 
     .login-form {
         padding: 20px;
     }
 
-    h2 {
-        font-size: 20px;
-    }
-
     .btn-primary {
         font-size: 16px;
-        padding: 10px;
     }
 }
 
 @media screen and (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+    }
+
     .navbar-text {
-        font-size: 16px;
+        font-size: 14px;
+        margin-bottom: 10px;
     }
 
     .logo {
         width: 100px;
-    }
-
-    .login-container {
-        max-width: 100%;
-        padding: 10px;
     }
 
     .login-form {
@@ -166,6 +174,6 @@ h2 {
 
     .btn-primary {
         font-size: 14px;
-        padding: 8px;
+        padding: 10px;
     }
 }

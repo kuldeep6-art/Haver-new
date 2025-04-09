@@ -17,7 +17,7 @@
  @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
                     {
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a asp-action="Create" class="btn" aria-label="Create a new machine" data-bs-toggle="tooltip" title="Create a new machine">
+        <a asp-action="Create" class="btn" aria-label="Create a new machine" data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Create a new machine">
         <i class="fa-solid fa-plus"></i> Add New @ViewData["ControllerFriendlyName"] 
     </a>
 </div>
@@ -48,8 +48,8 @@
                         @Html.TextBox("SerString", null, new { @class = "form-control", placeholder = "Enter serial number", aria_label = "Search by serial number" })
                     </div>
                     <div class="form-group col-md-12 text-end mt-3">
-                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" aria-label="Apply filter" data-bs-toggle="tooltip" title="Apply filter" />
-                        <a asp-action="Index" class="btn btn-outline-secondary" aria-label="Clear filter" data-bs-toggle="tooltip" title="Clear filter">Clear</a>
+                        <input type="submit" name="actionButton" value="Filter" class="btn" aria-label="Apply filter" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Apply filter" />
+                        <a asp-action="Index" class="btn " aria-label="Clear filter" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Clear filter">Clear</a>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 @foreach (var field in new[] { "Serial Number", "Production Order Number", "Sales Order","Machine Model" })
                 {
                     <th class="align-middle">
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" title="Sort by @field">
+                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none" type="submit" name="actionButton" value="@field" aria-label="Sort by @field" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sort by @field">
                             @field
                             @if (ViewData["sortField"]?.ToString() == field)
                             {
@@ -88,18 +88,18 @@
                     <td class="text-center">
                             @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
                             {
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.SerialNumber" data-bs-toggle="tooltip" title="Edit machine">
+                            <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Edit machine @item.SerialNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit machine">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
-                        <a  asp-controller="MachineProcurement" asp-action="Index" asp-route-MachineID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" title="View details">
+                        <a  asp-controller="MachineProcurement" asp-action="Index" asp-route-MachineID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                             <i class="fa-solid fa-circle-info"></i> Details
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.SerialNumber" data-bs-toggle="tooltip" title="Delete machine">
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Delete machine @item.SerialNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete machine">
                             <i class="fa-solid fa-delete-left"></i> Delete
                                 </a>
                             }else
                             {
-                            <a asp-controller="MachineProcurement" asp-action="Index" asp-route-MachineID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" title="View details">
+                            <a asp-controller="MachineProcurement" asp-action="Index" asp-route-MachineID="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.SerialNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                                 <i class="fa-solid fa-circle-info"></i> Details
                             </a>
                             }
