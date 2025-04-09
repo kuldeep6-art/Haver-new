@@ -19,6 +19,9 @@
         <div class="col-md-10 offset-md-1">
             <form asp-action="Edit" class="border p-4 shadow-sm" aria-label="Edit Machine">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+              @*   <div asp-validation-summary="All" class="text-danger"></div> *@
+                <input type="hidden" asp-for="ID" />
+                <input type="hidden" asp-for="RowVersion" />
                 <h6 class="mb-4" style="color: #0C2340;">Fields marked with <span class="text-danger">*</span> are required</h6>
 
                 <!-- First Row -->

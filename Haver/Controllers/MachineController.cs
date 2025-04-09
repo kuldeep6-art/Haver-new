@@ -420,66 +420,124 @@ namespace haver.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
-            var machinesToUpdate = await _context.Machines.FirstOrDefaultAsync(p => p.ID == id);
+            var machineToUpdate = await _context.Machines
+                .Include(m => m.MachineType)
+                .Include(m => m.SalesOrder)
+                .FirstOrDefaultAsync(p => p.ID == id);
 
-            if (machinesToUpdate == null)
+            if (machineToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (await TryUpdateModelAsync<Machine>(machinesToUpdate, "", p => p.MachineModel,
-                  p => p.SerialNumber, p => p.ProductionOrderNumber, p => p.AssemblyExp, p => p.AssemblyStart, p => p.AssemblyComplete,
-                  p => p.RToShipExp, p => p.RToShipA, p => p.Media,p => p.SpareParts, p => p.SparePMedia, p => p.Base, p => p.AirSeal,
-                  p => p.CoatingLining, p => p.Disassembly, p => p.BudgetedHours, p => p.ActualAssemblyHours, p => p.ReworkHours, p => p.Nameplate,
-                  p => p.PreOrder, p => p.Scope, p => p.SalesOrderID, p => p.MachineTypeID))
+            _context.Entry(machineToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+
+            if (await TryUpdateModelAsync<Machine>(machineToUpdate, "",
+                p => p.MachineModel, p => p.SerialNumber, p => p.ProductionOrderNumber,
+                p => p.AssemblyExp, p => p.AssemblyStart, p => p.AssemblyComplete,
+                p => p.RToShipExp, p => p.RToShipA, p => p.Media, p => p.SpareParts,
+                p => p.SparePMedia, p => p.Base, p => p.AirSeal, p => p.CoatingLining,
+                p => p.Disassembly, p => p.BudgetedHours, p => p.ActualAssemblyHours,
+                p => p.ReworkHours, p => p.Nameplate, p => p.PreOrder, p => p.Scope,
+                p => p.SalesOrderID, p => p.MachineTypeID))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
 
-                    await UpdateGanttForMachine(machinesToUpdate);
+                    await UpdateGanttForMachine(machineToUpdate);
 
-                    await LogActivity($"Machine {machinesToUpdate.SerialNumber} was updated");
-
-                    await _context.SaveChangesAsync();
+                    await LogActivity($"Machine '{machineToUpdate.SerialNumber}' was updated");
 
                     TempData["Message"] = "Machine has been successfully edited.";
-                    return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machinesToUpdate.ID });
-
-
+                    return RedirectToAction("Index", "MachineProcurement", new { SalesOrderID = machineToUpdate.SalesOrderID });
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    if (!MachineExists(machinesToUpdate.ID))
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (Machine)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+
+                    if (databaseEntry == null)
                     {
-                        return NotFound();
+                        ModelState.AddModelError("", "Unable to save changes. The machine was deleted by another user.");
                     }
                     else
                     {
-                        throw;
+                        var dbValues = (Machine)databaseEntry.ToObject();
+
+                        if (dbValues.MachineModel != clientValues.MachineModel)
+                            ModelState.AddModelError("MachineModel", $"Current value: {dbValues.MachineModel}");
+                        if (dbValues.SerialNumber != clientValues.SerialNumber)
+                            ModelState.AddModelError("SerialNumber", $"Current value: {dbValues.SerialNumber}");
+                        if (dbValues.ProductionOrderNumber != clientValues.ProductionOrderNumber)
+                            ModelState.AddModelError("ProductionOrderNumber", $"Current value: {dbValues.ProductionOrderNumber}");
+                        if (dbValues.AssemblyExp != clientValues.AssemblyExp)
+                            ModelState.AddModelError("AssemblyExp", $"Current value: {dbValues.AssemblyExp:d}");
+                        if (dbValues.AssemblyStart != clientValues.AssemblyStart)
+                            ModelState.AddModelError("AssemblyStart", $"Current value: {dbValues.AssemblyStart:d}");
+                        if (dbValues.AssemblyComplete != clientValues.AssemblyComplete)
+                            ModelState.AddModelError("AssemblyComplete", $"Current value: {dbValues.AssemblyComplete:d}");
+                        if (dbValues.RToShipExp != clientValues.RToShipExp)
+                            ModelState.AddModelError("RToShipExp", $"Current value: {dbValues.RToShipExp:d}");
+                        if (dbValues.RToShipA != clientValues.RToShipA)
+                            ModelState.AddModelError("RToShipA", $"Current value: {dbValues.RToShipA:d}");
+                        if (dbValues.Media != clientValues.Media)
+                            ModelState.AddModelError("Media", $"Current value: {dbValues.Media}");
+                        if (dbValues.SpareParts != clientValues.SpareParts)
+                            ModelState.AddModelError("SpareParts", $"Current value: {dbValues.SpareParts}");
+                        if (dbValues.SparePMedia != clientValues.SparePMedia)
+                            ModelState.AddModelError("SparePMedia", $"Current value: {dbValues.SparePMedia}");
+                        if (dbValues.Base != clientValues.Base)
+                            ModelState.AddModelError("Base", $"Current value: {dbValues.Base}");
+                        if (dbValues.AirSeal != clientValues.AirSeal)
+                            ModelState.AddModelError("AirSeal", $"Current value: {dbValues.AirSeal}");
+                        if (dbValues.CoatingLining != clientValues.CoatingLining)
+                            ModelState.AddModelError("CoatingLining", $"Current value: {dbValues.CoatingLining}");
+                        if (dbValues.Disassembly != clientValues.Disassembly)
+                            ModelState.AddModelError("Disassembly", $"Current value: {dbValues.Disassembly}");
+                        if (dbValues.BudgetedHours != clientValues.BudgetedHours)
+                            ModelState.AddModelError("BudgetedHours", $"Current value: {dbValues.BudgetedHours}");
+                        if (dbValues.ActualAssemblyHours != clientValues.ActualAssemblyHours)
+                            ModelState.AddModelError("ActualAssemblyHours", $"Current value: {dbValues.ActualAssemblyHours}");
+                        if (dbValues.ReworkHours != clientValues.ReworkHours)
+                            ModelState.AddModelError("ReworkHours", $"Current value: {dbValues.ReworkHours}");
+                        if (dbValues.Nameplate != clientValues.Nameplate)
+                            ModelState.AddModelError("Nameplate", $"Current value: {dbValues.Nameplate}");
+                        if (dbValues.PreOrder != clientValues.PreOrder)
+                            ModelState.AddModelError("PreOrder", $"Current value: {dbValues.PreOrder}");
+                        if (dbValues.Scope != clientValues.Scope)
+                            ModelState.AddModelError("Scope", $"Current value: {dbValues.Scope}");
+
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit was modified by another user after you received the original values. "
+                            + "The edit operation was canceled and the current values in the database have been displayed. "
+                            + "If you still want to save your version, click Save again.");
+
+                        machineToUpdate.RowVersion = dbValues.RowVersion ?? Array.Empty<byte>();
+                        ModelState.Remove("RowVersion");
                     }
                 }
                 catch (DbUpdateException dex)
                 {
                     if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.SerialNumber"))
                     {
-                        ModelState.AddModelError("SerialNumber", "Unable to save changes. Remember, you cannot have duplicate Serial Number.");
+                        ModelState.AddModelError("SerialNumber", "Unable to save changes. Duplicate Serial Number not allowed.");
                     }
                     else if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: Machines.ProductionOrderNumber"))
                     {
-                        ModelState.AddModelError("ProductionOrderNumber", "Unable to save changes. Remember, you cannot have duplicate Production Order Number.");
+                        ModelState.AddModelError("ProductionOrderNumber", "Unable to save changes. Duplicate Production Order Number not allowed.");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the issue persists, contact your administrator.");
                     }
                 }
             }
 
-            PopulateDropDownLists(machinesToUpdate);
-            return View(machinesToUpdate);
+            PopulateDropDownLists(machineToUpdate);
+            return View(machineToUpdate);
         }
 
         // GET: Machine/Delete/5

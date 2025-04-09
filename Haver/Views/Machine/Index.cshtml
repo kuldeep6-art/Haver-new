@@ -2,6 +2,18 @@
 
 <h1 style="font-weight:bold;font-size:30px;text-align:center;" aria-label="Machine Index">Machines</h1>
 
+@if (TempData["Message"] != null)
+{
+    <div id="autoDismissAlert" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="fas fa-check-circle"></i>
+        @TempData["Message"]
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+}
+
  @if (User.IsInRole("Admin") || User.IsInRole("Sales") || User.IsInRole("Engineering") || User.IsInRole("Production") || User.IsInRole("PIC"))
                     {
 <div class="d-flex justify-content-between align-items-center mb-3">
