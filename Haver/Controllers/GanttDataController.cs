@@ -1827,7 +1827,7 @@ namespace haver.Controllers
     {
         (g.EngExpected, g.EngReleased, "Engineering Released to Customer", "#FABF8F"),
         (g.AppDExp, g.AppDRcd, "Customer Approval Received", "#E26B0A"),
-        (g.AppDRcd, g.EngReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
+        (g.EngReleased, g.EngReleased, "Package Released to PIC/Spare Parts to Customer Service", "#ADF802"),
         (g.PurchaseOrdersIssued, g.PurchaseOrdersCompleted, "Purchase Orders Issued", "#8DB4E2"),
         (g.SupplierPODue, g.SupplierPODue, "Supplier Purchase Orders Due", "#FF99CC"),
         (g.AssemblyStart, g.AssemblyComplete, "Machine Assembly and Testing", "#00B050")
