@@ -28,7 +28,30 @@ namespace haver.Data
                         {
                             context.Database.EnsureCreated(); //Create and update the database as per the Model
                         }
+                        //Now create any additional database objects such as Triggers or Views
+                        //--------------------------------------------------------------------
+                        //Create the Triggers
+                        string sqlCmd = @"
+                            CREATE TRIGGER SetSalesOrderTimestampOnUpdate
+                            AFTER UPDATE ON SalesOrders
+                            BEGIN
+                                UPDATE SalesOrders
+                                SET RowVersion = randomblob(8)
+                                WHERE rowid = NEW.rowid;
+                            END;
+                        ";
+                        context.Database.ExecuteSqlRaw(sqlCmd);
 
+                        sqlCmd = @"
+                            CREATE TRIGGER SetSalesOrderTimestampOnInsert
+                            AFTER INSERT ON SalesOrders
+                            BEGIN
+                                UPDATE SalesOrders
+                                SET RowVersion = randomblob(8)
+                                WHERE rowid = NEW.rowid;
+                            END
+                        ";
+                        context.Database.ExecuteSqlRaw(sqlCmd);
                     }
                     else //The database is already created
                     {
