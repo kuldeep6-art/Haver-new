@@ -52,6 +52,30 @@ namespace haver.Data
                             END
                         ";
                         context.Database.ExecuteSqlRaw(sqlCmd);
+
+                        sqlCmd = @"
+                            CREATE TRIGGER SetMachineTimestampOnUpdate
+                            AFTER UPDATE ON Machines
+                            BEGIN
+                                UPDATE Machines
+                                SET RowVersion = randomblob(8)
+                                WHERE rowid = NEW.rowid;
+                            END;
+                        ";
+                        context.Database.ExecuteSqlRaw(sqlCmd);
+
+                        sqlCmd = @"
+                            CREATE TRIGGER SetMachineTimestampOnInsert
+                            AFTER INSERT ON Machines
+                            BEGIN
+                                UPDATE Machines
+                                SET RowVersion = randomblob(8)
+                                WHERE rowid = NEW.rowid;
+                            END
+                        ";
+                        context.Database.ExecuteSqlRaw(sqlCmd);
+
+
                     }
                     else //The database is already created
                     {

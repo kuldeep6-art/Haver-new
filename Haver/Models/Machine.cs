@@ -137,6 +137,9 @@ namespace haver.Models
         public int? MachineTypeID { get; set; }
         public MachineType? MachineType { get; set; }
 
+        [Timestamp]
+        public Byte[]? RowVersion { get; set; }
+
         // One-to-Many: A Machine can have multiple Procurements
         public ICollection<Procurement> Procurements { get; set; } = new HashSet<Procurement>();
 
