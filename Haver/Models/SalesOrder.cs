@@ -98,8 +98,8 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? EngPRel { get; set; }
 
-        //[Timestamp]
-        //public Byte[]? RowVersion { get; set; }
+        [Timestamp]
+        public Byte[]? RowVersion { get; set; }
 
         //// Checkbox Options
         //[Display(Name = "Installed Media")]

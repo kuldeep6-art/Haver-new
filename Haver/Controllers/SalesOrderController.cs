@@ -333,87 +333,131 @@ namespace haver.Controllers
 
 
 
-		// POST: SalesOrder/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[Authorize(Roles = "Admin,Sales")]
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, string[] selectedOptions)
-		{
-			var salesOrderToUpdate = await _context.SalesOrders
-				.Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
-				.FirstOrDefaultAsync(p => p.ID == id);
+        // POST: SalesOrder/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Sales")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
 
-			if (salesOrderToUpdate == null)
-			{
-				return NotFound();
-			}
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion)
+        {
+            var salesOrderToUpdate = await _context.SalesOrders
+                .Include(d => d.SalesOrderEngineers).ThenInclude(d => d.Engineer)
+                .FirstOrDefaultAsync(p => p.ID == id);
 
-            // Update assigned engineers
+            if (salesOrderToUpdate == null)
+            {
+                return NotFound();
+            }
+
             UpdateSalesOrderEngineers(selectedOptions, salesOrderToUpdate);
 
+            _context.Entry(salesOrderToUpdate).Property("RowVersion").OriginalValue = RowVersion;
+            var debugState = _context.Entry(salesOrderToUpdate).State;
+            Console.WriteLine($"Entity state before SaveChanges: {debugState}");
+
+
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
-				p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
-				p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel,
-				p => p.EngPExp, p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
-			{
-				try
-				{
-					// Save SalesOrder updates
-					await _context.SaveChangesAsync();
-
-					// Log activity
-					await LogActivity($"Sales Order '{salesOrderToUpdate.OrderNumber}' for customer '{salesOrderToUpdate.CompanyName}' was updated");
-
-					// Update all related Gantt records
-					var relatedGantts = await _context.GanttDatas
-						.Where(g => g.SalesOrderID == salesOrderToUpdate.ID)
-						.ToListAsync();
-
-					foreach (var gantt in relatedGantts)
-					{
-						gantt.AppDExp = salesOrderToUpdate.AppDwgExp;
-						gantt.AppDRcd = salesOrderToUpdate.AppDwgRel;
-						gantt.EngExpected = salesOrderToUpdate.EngPExp;
-						gantt.EngReleased = salesOrderToUpdate.EngPRel;
-					}
-
-					await _context.SaveChangesAsync(); // Save Gantt updates
-					await LogActivity($"Gantt milestones updated for Sales Order '{salesOrderToUpdate.OrderNumber}'");
-
-					TempData["Message"] = "Sales Order successfully updated";
-					return RedirectToAction("Details", new { salesOrderToUpdate.ID });
-				}
-                catch (DbUpdateConcurrencyException)
+                p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
+                p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel,
+                p => p.EngPExp, p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
+            {
+                try
                 {
-                    if (!SalesOrderExists(salesOrderToUpdate.ID))
-                    {
-                        return NotFound();
+                    await _context.SaveChangesAsync();
 
+                    await LogActivity($"Sales Order '{salesOrderToUpdate.OrderNumber}' for customer '{salesOrderToUpdate.CompanyName}' was updated");
+
+                    var relatedGantts = await _context.GanttDatas
+                        .Where(g => g.SalesOrderID == salesOrderToUpdate.ID)
+                        .ToListAsync();
+
+                    foreach (var gantt in relatedGantts)
+                    {
+                        gantt.AppDExp = salesOrderToUpdate.AppDwgExp;
+                        gantt.AppDRcd = salesOrderToUpdate.AppDwgRel;
+                        gantt.EngExpected = salesOrderToUpdate.EngPExp;
+                        gantt.EngReleased = salesOrderToUpdate.EngPRel;
+                    }
+
+                    await _context.SaveChangesAsync();
+                    await LogActivity($"Gantt milestones updated for Sales Order '{salesOrderToUpdate.OrderNumber}'");
+
+                    TempData["Message"] = "Sales Order successfully updated";
+                    return RedirectToAction("Details", new { id = salesOrderToUpdate.ID });
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    var exceptionEntry = ex.Entries.Single();
+                    var clientValues = (SalesOrder)exceptionEntry.Entity;
+                    var databaseEntry = exceptionEntry.GetDatabaseValues();
+
+                    if (databaseEntry == null)
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. The Sales Order was deleted by another user.");
+                    }
+                    else
+                    {
+                        var databaseValues = (SalesOrder)databaseEntry.ToObject();
+
+                        if (databaseValues.OrderNumber != clientValues.OrderNumber)
+                            ModelState.AddModelError("OrderNumber", $"Current value: {databaseValues.OrderNumber}");
+                        if (databaseValues.CompanyName != clientValues.CompanyName)
+                            ModelState.AddModelError("CompanyName", $"Current value: {databaseValues.CompanyName}");
+                        if (databaseValues.SoDate != clientValues.SoDate)
+                            ModelState.AddModelError("SoDate", $"Current value: {databaseValues.SoDate:d}");
+                        if (databaseValues.Price != clientValues.Price)
+                            ModelState.AddModelError("Price", $"Current value: {databaseValues.Price}");
+                        if (databaseValues.Currency != clientValues.Currency)
+                            ModelState.AddModelError("Currency", $"Current value: {databaseValues.Currency}");
+                        if (databaseValues.ShippingTerms != clientValues.ShippingTerms)
+                            ModelState.AddModelError("ShippingTerms", $"Current value: {databaseValues.ShippingTerms}");
+                        if (databaseValues.AppDwgExp != clientValues.AppDwgExp)
+                            ModelState.AddModelError("AppDwgExp", $"Current value: {databaseValues.AppDwgExp:d}");
+                        if (databaseValues.AppDwgRel != clientValues.AppDwgRel)
+                            ModelState.AddModelError("AppDwgRel", $"Current value: {databaseValues.AppDwgRel:d}");
+                        if (databaseValues.AppDwgRet != clientValues.AppDwgRet)
+                            ModelState.AddModelError("AppDwgRet", $"Current value: {databaseValues.AppDwgRet:d}");
+                        if (databaseValues.PreOExp != clientValues.PreOExp)
+                            ModelState.AddModelError("PreOExp", $"Current value: {databaseValues.PreOExp:d}");
+                        if (databaseValues.PreORel != clientValues.PreORel)
+                            ModelState.AddModelError("PreORel", $"Current value: {databaseValues.PreORel:d}");
+                        if (databaseValues.EngPExp != clientValues.EngPExp)
+                            ModelState.AddModelError("EngPExp", $"Current value: {databaseValues.EngPExp:d}");
+                        if (databaseValues.EngPRel != clientValues.EngPRel)
+                            ModelState.AddModelError("EngPRel", $"Current value: {databaseValues.EngPRel:d}");
+                        if (databaseValues.Comments != clientValues.Comments)
+                            ModelState.AddModelError("Comments", $"Current value: {databaseValues.Comments}");
+
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                            + "was modified by another user after you received your values. The edit operation was canceled "
+                            + "and the current values in the database have been displayed. If you still want to save your version "
+                            + "of this record, click the Save button again. Otherwise, click the Back link.");
+
+                        salesOrderToUpdate.RowVersion = databaseValues.RowVersion ?? Array.Empty<byte>();
+                        ModelState.Remove("RowVersion");
                     }
                 }
                 catch (DbUpdateException dex)
-				{
-					if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
-					{
-						ModelState.AddModelError("OrderNumber", "Duplicate Order Number is not allowed.");
-					}
-					else
-					{
-						ModelState.AddModelError("", "Unable to save changes. Try again later.");
-					}
-				}
-			}
+                {
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed: SalesOrders.OrderNumber"))
+                    {
+                        ModelState.AddModelError("OrderNumber", "Duplicate Order Number is not allowed.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again later.");
+                    }
+                }
+            }
 
-			// Re-populate engineers if update fails
-			PopulateAssignedSpecialtyData(salesOrderToUpdate);
-			return View(salesOrderToUpdate);
-		}
+            PopulateAssignedSpecialtyData(salesOrderToUpdate);
+            return View(salesOrderToUpdate);
+        }
 
-
-		// GET: SalesOrder/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+        // GET: SalesOrder/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
