@@ -235,11 +235,11 @@
 			if (actionType === 'deactivate') {
 				modalTitle.textContent = "Confirm Deactivation";
 				modalBody.innerHTML = `Are you sure you want to deactivate <strong>${vendorName}</strong>?<br>This vendor will not be available until reactivated.`;
-				modalHeader.className = "modal-header  text-white";
+				modalHeader.className = "modal-header";
 			} else {
 				modalTitle.textContent = "Confirm Activation";
 				modalBody.innerHTML = `Are you sure you want to activate <strong>${vendorName}</strong>?`;
-				modalHeader.className = "modal-header text-white";
+				modalHeader.className = "modal-header";
 			}
 
 			confirmBtn.setAttribute('href', vendorUrl);
