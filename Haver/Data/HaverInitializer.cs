@@ -94,6 +94,8 @@ namespace haver.Data
                 #region seed data
                 try
                 {
+                   
+
                     // 1. Seed Customers
                     if (!context.Customers.Any())
                     {
@@ -157,6 +159,24 @@ namespace haver.Data
                         context.SaveChanges();
                     }
 
+                    if (!context.MachineTypes.Any())
+                    {
+                        context.MachineTypes.AddRange(
+                            new MachineType { ID = 1, Description = "T-330 4'x10' - 1D" },
+                            new MachineType { ID = 2, Description = "F-600 5'x10' - 1D" },
+                            new MachineType { ID = 3, Description = "T-1100 6'x16' - 2D" },
+                            new MachineType { ID = 4, Description = "L-800 6'x20' - 2D" },
+                            new MachineType { ID = 5, Description = "S-300 5'x9' - 1D" },
+                            new MachineType { ID = 6, Description = "T-880 5' x 12' - 3D" },
+                            new MachineType { ID = 7, Description = "T-880 5' x 12' - 2D" },
+                            new MachineType { ID = 8, Description = "XL-Class 7'x20' - 3D" },
+                            new MachineType { ID = 9, Description = "H-Class V85 4'x15' - 2D" },
+                            new MachineType { ID = 10, Description = "F-900 6'x16' - 2D" },
+                            new MachineType { ID = 11, Description = "F-1100 8'x16' - 2D" }
+                        );
+                        context.SaveChanges();
+                    }
+
                     // 2. Seed Vendors
                     if (!context.Vendors.Any())
                     {
@@ -174,6 +194,9 @@ namespace haver.Data
                         );
                         context.SaveChanges();
                     }
+
+                   
+
                     // 5. Seed Engineers
                     if (!context.Engineers.Any())
                     {
@@ -195,8 +218,8 @@ namespace haver.Data
 
 
 
-					// 3. Seed Sales Orders (Each customer gets 2)
-					if (!context.SalesOrders.Any())
+                    // 3. Seed Sales Orders (Each customer gets 2)
+                    if (!context.SalesOrders.Any())
 					{
 						var today = DateTime.Today;
 						var salesOrders = new List<SalesOrder>();
@@ -236,6 +259,7 @@ namespace haver.Data
 
 
 
+                    
 
 
 
@@ -244,7 +268,7 @@ namespace haver.Data
 
 
 
-				}
+                }
 				catch (Exception ex)
                 {
                     Debug.WriteLine($"Error seeding database: {ex.GetBaseException().Message}");
