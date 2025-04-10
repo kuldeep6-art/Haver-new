@@ -7,7 +7,7 @@
                     <h5 class="modal-title" id="addMachineModalLabel">Add New Machine</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="margin:0 auto; width:98%; ">
                     <form  id="createMachineForm" asp-action="CreateFromModal" asp-controller="Machine" method="post">
                          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <ul id="ErrorList" class="text-danger"></ul>
@@ -88,7 +88,7 @@
                         <!-- RToShipExp -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="RToShipExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
-                                @Html.DisplayNameFor(model => model.RToShipExp)  <span class="text-danger">*</span>
+                                Readiness to ship Exp. <span class="text-danger">*</span>
                                 <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Expected shipping date"></i>
                             </label>
                             <input asp-for="RToShipExp" class="form-control"
@@ -111,7 +111,7 @@
                             <label asp-for="ProductionOrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.ProductionOrderNumber)
                             </label>
-                            <input asp-for="ProductionOrderNumber" class="form-control" placeholder="Enter Production Order Number"
+                            <input asp-for="ProductionOrderNumber" class="form-control" placeholder="Enter Production Order No."
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
                         </div>
