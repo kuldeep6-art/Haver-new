@@ -35,7 +35,7 @@
                             <label asp-for="SalesOrderID" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Sales Order <span class="text-danger">*</span>
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title=" The sales order associated with the Gantt data."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title=" The sales order associated with the Gantt data."></i>
                             </label>
                             <select class="form-control" id="SalesOrderID" disabled>
                                 <option value="@Model.SalesOrderID">@Model.SalesOrder?.OrderNumber</option>
@@ -49,7 +49,7 @@
                         <div class="form-group">
                             <label asp-for="StartOfWeek" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.StartOfWeek)
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Week Start Day"></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Week Start Day"></i>
                             </label>
                             <select asp-for="StartOfWeek" class="form-control"
                                     style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"
@@ -81,7 +81,7 @@
                             <label asp-for="EngExpected" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Engineering Package Due
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Engineering Package Due date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the Engineering Package Due date."></i>
                             </label>
                             <input asp-for="EngExpected" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngExpected" placeholder="Enter Engineering Package Expected Date" readonly />
@@ -106,7 +106,7 @@
                             <label asp-for="AppDRcd" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Approval Drawings Released
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the Approval Drawings Release Date"></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the Approval Drawings Release Date"></i>
                             </label>
                             <input asp-for="AppDRcd" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AppDRcd" placeholder="Enter Approved Drawings Recieved" />
@@ -130,7 +130,7 @@
                             <label asp-for="EngReleased" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Engineering Package Released
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the engineering package release date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the engineering package release date."></i>
                             </label>
                             <input asp-for="EngReleased" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="EngReleased" placeholder="Enter Engineering Release Date" />
@@ -142,7 +142,7 @@
                             <label asp-for="PurchaseOrdersCompleted" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Purchase Orders Completed
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the date when purchase orders were completed."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the date when purchase orders were completed."></i>
                             </label>
                             <input asp-for="PurchaseOrdersCompleted" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="PurchaseOrdersCompleted" placeholder="Enter Purchase Orders Completed Date" />
@@ -155,7 +155,7 @@
                             <label asp-for="SupplierPODue" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Supplier PO Due
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the supplier PO due date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the supplier PO due date."></i>
                             </label>
                             <input asp-for="SupplierPODue" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="SupplierPODue" placeholder="Enter Supplier PO Due Date" />
@@ -189,7 +189,7 @@
                             <label asp-for="AssemblyStart" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Assembly Start
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the assembly start date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Enter the assembly start date."></i>
                             </label>
                             <input asp-for="AssemblyStart" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AssemblyStart" placeholder="Enter Assembly Start Date" />
@@ -201,7 +201,7 @@
                             <label asp-for="AssemblyComplete" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Assembly Complete
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the assembly completion date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Enter the assembly completion date."></i>
                             </label>
                             <input asp-for="AssemblyComplete" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="AssemblyComplete" placeholder="Enter Assembly Complete Date" />
@@ -214,7 +214,7 @@
                             <label asp-for="ShipExpected" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Ship Expected
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the expected shipping date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the expected shipping date."></i>
                             </label>
                             <input asp-for="ShipExpected" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="ShipExpected" placeholder="Enter Ship Expected Date" />
@@ -230,7 +230,7 @@
                         <div class="form-group">
                             <label asp-for="ShipActual" class="control-label"
                                    style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">Ship Actual
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the actual shipping date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"  title="Enter the actual shipping date."></i>
                             </label>
                             <input asp-for="ShipActual" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="ShipActual" placeholder="Enter Ship Actual Date" />
@@ -242,7 +242,7 @@
                         <div class="form-group">
                             <label asp-for="DeliveryExpected" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Delivery Expected
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery expected date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the delivery expected date."></i>
                             </label>
                             <input asp-for="DeliveryExpected" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="DeliveryExpected" placeholder="Enter Delivery Expected Date" />
@@ -253,7 +253,7 @@
                         <div class="form-group">
                             <label asp-for="DeliveryActual" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Delivery Actual
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter the delivery actual date."></i>
+                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter the delivery actual date."></i>
                             </label>
                             <input asp-for="DeliveryActual" class="form-control"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="DeliveryExpected" placeholder="Enter Delivery Actual Date" />
@@ -270,7 +270,7 @@
                 <div class="form-group">
                         <label asp-for="Notes" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Notes
-                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Enter Notes"></i>
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter Notes"></i>
                         </label>
                         <textarea asp-for="Notes" class="form-control summernote" style="border-color:#0C2340; font-family: 'Avenir Roman';"></textarea>
                     <span asp-validation-for="Notes" class="text-danger"></span>
@@ -367,6 +367,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
