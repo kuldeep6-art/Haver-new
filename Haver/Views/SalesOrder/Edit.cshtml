@@ -62,6 +62,16 @@
 
                 <!-- Second Row -->
                 <div class="row">
+                    <!-- Del Date-->
+                    <div class="form-group col-md-4 mb-3">
+                        <label asp-for="DelDt" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
+                            Readiness to Ship Date
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" title="Delivery date"></i>
+                        </label>
+                        <input asp-for="DelDt" class="form-control"
+                               style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
+                        <span asp-validation-for="DelDt" class="text-danger"></span>
+                    </div>
                     <!-- AppDwgExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -84,6 +94,16 @@
                     </div>
 
                   
+                  
+                  
+
+                   
+
+
+                </div>
+
+                <!-- Third Row -->
+                <div class="row">
                     <!-- EngPRel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -94,15 +114,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
-                  
-
-                   
-
-
-                </div>
-
-                <!-- Third Row -->
-                <div class="row">
                     <!-- AppDwgRel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -127,6 +138,16 @@
                   
 
 
+                    
+
+
+
+
+                </div>
+
+                <!-- Fourth Row -->
+                <div class="row">
+
                     <!-- PreOExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="PreOExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -137,16 +158,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="PreOExp" class="text-danger"></span>
                     </div>
-
-
-
-
-                </div>
-
-                <!-- Fourth Row -->
-                <div class="row">
-
-
 
                     <!-- PreORel -->
                     <div class="form-group col-md-4 mb-3">
@@ -200,7 +211,7 @@
 
 
 
-                    <div class="form-group  col-md-6 mb-3 form-check">
+                    <div class="form-group  col-md-4 mb-3 form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" asp-for="IsDraft" /> Draft Record (Checking this box saves the order as a draft record; required dates will not be mandatory.)
                         </label>

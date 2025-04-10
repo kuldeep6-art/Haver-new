@@ -9,8 +9,8 @@
     {
         var userName = HttpContextAccessor.HttpContext.Request.Cookies["userName"] ?? UserManager.GetUserName(User);
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="navbarIDDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa-solid fa-user"> <span style="font-family:'Avenir', sans-serif;font-size:15px;" >       @userName </span></i>
+            <a class="nav-link dropdown-toggle text-light d-flex align-items-center" href="#" id="navbarIDDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding:10px">
+                <i class="fa-solid fa-user">  <span style="font-family:'Avenir', sans-serif;font-size:15px;" >       @userName </span></i>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarIDDropdown">

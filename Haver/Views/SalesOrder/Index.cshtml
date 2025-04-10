@@ -199,8 +199,14 @@
                                 <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                                     <i class="fa-solid fa-circle-info"></i> Details
                                 </a>
-                                <a asp-action="Restore" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="Restore @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Restore"
-                                onclick="return confirm('Are you sure you want to restore this sales order?');">
+                                <a href="#" class="btn btn-sm mx-1 text-white"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#confirmActionModal"
+                                   data-action="restore"
+                                   data-id="@item.ID"
+                                   data-name="@item.OrderNumber"
+                                   title="Restore sales order"
+                                   aria-label="Restore @item.OrderNumber">
                                     <i class="fas fa-trash-restore"></i> Restore
                                 </a>
                             }
@@ -212,7 +218,14 @@
                                 <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of machine @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View details">
                                     <i class="fa-solid fa-circle-info"></i> Details
                                 </a>
-                                <a asp-action="Archive" asp-route-id="@item.ID" class="btn btn-sm mx-1" aria-label="Archive sales order @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Archive sales order" onclick="return confirm('Are you sure you want to archive this sales order?');">
+                                <a href="#" class="btn btn-sm mx-1"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#confirmActionModal"
+                                   data-action="archive"
+                                   data-id="@item.ID"
+                                   data-name="@item.OrderNumber"
+                                   title="Archive sales order"
+                                   aria-label="Archive sales order @item.OrderNumber">
                                     <i class="fa-solid fa-box-archive"></i> Archive
                                 </a>
                             
@@ -247,6 +260,30 @@
 </table>
     <partial name="_PagingNavBar" />
 </form>
+
+<div class="modal fade" id="confirmActionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="actionForm" method="post">
+                <input type="hidden" name="id" id="actionIdInput" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="actionModalLabel">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="actionModalBody">
+                    <!-- Message filled dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn" id="actionConfirmBtn">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -254,6 +291,39 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
+
+    <script>
+        const actionModal = document.getElementById('confirmActionModal');
+
+        actionModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;  // Button that triggered the modal
+            const actionType = button.getAttribute('data-action');
+            const orderId = button.getAttribute('data-id');
+            const orderName = button.getAttribute('data-name');
+
+            const form = actionModal.querySelector('#actionForm');
+            const idInput = actionModal.querySelector('#actionIdInput');
+            const modalTitle = actionModal.querySelector('#actionModalLabel');
+            const modalBody = actionModal.querySelector('#actionModalBody');
+            const confirmBtn = actionModal.querySelector('#actionConfirmBtn');
+
+            // Set ID for form submission
+            idInput.value = orderId;
+
+            if (actionType === 'archive') {
+                form.setAttribute('action', '/SalesOrder/Archive');  // Replace with your controller and action
+                modalTitle.textContent = "Confirm Archive";
+                modalBody.innerHTML = `Are you sure you want to archive this sales order ?`;
+                confirmBtn.className = "btn ";
+            } else {
+                form.setAttribute('action', '/SalesOrder/Restore');  // Replace with your controller and action
+                modalTitle.textContent = "Confirm Restore";
+                modalBody.innerHTML = `Are you sure you want to restore this sales order ?`;
+                confirmBtn.className = "btn ";
+            }
+        });
+    </script>
+
 }
 
 <style>

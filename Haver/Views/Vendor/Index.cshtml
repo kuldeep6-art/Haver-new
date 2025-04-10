@@ -64,7 +64,7 @@
 </div>
 }
 
-<form asp-action="Index" method="get" aria-label="Vendor filter form">
+<form asp-action="Index" method="get">
 	<div class="form-horizontal">
 		<input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
 		<input type="hidden" name="sortField" value="@ViewData["sortField"]" />
@@ -93,7 +93,7 @@
 		</div>
 	</div>
 
-	<form asp-action="Index" method="get">
+	
 		<div class="table-responsive">
 		<table class="table table-striped table-bordered table-hover shadow-sm">
 			<thead class="bg-dark text-white text-center">
@@ -144,10 +144,18 @@
 										@if (User.IsInRole("Admin"))
 										{
 
-											<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Deactivate @item.Name" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Deactivate vendor"
-								   onclick="return confirm('Are you sure you want to mark this vendor as inactive. If yes the vendor wont be available unless you mark it as active.?');">
-									<i class="fa-solid fa-power-off"></i> Deactivate
-								</a>
+											<!-- Deactivate Button -->
+											<a href="#" class="btn btn-sm mx-1 text-white"
+											   data-bs-toggle="modal"
+											   data-bs-target="#confirmStatusModal"
+											   data-id="@item.ID"
+											   data-name="@item.Name"
+											   data-url="@Url.Action("ToggleStatus", new { id = item.ID })"
+											   data-action="deactivate"
+											   aria-label="Deactivate @item.Name"
+											   title="Deactivate vendor">
+												<i class="fa-solid fa-power-off"></i> Deactivate
+											</a>
 							}
 									}
 							else
@@ -156,10 +164,18 @@
 										@if (User.IsInRole("Admin"))
 										{
 
-											<a asp-action="ToggleStatus" asp-route-id="@item.ID" class="btn btn-sm mx-1  text-white" aria-label="Activate @item.Name" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Activate vendor"
-								   onclick="return confirm('Are you sure you want to mark this vendor as active?');">
-									<i class="fa-solid fa-power-off"></i> Activate
-								</a>
+											<!-- Activate Button -->
+											<a href="#" class="btn btn-sm mx-1 text-white"
+											   data-bs-toggle="modal"
+											   data-bs-target="#confirmStatusModal"
+											   data-id="@item.ID"
+											   data-name="@item.Name"
+											   data-url="@Url.Action("ToggleStatus", new { id = item.ID })"
+											   data-action="activate"
+											   aria-label="Activate @item.Name"
+											   title="Activate vendor">
+												<i class="fa-solid fa-power-off"></i> Activate
+											</a>
 										}
 							}
 							</div>
@@ -174,8 +190,27 @@
 		</table>
 		</div>
 		<partial name="_PagingNavBar" />
-	</form>
 </form>
+
+<div class="modal fade" id="confirmStatusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div id="statusModalHeader" class="modal-header">
+				<h5 class="modal-title" id="statusModalLabel">Confirm Action</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="statusModalBody">
+				<!-- Message is filled in via JS -->
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<a id="statusModalConfirmBtn" class="btn">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 @section Scripts {
 	<script type="text/javascript">
 		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -183,6 +218,34 @@
 			return new bootstrap.Tooltip(tooltipTriggerEl)
 		})
 	</script>
+	<script>
+		const statusModal = document.getElementById('confirmStatusModal');
+
+		statusModal.addEventListener('show.bs.modal', function (event) {
+			const button = event.relatedTarget;
+			const vendorName = button.getAttribute('data-name');
+			const actionType = button.getAttribute('data-action'); // activate or deactivate
+			const vendorUrl = button.getAttribute('data-url');
+
+			const modalTitle = statusModal.querySelector('#statusModalLabel');
+			const modalBody = statusModal.querySelector('#statusModalBody');
+			const modalHeader = statusModal.querySelector('#statusModalHeader');
+			const confirmBtn = statusModal.querySelector('#statusModalConfirmBtn');
+
+			if (actionType === 'deactivate') {
+				modalTitle.textContent = "Confirm Deactivation";
+				modalBody.innerHTML = `Are you sure you want to deactivate <strong>${vendorName}</strong>?<br>This vendor will not be available until reactivated.`;
+				modalHeader.className = "modal-header";
+			} else {
+				modalTitle.textContent = "Confirm Activation";
+				modalBody.innerHTML = `Are you sure you want to activate <strong>${vendorName}</strong>?`;
+				modalHeader.className = "modal-header";
+			}
+
+			confirmBtn.setAttribute('href', vendorUrl);
+		});
+	</script>
+
 }
 
 <style>

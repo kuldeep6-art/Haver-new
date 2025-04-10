@@ -1924,7 +1924,6 @@ namespace haver.Controllers
             gantt.IsFinalized = false;
             _context.SaveChanges();
 
-            TempData["SuccessMessage"] = "Gantt chart has been unfinalized.";
             return RedirectToAction("Index", new { isFinalized = false });
         }
 

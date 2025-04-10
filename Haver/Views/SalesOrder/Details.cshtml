@@ -19,16 +19,50 @@
 
 
 
+<div class="modal fade" id="confirmActionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="actionForm" method="post">
+        <input type="hidden" name="id" id="actionIdInput" />
+        <div class="modal-header">
+          <h5 class="modal-title" id="actionModalLabel">Confirm Action</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="actionModalBody" style="color:#0C2340;">
+          <!-- Message filled dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn" id="actionConfirmBtn">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <div class="text-end mb-3">
     @if (Model?.Status == Status.Completed)
     {
         <span class="badge bg-success">Completed</span>
+        @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
+        {
+       <a href="#" class="btn btn-sm ms-3"
+   data-bs-toggle="modal"
+   data-bs-target="#confirmActionModal"
+   data-action="uncomplete"
+   data-id="@Model?.ID"
+   data-name="@Model?.OrderNumber"
+   title="Unfinalize sales order"
+   aria-label="Uncomplete sales order">
+    <i class="fa-solid fa-bars-progress"></i> UnFinalize
+</a>
+        }
         <a asp-action="Index" class="ms-3 btn btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List</a>
         <button href="#" onclick="printPrintableArea()" return false;" class="ms-3 btn btn-sm">
             <i class="fa-solid fa-print"></i> Print
         </button>
+
     }
     else
     {
@@ -43,9 +77,14 @@
 
             @if (Model?.Status != Status.Completed && Model?.Status != Status.Archived)
             {
-                <a asp-action="Complete" asp-controller="SalesOrder" asp-route-id="@Model?.ID"
-                   class="btn btn-sm ms-3"
-                   onclick="return confirm('Are you sure you want to mark this sales order as completed?');">
+                <a href="#" class="btn btn-sm ms-3"
+                   data-bs-toggle="modal"
+                   data-bs-target="#confirmActionModal"
+                   data-action="complete"
+                   data-id="@Model?.ID"
+                   data-name="@Model?.OrderNumber"
+                   title="Mark as completed"
+                   aria-label="Mark sales order as completed">
                     <i class="fa fa-check" aria-hidden="true"></i> Mark as Completed
                 </a>
             }
@@ -76,6 +115,10 @@
 
                 <dt class="col-md-3 text-dark">Sales Order Date</dt>
                 <dd class="col-md-3">@Html.DisplayFor(model => model.SoDate)</dd>
+
+                <dt class="col-md-3 text-dark">Readiness to ship</dt>
+                <dd class="col-md-3">@Html.DisplayFor(model => model.DelDt)</dd>
+
 
                 <dt class="col-md-3 text-dark">Price</dt>
                 <dd class="col-md-3">@Html.DisplayFor(model => model.allprice)</dd>
@@ -232,19 +275,19 @@
                                         {
                                             <td rowspan="@machine.Procurements.Count">
                                                 <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
-                                                   data-bs-toggle="tooltip" title="Click here to view all information about this machine">
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click here to view all information about this machine">
                                                     @Html.DisplayFor(m => machine.Description)
                                                 </a>
                                             </td>
                                             firstRow = false;
                                         }
 
-                                        <td data-bs-toggle="tooltip" title="Vendor: @procurement.Vendor.Name">@Html.DisplayFor(m => procurement.Vendor.Name)</td>
-                                        <td data-bs-toggle="tooltip" title="PO Number: @procurement.PONumber">@Html.DisplayFor(m => procurement.PONumber)</td>
-                                        <td data-bs-toggle="tooltip" title="PO Due Date: @procurement.PODueDate">@Html.DisplayFor(m => procurement.PODueDate)</td>
-                                        <td data-bs-toggle="tooltip" title="Received on: @procurement.PORcd">@Html.DisplayFor(m => procurement.PORcd)</td>
-                                        <td data-bs-toggle="tooltip" title="Quality Completed">@Html.DisplayFor(m => procurement.QualityICom)</td>
-                                        <td data-bs-toggle="tooltip" title="NCR Raised">@Html.DisplayFor(m => procurement.NcrRaised)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="Vendor: @procurement.Vendor.Name">@Html.DisplayFor(m => procurement.Vendor.Name)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="PO Number: @procurement.PONumber">@Html.DisplayFor(m => procurement.PONumber)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="PO Due Date: @procurement.PODueDate">@Html.DisplayFor(m => procurement.PODueDate)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="Received on: @procurement.PORcd">@Html.DisplayFor(m => procurement.PORcd)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="Quality Completed">@Html.DisplayFor(m => procurement.QualityICom)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="NCR Raised">@Html.DisplayFor(m => procurement.NcrRaised)</td>
                                     </tr>
                                 }
                             }
@@ -253,11 +296,11 @@
                                 <tr>
                                     <td>
                                         <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
-                                           data-bs-toggle="tooltip" title="Click here to view all information about this machine">
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click here to view all information about this machine">
                                             @Html.DisplayFor(m => machine.Description)
                                         </a>
                                     </td>
-                                    <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" title="No procurement details available">
+                                    <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No procurement details available">
                                         No Procurement Details
                                     </td>
                                 </tr>
@@ -446,6 +489,37 @@
     </script>
 
 
+    <script>
+    const actionModal = document.getElementById('confirmActionModal');
+
+    actionModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;  // Button that triggered the modal
+        const actionType = button.getAttribute('data-action');
+        const orderId = button.getAttribute('data-id');
+        const orderName = button.getAttribute('data-name');
+
+        const form = actionModal.querySelector('#actionForm');
+        const idInput = actionModal.querySelector('#actionIdInput');
+        const modalTitle = actionModal.querySelector('#actionModalLabel');
+        const modalBody = actionModal.querySelector('#actionModalBody');
+        const confirmBtn = actionModal.querySelector('#actionConfirmBtn');
+
+        // Set ID for form submission
+        idInput.value = orderId;
+
+        if (actionType === 'complete') {
+            form.setAttribute('action', '/SalesOrder/Complete');  // Replace with your controller and action
+            modalTitle.textContent = "Confirm Complete";
+            modalBody.innerHTML = `Are you sure you want to mark this sales order as completed ?`;
+            confirmBtn.className = "btn "; // Green button for "Complete"
+        } else {
+            form.setAttribute('action', '/SalesOrder/UnComplete');  // Replace with your controller and action
+            modalTitle.textContent = "Confirm Unfinalize";
+            modalBody.innerHTML = `Are you sure you want to unfinalize this sales order ?`;
+            confirmBtn.className = "btn"; 
+        }
+    });
+</script>
 
 }
 

@@ -31,7 +31,7 @@
 
 
     <div class="d-flex justify-content-between">
-        <button class="btn btn-outline-primary mb-3 no-print" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+        <button class="btn mb-3 no-print" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
 
@@ -39,7 +39,7 @@
 				{
         <a asp-controller="MachineProcurement" asp-action="Add"
            asp-route-MachineID="@machine.ID" asp-route-SerialNumber="@machine.SerialNumber"
-           class="btn no-print" data-bs-toggle="tooltip" title="Add Procurement Information" style="height:40px;">
+               class="btn no-print" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add Procurement Information" style="height:40px;">
             <i class="fa-solid fa-plus"></i> Add Procurement
         </a>
                 }
@@ -64,8 +64,8 @@
                         @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Enter PO Number" })
                     </div>
                     <div class="form-group col-md-4 align-self-end">
-                        <input type="submit" name="actionButton" value="Apply" class="btn btn-outline-primary no-print" />
-                        <a asp-action="Index" asp-route-MachineID="@machine.ID" class="btn btn-outline-secondary no-print">Clear</a>
+                    <input type="submit" name="actionButton" value="Apply" class="btn no-print" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Apply Filter" />
+                    <a asp-action="Index" asp-route-MachineID="@machine.ID" class="btn  no-print" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Clear Filter">Clear</a>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
             <thead class="bg-dark text-white text-center">
                 <tr>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="Vendor">
+                    <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="Vendor" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sort by Vendor">
                             Vendor
                             @if (ViewData["sortField"]?.ToString() == "Vendor")
                             {
@@ -84,7 +84,7 @@
                         </button>
                     </th>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="PONumber">
+                    <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="PONumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sort by PO Number">
                             PO Number
                             @if (ViewData["sortField"]?.ToString() == "PONumber")
                             {
@@ -93,24 +93,18 @@
                         </button>
                     </th>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="PODueDate">
+                        
                             PO Due Date
-                        </button>
+                  
                     </th>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="PORcd">
                             PO Received
-                        </button>
                     </th>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="QualityICom">
                            Quality
-                        </button>
                     </th>
                     <th>
-                        <button class="btn btn-link text-white p-0 fw-bold text-decoration-none no-print" type="submit" name="actionButton" value="NcrRaised">
                             NCR
-                        </button>
                     </th>
                      @if (User.IsInRole("Admin") || User.IsInRole("Procurement") || User.IsInRole("PIC"))
 				{
@@ -144,12 +138,12 @@
                        
                                 <a asp-controller="MachineProcurement" asp-action="Update" asp-route-id="@item.ID"
                                    class="btn btn-sm no-print" role="button"
-                                   data-bs-toggle="tooltip" title="Edit Procurement">
+                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Procurement">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                                 <a asp-controller="MachineProcurement" asp-action="Remove" asp-route-id="@item.ID"
                                    class="btn btn-sm no-print" role="button"
-                                   data-bs-toggle="tooltip" title="Delete Procurement">
+                               data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Procurement">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
 

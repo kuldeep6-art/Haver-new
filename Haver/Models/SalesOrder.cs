@@ -98,7 +98,12 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         public DateTime? EngPRel { get; set; }
 
-        [Timestamp]
+		[Display(Name = "Readiness to ship")]
+		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
+		public DateTime? DelDt { get; set; }
+
+		[Timestamp]
         public Byte[]? RowVersion { get; set; }
 
         //// Checkbox Options
