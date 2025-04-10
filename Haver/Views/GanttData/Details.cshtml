@@ -91,7 +91,7 @@
                 <dt class="col-md-3">Machine & Serial Number</dt>
                 <dd class="col-md-3">
                         <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = Model.GanttData.Machine.ID })"
-                           data-bs-toggle="tooltip" title="View Machine Details" target="_blank">
+                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Machine details" target="_blank">
                             @Model.GanttData.Machine.Description
                         </a>
 
@@ -101,7 +101,7 @@
                 <dt class="col-md-3">Order Number</dt>
                 <dd class="col-md-3">
                         <a href="@Url.Action("Details", "SalesOrder", new { id = Model.GanttData.Machine.SalesOrder.ID })"
-                           data-bs-toggle="tooltip" title="View Sales Order Details" target="_blank">
+                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Sales Order details" target="_blank">
                             @Model.GanttData.Machine.SalesOrder.OrderNumber
                         </a>
                     </dd>

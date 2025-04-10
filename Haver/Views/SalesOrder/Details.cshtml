@@ -275,19 +275,19 @@
                                         {
                                             <td rowspan="@machine.Procurements.Count">
                                                 <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
-                                                   data-bs-toggle="tooltip" title="Click here to view all information about this machine">
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click here to view all information about this machine">
                                                     @Html.DisplayFor(m => machine.Description)
                                                 </a>
                                             </td>
                                             firstRow = false;
                                         }
 
-                                        <td data-bs-toggle="tooltip" title="Vendor: @procurement.Vendor.Name">@Html.DisplayFor(m => procurement.Vendor.Name)</td>
-                                        <td data-bs-toggle="tooltip" title="PO Number: @procurement.PONumber">@Html.DisplayFor(m => procurement.PONumber)</td>
-                                        <td data-bs-toggle="tooltip" title="PO Due Date: @procurement.PODueDate">@Html.DisplayFor(m => procurement.PODueDate)</td>
-                                        <td data-bs-toggle="tooltip" title="Received on: @procurement.PORcd">@Html.DisplayFor(m => procurement.PORcd)</td>
-                                        <td data-bs-toggle="tooltip" title="Quality Completed">@Html.DisplayFor(m => procurement.QualityICom)</td>
-                                        <td data-bs-toggle="tooltip" title="NCR Raised">@Html.DisplayFor(m => procurement.NcrRaised)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="Vendor: @procurement.Vendor.Name">@Html.DisplayFor(m => procurement.Vendor.Name)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="PO Number: @procurement.PONumber">@Html.DisplayFor(m => procurement.PONumber)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="PO Due Date: @procurement.PODueDate">@Html.DisplayFor(m => procurement.PODueDate)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="Received on: @procurement.PORcd">@Html.DisplayFor(m => procurement.PORcd)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="Quality Completed">@Html.DisplayFor(m => procurement.QualityICom)</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="bottom" title="NCR Raised">@Html.DisplayFor(m => procurement.NcrRaised)</td>
                                     </tr>
                                 }
                             }
@@ -296,11 +296,11 @@
                                 <tr>
                                     <td>
                                         <a href="@Url.Action("Index", "MachineProcurement", new { MachineID = machine.ID })" target="_blank"
-                                           data-bs-toggle="tooltip" title="Click here to view all information about this machine">
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click here to view all information about this machine">
                                             @Html.DisplayFor(m => machine.Description)
                                         </a>
                                     </td>
-                                    <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" title="No procurement details available">
+                                    <td colspan="7" class="text-center text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="No procurement details available">
                                         No Procurement Details
                                     </td>
                                 </tr>

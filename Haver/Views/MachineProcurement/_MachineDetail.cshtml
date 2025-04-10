@@ -13,7 +13,7 @@
 				{
             <dd class="col-md-3">
                 <a href="@Url.Action("Details", "SalesOrder", new { id = Model.SalesOrder.ID })"
-                   data-bs-toggle="tooltip" title="View Sales Order Details" target="_blank">
+                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Sales order details" target="_blank">
                     @Html.DisplayFor(model => model.SalesOrder.OrderNumber)
                 </a>
                 </dd>
