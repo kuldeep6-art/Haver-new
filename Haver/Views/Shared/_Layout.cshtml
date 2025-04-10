@@ -100,7 +100,12 @@
 
 			
 			</div>
-			<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo" style="width:180px;">
+			<a href="@Url.Action("Index", "Home")" class="klk"
+			   onmouseover="this.style.background='none';"
+			   onmouseout="this.style.background='none';">
+				<img src="/Images/LOGO_NIAGARA_BRANCO_com_Fundo azul.png" alt="Logo for Haver" class="sidebar-logo" style="width:180px;">
+			</a>
+
 		</div>
 	}
 
@@ -156,6 +161,8 @@
 		flex-direction: column;
 		margin-top: 60px;
 	}
+
+
 
 	/* Sidebar Links */
 	.sidebar a,
@@ -267,7 +274,7 @@
 		display: none;
 		z-index: 1000;
 		border: none;
-		background-color: #007bff;
+		background-color: #0C2340;
 		color: white;
 		cursor: pointer;
 		padding: 10px 15px;
@@ -278,8 +285,9 @@
 	}
 
 		#scrollToTopBtn:hover {
-			background-color: #0056b3;
+			background-color: #0C2340;
 		}
+
 
 </style>
 <script>
