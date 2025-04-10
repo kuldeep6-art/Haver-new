@@ -257,7 +257,7 @@ namespace haver.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,OrderNumber,CompanyName,SoDate,Price,Currency,ShippingTerms,AppDwgExp,AppDwgRel,AppDwgRet," +
-    "PreOExp,PreORel,EngPExp,EngPRel,Comments,Status,IsDraft")]
+    "PreOExp,PreORel,EngPExp,EngPRel,DelDt,Comments,Status,IsDraft")]
     SalesOrder salesOrder, string[] selectedOptions, int[] selectedEngineers)
         {
             try
@@ -361,7 +361,7 @@ namespace haver.Controllers
             if (await TryUpdateModelAsync<SalesOrder>(salesOrderToUpdate, "",
                 p => p.OrderNumber, p => p.SoDate, p => p.Price, p => p.Currency, p => p.ShippingTerms,
                 p => p.AppDwgExp, p => p.AppDwgRel, p => p.AppDwgRet, p => p.PreOExp, p => p.PreORel,
-                p => p.EngPExp, p => p.EngPRel, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
+                p => p.EngPExp, p => p.EngPRel, p => p.DelDt, p => p.CompanyName, p => p.Comments, p => p.IsDraft))
             {
                 try
                 {
@@ -427,13 +427,15 @@ namespace haver.Controllers
                             ModelState.AddModelError("EngPExp", $"Current value: {databaseValues.EngPExp:d}");
                         if (databaseValues.EngPRel != clientValues.EngPRel)
                             ModelState.AddModelError("EngPRel", $"Current value: {databaseValues.EngPRel:d}");
-                        if (databaseValues.Comments != clientValues.Comments)
+						if (databaseValues.EngPRel != clientValues.DelDt)
+							ModelState.AddModelError("DelDt", $"Current value: {databaseValues.DelDt:d}");
+						if (databaseValues.Comments != clientValues.Comments)
                             ModelState.AddModelError("Comments", $"Current value: {databaseValues.Comments}");
 
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                             + "was modified by another user after you received your values. The edit operation was canceled "
                             + "and the current values in the database have been displayed. If you still want to save your version "
-                            + "of this record, click the Save button again. Otherwise, click the Back link.");
+                            + "of this record, click the Save button again. Otherwise, click the Back button.");
 
                         salesOrderToUpdate.RowVersion = databaseValues.RowVersion ?? Array.Empty<byte>();
                         ModelState.Remove("RowVersion");
