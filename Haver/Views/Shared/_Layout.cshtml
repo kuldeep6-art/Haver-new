@@ -2,6 +2,11 @@
 	var isAuthenticated = User.Identity.IsAuthenticated;
 }
 
+@{
+	var currentPage = ViewContext.RouteData.Values["page"]?.ToString().ToLower() ?? "";
+}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,6 +114,14 @@
 		</div>
 	}
 
+	<!-- Back Button Always Visible Except on login page-->
+	@if (!currentPage.Contains("/account/login"))
+	{
+		<button onclick="confirmBack()" class="btn btn-secondary back-button">
+			<i class="fa fa-arrow-left"></i> Back
+		</button>
+	}
+
 	<!-- Main Content -->
 	<div class="main-content">
 		<main role="main">
@@ -197,6 +210,16 @@
 		z-index: 1001;
 		transition: color 0.3s ease-in-out;
 	}
+
+	/* Back Button */
+	.back-button {
+		position: fixed;
+		top: 15px;
+		right: 20px;
+		z-index: 1000;
+		border-radius: 5px;
+	}
+
 
 	.sidebar.active ~ .hamburger-btn {
 		color: white !important;
@@ -347,6 +370,17 @@
 	// Scroll to Top
 	function scrollToTop() {
 		window.scrollTo({ top: 0, behavior: "smooth" });
+	}
+
+	//Confirm back to previous page
+	function confirmBack() {
+		if (confirm("Are you sure you want to go back?")) {
+			if (window.history.length > 1) {
+				window.history.back();
+			} else {
+				alert("No previous page found.");
+			}
+		}
 	}
 </script>
 
