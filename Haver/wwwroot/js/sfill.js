@@ -14,7 +14,7 @@
 
     // Predefined company names, currencies, and shipping terms
     const companyNames = ['FMI', 'ABC Corp', 'XYZ Ltd', 'Global Tech'];
-    const currencies = ['USD', 'CAD', 'EUR', 'GBP'];
+    const currencies = ['CAD'];
     const shippingTerms = ['FOB Toronto', 'CIF New York', 'EXW Chicago', 'DDP LA'];
 
     // Randomly select company, currency, and shipping terms

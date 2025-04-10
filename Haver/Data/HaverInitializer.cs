@@ -193,33 +193,59 @@ namespace haver.Data
                         context.SaveChanges();
                     }
 
-                   
-
-                    // 3. Seed Sales Orders (Each customer gets 2)
-                    if (!context.SalesOrders.Any())
-                    {
-                        context.SalesOrders.AddRange(
-                            new SalesOrder { ID = 1, OrderNumber = "10430736", SoDate = DateTime.Parse("2025-02-21"), CompanyName = "FMI" },
-                            new SalesOrder { ID = 2, OrderNumber = "10430754", SoDate = DateTime.Parse("2025-02-17"), CompanyName = "Rio Tinto Sorel" },
-                            new SalesOrder { ID = 3, OrderNumber = "10430709", SoDate = DateTime.Parse("2025-02-18"), CompanyName = "Intradco" },
-                            new SalesOrder { ID = 4, OrderNumber = "10430798", SoDate = DateTime.Parse("2025-02-23"), CompanyName = "United Taconite" },
-                            new SalesOrder { ID = 5, OrderNumber = "10430765", SoDate = DateTime.Parse("2025-02-22"), CompanyName = "Direct Reduction Iron" },
-                            new SalesOrder { ID = 6, OrderNumber = "10430792", SoDate = DateTime.Parse("2025-02-20"), CompanyName = "Kumtor" }
-                        );
-                        context.SaveChanges();
-                    }
-
-                  
-                  
-
-        
-
-                  
 
 
+					// 3. Seed Sales Orders (Each customer gets 2)
+					if (!context.SalesOrders.Any())
+					{
+						var today = DateTime.Today;
+						var salesOrders = new List<SalesOrder>();
 
-                }
-                catch (Exception ex)
+						var companies = new[]
+                        {"FMI", "Rio Tinto Sorel", "Intradco", "United Taconite", "Direct Reduction Iron",
+                    "Kumtor", "Owens Corning", "Coloured Aggregates", "Coast Aggregates", "Granite Works"};
+
+						int idCounter = 1;
+						int orderNumberBase = 10430000;
+
+						foreach (var company in companies)
+						{
+							for (int j = 0; j < 3; j++) // 3 records per company
+							{
+								var fluctuation = (j % 3) * 2; // 0, 2, 4 pattern
+								var soDate = today.AddDays(fluctuation);
+								var appDwgExp = soDate.AddDays(2);
+								var engPExp = appDwgExp.AddDays(17);
+
+								salesOrders.Add(new SalesOrder
+								{
+									ID = idCounter++,
+									OrderNumber = (orderNumberBase + idCounter).ToString(),
+									SoDate = soDate,
+									CompanyName = company,
+									AppDwgExp = appDwgExp,
+									EngPExp = engPExp
+								});
+							}
+						}
+
+						context.SalesOrders.AddRange(salesOrders);
+						context.SaveChanges();
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+				}
+				catch (Exception ex)
                 {
                     Debug.WriteLine($"Error seeding database: {ex.GetBaseException().Message}");
                 }
