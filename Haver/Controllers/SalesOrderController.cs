@@ -641,6 +641,35 @@ namespace haver.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Sales")]
+        public async Task<IActionResult> UnComplete(int id)
+        {
+            var salesOrder = await _context.SalesOrders
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (salesOrder == null)
+            {
+                return NotFound();
+            }
+
+            // Set the status to Completed
+            salesOrder.Status = Status.InProgress;
+            _context.Update(salesOrder);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Sales Order has been unfinalized";
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "An Error Occured";
+            }
+
+            // Redirect back to the Index page after marking as completed
+            return RedirectToAction(nameof(Index));
+        }
+
         private SelectList MachineTypeSelectList(int? selectedId = null)
         {
             //var machineTypes = from mt in _context.MachineTypes
