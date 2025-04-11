@@ -765,26 +765,26 @@ namespace haver.Controllers
 			{
 				if (options.ReportType == ReportType.MachineSchedules)
 				{
-					var workSheet = excel.Workbook.Worksheets.Add("Combined Schedules");
+					var workSheet = excel.Workbook.Worksheets.Add("Combined Schedule");
 					SetupCombinedFlowSchedulesWorksheet(workSheet, machineSchedules, ganttSchedules, options);
 				}
 				else if (options.ReportType == ReportType.GanttSchedules)
 				{
-					var workSheet = excel.Workbook.Worksheets.Add("Combined Schedules");
+					var workSheet = excel.Workbook.Worksheets.Add("Combined Schedule");
 					SetupCombinedFlowSchedulesWorksheet(workSheet, machineSchedules, ganttSchedules, options);
 				}
 				else if (options.ReportType == ReportType.Both)
 				{
-					var workSheet = excel.Workbook.Worksheets.Add("Combined Schedules");
+					var workSheet = excel.Workbook.Worksheets.Add("Combined Schedule");
 					SetupCombinedFlowSchedulesWorksheet(workSheet, machineSchedules, ganttSchedules, options);
 				}
 
 				try
 				{
 					byte[] theData = excel.GetAsByteArray();
-					string fileName = options.ReportType == ReportType.MachineSchedules ? "Combined Schedules.xlsx" :
-									  options.ReportType == ReportType.GanttSchedules ? "Combined Schedules.xlsx" :
-									  "Combined Schedules.xlsx";
+					string fileName = options.ReportType == ReportType.MachineSchedules ? "Combined Schedule.xlsx" :
+									  options.ReportType == ReportType.GanttSchedules ? "Combined Schedule.xlsx" :
+									  "Combined Schedule.xlsx";
 					return File(theData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
 				}
 				catch (Exception ex)
