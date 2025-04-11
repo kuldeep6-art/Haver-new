@@ -29,16 +29,6 @@
     </div>
 
     <form asp-action="DownloadSchedules" method="post" class="p-4 rounded bg-light shadow-sm border">
-        <!-- Report Type Section -->
-        <div class="form-group mb-4">
-            <label class="form-label fw-bold">Select Report Type:</label>
-            <select asp-for="ReportType" class="form-select">
-                <option value="MachineSchedules">Machine Schedules</option>
-                <option value="GanttSchedules">Gantt Schedules</option>
-                <option value="Both">Both</option>
-            </select>
-        </div>
-
         <!-- Tip Section -->
         <div class="alert alert-info shadow-sm mb-4">
             <strong>Tip:</strong> Select or deselect columns to include in your Excel report.
@@ -90,14 +80,15 @@
                         <div class="form-check"><input asp-for="IncludeGanttSpareParts" class="form-check-input" /><label asp-for="IncludeGanttSpareParts" class="form-check-label">Spare Parts</label></div>
                         <div class="form-check"><input asp-for="IncludeApprovedDrawingReceived" class="form-check-input" /><label asp-for="IncludeApprovedDrawingReceived" class="form-check-label">Approved Drawing Received</label></div>
                         <div class="form-check">
-                    <input asp-for="IncludeGanttData" class="form-check-input" />
-                    <label asp-for="IncludeGanttData" class="form-check-label">Gantt Chart</label>
-                </div>
+                            <input asp-for="IncludeGanttData" class="form-check-input" />
+                            <label asp-for="IncludeGanttData" class="form-check-label">Gantt Chart</label>
+                        </div>
                         <div class="form-check"><input asp-for="IncludeSpecialNotes" class="form-check-input" /><label asp-for="IncludeSpecialNotes" class="form-check-label">Special Notes</label></div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="mb-3 d-flex gap-2">
             <button type="submit" class="btn btn-lg shadow-sm">
                 <i class="bi bi-file-earmark-excel-fill"></i> Export to Excel
@@ -109,7 +100,6 @@
                 <i class="bi bi-x-square"></i> Deselect All
             </button>
         </div>
-
     </form>
 </div>
 
@@ -125,91 +115,66 @@
     });
 </script>
 
-
-<!-- JavaScript Section for Applying Selection -->
 <script>
-  document.getElementById('loadSelectionBtn').addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent button default behavior to avoid form submission
-
+    document.getElementById('loadSelectionBtn').addEventListener('click', function (event) {
+        event.preventDefault();
         var selectedValue = document.getElementById('savedSelections').value;
 
         if (selectedValue) {
             var options = JSON.parse(selectedValue);
 
-            console.log("Loaded Options:", options); // ✅ Debug log to check selected options
+            console.log("Loaded Options:", options);
 
-            // Update Report Type dynamically
-            if (options.ReportType) {
-                var reportTypeDropdown = document.querySelector('[name="ReportType"]');
-                if (reportTypeDropdown) {
-                    reportTypeDropdown.value = options.ReportType;
-                    console.log("Report Type Updated to:", options.ReportType); // ✅ Debug log to confirm update
-                } else {
-                    console.error("ReportType dropdown not found!");
-                }
-            }
-
-            // Load remaining column options dynamically
             for (var key in options) {
                 var input = document.querySelector(`[name="${key}"]`);
                 if (input) {
-                    // Handle checkboxes
                     if (input.type === 'checkbox') {
                         input.checked = options[key] === true;
                     }
-                    // Handle select dropdowns
                     else if (input.tagName === 'SELECT') {
                         input.value = options[key];
                     }
-                    // Handle text and other inputs
                     else {
                         input.value = options[key];
                     }
                 }
             }
 
-            // Show success alert when done
-            alert("Previous selection loaded successfully! please select the report type then export");
+            alert("Previous selection loaded successfully! Please export to generate your report.");
         } else {
             alert("Please select a valid selection before loading.");
         }
     });
-
 </script>
 
-
 @functions {
-    // Generate a friendly description for previous selections by showing what's NOT included
     string GetSelectionDescription(ScheduleExportOptionsViewModel selection)
     {
         List<string> excludedItems = new List<string>();
 
-        // Machine Schedule Exclusions
         if (!selection.IncludeSalesOrderNumber) excludedItems.Add("SO#");
+        if (!selection.IncludeSalesOrderDate) excludedItems.Add("SO Date");
         if (!selection.IncludeCustomerName) excludedItems.Add("Customer");
         if (!selection.IncludeMachineDescriptions) excludedItems.Add("Models");
-        if (!selection.IncludePoNumbers) excludedItems.Add("PO#");
-        if (!selection.IncludeMedia) excludedItems.Add("Media");
-        if (!selection.IncludeDisassembly) excludedItems.Add("Engineer");
-        if (!selection.IncludeDisassembly) excludedItems.Add("Disassembly");
+        if (!selection.IncludeSerialNumbers) excludedItems.Add("Serial #");
+        if (!selection.IncludeProductionOrderNumbers) excludedItems.Add("PO#");
         if (!selection.IncludePackageReleaseDateE) excludedItems.Add("PDate(E)");
-        if (!selection.IncludeCoatingLining) excludedItems.Add("Coating Lining");
-        if (!selection.IncludeVendorNames) excludedItems.Add("Vendors");
-        if (!selection.IncludeDeliveryDates) excludedItems.Add("Delivery Dates");
-        if (!selection.IncludeAirSeal) excludedItems.Add("Airseal");
+        if (!selection.IncludePackageReleaseDateA) excludedItems.Add("PDate(A)");
+        if (!selection.IncludeMedia) excludedItems.Add("Media");
         if (!selection.IncludeSpareParts) excludedItems.Add("Spare Parts");
-        if (!selection.IncludeEngineer) excludedItems.Add("PDate(E)");
-
-        // Gantt Schedule Exclusions
+        if (!selection.IncludeBase) excludedItems.Add("Base");
+        if (!selection.IncludeAirSeal) excludedItems.Add("Airseal");
         if (!selection.IncludeOrderNumber) excludedItems.Add("Order #");
         if (!selection.IncludeEngineer) excludedItems.Add("Engineer");
         if (!selection.IncludeGanttCustomerName) excludedItems.Add("Gantt Customer");
+        if (!selection.IncludeQuantity) excludedItems.Add("Quantity");
+        if (!selection.IncludeMachineModel) excludedItems.Add("Machine Model");
+        if (!selection.IncludeGanttMedia) excludedItems.Add("Gantt Media");
+        if (!selection.IncludeGanttSpareParts) excludedItems.Add("Gantt Spare Parts");
+        if (!selection.IncludeApprovedDrawingReceived) excludedItems.Add("App Dwg Rcd");
         if (!selection.IncludeGanttData) excludedItems.Add("Gantt Chart");
         if (!selection.IncludeSpecialNotes) excludedItems.Add("Special Notes");
-        if (!selection.IncludeApprovedDrawingReceived) excludedItems.Add("App Dwg Rcd");
-        if (!selection.IncludeGanttMedia) excludedItems.Add("Media");
 
-        // Generate a fallback message if all columns are included
         string description = excludedItems.Any()
             ? $"Excluded: {string.Join(", ", excludedItems)}"
             : "All columns included";
