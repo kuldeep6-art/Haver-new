@@ -1038,11 +1038,11 @@ namespace haver.Controllers
 			foreach (var item in combinedData)
 			{
 				colIndex = 1;
-
+				// ROW 1: MACHINE OPERATIONS
 				if (options.IncludeSalesOrderNumber) workSheet.Cells[row, colIndex++].Value = item.Machine?.SalesOrderNumber;
 				if (options.IncludeSalesOrderDate) workSheet.Cells[row, colIndex++].Value = item.Machine?.SalesOrderDate;
-				if (options.IncludeCustomerName) workSheet.Cells[row, colIndex++].Value = item.Machine?.CustomerName ?? item.Gantt?.CustomerName;
-				if (options.IncludeMachineDescriptions) workSheet.Cells[row, colIndex++].Value = item.Machine?.MachineDescriptions ?? item.Gantt?.MachineModel;
+				if (options.IncludeCustomerName) workSheet.Cells[row, colIndex++].Value = item.Machine?.CustomerName;
+				if (options.IncludeMachineDescriptions) workSheet.Cells[row, colIndex++].Value = item.Machine?.MachineDescriptions;
 				if (options.IncludeSerialNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.SerialNumbers;
 				if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.ProductionOrderNumbers;
 				if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateE;
@@ -1050,8 +1050,8 @@ namespace haver.Controllers
 				if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = item.Machine?.VendorNames;
 				if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoNumbers;
 				if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoDueDates;
-				if (options.IncludeMedia) workSheet.Cells[row, colIndex++].Value = item.Machine?.Media ?? (item.Gantt?.Media == "Yes" ? "✓" : "");
-				if (options.IncludeSpareParts) workSheet.Cells[row, colIndex++].Value = item.Machine?.SpareParts ?? (item.Gantt?.SpareParts == "Yes" ? "✓" : "");
+				if (options.IncludeMedia) workSheet.Cells[row, colIndex++].Value = item.Machine?.Media;
+				if (options.IncludeSpareParts) workSheet.Cells[row, colIndex++].Value = item.Machine?.SpareParts;
 				if (options.IncludeBase) workSheet.Cells[row, colIndex++].Value = item.Machine?.Base;
 				if (options.IncludeAirSeal) workSheet.Cells[row, colIndex++].Value = item.Machine?.AirSeal;
 				if (options.IncludeCoatingLining) workSheet.Cells[row, colIndex++].Value = item.Machine?.CoatingLining;
@@ -1059,19 +1059,21 @@ namespace haver.Controllers
 				if (options.IncludeNotes) workSheet.Cells[row, colIndex++].Value = item.Machine?.Comments;
 				if (options.IncludeEngineer) workSheet.Cells[row, colIndex++].Value = item.Gantt?.Engineer;
 				if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = item.Gantt?.Quantity;
-                if (options.IncludeApprovedDrawingReceived)
-                {
-                    var date = item.Gantt?.ApprovedDrawingReceived;
-                    workSheet.Cells[row, colIndex++].Value = (date.HasValue && date.Value != DateTime.MinValue)
-                        ? date.Value.ToString("MMM-dd-yyyy")
-                        : null;
-                }
-
-                if (options.IncludeGanttData && item.Gantt?.GanttData != null)
+				if (options.IncludeApprovedDrawingReceived)
 				{
-					ApplyAllMilestonesToGantt(workSheet, row, staticCols, item.Gantt.GanttData, options);
+					var date = item.Gantt?.ApprovedDrawingReceived;
+					workSheet.Cells[row, colIndex++].Value = (date.HasValue && date.Value != DateTime.MinValue)
+						? date.Value.ToString("MMM-dd-yyyy") : null;
 				}
 
+				// GANTT ROW (Row below operations row)
+				int ganttRow = row + 1;
+				if (options.IncludeGanttData && item.Gantt?.GanttData != null)
+				{
+					ApplyAllMilestonesToGantt(workSheet, ganttRow, staticCols, item.Gantt.GanttData, options);
+				}
+
+				// Notes (Row 1)
 				if (includedNoteHeaders.Any())
 				{
 					colIndex = notesStart;
@@ -1082,41 +1084,135 @@ namespace haver.Controllers
 					if (options.IncludeNamePlate) workSheet.Cells[row, colIndex++].Value = item.Machine?.NamePlate;
 				}
 
+				// Special Notes (Row 2)
 				if (options.IncludeSpecialNotes && specialNotesCol > 0)
 				{
-					workSheet.Cells[row, specialNotesCol].Value = item.Gantt?.SpecialNotes;
-					workSheet.Cells[row, specialNotesCol].Style.WrapText = true;
-					workSheet.Cells[row, specialNotesCol].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+					workSheet.Cells[ganttRow, specialNotesCol].Value = item.Gantt?.SpecialNotes;
+					workSheet.Cells[ganttRow, specialNotesCol].Style.WrapText = true;
+					workSheet.Cells[ganttRow, specialNotesCol].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 				}
 
-				workSheet.Row(row).Height = 25;
-				row++;
+				// Set row heights
+				workSheet.Row(row).Height = 20;
+				workSheet.Row(row + 1).Height = 20;
+				workSheet.Row(row + 2).Height = 15;
+				//workSheet.Row(ganttRow).Height = 18;
+				
+
+				row += 3;
 			}
+
+
+			//	if (options.IncludeSalesOrderNumber) workSheet.Cells[row, colIndex++].Value = item.Machine?.SalesOrderNumber;
+			//	if (options.IncludeSalesOrderDate) workSheet.Cells[row, colIndex++].Value = item.Machine?.SalesOrderDate;
+			//	if (options.IncludeCustomerName) workSheet.Cells[row, colIndex++].Value = item.Machine?.CustomerName ?? item.Gantt?.CustomerName;
+			//	if (options.IncludeMachineDescriptions) workSheet.Cells[row, colIndex++].Value = item.Machine?.MachineDescriptions ?? item.Gantt?.MachineModel;
+			//	if (options.IncludeSerialNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.SerialNumbers;
+			//	if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.ProductionOrderNumbers;
+			//	if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateE;
+			//	if (options.IncludePackageReleaseDateA) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateA;
+			//	if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = item.Machine?.VendorNames;
+			//	if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoNumbers;
+			//	if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoDueDates;
+			//	if (options.IncludeMedia) workSheet.Cells[row, colIndex++].Value = item.Machine?.Media ?? (item.Gantt?.Media == "Yes" ? "✓" : "");
+			//	if (options.IncludeSpareParts) workSheet.Cells[row, colIndex++].Value = item.Machine?.SpareParts ?? (item.Gantt?.SpareParts == "Yes" ? "✓" : "");
+			//	if (options.IncludeBase) workSheet.Cells[row, colIndex++].Value = item.Machine?.Base;
+			//	if (options.IncludeAirSeal) workSheet.Cells[row, colIndex++].Value = item.Machine?.AirSeal;
+			//	if (options.IncludeCoatingLining) workSheet.Cells[row, colIndex++].Value = item.Machine?.CoatingLining;
+			//	if (options.IncludeDisassembly) workSheet.Cells[row, colIndex++].Value = item.Machine?.Disassembly;
+			//	if (options.IncludeNotes) workSheet.Cells[row, colIndex++].Value = item.Machine?.Comments;
+			//	if (options.IncludeEngineer) workSheet.Cells[row, colIndex++].Value = item.Gantt?.Engineer;
+			//	if (options.IncludeQuantity) workSheet.Cells[row, colIndex++].Value = item.Gantt?.Quantity;
+			//             if (options.IncludeApprovedDrawingReceived)
+			//             {
+			//                 var date = item.Gantt?.ApprovedDrawingReceived;
+			//                 workSheet.Cells[row, colIndex++].Value = (date.HasValue && date.Value != DateTime.MinValue)
+			//                     ? date.Value.ToString("MMM-dd-yyyy")
+			//                     : null;
+			//             }
+
+			//             if (options.IncludeGanttData && item.Gantt?.GanttData != null)
+			//	{
+			//		ApplyAllMilestonesToGantt(workSheet, row, staticCols, item.Gantt.GanttData, options);
+			//	}
+
+			//	if (includedNoteHeaders.Any())
+			//	{
+			//		colIndex = notesStart;
+			//		if (options.IncludePreOrder) workSheet.Cells[row, colIndex++].Value = item.Machine?.PreOrder;
+			//		if (options.IncludeScope) workSheet.Cells[row, colIndex++].Value = item.Machine?.Scope;
+			//		if (options.IncludeActualAssemblyHours) workSheet.Cells[row, colIndex++].Value = item.Machine?.ActualAssemblyHours;
+			//		if (options.IncludeReworkHours) workSheet.Cells[row, colIndex++].Value = item.Machine?.ReworkHours;
+			//		if (options.IncludeNamePlate) workSheet.Cells[row, colIndex++].Value = item.Machine?.NamePlate;
+			//	}
+
+			//	if (options.IncludeSpecialNotes && specialNotesCol > 0)
+			//	{
+			//		workSheet.Cells[row, specialNotesCol].Value = item.Gantt?.SpecialNotes;
+			//		workSheet.Cells[row, specialNotesCol].Style.WrapText = true;
+			//		workSheet.Cells[row, specialNotesCol].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+			//	}
+
+			//	workSheet.Row(row).Height = 25;
+			//	row++;
+			//}
 
 			// Styling
 			if (row > 6)
 			{
-				using (var dataRange = workSheet.Cells[6, 1, row - 1, totalCols])
+				for (int i = 6; i < row; i += 3)
 				{
-					dataRange.Style.Font.Name = "Calibri";
-					dataRange.Style.Font.Size = 10;
-					dataRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					dataRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
-					dataRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-				}
+					// Row 1: Machine Info (gray background + borders)
+					var opRow = workSheet.Cells[i, 1, i, totalCols];
+					opRow.Style.Font.Name = "Calibri";
+					opRow.Style.Font.Size = 10;
+					opRow.Style.Fill.PatternType = ExcelFillStyle.Solid;
+					opRow.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(242, 242, 242));
+					opRow.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					opRow.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					opRow.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					opRow.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					opRow.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					opRow.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-				for (int i = 6; i < row; i++)
-				{
-					using (var rowRange = workSheet.Cells[i, 1, i, staticCols])
-					{
-						rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
-						rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(242, 242, 242) : Color.White);
-					}
+					// Row 2: Gantt Info (no fill, borders only)
+					var ganttRow = workSheet.Cells[i + 1, 1, i + 1, totalCols];
+					ganttRow.Style.Font.Name = "Calibri";
+					ganttRow.Style.Font.Size = 10;
+					ganttRow.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					ganttRow.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					ganttRow.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					ganttRow.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					ganttRow.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					ganttRow.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+					// Row 3: Spacer — no styling at all, no border, no fill
 				}
 			}
+
+			//if (row > 6)
+			//{
+			//	using (var dataRange = workSheet.Cells[6, 1, row - 1, totalCols])
+			//	{
+			//		dataRange.Style.Font.Name = "Calibri";
+			//		dataRange.Style.Font.Size = 10;
+			//		dataRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+			//		dataRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+			//		dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+			//		dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+			//		dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+			//		dataRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+			//	}
+
+			//	for (int i = 6; i < row; i++)
+			//	{
+			//		using (var rowRange = workSheet.Cells[i, 1, i, staticCols])
+			//		{
+			//			rowRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+			//			rowRange.Style.Fill.BackgroundColor.SetColor(i % 2 == 0 ? Color.FromArgb(242, 242, 242) : Color.White);
+			//		}
+			//	}
+			//}
 
 			// Column Widths
 			colIndex = 1;
