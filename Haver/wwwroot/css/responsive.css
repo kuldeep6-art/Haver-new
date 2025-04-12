@@ -1,0 +1,76 @@
+﻿body {
+    @media (max-width: 991.98px) {
+        .sidebar {
+            width: 220px;
+            left: -220px;
+            padding: 15px;
+        }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+        .main-content {
+            margin-left: 0 !important;
+            width: 100% !important;
+            padding: 15px;
+        }
+
+        .sidebar.active ~ .main-content {
+            margin-left: 220px;
+            width: calc(100% - 220px);
+        }
+
+        .sidebar-logo {
+            width: 150px;
+        }
+
+        .hamburger-btn {
+            top: 10px;
+            left: 15px;
+            font-size: 22px;
+        }
+
+        .back-button {
+            top: 10px;
+            right: 15px;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+        #scrollToTopBtn {
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .dropdown-content a {
+            padding: 8px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .sidebar {
+            width: 200px;
+            left: -200px;
+        }
+
+            .sidebar.active ~ .main-content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+
+        .sidebar-logo {
+            width: 130px;
+        }
+
+        .hamburger-btn {
+            font-size: 20px;
+        }
+
+        .back-button {
+            font-size: 12px;
+            padding: 5px 8px;
+        }
+    }
+}

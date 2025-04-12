@@ -12,10 +12,12 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"] - Haver</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/haver.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/responsive.css" asp-append-version="true" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -34,13 +36,13 @@
 			<i class="fa fa-bars"></i>
 		</button>
 
-		
+
 
 		<!-- Sidebar -->
 		<div class="sidebar" id="sidebar">
 			<div class="sidebar-menu">
 
-					<partial name="_LoginPartial" />
+				<partial name="_LoginPartial" />
 
 				<a href="@Url.Action("Index", "Home")">Home</a>
 
@@ -48,19 +50,19 @@
 					<i class="fa-solid fa-arrow-up"></i>
 				</button>
 
-				
 
-					<!-- Sales Order Links -->
+
+				<!-- Sales Order Links -->
 				@if (User.IsInRole("Admin") || User.IsInRole("Engineering") || User.IsInRole("PIC") || User.IsInRole("Sales"))
 				{
 					<div>
 						<a asp-area="" asp-controller="SalesOrder" asp-action="Index">Sales Orders</a>
-				</div>
+					</div>
 				}
 
-		
+
 				<div>
-						<a asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
+					<a asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
 				</div>
 
 				@if (User.IsInRole("Admin") || User.IsInRole("Production") || User.IsInRole("Procurement"))
@@ -68,7 +70,7 @@
 
 					<div>
 						<a asp-area="" asp-controller="MachineProcurement" asp-action="All">Procurement</a>
-				</div>
+					</div>
 
 				}
 				<!-- Gantt Chart -->
@@ -79,31 +81,33 @@
 					</div>
 				}
 
-				
+
 				<a asp-area="" asp-controller="GanttData" asp-action="ExportSchedules">Download Report</a>
 
-				@if (User.IsInRole("Admin")){
-				<div>
-					<a asp-area="" asp-controller="Employee" asp-action="Index">Users</a>
-				</div>
-	}
-
-		@if (User.IsInRole("Admin")){
-				<!--Lookup Values -->
-				 <div class="dropdown">
-					<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
-						Lookup Values<i class="fa fa-plus"></i>
-					</a>
-					<div class="dropdown-content">
-							<a asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
-						<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
-						<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
+				@if (User.IsInRole("Admin"))
+				{
+					<div>
+						<a asp-area="" asp-controller="Employee" asp-action="Index">Users</a>
 					</div>
-				</div> 
-			}
+				}
+
+				@if (User.IsInRole("Admin"))
+				{
+					<!--Lookup Values -->
+					<div class="dropdown">
+						<a href="#" class="dropdown-btn" onclick="toggleDropdown(event)">
+							Lookup Values<i class="fa fa-plus"></i>
+						</a>
+						<div class="dropdown-content">
+							<a asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
+							<a asp-area="" asp-controller="Vendor" asp-action="Index">Vendors</a>
+							<a asp-area="" asp-controller="Engineer" asp-action="Index">Engineers</a>
+						</div>
+					</div>
+				}
 
 
-			
+
 			</div>
 			<a href="@Url.Action("Index", "Home")" class="klk"
 			   onmouseover="this.style.background='none';"
@@ -158,7 +162,7 @@
 	@if (!currentPage.Contains("/account/login"))
 	{
 		<button onclick="showConfirmBackModal()" class="btn back-button" data-bs-toggle="tooltip" data-bs-placement="left" title="Go back to previous page">
-			<i class="fa fa-arrow-left"></i> 
+			<i class="fa fa-arrow-left"></i>
 		</button>
 
 	}
@@ -351,8 +355,6 @@
 		#scrollToTopBtn:hover {
 			background-color: #0C2340;
 		}
-
-
 </style>
 <script>
 	// Toggle Sidebar
@@ -429,7 +431,7 @@
 		if (window.history.length > 1) {
 			window.history.back();
 		} else {
-			// Delay 
+			// Delay
 			setTimeout(() => {
 				noPageModal.show();
 			}, 300);
