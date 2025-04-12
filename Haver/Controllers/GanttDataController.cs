@@ -1261,6 +1261,32 @@ namespace haver.Controllers
 				workSheet.Column(specialNotesCol).Style.WrapText = true;
 			}
 
+			// ===== PRINT SETTINGS =====
+			var print = workSheet.PrinterSettings;
+
+			// Auto-fit width for printing
+			print.FitToPage = true;
+			print.FitToWidth = 1;
+			print.FitToHeight = 0; // allow any number of vertical pages
+
+			// Landscape orientation for wide reports
+			print.Orientation = eOrientation.Landscape;
+
+			// Paper size — use Ledger by default (for 11x17 inches)
+			// You can change this to ePaperSize.Legal if you prefer 8.5x14
+			print.PaperSize = ePaperSize.Ledger;
+
+			// Optional: center horizontally on page
+			print.HorizontalCentered = true;
+
+			// Optional: set margins (in inches)
+			print.TopMargin = 0.5M;
+			print.BottomMargin = 0.5M;
+			print.LeftMargin = 0.25M;
+			print.RightMargin = 0.25M;
+
+
+
 			// Freeze panes
 			workSheet.View.FreezePanes(6, 1); // Freeze only rows above 6
 		}
