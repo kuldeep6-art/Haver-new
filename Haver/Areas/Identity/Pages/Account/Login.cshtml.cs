@@ -93,25 +93,34 @@ namespace haver.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
-        {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
+		public async Task<IActionResult> OnGetAsync(string returnUrl = null)
+		{
+			if (User.Identity.IsAuthenticated)
+			{
+				// If already logged in, redirect to dashboard
+				return LocalRedirect("~/Home");
+			}
 
-            returnUrl ??= Url.Content("~/");
+			if (!string.IsNullOrEmpty(ErrorMessage))
+			{
+				ModelState.AddModelError(string.Empty, ErrorMessage);
+			}
 
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            HttpContext.Response.Cookies.Delete("userName");
+			returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+			// Clear the existing external cookie to ensure a clean login process
+			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+			HttpContext.Response.Cookies.Delete("userName");
 
-            ReturnUrl = returnUrl;
-        }
+			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+			ReturnUrl = returnUrl;
+
+			return Page();
+		}
+
+
+		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
