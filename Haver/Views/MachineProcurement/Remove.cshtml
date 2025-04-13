@@ -73,17 +73,21 @@
                     <form asp-action="Remove">
                         <input type="hidden" asp-for="ID" />
 
-                        <a asp-action="Index" asp-controller="MachineProcurement"
-                           asp-route-machineId="@Model.MachineID"
-                           class="btn btn-secondary"
-                           style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
-                        </a>
+                        <div class="d-flex flex-wrap justify-content-center gap-2 button-group mt-2">
+                            <button type="submit" class="btn action-btn"
+                                    style="font-family: 'Avenir Heavy', sans-serif;">
+                                Remove Procurement
+                            </button>
 
-                        <button type="submit" class="btn" style="font-family: 'Avenir Heavy', sans-serif;">
-                            Remove Procurement
-                        </button>
+                            <a asp-action="Index" asp-controller="MachineProcurement"
+                               asp-route-machineId="@Model.MachineID"
+                               class="btn btn-secondary action-btn"
+                               style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                            </a>
+                        </div>
                     </form>
+
                 </div>
             </div>
         </div>
