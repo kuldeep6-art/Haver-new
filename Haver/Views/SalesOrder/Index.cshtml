@@ -120,7 +120,8 @@
             </div>
         </div>
     </div>
-
+    <br />
+        <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover shadow-sm">
         <thead class="bg-dark text-white text-center">
             <tr>
@@ -184,12 +185,12 @@
                     </td>
                     @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
                     {
-                    <td class="text-center">
+                    <td class="text-center ">
                        
                             @if (item.Status == Status.Completed)
                             {
                                 <span class="badge bg-success">Completed</span>
-                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of  @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Complete">
+                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm mx-1 text-white" aria-label="View details of @item.OrderNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Complete">
                                     <i class="fa-solid fa-circle-info"></i> Details
                                 </a>
                             }
@@ -258,6 +259,7 @@
 }
     </tbody>
 </table>
+</div>
     <partial name="_PagingNavBar" />
 </form>
 
@@ -327,21 +329,34 @@
 }
 
 <style>
-    td{
-        cursor:default;
+    .align-middle button {
+        background: none;
+        outline: none;
     }
+    .btn{
+        margin:1px;
+    }
+    td {
+        cursor: default;
+    }
+
     .align-middle button {
         background: none;
         outline: none;
     }
 
+    h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
     .nav-tabs {
         display: flex;
-        justify-content: space-evenly; 
+        justify-content: space-evenly;
     }
 
     .nav-item {
-        margin-right: 15px; 
+        margin-right: 15px;
     }
 
     .nav-link {
@@ -367,11 +382,66 @@
             color: #0056b3;
             text-decoration: none;
         }
-
-    h1 {
-        margin-bottom: 20px; 
-        font-size: 24px; 
+    /* Make table responsive with horizontal scroll on small screens */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
-   
+
+    @@media (max-width: 768px) {
+        .table {
+            font-size: 14px;
+        }
+        .kk{
+            margin:10px;
+        }
+
+        .nav-tabs {
+            flex-direction: column;
+        }
+
+        .nav-item {
+            margin-right: 0;
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .actions-cell {
+            min-width: 150px;
+        }
+
+            .actions-cell .btn {
+                margin: 3px 0;
+                font-size: 12px;
+            }
+    }
+
+    /* Medium screens adjustments */
+    @@media (max-width: 992px) {
+        .table {
+            font-size: 15px;
+        }
+
+        .nav-link {
+            padding: 10px 15px;
+            font-size: 15px;
+        }
+    }
+
+    /* Make action buttons stack vertically on smaller screens */
+    @@media (max-width: 576px) {
+        .actions-cell .btn {
+            display: block;
+            width: 100%;
+        }
+    }
 </style>
