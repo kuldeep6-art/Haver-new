@@ -51,6 +51,10 @@
                         <div class="form-check"><input asp-for="IncludeBase" class="form-check-input" /><label asp-for="IncludeBase" class="form-check-label">Base</label></div>
                         <div class="form-check"><input asp-for="IncludeAirSeal" class="form-check-input" /><label asp-for="IncludeAirSeal" class="form-check-label">Air Seal</label></div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
+                        <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">CoatingLining</label></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -178,41 +182,3 @@
     });
 </script>
 
-
-
-
-@functions {
-    string GetSelectionDescription(ScheduleExportOptionsViewModel selection)
-    {
-        List<string> excludedItems = new List<string>();
-
-        if (!selection.IncludeSalesOrderNumber) excludedItems.Add("SO#");
-        if (!selection.IncludeSalesOrderDate) excludedItems.Add("SO Date");
-        if (!selection.IncludeCustomerName) excludedItems.Add("Customer");
-        if (!selection.IncludeMachineDescriptions) excludedItems.Add("Models");
-        if (!selection.IncludeSerialNumbers) excludedItems.Add("Serial #");
-        if (!selection.IncludeProductionOrderNumbers) excludedItems.Add("PO#");
-        if (!selection.IncludePackageReleaseDateE) excludedItems.Add("PDate(E)");
-        if (!selection.IncludePackageReleaseDateA) excludedItems.Add("PDate(A)");
-        if (!selection.IncludeMedia) excludedItems.Add("Media");
-        if (!selection.IncludeSpareParts) excludedItems.Add("Spare Parts");
-        if (!selection.IncludeBase) excludedItems.Add("Base");
-        if (!selection.IncludeAirSeal) excludedItems.Add("Airseal");
-        if (!selection.IncludeOrderNumber) excludedItems.Add("Order #");
-        if (!selection.IncludeEngineer) excludedItems.Add("Engineer");
-        if (!selection.IncludeGanttCustomerName) excludedItems.Add("Gantt Customer");
-        if (!selection.IncludeQuantity) excludedItems.Add("Quantity");
-        if (!selection.IncludeMachineModel) excludedItems.Add("Machine Model");
-        if (!selection.IncludeGanttMedia) excludedItems.Add("Gantt Media");
-        if (!selection.IncludeGanttSpareParts) excludedItems.Add("Gantt Spare Parts");
-        if (!selection.IncludeApprovedDrawingReceived) excludedItems.Add("App Dwg Rcd");
-        if (!selection.IncludeGanttData) excludedItems.Add("Gantt Chart");
-        if (!selection.IncludeSpecialNotes) excludedItems.Add("Special Notes");
-
-        string description = excludedItems.Any()
-            ? $"Excluded: {string.Join(", ", excludedItems)}"
-            : "All columns included";
-
-        return description;
-    }
-}
