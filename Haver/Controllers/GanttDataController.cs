@@ -611,7 +611,6 @@ namespace haver.Controllers
 				// Keep only the last 5 selections by deleting older entries
 				var selectionsToDelete = _context.UserSelections
 					.OrderByDescending(s => s.CreatedAt)
-					.Skip(5)
 					.ToList();
 
 				if (selectionsToDelete.Any())

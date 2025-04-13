@@ -3,7 +3,23 @@
 
 <div class="container">
     <h1 class="text-center fw-bold mb-4" style="font-size: 30px;">Export Schedules</h1>
+    <p><b>*You can select from already saved templates, then click load, then export, or you can select a template then edit and save or delete*</b></p>
 
+<<<<<<< HEAD
+    <div class="container p-3 border rounded shadow-sm" style="background-color: #f8f9fa;">
+        <!-- Row for Dropdown and Input -->
+        <div class="row g-3 mb-2">
+            <div class="col-12 col-lg-6">
+                <label class="fw-bold">Templates:</label>
+                <select id="templateDropdown" class="form-select shadow-sm">
+                    <option value="">-- Select Template --</option>
+                </select>
+            </div>
+            <div class="col-12 col-lg-6">
+                <label class="fw-bold">Template Name:</label>
+                <input type="text" id="templateName" class="form-control shadow-sm" placeholder="Template name" />
+            </div>
+=======
     <!-- Row for Template Load, Save, Delete -->
     <div class="row mb-4">
 <<<<<<< HEAD
@@ -27,15 +43,39 @@
                 }
 >>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
             </select>
+>>>>>>> 420bfa41104e36089929efedc64015e8486681d5
         </div>
-        <div class="col-md-6 d-flex align-items-end gap-2">
-            <input type="text" id="templateName" class="form-control" placeholder="Template name" />
-            <button id="loadTemplateBtn" class="btn btn-sm shadow-sm">
-                <i class="bi bi-download"></i> Load
-            </button>
-            <button id="saveTemplateBtn" class="btn  btn-sm shadow-sm"><i class="bi bi-save2"></i> Save</button>
-            <button id="deleteTemplateBtn" class="btn btn-sm shadow-sm"><i class="bi bi-trash"></i> Delete</button>
+
+        <!-- Row for Buttons -->
+        <div class="row g-2">
+            <div class="col-auto">
+                <button id="loadTemplateBtn" class="btn btn-sm shadow-sm text-white" style="background-color: #0C2340;">
+                    <i class="bi bi-download"></i> Load
+                </button>
+            </div>
+            <div class="col-auto">
+                <button id="saveTemplateBtn" class="btn btn-sm shadow-sm text-white" style="background-color: #0C2340;">
+                    <i class="bi bi-save2"></i> Save
+                </button>
+            </div>
+            <div class="col-auto">
+                <button id="deleteTemplateBtn" class="btn btn-sm shadow-sm text-white" style="background-color: #0C2340;">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </div>
         </div>
+<<<<<<< HEAD
+    </div>
+
+
+
+
+    <form asp-action="DownloadSchedules" method="post" class="p-4 rounded bg-light shadow-sm border" style="margin-top:5px;">
+        <!-- Tip Section -->
+        <div class="alert alert-info shadow-sm mb-4">
+            <strong>Tip:</strong> Select or deselect columns to include in your Excel report.
+        </div>
+=======
     
     <form asp-action="DownloadSchedules" method="post" class="p-4 rounded bg-light shadow-sm border">
    
@@ -44,10 +84,11 @@
 
         <!-- Shared Columns -->
        
+>>>>>>> 420bfa41104e36089929efedc64015e8486681d5
 
         <!-- Machine Schedule Columns -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white fw-bold">Machine Schedule Columns</div>
+            <div class="card-header bg-dark text-white fw-bold">Schedule Columns</div>
             <div class="card-body">
                 <!-- Checkboxes -->
                 <div class="row mb-3">
@@ -82,6 +123,10 @@
 <<<<<<< HEAD
                         <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
                         <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">CoatingLining</label></div>
+<<<<<<< HEAD
+                        <div class="form-check"><input asp-for="IncludeQuantity" class="form-check-input" /><label asp-for="IncludeQuantity" class="form-check-label">Quantity</label></div>
+                        <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /><label asp-for="IncludeEngineer" class="form-check-label">Engineer</label></div>
+=======
                     </div>
                 </div>
 =======
@@ -115,6 +160,7 @@
                     <div class="col-md-4">
                         <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /><label asp-for="IncludeEngineer" class="form-check-label">Engineer</label></div>
                         <div class="form-check"><input asp-for="IncludeQuantity" class="form-check-input" /><label asp-for="IncludeQuantity" class="form-check-label">Quantity</label></div>
+>>>>>>> 420bfa41104e36089929efedc64015e8486681d5
                     </div>
                     <div class="col-md-4">
                         <div class="form-check"><input asp-for="IncludeApprovedDrawingReceived" class="form-check-input" /><label asp-for="IncludeApprovedDrawingReceived" class="form-check-label">Approved Drawing Received</label></div>
@@ -126,6 +172,8 @@
                 </div>
             </div>
         </div>
+
+        
 
         <div class="mb-3 d-flex gap-2">
             <button type="submit" class="btn btn-lg shadow-sm">
