@@ -4,8 +4,14 @@
 <div class="container">
     <h1 class="text-center fw-bold mb-4" style="font-size: 30px;">Export Schedules</h1>
 
-    <!-- Row for Saved Selections and Load Button -->
+    <!-- Row for Template Load, Save, Delete -->
     <div class="row mb-4">
+<<<<<<< HEAD
+        <div class="col-md-6">
+            <label class="fw-bold">Templates:</label>
+            <select id="templateDropdown" class="form-select shadow-sm">
+                <option value="">-- Select Template --</option>
+=======
         <div class="col-md-8">
             <label class="fw-bold">Load Previous Selection:</label>
             <select id="savedSelections" class="form-select shadow-sm">
@@ -19,12 +25,16 @@
                         </option>
                     }
                 }
+>>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
             </select>
         </div>
-        <div class="col-md-4 d-flex align-items-end">
-            <button id="loadSelectionBtn" class="btn shadow-sm ms-2">
-                <i class="bi bi-arrow-down-circle-fill"></i> Load Selection
+        <div class="col-md-6 d-flex align-items-end gap-2">
+            <input type="text" id="templateName" class="form-control" placeholder="Template name" />
+            <button id="loadTemplateBtn" class="btn btn-sm shadow-sm">
+                <i class="bi bi-download"></i> Load
             </button>
+            <button id="saveTemplateBtn" class="btn  btn-sm shadow-sm"><i class="bi bi-save2"></i> Save</button>
+            <button id="deleteTemplateBtn" class="btn btn-sm shadow-sm"><i class="bi bi-trash"></i> Delete</button>
         </div>
     
     <form asp-action="DownloadSchedules" method="post" class="p-4 rounded bg-light shadow-sm border">
@@ -69,6 +79,12 @@
                         <div class="form-check"><input asp-for="IncludeBase" class="form-check-input" /><label asp-for="IncludeBase" class="form-check-label">Base</label></div>
                     </div>
                     <div class="col-md-4">
+<<<<<<< HEAD
+                        <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
+                        <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">CoatingLining</label></div>
+                    </div>
+                </div>
+=======
                         <div class="form-check"><input asp-for="IncludeAirSeal" class="form-check-input" /><label asp-for="IncludeAirSeal" class="form-check-label">Air Seal</label></div>
                         <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">Coating/Lining</label></div>
                         <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
@@ -87,6 +103,7 @@
                     </div>
                 <!-- Dropdowns for Filtering -->
                 
+>>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
             </div>
         </div>
 
@@ -113,7 +130,7 @@
         <div class="mb-3 d-flex gap-2">
             <button type="submit" class="btn btn-lg shadow-sm">
                 <i class="bi bi-file-earmark-excel-fill"></i> Export
-            </button>
+            </button> 
             <button type="button" id="selectAllBtn" class="btn btn-sm shadow-sm">
                 <i class="bi bi-check2-square"></i> Select All
             </button>
@@ -124,18 +141,97 @@
     </form>
 </div>
 
+<<<<<<< HEAD
+<script>
+    // Load templates into dropdown
+    fetch('/GanttData/GetAllTemplates')
+        .then(res => res.json())
+        .then(data => {
+            const dropdown = document.getElementById('templateDropdown');
+            dropdown.innerHTML = '<option value="">-- Select Template --</option>';
+            data.forEach(name => {
+                const opt = document.createElement("option");
+                opt.value = name;
+                opt.textContent = name;
+                dropdown.appendChild(opt);
+            });
+        });
+
+   
+
+    // Save template
+    document.getElementById("saveTemplateBtn").addEventListener("click", () => {
+        const name = document.getElementById("templateName").value;
+        if (!name) return alert("Enter a name to save");
+
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const data = {};
+        checkboxes.forEach(cb => {
+            data[cb.name] = cb.checked;
+        });
+
+        fetch(`/GanttData/SaveTemplate?name=${encodeURIComponent(name)}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(() => location.reload());
+    });
+
+    document.getElementById("loadTemplateBtn").addEventListener("click", () => {
+        const selected = document.getElementById("templateDropdown").value;
+        if (!selected) return alert("Please select a template to load");
+
+        loadTemplate(selected);
+    });
+
+    function loadTemplate(name) {
+        fetch(`/GanttData/LoadTemplate?name=${encodeURIComponent(name)}`)
+            .then(res => res.json())
+            .then(data => {
+                for (const key in data) {
+                    const checkbox = document.querySelector(`[name="${key}"]`);
+                    if (checkbox && checkbox.type === "checkbox") {
+                        checkbox.checked = data[key];
+                    }
+                }
+                document.getElementById("templateName").value = name;
+            });
+    }
+
+    // Delete template
+    document.getElementById("deleteTemplateBtn").addEventListener("click", () => {
+        const name = document.getElementById("templateName").value;
+        if (!name) return alert("Enter template name to delete");
+
+        fetch(`/GanttData/DeleteTemplate`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(name)
+        }).then(() => location.reload());
+    });
+</script>
+
+<script>
+    document.getElementById('selectAllBtn').addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = true);
+    });
+=======
 @section Scripts {
     <script>
         document.getElementById('selectAllBtn').addEventListener('click', function () {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = true);
         });
+>>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
 
         document.getElementById('deselectAllBtn').addEventListener('click', function () {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = false);
         });
 
+<<<<<<< HEAD
+=======
         document.getElementById('loadSelectionBtn').addEventListener('click', function (event) {
             event.preventDefault();
             var selectedValue = document.getElementById('savedSelections').value;
@@ -219,3 +315,4 @@
         return description;
     }
 }
+>>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
