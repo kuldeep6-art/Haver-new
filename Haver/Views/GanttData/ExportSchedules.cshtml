@@ -3,9 +3,10 @@
 
 <div class="container">
     <h1 class="text-center fw-bold mb-4" style="font-size: 30px;">Export Schedules</h1>
+
+    <!-- Row for Template Load, Save, Delete -->
     <p><b>*You can select from already saved templates, then click load, then export, or you can select a template then edit and save or delete*</b></p>
 
-<<<<<<< HEAD
     <div class="container p-3 border rounded shadow-sm" style="background-color: #f8f9fa;">
         <!-- Row for Dropdown and Input -->
         <div class="row g-3 mb-2">
@@ -19,31 +20,6 @@
                 <label class="fw-bold">Template Name:</label>
                 <input type="text" id="templateName" class="form-control shadow-sm" placeholder="Template name" />
             </div>
-=======
-    <!-- Row for Template Load, Save, Delete -->
-    <div class="row mb-4">
-<<<<<<< HEAD
-        <div class="col-md-6">
-            <label class="fw-bold">Templates:</label>
-            <select id="templateDropdown" class="form-select shadow-sm">
-                <option value="">-- Select Template --</option>
-=======
-        <div class="col-md-8">
-            <label class="fw-bold">Load Previous Selection:</label>
-            <select id="savedSelections" class="form-select shadow-sm">
-                <option value="">-- Select a Previous Selection --</option>
-                @if (ViewBag.SavedSelections != null && ViewBag.SavedSelections is List<ScheduleExportOptionsViewModel>)
-                {
-                    @foreach (var selection in ViewBag.SavedSelections as List<ScheduleExportOptionsViewModel>)
-                    {
-                        <option value="@Html.Raw(Json.Serialize(selection))">
-                            @($"{selection.ReportType} - {GetSelectionDescription(selection)} - {selection.SelectionDate.ToString("yyyy-MM-dd HH:mm")}")
-                        </option>
-                    }
-                }
->>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
-            </select>
->>>>>>> 420bfa41104e36089929efedc64015e8486681d5
         </div>
 
         <!-- Row for Buttons -->
@@ -64,121 +40,63 @@
                 </button>
             </div>
         </div>
-<<<<<<< HEAD
     </div>
-
-
-
 
     <form asp-action="DownloadSchedules" method="post" class="p-4 rounded bg-light shadow-sm border" style="margin-top:5px;">
         <!-- Tip Section -->
         <div class="alert alert-info shadow-sm mb-4">
             <strong>Tip:</strong> Select or deselect columns to include in your Excel report.
         </div>
-=======
-    
-    <form asp-action="DownloadSchedules" method="post" class="p-4 rounded bg-light shadow-sm border">
-   
-
-   
-
-        <!-- Shared Columns -->
-       
->>>>>>> 420bfa41104e36089929efedc64015e8486681d5
 
         <!-- Machine Schedule Columns -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-dark text-white fw-bold">Schedule Columns</div>
             <div class="card-body">
-                <!-- Checkboxes -->
-                <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-check"><input asp-for="IncludeOrderNumber" class="form-check-input" /><label asp-for="IncludeOrderNumber" class="form-check-label">Order Number</label></div>
-                            <div class="form-check"><input asp-for="IncludeCustomerName" class="form-check-input" /><label asp-for="IncludeCustomerName" class="form-check-label">Customer Name</label></div>
-                        
-                        
-                            <div class="form-check"><input asp-for="IncludeOrderNumber" class="form-check-input" /><label asp-for="IncludeOrderNumber" class="form-check-label">Order Number</label></div>
-                            <div class="form-check"><input asp-for="IncludeCustomerName" class="form-check-input" /><label asp-for="IncludeCustomerName" class="form-check-label">Customer Name</label></div>
-                       
-                            <div class="form-check"><input asp-for="IncludeMedia" class="form-check-input" /><label asp-for="IncludeMedia" class="form-check-label">Media</label></div>
-                            <div class="form-check"><input asp-for="IncludeSpareParts" class="form-check-input" /><label asp-for="IncludeSpareParts" class="form-check-label">Spare Parts</label></div>
-                       
-                            <div class="form-check"><input asp-for="IncludeMachineModel" class="form-check-input" /><label asp-for="IncludeMachineModel" class="form-check-label">Machine Model</label></div>
-                        </div>
-                    <div class="col-md-4">
-                        <div class="form-check"><input asp-for="IncludeSalesOrderDate" class="form-check-input" /><label asp-for="IncludeSalesOrderDate" class="form-check-label">Sales Order Date</label></div>
-                        <div class="form-check"><input asp-for="IncludeSerialNumbers" class="form-check-input" /><label asp-for="IncludeSerialNumbers" class="form-check-label">Serial Numbers</label></div>
-                        <div class="form-check"><input asp-for="IncludeProductionOrderNumbers" class="form-check-input" /><label asp-for="IncludeProductionOrderNumbers" class="form-check-label">Production Order Numbers</label></div>
-                        <div class="form-check"><input asp-for="IncludeVendorNames" class="form-check-input" /><label asp-for="IncludeVendorNames" class="form-check-label">Vendor Names</label></div>
-                        <div class="form-check"><input asp-for="IncludePoNumbers" class="form-check-input" /><label asp-for="IncludePoNumbers" class="form-check-label">PO Numbers</label></div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-check"><input asp-for="IncludePoDueDates" class="form-check-input" /><label asp-for="IncludePoDueDates" class="form-check-label">PO Due Dates</label></div>
-                        <div class="form-check"><input asp-for="IncludeDeliveryDates" class="form-check-input" /><label asp-for="IncludeDeliveryDates" class="form-check-label">Delivery Dates</label></div>
-                        <div class="form-check"><input asp-for="IncludePackageReleaseDateE" class="form-check-input" /><label asp-for="IncludePackageReleaseDateE" class="form-check-label">Package Release Expected</label></div>
-                        <div class="form-check"><input asp-for="IncludePackageReleaseDateA" class="form-check-input" /><label asp-for="IncludePackageReleaseDateA" class="form-check-label">Package Release Actual</label></div>
-                        <div class="form-check"><input asp-for="IncludeBase" class="form-check-input" /><label asp-for="IncludeBase" class="form-check-label">Base</label></div>
-                    </div>
-                    <div class="col-md-4">
-<<<<<<< HEAD
-                        <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
-                        <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">CoatingLining</label></div>
-<<<<<<< HEAD
-                        <div class="form-check"><input asp-for="IncludeQuantity" class="form-check-input" /><label asp-for="IncludeQuantity" class="form-check-label">Quantity</label></div>
-                        <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /><label asp-for="IncludeEngineer" class="form-check-label">Engineer</label></div>
-=======
-                    </div>
-                </div>
-=======
-                        <div class="form-check"><input asp-for="IncludeAirSeal" class="form-check-input" /><label asp-for="IncludeAirSeal" class="form-check-label">Air Seal</label></div>
-                        <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">Coating/Lining</label></div>
-                        <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
-                        <div class="form-check"><input asp-for="IncludeNotes" class="form-check-input" /><label asp-for="IncludeNotes" class="form-check-label">Notes</label></div>
-                        <div class="form-check"><input asp-for="IncludePreOrder" class="form-check-input" /><label asp-for="IncludePreOrder" class="form-check-label">Pre-Order</label></div>
-                    </div>
-                
-         
-                    <div class="col-md-4">
-                        <div class="form-check"><input asp-for="IncludeScope" class="form-check-input" /><label asp-for="IncludeScope" class="form-check-label">Scope</label></div>
-                        <div class="form-check"><input asp-for="IncludeActualAssemblyHours" class="form-check-input" /><label asp-for="IncludeActualAssemblyHours" class="form-check-label">Actual Assembly Hours</label></div>
-                
-                        <div class="form-check"><input asp-for="IncludeReworkHours" class="form-check-input" /><label asp-for="IncludeReworkHours" class="form-check-label">Rework Hours</label></div>
-                        <div class="form-check"><input asp-for="IncludeNamePlate" class="form-check-input" /><label asp-for="IncludeNamePlate" class="form-check-label">Name Plate</label></div>
-                    </div>
-                    </div>
-                <!-- Dropdowns for Filtering -->
-                
->>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
-            </div>
-        </div>
-
-        <!-- Gantt Schedule Columns -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white fw-bold">Gantt Schedule Columns</div>
-            <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /><label asp-for="IncludeEngineer" class="form-check-label">Engineer</label></div>
+                        <div class="form-check"><input asp-for="IncludeSalesOrderNumber" class="form-check-input" /><label asp-for="IncludeSalesOrderNumber" class="form-check-label">Sales Order Number</label></div>
+                        <div class="form-check"><input asp-for="IncludeSalesOrderDate" class="form-check-input" /><label asp-for="IncludeSalesOrderDate" class="form-check-label">Sales Order Date</label></div>
+                        <div class="form-check"><input asp-for="IncludeCustomerName" class="form-check-input" /><label asp-for="IncludeCustomerName" class="form-check-label">Customer Name</label></div>
+                        <div class="form-check"><input asp-for="IncludeMachineDescriptions" class="form-check-input" /><label asp-for="IncludeMachineDescriptions" class="form-check-label">Machine Models</label></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check"><input asp-for="IncludeSerialNumbers" class="form-check-input" /><label asp-for="IncludeSerialNumbers" class="form-check-label">Serial Numbers</label></div>
+                        <div class="form-check"><input asp-for="IncludeProductionOrderNumbers" class="form-check-input" /><label asp-for="IncludeProductionOrderNumbers" class="form-check-label">Production Order Numbers</label></div>
+                        <div class="form-check"><input asp-for="IncludePackageReleaseDateE" class="form-check-input" /><label asp-for="IncludePackageReleaseDateE" class="form-check-label">Package Release Expected</label></div>
+                        <div class="form-check"><input asp-for="IncludePackageReleaseDateA" class="form-check-input" /><label asp-for="IncludePackageReleaseDateA" class="form-check-label">Package Release Actual</label></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check"><input asp-for="IncludeMedia" class="form-check-input" /><label asp-for="IncludeMedia" class="form-check-label">Media</label></div>
+                        <div class="form-check"><input asp-for="IncludeSpareParts" class="form-check-input" /><label asp-for="IncludeSpareParts" class="form-check-label">Spare Parts</label></div>
+                        <div class="form-check"><input asp-for="IncludeBase" class="form-check-input" /><label asp-for="IncludeBase" class="form-check-label">Base</label></div>
+                        <div class="form-check"><input asp-for="IncludeAirSeal" class="form-check-input" /><label asp-for="IncludeAirSeal" class="form-check-label">Air Seal</label></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
+                        <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">CoatingLining</label></div>
                         <div class="form-check"><input asp-for="IncludeQuantity" class="form-check-input" /><label asp-for="IncludeQuantity" class="form-check-label">Quantity</label></div>
->>>>>>> 420bfa41104e36089929efedc64015e8486681d5
+                        <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /><label asp-for="IncludeEngineer" class="form-check-label">Engineer</label></div>
                     </div>
+                
                     <div class="col-md-4">
+          
                         <div class="form-check"><input asp-for="IncludeApprovedDrawingReceived" class="form-check-input" /><label asp-for="IncludeApprovedDrawingReceived" class="form-check-label">Approved Drawing Received</label></div>
-                        <div class="form-check"><input asp-for="IncludeGanttData" class="form-check-input" /><label asp-for="IncludeGanttData" class="form-check-label">Gantt Chart</label></div>
-                    </div>
-                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input asp-for="IncludeGanttData" class="form-check-input" />
+                            <label asp-for="IncludeGanttData" class="form-check-label">Gantt Chart</label>
+                        </div>
                         <div class="form-check"><input asp-for="IncludeSpecialNotes" class="form-check-input" /><label asp-for="IncludeSpecialNotes" class="form-check-label">Special Notes</label></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        
+
 
         <div class="mb-3 d-flex gap-2">
             <button type="submit" class="btn btn-lg shadow-sm">
                 <i class="bi bi-file-earmark-excel-fill"></i> Export
-            </button> 
+            </button>
             <button type="button" id="selectAllBtn" class="btn btn-sm shadow-sm">
                 <i class="bi bi-check2-square"></i> Select All
             </button>
@@ -189,7 +107,6 @@
     </form>
 </div>
 
-<<<<<<< HEAD
 <script>
     // Load templates into dropdown
     fetch('/GanttData/GetAllTemplates')
@@ -205,7 +122,7 @@
             });
         });
 
-   
+
 
     // Save template
     document.getElementById("saveTemplateBtn").addEventListener("click", () => {
@@ -264,103 +181,10 @@
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(cb => cb.checked = true);
     });
-=======
-@section Scripts {
-    <script>
-        document.getElementById('selectAllBtn').addEventListener('click', function () {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = true);
-        });
->>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
 
-        document.getElementById('deselectAllBtn').addEventListener('click', function () {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = false);
-        });
+    document.getElementById('deselectAllBtn').addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+    });
+</script>
 
-<<<<<<< HEAD
-=======
-        document.getElementById('loadSelectionBtn').addEventListener('click', function (event) {
-            event.preventDefault();
-            var selectedValue = document.getElementById('savedSelections').value;
-
-            if (selectedValue) {
-                var options = JSON.parse(selectedValue);
-
-                console.log("Loaded Options:", options);
-
-                for (var key in options) {
-                    var input = document.querySelector(`[name="${key}"]`);
-                    if (input) {
-                        if (input.type === 'checkbox') {
-                            input.checked = options[key] === true;
-                        }
-                        else if (input.tagName === 'SELECT') {
-                            input.value = options[key];
-                        }
-                        else {
-                            input.value = options[key];
-                        }
-                    }
-                }
-
-                alert("Previous selection loaded successfully! Please export to generate your report.");
-            } else {
-                alert("Please select a valid selection before loading.");
-            }
-        });
-
-        // Sync dropdowns with hidden inputs
-        document.getElementById('customerNameFilter').addEventListener('change', function () {
-            document.getElementById('selectedCustomerName').value = this.value;
-        });
-
-        document.getElementById('salesOrderDateFilter').addEventListener('change', function () {
-            document.getElementById('selectedSalesOrderDate').value = this.value;
-        });
-    </script>
-}
-
-@functions {
-    string GetSelectionDescription(ScheduleExportOptionsViewModel selection)
-    {
-        List<string> excludedItems = new List<string>();
-
-        if (!selection.IncludeOrderNumber) excludedItems.Add("Order #");
-        if (!selection.IncludeCustomerName) excludedItems.Add("Customer");
-        if (!selection.IncludeMedia) excludedItems.Add("Media");
-        if (!selection.IncludeSpareParts) excludedItems.Add("Spare Parts");
-        if (!selection.IncludeMachineModel) excludedItems.Add("Machine Model");
-        if (!selection.IncludeSalesOrderDate) excludedItems.Add("SO Date");
-        if (!selection.IncludeSerialNumbers) excludedItems.Add("Serial #");
-        if (!selection.IncludeProductionOrderNumbers) excludedItems.Add("PO#");
-        if (!selection.IncludeVendorNames) excludedItems.Add("Vendors");
-        if (!selection.IncludePoNumbers) excludedItems.Add("PO Numbers");
-        if (!selection.IncludePoDueDates) excludedItems.Add("PO Due Dates");
-        if (!selection.IncludeDeliveryDates) excludedItems.Add("Delivery Dates");
-        if (!selection.IncludePackageReleaseDateE) excludedItems.Add("PDate(E)");
-        if (!selection.IncludePackageReleaseDateA) excludedItems.Add("PDate(A)");
-        if (!selection.IncludeBase) excludedItems.Add("Base");
-        if (!selection.IncludeAirSeal) excludedItems.Add("Air Seal");
-        if (!selection.IncludeCoatingLining) excludedItems.Add("Coating");
-        if (!selection.IncludeDisassembly) excludedItems.Add("Disassembly");
-        if (!selection.IncludePreOrder) excludedItems.Add("Pre-Order");
-        if (!selection.IncludeScope) excludedItems.Add("Scope");
-        if (!selection.IncludeActualAssemblyHours) excludedItems.Add("Act Hrs");
-        if (!selection.IncludeReworkHours) excludedItems.Add("Rework Hrs");
-        if (!selection.IncludeNamePlate) excludedItems.Add("Name Plate");
-        if (!selection.IncludeNotes) excludedItems.Add("Notes");
-        if (!selection.IncludeEngineer) excludedItems.Add("Engineer");
-        if (!selection.IncludeQuantity) excludedItems.Add("Quantity");
-        if (!selection.IncludeApprovedDrawingReceived) excludedItems.Add("App Dwg Rcd");
-        if (!selection.IncludeGanttData) excludedItems.Add("Gantt Chart");
-        if (!selection.IncludeSpecialNotes) excludedItems.Add("Special Notes");
-
-        string description = excludedItems.Any()
-            ? $"Excluded: {string.Join(", ", excludedItems)}"
-            : "All columns included";
-
-        return description;
-    }
-}
->>>>>>> b998c9d23189efe44dc7bb325dd11c8609ac17c9
