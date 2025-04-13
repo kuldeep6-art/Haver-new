@@ -307,6 +307,9 @@ namespace haver.Controllers
 
                 await _context.SaveChangesAsync();
 
+                TempData["Message"] = "Engineer has been successfully Deleted";
+
+
                 var returnUrl = ViewData["returnURL"]?.ToString();
                 if (string.IsNullOrEmpty(returnUrl))
                 {

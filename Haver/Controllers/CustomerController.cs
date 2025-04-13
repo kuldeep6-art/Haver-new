@@ -289,8 +289,9 @@ namespace haver.Controllers
                     Timestamp = DateTime.UtcNow
                 });
                 await _context.SaveChangesAsync();
+				TempData["Message"] = "Customer has been successfully Deleted";
 
-                var returnUrl = ViewData["returnURL"]?.ToString();
+				var returnUrl = ViewData["returnURL"]?.ToString();
 
                 if (string.IsNullOrEmpty(returnUrl))
                 {

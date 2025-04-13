@@ -68,17 +68,22 @@
                     </div>
                 </div>
 
-             
-                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary"
-                            style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
-                        <i class="fa-solid fa-plus"></i> Create Engineer
-                    </button>
 
-                    <a href="@Url.Action("Index", "Engineer")" class="btn btn-primary"
-                       style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
-                        ⬅ Back to Engineers List
-                    </a>
+                <div class="form-group text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                        <button type="submit" value="false" class="btn mr-2"
+                                style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif;">
+                            <i class="fa-solid fa-plus"></i> Add Engineer
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-secondary"
+                           style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
+                        </a>
+
+
+                    </div>
                 </div>
             </form>
         </div>
