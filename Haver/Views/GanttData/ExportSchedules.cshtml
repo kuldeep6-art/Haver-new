@@ -30,7 +30,7 @@
 
         <!-- Machine Schedule Columns -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white fw-bold">Machine Schedule Columns</div>
+            <div class="card-header bg-dark text-white fw-bold">Schedule Columns</div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
@@ -55,15 +55,6 @@
                         <div class="form-check"><input asp-for="IncludeDisassembly" class="form-check-input" /><label asp-for="IncludeDisassembly" class="form-check-label">Disassembly</label></div>
                         <div class="form-check"><input asp-for="IncludeCoatingLining" class="form-check-input" /><label asp-for="IncludeCoatingLining" class="form-check-label">CoatingLining</label></div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Gantt Schedule Columns -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white fw-bold">Gantt Schedule Columns</div>
-            <div class="card-body">
-                <div class="row">
                     <div class="col-md-4">
                         <div class="form-check"><input asp-for="IncludeOrderNumber" class="form-check-input" /><label asp-for="IncludeOrderNumber" class="form-check-label">Order Number</label></div>
                         <div class="form-check"><input asp-for="IncludeEngineer" class="form-check-input" /><label asp-for="IncludeEngineer" class="form-check-label">Engineer</label></div>
@@ -86,6 +77,8 @@
                 </div>
             </div>
         </div>
+
+        
 
         <div class="mb-3 d-flex gap-2">
             <button type="submit" class="btn btn-lg shadow-sm">
