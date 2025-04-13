@@ -1,4 +1,30 @@
 ﻿body {
+    @media (max-width: 2560px) {
+
+        .sidebar-logo {
+            width: 180px;
+            padding-right:10px;
+        }
+
+    }
+
+   
+
+    @media (max-width: 1280px) {
+
+        .sidebar-logo {
+            width: 170px;
+        }
+    }
+
+    
+    @media (max-width: 1024px) {
+
+        .sidebar-logo {
+            padding-left: 10px;
+        }
+    }
+
     @media (max-width: 991.98px) {
         .sidebar {
             width: 220px;
