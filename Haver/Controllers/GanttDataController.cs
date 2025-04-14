@@ -921,6 +921,7 @@ namespace haver.Controllers
                     Disassembly = options.IncludeDisassembly ? (so.Machines.Any(m => m.Disassembly) ? "✓" : "") : null,
                     PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
                     PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
+                    DeliveryDates = options.IncludeDeliveryDates ? (so?.DelDt.HasValue == true ? so.DelDt.Value.ToShortDateString() : "N/A") : null,
                     Comments = options.IncludeNotes ? (!string.IsNullOrEmpty(so?.Comments) ? Regex.Replace(so.Comments, "<.*?>", string.Empty) : "N/A") : null
                 } })
                 .ToList();
