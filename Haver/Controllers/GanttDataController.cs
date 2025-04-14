@@ -715,6 +715,7 @@ namespace haver.Controllers
                     IncludeProductionOrderNumbers = false,
                     IncludePackageReleaseDateE = true,
                     IncludePackageReleaseDateA = true,
+                    IncludeDeliveryDates = true,
                     IncludeVendorNames = false,
                     IncludePoNumbers = false,
                     IncludePoDueDates = false,
@@ -754,6 +755,7 @@ namespace haver.Controllers
                     IncludeProductionOrderNumbers = false,
                     IncludePackageReleaseDateE = true,
                     IncludePackageReleaseDateA = false,
+                    IncludeDeliveryDates = false,
                     IncludeVendorNames = true,
                     IncludePoNumbers = true,
                     IncludePoDueDates = true,
@@ -793,6 +795,7 @@ namespace haver.Controllers
                     IncludeProductionOrderNumbers = true,
                     IncludePackageReleaseDateE = true,
                     IncludePackageReleaseDateA = true,
+                    IncludeDeliveryDates = true,
                     IncludeVendorNames = false,
                     IncludePoNumbers = false,
                     IncludePoDueDates = false,
@@ -882,6 +885,7 @@ namespace haver.Controllers
                         ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
                         PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
                         PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
+                        DeliveryDates = options.IncludeDeliveryDates ? (so?.DelDt?.ToShortDateString() ?? "N/A") : null,
                         VendorNames = options.IncludeVendorNames && m?.Procurements != null && m.Procurements.Any()
                             ? string.Join(", ", m.Procurements.Select(p => p?.Vendor?.Name ?? "N/A"))
                             : null,
@@ -1140,6 +1144,7 @@ namespace haver.Controllers
             ("Prod Order", options.IncludeProductionOrderNumbers, Color.FromArgb(91, 155, 213)),
             ("Pkg Rel Exp", options.IncludePackageReleaseDateE, Color.FromArgb(91, 155, 213)),
             ("Pkg Rel Act", options.IncludePackageReleaseDateA, Color.FromArgb(91, 155, 213)),
+             ("Delivery Date", options.IncludeDeliveryDates, Color.FromArgb(91, 155, 213)),
             ("Vendors", options.IncludeVendorNames, Color.FromArgb(91, 155, 213)),
             ("PO #", options.IncludePoNumbers, Color.FromArgb(91, 155, 213)),
             ("PO Due", options.IncludePoDueDates, Color.FromArgb(91, 155, 213)),
@@ -1258,6 +1263,7 @@ namespace haver.Controllers
                 if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.ProductionOrderNumbers;
                 if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateE;
                 if (options.IncludePackageReleaseDateA) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateA;
+                if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = item.Machine?.DeliveryDates;
                 if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = item.Machine?.VendorNames;
                 if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoNumbers;
                 if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoDueDates;
@@ -1357,6 +1363,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) { workSheet.Column(colIndex).Width = 15; workSheet.Column(colIndex++).Style.WrapText = true; }
             if (options.IncludePackageReleaseDateE) workSheet.Column(colIndex++).Width = 15;
             if (options.IncludePackageReleaseDateA) workSheet.Column(colIndex++).Width = 15;
+            if (options.IncludeDeliveryDates) workSheet.Column(colIndex++).Width = 12;
             if (options.IncludeVendorNames) { workSheet.Column(colIndex).Width = 25; workSheet.Column(colIndex++).Style.WrapText = true; }
             if (options.IncludePoNumbers) { workSheet.Column(colIndex).Width = 15; workSheet.Column(colIndex++).Style.WrapText = true; }
             if (options.IncludePoDueDates) { workSheet.Column(colIndex).Width = 15; workSheet.Column(colIndex++).Style.WrapText = true; }
@@ -1435,6 +1442,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) count++;
             if (options.IncludePackageReleaseDateE) count++;
             if (options.IncludePackageReleaseDateA) count++;
+            if (options.IncludeDeliveryDates) count++;
             if (options.IncludeVendorNames) count++;
             if (options.IncludePoNumbers) count++;
             if (options.IncludePoDueDates) count++;
@@ -1502,6 +1510,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) headers.Add(("Prod Order", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePackageReleaseDateE) headers.Add(("Pkg Rel Exp", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePackageReleaseDateA) headers.Add(("Pkg Rel Act", true, Color.FromArgb(173, 216, 230)));
+            if (options.IncludeDeliveryDates) headers.Add(("Delivery Date", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludeVendorNames) headers.Add(("Vendors", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePoNumbers) headers.Add(("PO #", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePoDueDates) headers.Add(("PO Due", true, Color.FromArgb(173, 216, 230)));
@@ -1585,6 +1594,7 @@ namespace haver.Controllers
                 if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = schedule.ProductionOrderNumbers ?? "";
                 if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = schedule.PackageReleaseDateE ?? "";
                 if (options.IncludePackageReleaseDateA) workSheet.Cells[row, colIndex++].Value = schedule.PackageReleaseDateA ?? "";
+                if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = schedule.DeliveryDates ?? "";
                 if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = schedule.VendorNames ?? "";
                 if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = schedule.PoNumbers ?? "";
                 if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = schedule.PoDueDates ?? "";
@@ -1638,6 +1648,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
             if (options.IncludePackageReleaseDateE) colIndex++;
             if (options.IncludePackageReleaseDateA) colIndex++;
+            if (options.IncludeDeliveryDates) colIndex++;
             if (options.IncludeVendorNames) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
             if (options.IncludePoNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
             if (options.IncludePoDueDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
