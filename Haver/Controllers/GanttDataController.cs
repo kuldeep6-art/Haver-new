@@ -684,75 +684,155 @@ namespace haver.Controllers
         [HttpGet]
         public IActionResult GetAllTemplates()
         {
-            var defaultTemplates = new List<(string Name, ScheduleExportOptionsViewModel Options)>
-    {
-        ("Machinery Meetings", new ScheduleExportOptionsViewModel
-        {
-            IncludeSalesOrderNumber = true,
-            IncludeMachineDescriptions = true,
-            IncludeSerialNumbers = true,
-            IncludeMedia = true,
-            IncludeSpareParts = true,
-            IncludeEngineer = true,
-            IncludeGanttData = true,
-            IncludeSpecialNotes = true
-        }),
-        ("Procurement", new ScheduleExportOptionsViewModel
-        {
-            IncludeSalesOrderNumber = true,
-            IncludeCustomerName = true,
-            IncludeVendorNames = true,
-            IncludePoNumbers = true,
-            IncludePoDueDates = true,
-            IncludePackageReleaseDateE = true,
-            IncludePackageReleaseDateA = true
-        }),
-        ("Production", new ScheduleExportOptionsViewModel
-        {
-            IncludeSalesOrderNumber = true,
-            IncludeProductionOrderNumbers = true,
-            IncludeMachineDescriptions = true,
-            IncludeBase = true,
-            IncludeAirSeal = true,
-            IncludeCoatingLining = true,
-            IncludeDisassembly = true,
-            IncludeActualAssemblyHours = true,
-            IncludeReworkHours = true,
-            IncludeGanttData = true
-        })
-    };
-
-            foreach (var (name, options) in defaultTemplates)
-            {
-                if (!_context.UserSelections.Any(t => t.TemplateName == name))
-                {
-                    _context.UserSelections.Add(new UserSelection
-                    {
-                        TemplateName = name,
-                        SelectionJson = JsonSerializer.Serialize(options),
-                        CreatedAt = DateTime.UtcNow
-                    });
-                }
-            }
-
-            _context.SaveChanges();
-
-            var templates = _context.UserSelections
-                .OrderByDescending(t => t.CreatedAt)
+            var dbTemplates = _context.UserSelections
                 .Select(t => t.TemplateName)
                 .ToList();
 
-            return Json(templates);
-        }
+            var defaultTemplates = new List<string> { "Machinery Template", "Procurement Template", "Production Template" };
 
+            // Merge defaults + database entries
+            var allTemplates = defaultTemplates
+                .Concat(dbTemplates.Where(t => !defaultTemplates.Contains(t)))
+                .Distinct()
+                .ToList();
+
+            return Json(allTemplates);
+        }
 
         [HttpGet]
         public IActionResult LoadTemplate(string name)
         {
-            var template = _context.UserSelections.FirstOrDefault(t => t.TemplateName == name);
-            if (template == null) return NotFound();
+            // Built-in Default Templates
+            if (name == "Machinery Template")
+            {
+                return Json(new ScheduleExportOptionsViewModel
+                {
+                    IncludeSalesOrderNumber = true,
+                    IncludeSalesOrderDate = true,
+                    IncludeCustomerName = true,
+                    IncludeMachineDescriptions = true,
+                    IncludeSerialNumbers = false,
+                    IncludeProductionOrderNumbers = false,
+                    IncludePackageReleaseDateE = true,
+                    IncludePackageReleaseDateA = true,
+                    IncludeVendorNames = false,
+                    IncludePoNumbers = false,
+                    IncludePoDueDates = false,
+                    IncludeMedia = true,
+                    IncludeSpareParts = true,
+                    IncludeBase = false,
+                    IncludeAirSeal = false,
+                    IncludeCoatingLining = false,
+                    IncludeDisassembly = false,
+                    IncludeNotes = true,
+                    IncludePreOrder = false,
+                    IncludeScope = false,
+                    IncludeActualAssemblyHours = false,
+                    IncludeReworkHours = false,
+                    IncludeNamePlate = false,
+                    IncludeOrderNumber = true,
+                    IncludeEngineer = true,
+                    IncludeGanttCustomerName = true,
+                    IncludeQuantity = true,
+                    IncludeMachineModel = true,
+                    IncludeGanttMedia = false,
+                    IncludeGanttSpareParts = false,
+                    IncludeApprovedDrawingReceived = true,
+                    IncludeGanttData = true,
+                    IncludeSpecialNotes = true
+                });
+            }
+            else if (name == "Procurement Template")
+            {
+                return Json(new ScheduleExportOptionsViewModel
+                {
+                    IncludeSalesOrderNumber = true,
+                    IncludeSalesOrderDate = true,
+                    IncludeCustomerName = true,
+                    IncludeMachineDescriptions = true,
+                    IncludeSerialNumbers = false,
+                    IncludeProductionOrderNumbers = false,
+                    IncludePackageReleaseDateE = true,
+                    IncludePackageReleaseDateA = false,
+                    IncludeVendorNames = true,
+                    IncludePoNumbers = true,
+                    IncludePoDueDates = true,
+                    IncludeMedia = false,
+                    IncludeSpareParts = false,
+                    IncludeBase = false,
+                    IncludeAirSeal = false,
+                    IncludeCoatingLining = false,
+                    IncludeDisassembly = false,
+                    IncludeNotes = false,
+                    IncludePreOrder = false,
+                    IncludeScope = false,
+                    IncludeActualAssemblyHours = false,
+                    IncludeReworkHours = false,
+                    IncludeNamePlate = false,
+                    IncludeOrderNumber = false,
+                    IncludeEngineer = false,
+                    IncludeGanttCustomerName = false,
+                    IncludeQuantity = false,
+                    IncludeMachineModel = false,
+                    IncludeGanttMedia = false,
+                    IncludeGanttSpareParts = false,
+                    IncludeApprovedDrawingReceived = false,
+                    IncludeGanttData = false,
+                    IncludeSpecialNotes = false
+                });
+            }
+            else if (name == "Production Template")
+            {
+                return Json(new ScheduleExportOptionsViewModel
+                {
+                    IncludeSalesOrderNumber = true,
+                    IncludeSalesOrderDate = true,
+                    IncludeCustomerName = true,
+                    IncludeMachineDescriptions = true,
+                    IncludeSerialNumbers = true,
+                    IncludeProductionOrderNumbers = true,
+                    IncludePackageReleaseDateE = true,
+                    IncludePackageReleaseDateA = true,
+                    IncludeVendorNames = false,
+                    IncludePoNumbers = false,
+                    IncludePoDueDates = false,
+                    IncludeMedia = true,
+                    IncludeSpareParts = true,
+                    IncludeBase = true,
+                    IncludeAirSeal = true,
+                    IncludeCoatingLining = true,
+                    IncludeDisassembly = true,
+                    IncludeNotes = true,
+                    IncludePreOrder = true,
+                    IncludeScope = true,
+                    IncludeActualAssemblyHours = true,
+                    IncludeReworkHours = true,
+                    IncludeNamePlate = true,
+                    IncludeOrderNumber = true,
+                    IncludeEngineer = true,
+                    IncludeGanttCustomerName = true,
+                    IncludeQuantity = true,
+                    IncludeMachineModel = true,
+                    IncludeGanttMedia = true,
+                    IncludeGanttSpareParts = true,
+                    IncludeApprovedDrawingReceived = true,
+                    IncludeGanttData = true,
+                    IncludeSpecialNotes = true
+                });
+            }
 
-            var options = JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(template.SelectionJson);
+            // Load from DB
+            var template = _context.UserSelections.FirstOrDefault(t => t.TemplateName == name);
+            if (template == null)
+                return NotFound();
+
+            var options = JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(
+                template.SelectionJson,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
             return Json(options);
         }
 
