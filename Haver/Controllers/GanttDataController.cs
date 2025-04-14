@@ -684,22 +684,158 @@ namespace haver.Controllers
         [HttpGet]
         public IActionResult GetAllTemplates()
         {
-            var templates = _context.UserSelections
-                .OrderByDescending(t => t.CreatedAt)
+            var dbTemplates = _context.UserSelections
                 .Select(t => t.TemplateName)
                 .ToList();
 
-            return Json(templates);
-        }
+            var defaultTemplates = new List<string> { "Machinery Template", "Procurement Template", "Production Template" };
 
+            // Merge defaults + database entries
+            var allTemplates = defaultTemplates
+                .Concat(dbTemplates.Where(t => !defaultTemplates.Contains(t)))
+                .Distinct()
+                .ToList();
+
+            return Json(allTemplates);
+        }
 
         [HttpGet]
         public IActionResult LoadTemplate(string name)
         {
-            var template = _context.UserSelections.FirstOrDefault(t => t.TemplateName == name);
-            if (template == null) return NotFound();
+            // Built-in Default Templates
+            if (name == "Machinery Template")
+            {
+                return Json(new ScheduleExportOptionsViewModel
+                {
+                    IncludeSalesOrderNumber = true,
+                    IncludeSalesOrderDate = true,
+                    IncludeCustomerName = true,
+                    IncludeMachineDescriptions = true,
+                    IncludeSerialNumbers = false,
+                    IncludeProductionOrderNumbers = false,
+                    IncludePackageReleaseDateE = true,
+                    IncludePackageReleaseDateA = true,
+                    IncludeDeliveryDates = true,
+                    IncludeVendorNames = false,
+                    IncludePoNumbers = false,
+                    IncludePoDueDates = false,
+                    IncludeMedia = true,
+                    IncludeSpareParts = true,
+                    IncludeBase = false,
+                    IncludeAirSeal = false,
+                    IncludeCoatingLining = false,
+                    IncludeDisassembly = false,
+                    IncludeNotes = true,
+                    IncludePreOrder = false,
+                    IncludeScope = false,
+                    IncludeActualAssemblyHours = false,
+                    IncludeReworkHours = false,
+                    IncludeNamePlate = false,
+                    IncludeOrderNumber = true,
+                    IncludeEngineer = true,
+                    IncludeGanttCustomerName = true,
+                    IncludeQuantity = true,
+                    IncludeMachineModel = true,
+                    IncludeGanttMedia = false,
+                    IncludeGanttSpareParts = false,
+                    IncludeApprovedDrawingReceived = true,
+                    IncludeGanttData = true,
+                    IncludeSpecialNotes = true
+                });
+            }
+            else if (name == "Procurement Template")
+            {
+                return Json(new ScheduleExportOptionsViewModel
+                {
+                    IncludeSalesOrderNumber = true,
+                    IncludeSalesOrderDate = true,
+                    IncludeCustomerName = true,
+                    IncludeMachineDescriptions = true,
+                    IncludeSerialNumbers = false,
+                    IncludeProductionOrderNumbers = false,
+                    IncludePackageReleaseDateE = true,
+                    IncludePackageReleaseDateA = false,
+                    IncludeDeliveryDates = false,
+                    IncludeVendorNames = true,
+                    IncludePoNumbers = true,
+                    IncludePoDueDates = true,
+                    IncludeMedia = false,
+                    IncludeSpareParts = false,
+                    IncludeBase = false,
+                    IncludeAirSeal = false,
+                    IncludeCoatingLining = false,
+                    IncludeDisassembly = false,
+                    IncludeNotes = false,
+                    IncludePreOrder = false,
+                    IncludeScope = false,
+                    IncludeActualAssemblyHours = false,
+                    IncludeReworkHours = false,
+                    IncludeNamePlate = false,
+                    IncludeOrderNumber = false,
+                    IncludeEngineer = false,
+                    IncludeGanttCustomerName = false,
+                    IncludeQuantity = false,
+                    IncludeMachineModel = false,
+                    IncludeGanttMedia = false,
+                    IncludeGanttSpareParts = false,
+                    IncludeApprovedDrawingReceived = false,
+                    IncludeGanttData = false,
+                    IncludeSpecialNotes = false
+                });
+            }
+            else if (name == "Production Template")
+            {
+                return Json(new ScheduleExportOptionsViewModel
+                {
+                    IncludeSalesOrderNumber = true,
+                    IncludeSalesOrderDate = true,
+                    IncludeCustomerName = true,
+                    IncludeMachineDescriptions = true,
+                    IncludeSerialNumbers = true,
+                    IncludeProductionOrderNumbers = true,
+                    IncludePackageReleaseDateE = true,
+                    IncludePackageReleaseDateA = true,
+                    IncludeDeliveryDates = true,
+                    IncludeVendorNames = false,
+                    IncludePoNumbers = false,
+                    IncludePoDueDates = false,
+                    IncludeMedia = true,
+                    IncludeSpareParts = true,
+                    IncludeBase = true,
+                    IncludeAirSeal = true,
+                    IncludeCoatingLining = true,
+                    IncludeDisassembly = true,
+                    IncludeNotes = true,
+                    IncludePreOrder = true,
+                    IncludeScope = true,
+                    IncludeActualAssemblyHours = true,
+                    IncludeReworkHours = true,
+                    IncludeNamePlate = true,
+                    IncludeOrderNumber = true,
+                    IncludeEngineer = true,
+                    IncludeGanttCustomerName = true,
+                    IncludeQuantity = true,
+                    IncludeMachineModel = true,
+                    IncludeGanttMedia = true,
+                    IncludeGanttSpareParts = true,
+                    IncludeApprovedDrawingReceived = true,
+                    IncludeGanttData = true,
+                    IncludeSpecialNotes = true
+                });
+            }
 
-            var options = JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(template.SelectionJson);
+            // Load from DB
+            var template = _context.UserSelections.FirstOrDefault(t => t.TemplateName == name);
+            if (template == null)
+                return NotFound();
+
+            var options = JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(
+                template.SelectionJson,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
             return Json(options);
         }
 
@@ -708,24 +844,24 @@ namespace haver.Controllers
         [HttpPost]
         public IActionResult DownloadSchedules(ScheduleExportOptionsViewModel options)
         {
-            // Load previously saved options from the database if no form submission
-            if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
-            {
-                if (options != null)
-                {
-                    SaveSelectionToDatabase(options);
-                }
+            //// Load previously saved options from the database if no form submission
+            //if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
+            //{
+            //    //if (options != null)
+            //    //{
+            //    //    SaveSelectionToDatabase(options);
+            //    //}
 
-                var savedSelections = LoadSelectionsFromDatabase();
-                if (savedSelections.Any())
-                {
-                    options = savedSelections.First(); // Load the most recent selection
-                }
-                else
-                {
-                    options = new ScheduleExportOptionsViewModel(); // Fallback if nothing is found
-                }
-            }
+            //    var savedSelections = LoadSelectionsFromDatabase();
+            //    if (savedSelections.Any())
+            //    {
+            //        options = savedSelections.First(); // Load the most recent selection
+            //    }
+            //    else
+            //    {
+            //        options = new ScheduleExportOptionsViewModel(); // Fallback if nothing is found
+            //    }
+            //}
 
             // Fetch sales orders with related data (unchanged)
             var salesOrders = _context.SalesOrders
@@ -749,6 +885,7 @@ namespace haver.Controllers
                         ProductionOrderNumbers = options.IncludeProductionOrderNumbers ? (m?.ProductionOrderNumber ?? "N/A") : null,
                         PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
                         PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
+                        DeliveryDates = options.IncludeDeliveryDates ? (so?.DelDt?.ToShortDateString() ?? "N/A") : null,
                         VendorNames = options.IncludeVendorNames && m?.Procurements != null && m.Procurements.Any()
                             ? string.Join(", ", m.Procurements.Select(p => p?.Vendor?.Name ?? "N/A"))
                             : null,
@@ -784,6 +921,7 @@ namespace haver.Controllers
                     Disassembly = options.IncludeDisassembly ? (so.Machines.Any(m => m.Disassembly) ? "✓" : "") : null,
                     PackageReleaseDateE = options.IncludePackageReleaseDateE ? "P - " + (so?.EngPExp?.ToShortDateString() ?? "N/A") : null,
                     PackageReleaseDateA = options.IncludePackageReleaseDateA ? "A - " + (so?.EngPRel?.ToShortDateString() ?? "N/A") : null,
+                    DeliveryDates = options.IncludeDeliveryDates ? (so?.DelDt.HasValue == true ? so.DelDt.Value.ToShortDateString() : "N/A") : null,
                     Comments = options.IncludeNotes ? (!string.IsNullOrEmpty(so?.Comments) ? Regex.Replace(so.Comments, "<.*?>", string.Empty) : "N/A") : null
                 } })
                 .ToList();
@@ -833,11 +971,11 @@ namespace haver.Controllers
                 return NotFound("No data available to export.");
             }
 
-            // Save options to session if this is a form submission
-            if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
-            {
-                SaveSelectionToDatabase(options);
-            }
+            //// Save options to session if this is a form submission
+            //if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    SaveSelectionToDatabase(options);
+            //}
 
             using (ExcelPackage excel = new ExcelPackage())
             {
@@ -1007,6 +1145,7 @@ namespace haver.Controllers
             ("Prod Order", options.IncludeProductionOrderNumbers, Color.FromArgb(91, 155, 213)),
             ("Pkg Rel Exp", options.IncludePackageReleaseDateE, Color.FromArgb(91, 155, 213)),
             ("Pkg Rel Act", options.IncludePackageReleaseDateA, Color.FromArgb(91, 155, 213)),
+             ("Delivery Date", options.IncludeDeliveryDates, Color.FromArgb(91, 155, 213)),
             ("Vendors", options.IncludeVendorNames, Color.FromArgb(91, 155, 213)),
             ("PO #", options.IncludePoNumbers, Color.FromArgb(91, 155, 213)),
             ("PO Due", options.IncludePoDueDates, Color.FromArgb(91, 155, 213)),
@@ -1125,6 +1264,7 @@ namespace haver.Controllers
                 if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.ProductionOrderNumbers;
                 if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateE;
                 if (options.IncludePackageReleaseDateA) workSheet.Cells[row, colIndex++].Value = item.Machine?.PackageReleaseDateA;
+                if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = item.Machine?.DeliveryDates;
                 if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = item.Machine?.VendorNames;
                 if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoNumbers;
                 if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = item.Machine?.PoDueDates;
@@ -1224,6 +1364,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) { workSheet.Column(colIndex).Width = 15; workSheet.Column(colIndex++).Style.WrapText = true; }
             if (options.IncludePackageReleaseDateE) workSheet.Column(colIndex++).Width = 15;
             if (options.IncludePackageReleaseDateA) workSheet.Column(colIndex++).Width = 15;
+            if (options.IncludeDeliveryDates) workSheet.Column(colIndex++).Width = 12;
             if (options.IncludeVendorNames) { workSheet.Column(colIndex).Width = 25; workSheet.Column(colIndex++).Style.WrapText = true; }
             if (options.IncludePoNumbers) { workSheet.Column(colIndex).Width = 15; workSheet.Column(colIndex++).Style.WrapText = true; }
             if (options.IncludePoDueDates) { workSheet.Column(colIndex).Width = 15; workSheet.Column(colIndex++).Style.WrapText = true; }
@@ -1302,6 +1443,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) count++;
             if (options.IncludePackageReleaseDateE) count++;
             if (options.IncludePackageReleaseDateA) count++;
+            if (options.IncludeDeliveryDates) count++;
             if (options.IncludeVendorNames) count++;
             if (options.IncludePoNumbers) count++;
             if (options.IncludePoDueDates) count++;
@@ -1369,6 +1511,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) headers.Add(("Prod Order", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePackageReleaseDateE) headers.Add(("Pkg Rel Exp", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePackageReleaseDateA) headers.Add(("Pkg Rel Act", true, Color.FromArgb(173, 216, 230)));
+            if (options.IncludeDeliveryDates) headers.Add(("Delivery Date", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludeVendorNames) headers.Add(("Vendors", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePoNumbers) headers.Add(("PO #", true, Color.FromArgb(173, 216, 230)));
             if (options.IncludePoDueDates) headers.Add(("PO Due", true, Color.FromArgb(173, 216, 230)));
@@ -1452,6 +1595,7 @@ namespace haver.Controllers
                 if (options.IncludeProductionOrderNumbers) workSheet.Cells[row, colIndex++].Value = schedule.ProductionOrderNumbers ?? "";
                 if (options.IncludePackageReleaseDateE) workSheet.Cells[row, colIndex++].Value = schedule.PackageReleaseDateE ?? "";
                 if (options.IncludePackageReleaseDateA) workSheet.Cells[row, colIndex++].Value = schedule.PackageReleaseDateA ?? "";
+                if (options.IncludeDeliveryDates) workSheet.Cells[row, colIndex++].Value = schedule.DeliveryDates ?? "";
                 if (options.IncludeVendorNames) workSheet.Cells[row, colIndex++].Value = schedule.VendorNames ?? "";
                 if (options.IncludePoNumbers) workSheet.Cells[row, colIndex++].Value = schedule.PoNumbers ?? "";
                 if (options.IncludePoDueDates) workSheet.Cells[row, colIndex++].Value = schedule.PoDueDates ?? "";
@@ -1505,6 +1649,7 @@ namespace haver.Controllers
             if (options.IncludeProductionOrderNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
             if (options.IncludePackageReleaseDateE) colIndex++;
             if (options.IncludePackageReleaseDateA) colIndex++;
+            if (options.IncludeDeliveryDates) colIndex++;
             if (options.IncludeVendorNames) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
             if (options.IncludePoNumbers) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
             if (options.IncludePoDueDates) workSheet.Column(colIndex++).Style.WrapText = true; else colIndex++;
