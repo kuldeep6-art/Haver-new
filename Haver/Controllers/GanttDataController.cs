@@ -684,6 +684,59 @@ namespace haver.Controllers
         [HttpGet]
         public IActionResult GetAllTemplates()
         {
+            var defaultTemplates = new List<(string Name, ScheduleExportOptionsViewModel Options)>
+    {
+        ("Machinery Meetings", new ScheduleExportOptionsViewModel
+        {
+            IncludeSalesOrderNumber = true,
+            IncludeMachineDescriptions = true,
+            IncludeSerialNumbers = true,
+            IncludeMedia = true,
+            IncludeSpareParts = true,
+            IncludeEngineer = true,
+            IncludeGanttData = true,
+            IncludeSpecialNotes = true
+        }),
+        ("Procurement", new ScheduleExportOptionsViewModel
+        {
+            IncludeSalesOrderNumber = true,
+            IncludeCustomerName = true,
+            IncludeVendorNames = true,
+            IncludePoNumbers = true,
+            IncludePoDueDates = true,
+            IncludePackageReleaseDateE = true,
+            IncludePackageReleaseDateA = true
+        }),
+        ("Production", new ScheduleExportOptionsViewModel
+        {
+            IncludeSalesOrderNumber = true,
+            IncludeProductionOrderNumbers = true,
+            IncludeMachineDescriptions = true,
+            IncludeBase = true,
+            IncludeAirSeal = true,
+            IncludeCoatingLining = true,
+            IncludeDisassembly = true,
+            IncludeActualAssemblyHours = true,
+            IncludeReworkHours = true,
+            IncludeGanttData = true
+        })
+    };
+
+            foreach (var (name, options) in defaultTemplates)
+            {
+                if (!_context.UserSelections.Any(t => t.TemplateName == name))
+                {
+                    _context.UserSelections.Add(new UserSelection
+                    {
+                        TemplateName = name,
+                        SelectionJson = JsonSerializer.Serialize(options),
+                        CreatedAt = DateTime.UtcNow
+                    });
+                }
+            }
+
+            _context.SaveChanges();
+
             var templates = _context.UserSelections
                 .OrderByDescending(t => t.CreatedAt)
                 .Select(t => t.TemplateName)
@@ -708,24 +761,24 @@ namespace haver.Controllers
         [HttpPost]
         public IActionResult DownloadSchedules(ScheduleExportOptionsViewModel options)
         {
-            // Load previously saved options from the database if no form submission
-            if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
-            {
-                if (options != null)
-                {
-                    SaveSelectionToDatabase(options);
-                }
+            //// Load previously saved options from the database if no form submission
+            //if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
+            //{
+            //    //if (options != null)
+            //    //{
+            //    //    SaveSelectionToDatabase(options);
+            //    //}
 
-                var savedSelections = LoadSelectionsFromDatabase();
-                if (savedSelections.Any())
-                {
-                    options = savedSelections.First(); // Load the most recent selection
-                }
-                else
-                {
-                    options = new ScheduleExportOptionsViewModel(); // Fallback if nothing is found
-                }
-            }
+            //    var savedSelections = LoadSelectionsFromDatabase();
+            //    if (savedSelections.Any())
+            //    {
+            //        options = savedSelections.First(); // Load the most recent selection
+            //    }
+            //    else
+            //    {
+            //        options = new ScheduleExportOptionsViewModel(); // Fallback if nothing is found
+            //    }
+            //}
 
             // Fetch sales orders with related data (unchanged)
             var salesOrders = _context.SalesOrders
@@ -833,11 +886,11 @@ namespace haver.Controllers
                 return NotFound("No data available to export.");
             }
 
-            // Save options to session if this is a form submission
-            if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
-            {
-                SaveSelectionToDatabase(options);
-            }
+            //// Save options to session if this is a form submission
+            //if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    SaveSelectionToDatabase(options);
+            //}
 
             using (ExcelPackage excel = new ExcelPackage())
             {
