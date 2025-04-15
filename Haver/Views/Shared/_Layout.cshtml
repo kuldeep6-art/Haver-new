@@ -361,33 +361,52 @@
 	// Toggle Sidebar
 	function toggleSidebar() {
 		var sidebar = document.getElementById("sidebar");
-		var sidebarStateInput = document.getElementById("sidebarState");
-		var hamburgerBtn = document.querySelector(".hamburger-btn i"); // Select the hamburger icon
+		var hamburgerBtn = document.querySelector(".hamburger-btn i");
 
-		// Toggle the sidebar class
+		// Toggle sidebar visibility
 		sidebar.classList.toggle("active");
 
-		// Update hidden field value
-		sidebarStateInput.value = sidebar.classList.contains("active") ? "active" : "inactive";
-
-		// Change hamburger button color based on sidebar state
+		// Save new state to localStorage
 		if (sidebar.classList.contains("active")) {
-			hamburgerBtn.style.color = "white"; // White when sidebar is open
+			localStorage.setItem("sidebarState", "active");
+			hamburgerBtn.style.color = "white";
 		} else {
-			hamburgerBtn.style.color = "#001a3d"; // Default color when collapsed
+			localStorage.setItem("sidebarState", "inactive");
+			hamburgerBtn.style.color = "#001a3d";
 		}
 	}
 
 	// Restore Sidebar State on Page Load
 	document.addEventListener("DOMContentLoaded", function () {
-		var sidebarStateInput = document.getElementById("sidebarState");
 		var sidebar = document.getElementById("sidebar");
-		var hamburgerBtn = document.querySelector(".hamburger-btn i"); // Select the hamburger icon
+		var hamburgerBtn = document.querySelector(".hamburger-btn i");
 
-		// If the state was "active", make sure sidebar stays open
-		if (sidebarStateInput.value === "active") {
-			sidebar.classList.add("active");
-			hamburgerBtn.style.color = "white"; // Ensure white color when sidebar is active
+		// Detect screen size
+		var isMobile = window.innerWidth <= 768;
+
+		// Get saved state
+		var savedState = localStorage.getItem("sidebarState");
+
+		if (savedState) {
+			// If there's a saved state, use it
+			if (savedState === "active") {
+				sidebar.classList.add("active");
+				hamburgerBtn.style.color = "white";
+			} else {
+				sidebar.classList.remove("active");
+				hamburgerBtn.style.color = "#001a3d";
+			}
+		} else {
+			// No saved state yet — apply defaults
+			if (isMobile) {
+				sidebar.classList.add("active");
+				hamburgerBtn.style.color = "white";
+				localStorage.setItem("sidebarState", "active");
+			} else {
+				sidebar.classList.remove("active");
+				hamburgerBtn.style.color = "#001a3d";
+				localStorage.setItem("sidebarState", "inactive");
+			}
 		}
 	});
 
@@ -416,7 +435,7 @@
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	}
 
-	//Confirm back to previous page
+	// Confirm back to previous page
 	let confirmBackModal = new bootstrap.Modal(document.getElementById('confirmBackModal'));
 	let noPageModal = new bootstrap.Modal(document.getElementById('noPreviousPageModal'));
 
@@ -425,19 +444,18 @@
 	}
 
 	document.getElementById('confirmBackBtn').addEventListener('click', function () {
-		// Close the confirm modal before acting
 		confirmBackModal.hide();
 
-		// Check history length
 		if (window.history.length > 1) {
 			window.history.back();
 		} else {
-			// Delay
 			setTimeout(() => {
 				noPageModal.show();
 			}, 300);
 		}
 	});
+
+
 </script>
 
 <script type="text/javascript">
