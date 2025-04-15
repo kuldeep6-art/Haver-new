@@ -358,103 +358,103 @@
 		}
 </style>
 <script>
+
 	// Toggle Sidebar
-	function toggleSidebar() {
-		var sidebar = document.getElementById("sidebar");
-		var hamburgerBtn = document.querySelector(".hamburger-btn i");
+function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    var hamburgerBtn = document.querySelector(".hamburger-btn i");
 
-		// Toggle sidebar visibility
-		sidebar.classList.toggle("active");
+    // Toggle sidebar visibility
+    sidebar.classList.toggle("active");
 
-		// Save new state to localStorage
-		if (sidebar.classList.contains("active")) {
-			localStorage.setItem("sidebarState", "active");
-			hamburgerBtn.style.color = "white";
-		} else {
-			localStorage.setItem("sidebarState", "inactive");
-			hamburgerBtn.style.color = "#001a3d";
-		}
-	}
+    // Save new state to localStorage
+    if (sidebar.classList.contains("active")) {
+        localStorage.setItem("sidebarState", "active");
+        hamburgerBtn.style.color = "white";
+    } else {
+        localStorage.setItem("sidebarState", "inactive");
+        hamburgerBtn.style.color = "#001a3d";
+    }
+}
 
-	// Restore Sidebar State on Page Load
-	document.addEventListener("DOMContentLoaded", function () {
-		var sidebar = document.getElementById("sidebar");
-		var hamburgerBtn = document.querySelector(".hamburger-btn i");
+// Restore Sidebar State on Page Load
+document.addEventListener("DOMContentLoaded", function () {
+    var sidebar = document.getElementById("sidebar");
+    var hamburgerBtn = document.querySelector(".hamburger-btn i");
 
-		// Detect screen size
-		var isMobile = window.innerWidth <= 768;
+    // Detect screen size
+    var isMobile = window.innerWidth <= 768;
 
-		// Get saved state
-		var savedState = localStorage.getItem("sidebarState");
+    // Get saved state
+    var savedState = localStorage.getItem("sidebarState");
 
-		if (savedState) {
-			// If there's a saved state, use it
-			if (savedState === "active") {
-				sidebar.classList.add("active");
-				hamburgerBtn.style.color = "white";
-			} else {
-				sidebar.classList.remove("active");
-				hamburgerBtn.style.color = "#001a3d";
-			}
-		} else {
-			// No saved state yet — apply defaults
-			if (isMobile) {
-				sidebar.classList.add("active");
-				hamburgerBtn.style.color = "white";
-				localStorage.setItem("sidebarState", "active");
-			} else {
-				sidebar.classList.remove("active");
-				hamburgerBtn.style.color = "#001a3d";
-				localStorage.setItem("sidebarState", "inactive");
-			}
-		}
-	});
+    if (savedState) {
+        // If there's a saved state, use it
+        if (savedState === "active") {
+            sidebar.classList.add("active");
+            hamburgerBtn.style.color = "white";
+        } else {
+            sidebar.classList.remove("active");
+            hamburgerBtn.style.color = "#001a3d";
+        }
+    } else {
+        // No saved state yet — apply defaults
+        if (isMobile) {
+            sidebar.classList.remove("active");
+            hamburgerBtn.style.color = "#001a3d";
+            localStorage.setItem("sidebarState", "inactive");
+        } else {
+            sidebar.classList.add("active");
+            hamburgerBtn.style.color = "white";
+            localStorage.setItem("sidebarState", "active");
+        }
+    }
+});
 
-	// Toggle Dropdowns
-	function toggleDropdown(event) {
-		event.preventDefault();
-		let dropdown = event.target.closest('.dropdown');
-		dropdown.classList.toggle('active');
+// Toggle Dropdowns
+function toggleDropdown(event) {
+    event.preventDefault();
+    let dropdown = event.target.closest('.dropdown');
+    dropdown.classList.toggle('active');
 
-		// Close other dropdowns
-		document.querySelectorAll('.dropdown').forEach(d => {
-			if (d !== dropdown) {
-				d.classList.remove('active');
-			}
-		});
-	}
+    // Close other dropdowns
+    document.querySelectorAll('.dropdown').forEach(d => {
+        if (d !== dropdown) {
+            d.classList.remove('active');
+        }
+    });
+}
 
-	// Show/hide Scroll To Top Button
-	window.onscroll = function () {
-		var btn = document.getElementById("scrollToTopBtn");
-		btn.style.display = (document.documentElement.scrollTop > 300) ? "block" : "none";
-	};
+// Show/hide Scroll To Top Button
+window.onscroll = function () {
+    var btn = document.getElementById("scrollToTopBtn");
+    btn.style.display = (document.documentElement.scrollTop > 300) ? "block" : "none";
+};
 
-	// Scroll to Top
-	function scrollToTop() {
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
+// Scroll to Top
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-	// Confirm back to previous page
-	let confirmBackModal = new bootstrap.Modal(document.getElementById('confirmBackModal'));
-	let noPageModal = new bootstrap.Modal(document.getElementById('noPreviousPageModal'));
+// Confirm back to previous page
+let confirmBackModal = new bootstrap.Modal(document.getElementById('confirmBackModal'));
+let noPageModal = new bootstrap.Modal(document.getElementById('noPreviousPageModal'));
 
-	function showConfirmBackModal() {
-		confirmBackModal.show();
-	}
+function showConfirmBackModal() {
+    confirmBackModal.show();
+}
 
-	document.getElementById('confirmBackBtn').addEventListener('click', function () {
-		confirmBackModal.hide();
+document.getElementById('confirmBackBtn').addEventListener('click', function () {
+    confirmBackModal.hide();
 
-		if (window.history.length > 1) {
-			window.history.back();
-		} else {
-			setTimeout(() => {
-				noPageModal.show();
-			}, 300);
-		}
-	});
-
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        setTimeout(() => {
+            noPageModal.show();
+        }, 300);
+    }
+});
 
 </script>
 
