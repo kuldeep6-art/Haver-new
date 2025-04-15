@@ -478,7 +478,9 @@ namespace haver.Controllers
                     _context.Procurements.Remove(procurement);
                     await _context.SaveChangesAsync();
 
-                    await LogActivity($"Procurement {procurement.PONumber} deleted");
+					await UpdateGanttProcurementDates(procurement.MachineID);
+
+					await LogActivity($"Procurement {procurement.PONumber} deleted");
 
                     await _context.SaveChangesAsync();
                 }
