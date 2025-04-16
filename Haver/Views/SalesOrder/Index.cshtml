@@ -15,7 +15,7 @@
 <h1 style="font-weight:bold;text-align:center;">Sales Orders</h1>
 
 @{
-    // Create route value dictionaries for each tab
+    //tabs
     var routeValues = new Dictionary<string, Dictionary<string, string>>
             {
                 ["Active"] = new Dictionary<string, string>(),
@@ -24,7 +24,6 @@
                 ["Draft"] = new Dictionary<string, string> { ["status"] = "Draft" }
             };
 
-    // Preserve existing query parameters
     foreach (var key in Context.Request.Query.Keys.Where(k => k != "status" && k != "page"))
     {
         foreach (var dict in routeValues.Values)
@@ -33,7 +32,6 @@
         }
     }
 
-    // Set page=1 for all tabs
     foreach (var dict in routeValues.Values)
     {
         dict["page"] = "1";
@@ -72,7 +70,6 @@
 @if (User.IsInRole("Admin") || User.IsInRole("Sales"))
                     {
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <!-- Create button remains the same -->
     <a asp-action="Create" class="btn" aria-label="Create a new sales order" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Create a new sales order">
         <i class="fa-solid fa-plus"></i> Create New @ViewData["ControllerFriendlyName"]
     </a>
@@ -83,11 +80,9 @@
     <input type="hidden" name="status" value="@ViewBag.Status" />
   
     <div class="form-horizontal">
-        <!-- Existing hidden fields for sort -->
         <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
         <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
 
-        <!-- Existing filter toggle button -->
         <button class="btn @ViewData["Filtering"] mb-3" type="button" data-bs-toggle="collapse"
                 id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false"
                 aria-controls="collapseFilter" aria-label="Toggle filter/search options"
@@ -95,11 +90,9 @@
             <i class="fa-solid fa-filter"></i> Filter/Search @ViewData["numberFilters"]
         </button>
 
-        <!-- Existing filter content -->
         <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
             <div class="card card-body bg-light">
                 <div class="row">
-                    <!-- Your existing filter controls -->
                     <div class="form-group col-md-4">
                         <label class="form-label fw-bold" for="SearchString">Search Customer:</label>
                         @Html.TextBox("CString", null, new { @class = "form-control", placeholder = "Enter Company Name", aria_label = "Enter customer to search" })
@@ -235,9 +228,6 @@
                     }
                     else
                     {
-                        
-
-
                         <td>
                             @if (item.Status == Status.Archived)
                             {
@@ -313,12 +303,12 @@
             idInput.value = orderId;
 
             if (actionType === 'archive') {
-                form.setAttribute('action', '/SalesOrder/Archive');  // Replace with your controller and action
+                form.setAttribute('action', '/SalesOrder/Archive');  
                 modalTitle.textContent = "Confirm Archive";
                 modalBody.innerHTML = `Are you sure you want to archive this sales order ?`;
                 confirmBtn.className = "btn ";
             } else {
-                form.setAttribute('action', '/SalesOrder/Restore');  // Replace with your controller and action
+                form.setAttribute('action', '/SalesOrder/Restore');  
                 modalTitle.textContent = "Confirm Restore";
                 modalBody.innerHTML = `Are you sure you want to restore this sales order ?`;
                 confirmBtn.className = "btn ";
