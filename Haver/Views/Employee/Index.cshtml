@@ -5,14 +5,13 @@
 <div class="text-danger">@TempData["message"]</div>
 
 @{
-    // Create route value dictionaries for each tab
+    // Tab
     var routeValues = new Dictionary<string, Dictionary<string, object>>
             {
                 ["Active"] = new Dictionary<string, object> { ["Active"] = true },
                 ["Inactive"] = new Dictionary<string, object> { ["Active"] = false }
             };
 
-    // Preserve existing query parameters (except 'Active' and 'page')
     foreach (var key in Context.Request.Query.Keys.Where(k => k != "Active" && k != "page"))
     {
         foreach (var dict in routeValues.Values)

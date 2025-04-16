@@ -19,7 +19,6 @@
                 <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
                 <div class="row">
-                    <!-- Initials -->
                     <div class="form-group col-md-6 mb-3">
                         <label asp-for="EngineerInitials" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -30,8 +29,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" placeholder="Enter Initials" />
                         <span asp-validation-for="EngineerInitials" class="text-danger"></span>
                     </div>
-
-                    <!-- Last Name -->
                     <div class="form-group col-md-6 mb-3">
                         <label asp-for="FirstName" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -45,8 +42,6 @@
                 </div>
                
                 <div class="row">
-
-                    <!-- Last Name -->
                     <div class="form-group col-md-6 mb-3">
                         <label asp-for="LastName" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -57,8 +52,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
-
-                    <!-- Email -->
                     <div class="form-group col-md-6 mb-3">
                         <label asp-for="Email" class="control-label"
                                style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -70,9 +63,6 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
-
-
-                <!-- Submit Button -->
                 <div class="form-group text-center">
                     <div class="d-flex flex-wrap justify-content-center gap-2">
 
@@ -85,8 +75,6 @@
                            style="background-color:#6c757d; border-color:#6c757d; font-family: 'Avenir Heavy', sans-serif;">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to List
                         </a>
-
-
                     </div>
                 </div>
             </form>

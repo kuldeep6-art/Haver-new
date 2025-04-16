@@ -153,8 +153,6 @@
                     </div>
                    
                 </div>
-
-                <!-- Row 4: AssemblyStart, AssemblyComplete, ShipExpected -->
                 <div class="row mb-3">
                    
                     <div class="col-md-4">
@@ -343,7 +341,7 @@
 
                 if (salesOrderID) {
                     $.ajax({
-                        url: '@Url.Action("GetMachineData", "GanttData")' + '?salesOrderID=' + salesOrderID, // Use salesOrderID instead of machineID
+                        url: '@Url.Action("GetMachineData", "GanttData")' + '?salesOrderID=' + salesOrderID, 
                         type: 'GET',
                         success: function (data) {
                             console.log(data);
@@ -364,19 +362,16 @@
 
                         // Auto calculate EngReleased date based on EngExpected
                         if (data.EngExpected) {
-                            // Parse the EngExpected date
+                          
                             var engExpectedDate = new Date(data.EngExpected);
-                            console.log("Parsed EngExpected Date: ", engExpectedDate);  // Log to check if it's valid
+                            console.log("Parsed EngExpected Date: ", engExpectedDate);  
 
-                            // Add 7 days to the EngExpected date (you can modify this duration as needed)
-                            engExpectedDate.setDate(engExpectedDate.getDate() + 7); // Add 7 days
-                            console.log("Calculated EngReleased Date: ", engExpectedDate);  // Log the calculated date
+                            engExpectedDate.setDate(engExpectedDate.getDate() + 7); 
+                            console.log("Calculated EngReleased Date: ", engExpectedDate);  
 
-                            // Format the new date in yyyy-MM-dd format
                             var calculatedDate = engExpectedDate.toISOString().split('T')[0];
-                            console.log("Formatted Date: ", calculatedDate);  // Log the formatted date
+                            console.log("Formatted Date: ", calculatedDate);  
 
-                            // Set the calculated EngReleased date
                             $('#EngReleased').val(calculatedDate);
                         }
                     }

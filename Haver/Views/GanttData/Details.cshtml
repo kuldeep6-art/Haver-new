@@ -358,28 +358,10 @@
             height: 120px !important; /* Shrink empty space */
         }
 
-       /*   .handle {
-             display: none !important;
-         } */
-         /* Disable interaction with drag handles */
-         /* .handle {
-             pointer-events: none !important;
-             display: none !important;
-         }
- */
-         /* Allow clicks on bars and labels */
-
-         /* .bar, .bar-label{
-          pointer-events: none !important; 
-         cursor: not-allowed !important; 
-}*/
-
         .bar {
             cursor: pointer;
             height: 24px;
         }
-
-
 
         .gantt-task-popup {
             position: absolute;
@@ -488,9 +470,9 @@
      
 
 
-            // Manually adjust all task bars to align in the same row
+            // all task bars to align in the same row
             setTimeout(function () {
-                const yOffset = 23; // Adjust to align all bars properly
+                const yOffset = 23; 
 
                 function applyYOffset(el, yOffset) {
                     const tag = el.tagName.toLowerCase();
@@ -574,10 +556,9 @@
                 tasks.forEach((task) => {
                     let bars = document.querySelectorAll(`.bar-wrapper[data-id='${task.id}'] .bar`);
                     bars.forEach(bar => {
-                        bar.style.fill = task.custom_class; // Use the color from the ViewModel
+                        bar.style.fill = task.custom_class; 
                     });
                 });
-
 
                 // Scroll to today's date
                 showCurrentDay();
@@ -585,7 +566,7 @@
             }, 500);
 
 
-            //so bars won't move
+            //stop bars from moving 
             setTimeout(() => {
                 document.querySelectorAll(".bar").forEach(bar => {
                     bar.removeAttribute("data-start");
@@ -634,8 +615,8 @@
             }
         });
 
-        gantt.options.bar_height = 20; // Reduce bar height to match row height
-        gantt.refresh(); // Apply changes
+        gantt.options.bar_height = 20; 
+        gantt.refresh(); 
 
     </script>
 
@@ -663,11 +644,11 @@
         idInput.value = ganttId;
 
         if (actionType === 'finalize') {
-            form.setAttribute('action', '/GanttData/FinalizeGantt'); // Replace with your actual controller route if needed
+            form.setAttribute('action', '/GanttData/FinalizeGantt'); 
             modalTitle.textContent = "Confirm Finalization";
             modalBody.textContent = "Are you sure you want to finalize this Gantt Data/chart? Once finalized, it may be locked for edits.";
         } else {
-            form.setAttribute('action', '/GanttData/UnfinalizeGantt'); // Replace with your actual controller route if needed
+            form.setAttribute('action', '/GanttData/UnfinalizeGantt'); 
             modalTitle.textContent = "Confirm Unfinalization";
             modalBody.textContent = "Are you sure you want to unfinalize this Gantt Data/chart? This will allow further edits.";
         }
