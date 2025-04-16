@@ -1,9 +1,5 @@
 ﻿namespace haver.ViewModels
 {
-
-		//public string Size { get; set; }
-		//public string Class { get; set; }
-		//public string SizeDeck { get; set; }
 		public class GanttScheduleViewModel
 		{
 			public string OrderNumber { get; set; }

@@ -139,12 +139,6 @@ namespace haver.Data
                 .IsUnique();
 
 
-            //modelBuilder.Entity<MachineType>()
-            //    .HasIndex(pr => new { pr.Class, pr.Size, pr.Deck })
-            //    .IsUnique();
-
-
-
 
             //composite keys for many to many     
             modelBuilder.Entity<SalesOrderEngineer>()

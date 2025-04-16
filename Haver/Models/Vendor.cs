@@ -24,7 +24,7 @@ namespace haver.Models
         [MaxLength(50, ErrorMessage = "Vendor name can not be more than 50 characters long.")]
         public string? Name { get; set; }
 
-        //Phone number  Annotations
+        //Phone number Annotations
 
         [Display(Name = "Phone Number")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number with no spacing.")]
@@ -32,7 +32,7 @@ namespace haver.Models
         [MaxLength(10, ErrorMessage = "Phone can not be more than 10 digits.")]
         public string? Phone { get; set; }
 
-        //Email  Annotations
+        //Email Annotations
 
         [Display(Name = "Email")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Please follow the correct email format test@email.com")]
