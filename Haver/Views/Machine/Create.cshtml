@@ -21,7 +21,6 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
-                    <!-- First Row -->
                     <div class="row">
                         <!-- Machine Type -->
                     <div class="form-group col-md-4 mb-3">
@@ -55,11 +54,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" id="companyNameInput" />
                         <span asp-validation-for="MachineModel" class="text-danger"></span>
                     </div>
-       
-                  
-                  
-
-                        <!-- Sales Order -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="SalesOrderID" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.SalesOrderID)  <span class="text-danger">*</span>
@@ -72,8 +66,6 @@
                         </select>
                         <span asp-validation-for="SalesOrderID" class="text-danger d-block mt-1"></span>
                         </div>
-
-                        <!-- Serial Number -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="SerialNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 <span class="text-danger">*</span> @Html.DisplayNameFor(model => model.SerialNumber)
@@ -84,9 +76,7 @@
                         </div>
                     </div>
 
-                    <!-- Second Row -->
                     <div class="row">
-                    <!-- RToShipExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="RToShipExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.RToShipExp)  <span class="text-danger">*</span>
@@ -105,7 +95,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AssemblyExp" class="text-danger"></span>
                     </div>
-                        <!-- Production Order -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ProductionOrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                  @Html.DisplayNameFor(model => model.ProductionOrderNumber)
@@ -113,17 +102,10 @@
                             <input asp-for="ProductionOrderNumber" class="form-control" placeholder="Enter Production Order Number"
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
-                        </div>
-
-                      
-
-
-                       
+                        </div>     
                     </div>
 
                 <div class="row">
-
-                    <!-- Nameplate -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.Nameplate)
@@ -133,8 +115,6 @@
                                 asp-items="Html.GetEnumSelectList<NamePlate>()"></select>
                         <span asp-validation-for="Nameplate" class="text-danger"></span>
                     </div>
-
-                    <!-- RToShipA -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="RToShipA" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.RToShipA)
@@ -221,13 +201,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Third Row -->
                 <div class="row">
-
-                   
-
-                   
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AssemblyComplete" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                              @Html.DisplayNameFor(model => model.AssemblyComplete)
@@ -237,8 +211,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
                     </div>
-
-                    <!-- Budgeted Hours -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="BudgetedHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.BudgetedHours)
@@ -247,8 +219,6 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="BudgetedHours" class="text-danger"></span>
                     </div>
-
-                    <!-- Actual Hours -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="ActualAssemblyHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.ActualAssemblyHours)
@@ -260,12 +230,7 @@
 
 
                 </div>
-
-                    <!-- Third Row -->
                     <div class="row">
-                       
-                      
-                        <!-- Rework Hours -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ReworkHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.ReworkHours)
@@ -274,16 +239,8 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="ReworkHours" class="text-danger"></span>
                         </div>
-
-
                     </div>
-
-               
-
-                
-
                     <div class="row">
-                        <!-- PreOrder -->
                         <div class="form-group col-md-6 mb-4">
                             <label asp-for="PreOrder" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.PreOrder)
@@ -293,8 +250,6 @@
                                       style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;"></textarea>
                             <span asp-validation-for="PreOrder" class="text-danger"></span>
                         </div>
-
-                        <!-- Scope -->
                         <div class="form-group col-md-6 mb-4">
                             <label asp-for="Scope" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.Scope)
@@ -305,9 +260,7 @@
                             <span asp-validation-for="Scope" class="text-danger"></span>
                         </div>
                     </div>
-               
-
-                    <!-- Form Actions -->
+              
                 <div class="form-group text-center">
                     <div class="d-flex flex-wrap justify-content-center gap-2">
 
@@ -352,8 +305,6 @@
     <script src="~/js/mfill.js"></script>
 
     <!-- Summernote JS -->
-    
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
@@ -406,7 +357,7 @@
             return false;
         });
         $('#addMachineTypeModal').on('hide.bs.modal', function () {
-            document.getElementById("createMachineTypeForm").reset();//to clear the data in the popup form
+            document.getElementById("createMachineTypeForm").reset();
             ClearErrors();
             var selectedOption = $('#MachineTypeID').val();//Return to the current selected value
             refreshDDL('MachineTypeID', '/Machine/GetMachineTypes/' + selectedOption, false, null, true, 'None', true);
@@ -433,7 +384,7 @@
                         }
                     });
                 },
-                minLength: 1 // Set to 2 or higher to limit the suggestions
+                minLength: 1 // Set limit
             });
         });
 
@@ -470,10 +421,6 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
-
-  
-
-
 }
 
 
