@@ -33,7 +33,6 @@ namespace haver.Models
         public string? EngineerInitials { get; set; }
 
         //First Name Annotations
-
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Enter the first name of the engineer .")]
         [MaxLength(50, ErrorMessage = "First name cannot be more than 50 characters long.")]
@@ -41,7 +40,6 @@ namespace haver.Models
         public string? FirstName { get; set; }
 
         //Last Name Annotations
-
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Enter the last name of the engineer.")]
         [MaxLength(50, ErrorMessage = "Last name cannot be more than 50 characters long.")]
@@ -49,16 +47,12 @@ namespace haver.Models
         public string? LastName { get; set; }
 
         //Email Annotations
-
-        //[Required(ErrorMessage = "Email address is required.")]
         [Display(Name = "Email")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Please follow the correct email format test@email.com")]
         [StringLength(255)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = "";
         public ICollection<SalesOrderEngineer> SalesOrderEngineers { get; set; } = new HashSet<SalesOrderEngineer>();
-
-
 
 
     }
