@@ -13,14 +13,13 @@
 }
 
 @{
-    // Create route value dictionaries for each tab
+    //tabs
     var routeValues = new Dictionary<string, Dictionary<string, string>>
             {
                 ["Active"] = new Dictionary<string, string> { ["isFinalized"] = "false" },
                 ["Finalized"] = new Dictionary<string, string> { ["isFinalized"] = "true" }
             };
 
-    // Preserve existing query parameters (except 'isActive' and 'page')
     foreach (var key in Context.Request.Query.Keys.Where(k => k != "isFinalized" && k != "page"))
     {
         foreach (var dict in routeValues.Values)
@@ -29,7 +28,6 @@
         }
     }
 
-    // Reset page number to 1 when switching tabs
     foreach (var dict in routeValues.Values)
     {
         dict["page"] = "1";
