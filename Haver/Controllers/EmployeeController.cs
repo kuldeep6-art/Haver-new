@@ -129,7 +129,7 @@ namespace haver.Controllers
 
                     InsertIdentityUser(employee.Email, selectedRoles);
 
-                    // 🌟 Activity Logging
+                    //Activity Logging
                     await LogActivity($"New employee {employee.FirstName} {employee.LastName} was added");
 
                     await _context.SaveChangesAsync();
@@ -218,7 +218,6 @@ namespace haver.Controllers
                 return NotFound();
             }
 
-            // Note the current Email and Active Status
             bool ActiveStatus = employeeToUpdate.Active;
             string databaseEmail = employeeToUpdate.Email;
 
@@ -228,7 +227,6 @@ namespace haver.Controllers
             // Check if the user being edited is the logged-in admin
             bool isEditingSelf = employeeToUpdate.Email == loggedInUser;
 
-            // Get the roles of the user being edited
             var user = await _userManager.FindByEmailAsync(employeeToUpdate.Email);
             var userRoles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
 
