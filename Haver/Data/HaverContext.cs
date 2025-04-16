@@ -49,9 +49,6 @@ namespace haver.Data
 
 		public DbSet<MachineType> MachineTypes { get; set; }
 
-        public DbSet<GanttTask> GanttTasks { get; set; }
-        public DbSet<GanttMilestone> GanttMilestones { get; set; }
-
         public DbSet<ActivityLog> ActivityLogs { get; set; }
 
         public DbSet<GanttData> GanttDatas { get; set; }
@@ -140,12 +137,6 @@ namespace haver.Data
             modelBuilder.Entity<Engineer>()
                 .HasIndex(pr => new { pr.FirstName, pr.LastName })
                 .IsUnique();
-
-
-            //modelBuilder.Entity<MachineType>()
-            //    .HasIndex(pr => new { pr.Class, pr.Size, pr.Deck })
-            //    .IsUnique();
-
 
 
 

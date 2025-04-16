@@ -1,8 +1,5 @@
 ﻿@model haver.Models.Customer
 
-
-
-
 <div class="container-fluid bg-light">
     <!-- Header -->
     <div class="row">
@@ -20,7 +17,6 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
 
-                <!-- Company Name -->
                 <div class="form-group mb-3">
                     <label asp-for="CompanyName" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -32,8 +28,6 @@
                     <span asp-validation-for="CompanyName" class="text-danger"></span>
                 </div>
 
-
-                <!-- Contact Number -->
                 <div class="form-group mb-3">
                     <label asp-for="Phone" class="control-label"
                            style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -45,7 +39,6 @@
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
 
-              
                 <!-- Submit Button -->
                 <div class="form-group text-center">
                     <div class="d-flex flex-wrap justify-content-center gap-2">

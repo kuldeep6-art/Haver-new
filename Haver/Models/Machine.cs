@@ -16,7 +16,6 @@ namespace haver.Models
             get
             {
                 return MachineModel + " | " + (SerialNumber ?? "Unknown Serial");
-                //return (MachineType?.Description ?? "Unknown Model") + " | " + (SerialNumber ?? "Unknown Serial");
             }
         }
 

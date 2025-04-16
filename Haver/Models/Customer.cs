@@ -24,15 +24,12 @@ namespace haver.Models
         [MinLength(2, ErrorMessage = "Company name cannot be less than 2 characters long.")]
         public string? CompanyName { get; set; }
 
-        //Phone Name Annotations
+        //Phone Annotations
         [Display(Name = "Company Phone")]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Please enter a valid 10-digit phone number with no spaces.")]
         [DataType(DataType.PhoneNumber)]
         [MaxLength(10)]
         public string? Phone { get; set; }
-
-    
-
 
         public ICollection<SalesOrder> SalesOrders { get; set; } = new HashSet<SalesOrder>();
     }

@@ -16,16 +16,6 @@ namespace haver.Models
         public int? MachineID { get; set; }
         public Machine? Machine { get; set; }
 
-        //[Display(Name = "Pre Orders Expected")]
-        //[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        //[DataType(DataType.Date)]
-        //public DateTime? PreOExp { get; set; }
-
-        //[Display(Name = "Pre Orders Released")]
-        //[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        //[DataType(DataType.Date)]
-        //public DateTime? PreORel { get; set; }
-
         [Display(Name = "Approval Drawings Due")]
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
@@ -35,8 +25,6 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? AppDRcd { get; set; }
-
-
 
         [Display(Name = "Start of Week")]
         public WeekStartOption StartOfWeek { get; set; } = WeekStartOption.Monday; // Default to Monday
@@ -66,11 +54,6 @@ namespace haver.Models
         [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
         [DataType(DataType.Date)]
         public DateTime? EngReleased { get; set; }
-
-        //[Display(Name = "Customer Approval Received")]
-        //[DisplayFormat(DataFormatString = "{0:MMM d, yyyy}")]
-        //[DataType(DataType.Date)]
-        //public DateTime? CustomerApproval { get; set; }
 
         // Procurement  
         [Display(Name = "Package Released to PIC/Spare Parts to Customer Service")]
@@ -136,29 +119,7 @@ namespace haver.Models
         public bool IsFinalized { get; set; } = false;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-
-            //// Ensure EngReleased is after EngExpected
-            //if (EngExpected.HasValue && EngReleased.HasValue && EngReleased.Value < EngExpected.Value)
-            //{
-            //    yield return new ValidationResult("Drawings Received from Customer cannot be earlier than Drawings Issued to Customer.", new[] { "AppDwgRet" });
-            //}
-
-           
-
-            //// Ensure ShipExpected is after PackageReleased
-            //if (PackageReleased.HasValue && ShipExpected.HasValue && ShipExpected.Value < PackageReleased.Value)
-            //{
-            //    yield return new ValidationResult("Ship Expected date must not be earlier than Package Released date.", new[] { "ShipExpected" });
-            //}
-
-            //// Ensure DeliveryExpected is after ShipExpected
-            //if (ShipExpected.HasValue && DeliveryExpected.HasValue && DeliveryExpected.Value < ShipExpected.Value)
-            //{
-            //    yield return new ValidationResult("Delivery Expected date must not be earlier than Ship Expected date.", new[] { "DeliveryExpected" });
-            //}
-
-        
+        {        
             if (AssemblyStart.HasValue && AssemblyComplete.HasValue && AssemblyComplete.Value < AssemblyStart.Value)
             {
                 yield return new ValidationResult("Assembly Complete Date cannot be less than Assembly Start Date", new[] { "AssemblyComplete" });
