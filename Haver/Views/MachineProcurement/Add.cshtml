@@ -21,8 +21,6 @@
                 <input type="hidden" name="MachineID" value="@Model.MachineID" />
                 <input type="hidden" name="SerialNumber" value="@ViewData["SerialNumber"]" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <!-- Vendor & PO Number (Same Row) -->
                 <div class="form-group mb-3 row">
                     <div class="col-md-6">
                         <label asp-for="VendorID" class="control-label"
@@ -48,7 +46,6 @@
                     </div>
                 </div>
 
-                <!-- Expected Due Date & Delivery Date (Same Row) -->
                 <div class="form-group mb-3 row">
  
 

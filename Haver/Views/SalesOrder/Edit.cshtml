@@ -24,10 +24,7 @@
                 <input type="hidden" asp-for="RowVersion" />
                 <h6 class="mb-4" style="color: #0C2340;"><b>Fields marked with <span class="text-danger">*</span> are required</b></h6>
 
-                <!-- First Row -->
                 <div class="row">
-
-                    <!-- Order Number -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="OrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Order Number <span class="text-danger">*</span>
@@ -37,7 +34,6 @@
                         <span asp-validation-for="OrderNumber" class="text-danger"></span>
                     </div>
 
-                    <!-- Company Name -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="CompanyName" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Company Name <span class="text-danger">*</span>
@@ -48,7 +44,6 @@
                         <span asp-validation-for="CompanyName" class="text-danger"></span>
                     </div>
 
-                    <!-- SO Date -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="SoDate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Order Date <span class="text-danger">*</span>
@@ -60,9 +55,7 @@
                     </div>
                 </div>
 
-                <!-- Second Row -->
                 <div class="row">
-                    <!-- Del Date-->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="DelDt" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Readiness to Ship Date
@@ -72,7 +65,7 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="DelDt" class="text-danger"></span>
                     </div>
-                    <!-- AppDwgExp -->
+
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.AppDwgExp) <span class="text-danger">*</span>
@@ -82,7 +75,7 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AppDwgExp" class="text-danger"></span>
                     </div>
-                    <!-- EngPExp -->
+
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Engineering Package Due <span class="text-danger">*</span>
@@ -91,20 +84,10 @@
                         <input asp-for="EngPExp" class="form-control"
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPExp" class="text-danger"></span>
-                    </div>
-
-                  
-                  
-                  
-
-                   
-
-
+                    </div>                                                    
                 </div>
 
-                <!-- Third Row -->
                 <div class="row">
-                    <!-- EngPRel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="EngPRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Engineering Package Released
@@ -114,7 +97,7 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="EngPRel" class="text-danger"></span>
                     </div>
-                    <!-- AppDwgRel -->
+
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Approval Drawings Released
@@ -124,7 +107,7 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AppDwgRel" class="text-danger"></span>
                     </div>
-                    <!-- AppDwgRet -->
+
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="AppDwgRet" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Approved Drawings Returned
@@ -134,21 +117,9 @@
                                style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                         <span asp-validation-for="AppDwgRet" class="text-danger"></span>
                     </div>
-
-                  
-
-
-                    
-
-
-
-
                 </div>
 
-                <!-- Fourth Row -->
                 <div class="row">
-
-                    <!-- PreOExp -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="PreOExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             @Html.DisplayNameFor(model => model.PreOExp)
@@ -159,7 +130,6 @@
                         <span asp-validation-for="PreOExp" class="text-danger"></span>
                     </div>
 
-                    <!-- PreORel -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="PreORel" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Pre-Orders Released
@@ -170,7 +140,6 @@
                         <span asp-validation-for="PreORel" class="text-danger"></span>
                     </div>
 
-                    <!-- Shipping Terms -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="ShippingTerms" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Shipping Terms
@@ -181,7 +150,6 @@
                         <span asp-validation-for="ShippingTerms" class="text-danger"></span>
                     </div>
 
-                    <!-- Price -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="Price" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Price
@@ -192,8 +160,6 @@
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
-
-                    <!-- Currency -->
                     <div class="form-group col-md-4 mb-3">
                         <label asp-for="Currency" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Currency
@@ -207,9 +173,6 @@
                         </select>
                         <span asp-validation-for="Currency" class="text-danger"></span>
                     </div>
-
-
-
 
                     <div class="form-group  col-md-4 mb-3 form-check">
                         <label class="form-check-label">
@@ -286,9 +249,6 @@
 
 
                 <div class="row">
-                   
-
-                    <!-- Comments Section -->
                     <div class="form-group col-md-6 mb-4">
                         <label asp-for="Comments" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Comments
@@ -298,7 +258,6 @@
                         <span asp-validation-for="Comments" class="text-danger"></span>
                     </div>
 
-                    <!-- Engineers Assignment -->
                     <div class="form-group col-md-6 mb-4">
                         <label class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                             Assign Engineers
@@ -328,10 +287,6 @@
                     </div>
 
                 </div>
-
-
-
-                
                 <!-- Form Actions -->
                 <div class="form-group text-center">
                     <button type="submit" class="btn  mr-2"
@@ -411,7 +366,7 @@
                         }
                     });
                 },
-                minLength: 1 // Set to 2 or higher to limit the suggestions
+                minLength: 1 // Set limit
             });
         });
 

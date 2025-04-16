@@ -22,19 +22,16 @@
         </div>
     </div>
 
-    <!-- Details Content -->
     <div class="row py-4">
         <div class="col-md-10 offset-md-1">
             <div class="card border shadow-sm">
                 <div class="card-body p-4">
-                    <!-- Section: Vendor Information -->
                     <div class="mb-5">
                         <h5 class="mb-4" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340; border-bottom: 2px solid #0C2340; padding-bottom: 8px;">
                             Vendor Information
                         </h5>
 
                         <div class="row">
-                            <!-- Name -->
                             <div class="col-md-6 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
@@ -48,7 +45,6 @@
                                 </div>
                             </div>
 
-                            <!-- Phone -->
                             <div class="col-md-6 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
@@ -64,7 +60,6 @@
                         </div>
 
                         <div class="row">
-                            <!-- Email -->
                             <div class="col-md-12 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body">
@@ -81,7 +76,6 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="mt-4 d-flex gap-3 mx-4 mb-3">
                     <a href="@Url.Action("Index", "Vendor")" class="btn btn-primary"
                        style="background-color:#0C2340; border-color:#0C2340; font-family: 'Avenir Heavy', sans-serif; width: 250px;">
@@ -101,9 +95,7 @@
     </div>
 </div>
 
-<!-- Tooltip Initialization -->
 <script>
-    // Initialize tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);

@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <!-- Details Content -->
+
     <div class="row py-4">
         <div class="col-md-8 offset-md-2">
             <div class="card border shadow-sm">
@@ -22,23 +22,18 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
                     <dl class="row mb-0">
-                        <!-- Vendor -->
                         <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
                             @Html.DisplayNameFor(model => model.Vendor)
                         </dt>
                         <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
                             @Html.DisplayFor(model => model.Vendor.Name)
                         </dd>
-
-                        <!-- PO Number -->
                         <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
                             @Html.DisplayNameFor(model => model.PONumber)
                         </dt>
                         <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
                             @Html.DisplayFor(model => model.PONumber)
                         </dd>
-
-                        <!-- Delivery Date -->
                         <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
                             @Html.DisplayNameFor(model => model.PODueDate)
                         </dt>
@@ -59,8 +54,6 @@
                         <dd class="col-sm-9 mb-3" style="font-family: 'Avenir Roman', sans-serif;">
                             @Html.DisplayFor(model => model.QualityICom)
                         </dd>
-
-
                         <dt class="col-sm-3" style="font-family: 'Avenir Heavy', sans-serif; color: #0C2340;">
                             @Html.DisplayNameFor(model => model.NcrRaised)
                         </dt>

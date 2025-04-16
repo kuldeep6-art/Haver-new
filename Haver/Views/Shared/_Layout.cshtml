@@ -157,8 +157,6 @@
 	</div>
 
 
-
-	<!-- Back Button Always Visible Except on login page-->
 	@if (!currentPage.Contains("/account/login"))
 	{
 		<button onclick="showConfirmBackModal()" class="btn back-button" data-bs-toggle="tooltip" data-bs-placement="left" title="Go back to previous page">
@@ -398,7 +396,6 @@ document.addEventListener("DOMContentLoaded", function () {
             hamburgerBtn.style.color = "#001a3d";
         }
     } else {
-        // No saved state yet — apply defaults
         if (isMobile) {
             sidebar.classList.remove("active");
             hamburgerBtn.style.color = "#001a3d";

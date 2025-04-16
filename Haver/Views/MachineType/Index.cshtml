@@ -35,13 +35,12 @@
         @foreach (var item in Model)
         {
                
-                string collapseId = $"collapseOrders{item.ID}"; // Unique collapse ID
+                string collapseId = $"collapseOrders{item.ID}"; 
 
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
                     <td class="d-none d-lg-table-cell">
                         @{
-                            // Get distinct sales orders linked to the machines
                             var salesOrders = item.Machines.Select(m => m.SalesOrder).ToList();
                             int orderCount = salesOrders.Count;
 
@@ -59,7 +58,7 @@
                                         orderList += salesOrders[i].OrderNumber + " <br />";
                                     }
 
-                                    // Display first order with count and expandable list
+                                    // Display first order 
                                     <a class="" role="button" data-bs-toggle="collapse" href="#collapseOrders@(item.ID)"
                                        aria-expanded="false" aria-controls="collapseOrders@(item.ID)">
                                         @firstOrder <span class="badge bg-info">@orderCount</span>
@@ -70,7 +69,6 @@
                                 }
                                 else
                                 {
-                                    // If there's only one order, just display it
                                     @firstOrder
                                 }
                             }

@@ -69,9 +69,6 @@
   *@
 
 
-
-
-
                         <!-- Serial Number -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="SerialNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -85,7 +82,6 @@
 
                     <!-- Second Row -->
                     <div class="row">
-                        <!-- RToShipExp -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="RToShipExp" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 Readiness to ship Exp. <span class="text-danger">*</span>
@@ -106,7 +102,6 @@
                             <span asp-validation-for="AssemblyExp" class="text-danger"></span>
                         </div>
 
-                        <!-- Production Order -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ProductionOrderNumber" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.ProductionOrderNumber)
@@ -114,16 +109,11 @@
                             <input asp-for="ProductionOrderNumber" class="form-control" placeholder="Enter Production Order No."
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
-                        </div>
-
-                        
-
-                      
+                        </div>                                          
                     </div>
 
 
                     <div class="row">
-                        <!-- Nameplate -->
                         <div class="form-group col-md-4 mb-4">
                             <label asp-for="Nameplate" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.Nameplate)
@@ -134,7 +124,6 @@
                             <span asp-validation-for="Nameplate" class="text-danger"></span>
                         </div>
 
-                        <!-- RToShipA -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="RToShipA" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.RToShipA)
@@ -157,8 +146,6 @@
                         </div>
                     </div>
                    
-
-                    <!-- Third Row -->
                     <div class="row">
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="AssemblyComplete" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
@@ -169,7 +156,7 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="AssemblyComplete" class="text-danger"></span>
                         </div>
-                        <!-- Budgeted Hours -->
+
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="BudgetedHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.BudgetedHours)
@@ -178,7 +165,7 @@
                                    style="border-color:#0C2340; font-family: 'Avenir Roman', sans-serif;" />
                             <span asp-validation-for="BudgetedHours" class="text-danger"></span>
                         </div>
-                        <!-- Actual Hours -->
+
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ActualAssemblyHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.ActualAssemblyHours)
@@ -189,9 +176,7 @@
                         </div>
                     </div>
 
-                    <!-- Third Row -->
                     <div class="row">
-                        <!-- Rework Hours -->
                         <div class="form-group col-md-4 mb-3">
                             <label asp-for="ReworkHours" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.ReworkHours)
@@ -267,7 +252,6 @@
                     </div>
 
                     <div class="row">
-                        <!-- PreOrder -->
                         <div class="form-group col-md-6 mb-4">
                             <label asp-for="PreOrder" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.PreOrder)
@@ -278,7 +262,6 @@
                             <span asp-validation-for="PreOrder" class="text-danger"></span>
                         </div>
 
-                        <!-- Scope -->
                         <div class="form-group col-md-6 mb-4">
                             <label asp-for="Scope" class="control-label" style="font-family: 'Avenir Roman', sans-serif; color:#0C2340;">
                                 @Html.DisplayNameFor(model => model.Scope)
@@ -311,11 +294,6 @@
             border: 1px solid #ccc;
             position: absolute;
         }
-
-
-     
-       
-
     </style>
 
 }

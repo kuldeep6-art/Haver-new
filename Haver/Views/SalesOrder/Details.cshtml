@@ -493,7 +493,7 @@
                         }
                     });
                 },
-                minLength: 1 // Set to 2 or higher to limit the suggestions
+                minLength: 1 // Set limit
             });
         });
 
@@ -519,12 +519,12 @@
         idInput.value = orderId;
 
         if (actionType === 'complete') {
-            form.setAttribute('action', '/SalesOrder/Complete');  // Replace with your controller and action
+            form.setAttribute('action', '/SalesOrder/Complete');  
             modalTitle.textContent = "Confirm Complete";
             modalBody.innerHTML = `Are you sure you want to mark this sales order as completed ?`;
-            confirmBtn.className = "btn "; // Green button for "Complete"
+            confirmBtn.className = "btn "; 
         } else {
-            form.setAttribute('action', '/SalesOrder/UnComplete');  // Replace with your controller and action
+            form.setAttribute('action', '/SalesOrder/UnComplete'); 
             modalTitle.textContent = "Confirm Unfinalize";
             modalBody.innerHTML = `Are you sure you want to unfinalize this sales order ?`;
             confirmBtn.className = "btn"; 
@@ -569,17 +569,17 @@
         .opts {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px; /* Add space between items */
+            gap: 10px; 
         }
 
             .opts dt, .opts dd {
                 display: inline-block;
                 width: auto;
-                margin-right: 15px; /* Adjust spacing */
+                margin-right: 15px; 
             }
 
                 .opts dt::after {
-                    content: ":"; /* Add a colon after labels */
+                    content: ":"; 
                     margin-right: 5px;
                 }
         .procurement-table {
@@ -616,8 +616,8 @@
     }
 
     .readonly-dropdown select {
-        pointer-events: none; /* Disable clicks and selections */
-        background-color: #f0f0f0; /* Optional: Change background to indicate it's readonly */
+        pointer-events: none; 
+        background-color: #f0f0f0; 
     }
 
     .readonly-dropdown {

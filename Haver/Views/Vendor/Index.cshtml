@@ -15,14 +15,13 @@
 
 
 @{
-	// Create route value dictionaries for each tab
+	// tabs
 	var routeValues = new Dictionary<string, Dictionary<string, string>>
 			{
 				["Active"] = new Dictionary<string, string> { ["isActive"] = "true" },
 				["Inactive"] = new Dictionary<string, string> { ["isActive"] = "false" }
 			};
 
-	// Preserve existing query parameters (except 'isActive' and 'page')
 	foreach (var key in Context.Request.Query.Keys.Where(k => k != "isActive" && k != "page"))
 	{
 		foreach (var dict in routeValues.Values)
@@ -31,7 +30,6 @@
 		}
 	}
 
-	// Reset page number to 1 when switching tabs
 	foreach (var dict in routeValues.Values)
 	{
 		dict["page"] = "1";
@@ -200,7 +198,6 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" id="statusModalBody">
-				<!-- Message is filled in via JS -->
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
