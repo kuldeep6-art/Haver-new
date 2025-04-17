@@ -47,7 +47,7 @@ namespace haver.Controllers
         {
             string[] sortOptions = new[] { "Order Number" };
 
-            // Default filter to Active (not finalized) if isFinalized is null
+            // Default filter to Active 
             if (!isFinalized.HasValue)
             {
                 isFinalized = false;
@@ -65,14 +65,11 @@ namespace haver.Controllers
                 .AsNoTracking()
                         select g;
 
-
-            // Apply `isFinalized` filter only if it's not null
             if (isFinalized.HasValue)
             {
                 gData = gData.Where(v => v.IsFinalized == isFinalized.Value);
             }
 
-            // Set ViewBag.Status to control which tab is active
             ViewBag.Status = isFinalized.Value ? "Finalized" : "Active";
 
 
@@ -81,9 +78,6 @@ namespace haver.Controllers
                 gData = gData.Where(p => p.SalesOrder.OrderNumber.Contains(SearchString));
                 numberFilters++;
             }
-
-
-
 
             //Give feedback about the state of the filters
             if (numberFilters != 0)
@@ -146,7 +140,7 @@ namespace haver.Controllers
 
             var ganttData = _context.GanttDatas
                 .Include(g => g.Machine)
-                    .ThenInclude(m => m.SalesOrder) // Ensure SalesOrder is loaded via Machine
+                    .ThenInclude(m => m.SalesOrder) 
                 .Include(m => m.Machine).ThenInclude(m => m.MachineType)
                 .FirstOrDefault(g => g.ID == id);
 
@@ -171,7 +165,6 @@ namespace haver.Controllers
         // GET: GanttData/GetMachineData/5
         public IActionResult GetMachineData(int salesOrderID)
         {
-            //Console.WriteLine($"Machine ID: {machineID}");
 
             // Find the Sales Order to check if the SalesOrderID is valid
             var salesOrder = _context.SalesOrders.FirstOrDefault(so => so.ID == salesOrderID);
@@ -200,8 +193,8 @@ namespace haver.Controllers
                 //PackageReleased = machine.SalesOrder?.PreORel?.ToString("yyyy-MM-dd"),
                 PurchaseOrdersIssued = m.SalesOrder?.SoDate?.ToString("yyyy-MM-dd"),
                 //PurchaseOrdersDue = machine.SalesOrder?.
-                //SupplierPODue = machine.SalesOrder?.SupplierPODue?.ToString("yyyy-MM-dd"),  // ✅ Now included
-                //AssemblyStart = machine?.AssemblyStart?.ToString("yyyy-MM-dd"),  // ✅ Now included
+                //SupplierPODue = machine.SalesOrder?.SupplierPODue?.ToString("yyyy-MM-dd"),  
+                //AssemblyStart = machine?.AssemblyStart?.ToString("yyyy-MM-dd"),  //
                 //AssemblyComplete = machine?.AssemblyComplete?.ToString("yyyy-MM-dd"),
                 ShipExpected = m.RToShipExp?.ToString("yyyy-MM-dd"),
                 ShipActual = m.RToShipA?.ToString("yyyy-MM-dd"),
@@ -215,8 +208,6 @@ namespace haver.Controllers
 
 
         // GET: GanttData/Create
-        // GET: GanttData/Create
-
         [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         public IActionResult Create()
         {
@@ -235,7 +226,8 @@ namespace haver.Controllers
         [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SalesOrderID,AppDRcd,EngExpected,EngReleased,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue,AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
+        public async Task<IActionResult> Create([Bind("SalesOrderID,AppDRcd,EngExpected,EngReleased,PackageReleased,PurchaseOrdersIssued,PurchaseOrdersCompleted,SupplierPODue," +
+            "AssemblyStart,AssemblyComplete,ShipExpected,ShipActual,DeliveryExpected,DeliveryActual,Notes")] GanttData ganttData)
         {
             try
             {
@@ -418,11 +410,7 @@ namespace haver.Controllers
                                 Console.WriteLine("No procurement records found or no changes to update.");
                             }
                         }
-
-
                     }
-
-
 
                     if (isUpdated)
                     {
@@ -572,7 +560,7 @@ namespace haver.Controllers
             var ganttData = _context.GanttDatas
                 .Include(g => g.SalesOrder)
                 .Include(g => g.Machine).ThenInclude(m => m.MachineType)
-                .ToList() // Fetch all data first
+                .ToList() 
                 .SelectMany(g => GetMilestoneTasks(g)) // Break into multiple segments per machine
 
                 .ToList();
@@ -589,9 +577,6 @@ namespace haver.Controllers
 
 
 
-
-
-
         private void SaveSelectionToDatabase(ScheduleExportOptionsViewModel options)
         {
             // Convert the current selection to JSON
@@ -600,14 +585,13 @@ namespace haver.Controllers
             var newSelection = new UserSelection
             {
                 SelectionJson = selectionJson,
-                CreatedAt = DateTime.UtcNow // Set current timestamp
+                CreatedAt = DateTime.UtcNow 
             };
 
-            // Save the selection to the database
+            // Save the selection 
             _context.UserSelections.Add(newSelection);
             _context.SaveChanges();
 
-            // Keep only the last 5 selections by deleting older entries
             var selectionsToDelete = _context.UserSelections
                 .OrderByDescending(s => s.CreatedAt)
                 .Skip(5)
@@ -625,10 +609,9 @@ namespace haver.Controllers
             var selections = _context.UserSelections
                 .ToList();
 
-            // Deserialize and return as a list of ScheduleExportOptionsViewModel
             return selections
                 .Select(s => JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(s.SelectionJson))
-                .Where(s => s != null) // Ensure no null entries
+                .Where(s => s != null) 
                 .ToList();
         }
 
@@ -926,7 +909,7 @@ namespace haver.Controllers
                 } })
                 .ToList();
 
-            // Gantt Schedules Data (unchanged)
+            // Gantt Schedules Data 
             var ganttData = _context.GanttDatas
                 .Include(g => g.SalesOrder)
                 .Include(g => g.Machine).ThenInclude(m => m.MachineType)
@@ -971,7 +954,6 @@ namespace haver.Controllers
                 return NotFound("No data available to export.");
             }
 
-            //// Save options to session if this is a form submission
             //if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
             //{
             //    SaveSelectionToDatabase(options);
@@ -1022,9 +1004,6 @@ namespace haver.Controllers
             var optionsJson = HttpContext.Session.GetString("ScheduleExportOptions");
             return string.IsNullOrEmpty(optionsJson) ? null : JsonSerializer.Deserialize<ScheduleExportOptionsViewModel>(optionsJson);
         }
-
-        // Existing SetupMachineSchedulesWorksheet and SetupGanttSchedulesWorksheet methods remain unchanged
-        // I'll include them here for completeness, but they are the same as in the previous response
 
         private void SetupCombinedFlowSchedulesWorksheet(ExcelWorksheet workSheet, List<MachineScheduleViewModel> machineSchedules, List<GanttScheduleViewModel> ganttSchedules, ScheduleExportOptionsViewModel options)
         {
@@ -1402,7 +1381,7 @@ namespace haver.Controllers
                 workSheet.Column(specialNotesCol).Style.WrapText = true;
             }
 
-            // ===== PRINT SETTINGS =====
+            // PRINT SETTINGS
             var print = workSheet.PrinterSettings;
 
             // Auto-fit width for printing
@@ -1935,7 +1914,7 @@ namespace haver.Controllers
             }
             catch (Exception)
             {
-                // Log exception in production code if needed
+
             }
 
             return Color.FromArgb(200, 200, 200); // Default gray
@@ -1943,7 +1922,6 @@ namespace haver.Controllers
 
         private Color GetContrastColor(Color backgroundColor)
         {
-            // Calculate luminance to determine if background is dark
             double luminance = (0.299 * backgroundColor.R + 0.587 * backgroundColor.G + 0.114 * backgroundColor.B) / 255;
             return luminance > 0.5 ? Color.Black : Color.White;
         }
@@ -1957,11 +1935,9 @@ namespace haver.Controllers
         private string GetGanttWeekValue(GanttScheduleViewModel gantt, DateTime weekStart)
         {
             if (gantt?.GanttData == null) return "";
-            // Logic to determine if this week has a milestone (simplified here)
+            // Logic to determine if this week has a milestone
             return gantt.GanttData.Any(g => g.StartDate <= weekStart && g.EndDate >= weekStart) ? "X" : "";
         }
-
-        // Placeholder for GetWeeksRemainingUntilEndOfYear and GetWeekOfYear (assumed to exist)
         private int GetWeeksRemainingUntilEndOfYear(DateTime startDate) => 52 - GetWeekOfYear(startDate, WeekStartOption.Monday) + 1;
         private int GetWeekOfYear(DateTime date, WeekStartOption option) => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         private enum WeekStartOption { Monday }
@@ -1972,8 +1948,6 @@ namespace haver.Controllers
                 return 11 + (week - 1);  // Columns 11-43
             return -1;
         }
-
-
 
         private void ApplyMilestoneToGantt(ExcelWorksheet workSheet, int row, int staticCols, GanttViewModel milestone, ScheduleExportOptionsViewModel options)
         {
@@ -1998,7 +1972,7 @@ namespace haver.Controllers
                 cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 cell.Style.Fill.BackgroundColor.SetColor(milestoneColor);
 
-                // Add comments with milestone name for reference
+                // Add comments with milestone name 
                 if (col == startCol)
                 {
                     cell.AddComment(milestone.MachineName, "Milestone");
@@ -2062,10 +2036,6 @@ namespace haver.Controllers
             return column >= 1 && column <= 33 ? column : -1;
         }
 
-
-
-
-
         private int AdjustWeekNumber(int week, int year, int baseYear)
         {
             if (year < baseYear)
@@ -2081,8 +2051,6 @@ namespace haver.Controllers
                 return week >= 27 ? week : week + 52; // Current year: weeks < 27 wrap to next year
             }
         }
-
-
 
 
         private List<GanttViewModel> GetMilestoneTasks(GanttData g)
@@ -2125,45 +2093,6 @@ namespace haver.Controllers
             return tasks;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> UpdateTask([FromBody] GanttViewModel updatedTask)
-        //{
-        //    if (updatedTask == null || string.IsNullOrEmpty(updatedTask.UniqueID))
-        //    {
-        //        return Json(new { success = false, message = "Invalid task data." });
-        //    }
-
-        //    var existingTask = await _context.GanttDatas
-        //        .FirstOrDefaultAsync(t => t.ID == updatedTask.UniqueID);
-
-        //    if (existingTask == null)
-        //    {
-        //        return Json(new { success = false, message = "Task not found." });
-        //    }
-
-        //    // Update task properties
-        //    existingTask.StartDate = updatedTask.StartDate;
-        //    existingTask.EndDate = updatedTask.EndDate;
-        //    existingTask.Progress = updatedTask.Progress;
-
-        //    _context.GanttTasks.Update(existingTask);
-        //    await _context.SaveChangesAsync();
-
-        //    return Json(new { success = true, message = "Task updated successfully." });
-        //}
-
-
-
-
-
-        //private string GetMilestoneClass(GanttData g)
-        //{
-        //    if (g.EngReleased.HasValue) return "eng-released";
-        //    if (g.PackageReleased.HasValue) return "package-released";
-        //    if (g.ShipExpected.HasValue) return "shipping";
-        //    if (g.DeliveryExpected.HasValue) return "delivery";
-        //    return "default-task";
-        //}
 
         [Authorize(Roles = "Admin,Engineering,Production,PIC")]
         public async Task<IActionResult> FinalizeGantt(int id)
