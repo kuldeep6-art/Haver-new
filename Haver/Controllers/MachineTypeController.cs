@@ -141,18 +141,6 @@ namespace haver.Controllers
                         msg.ErrProperty = "Description";
                         ModelState.AddModelError("Description", "Machine Model Combination should be Unique");
                     }
-
-                    //if (baseMessage.Contains("Size"))
-                    //{
-                    //    msg.ErrProperty = "Size";
-                    //    ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
-                    //}
-
-                    //if (baseMessage.Contains("Deck"))
-                    //{
-                    //    msg.ErrProperty = "Deck";
-                    //    ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
-                    //}
                 }
                 else
                 {
@@ -224,8 +212,6 @@ namespace haver.Controllers
                     if (baseExceptionMessage.Contains("UNIQUE"))
                     {
                         ModelState.AddModelError("Description", "Machine Model Combination should be Unique");
-                        //ModelState.AddModelError("Size", "Machine Model Combination should be Unique");
-                        //ModelState.AddModelError("Deck", "Machine Model Combination should be Unique");
                     }
                     else
                     {

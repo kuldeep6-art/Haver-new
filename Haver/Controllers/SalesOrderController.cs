@@ -71,14 +71,6 @@ namespace haver.Controllers
                     break;
             }
 
-
-            ////Add as many filters as needed
-            //if (CustomerID.HasValue)
-            //{
-            //    salesOrders = salesOrders.Where(p => p.CustomerID == CustomerID);
-            //    numberFilters++;
-            //}
-
             if (!String.IsNullOrEmpty(SearchString))
             {
                 salesOrders = salesOrders.Where(p => p.OrderNumber.Contains(SearchString));
@@ -217,8 +209,8 @@ namespace haver.Controllers
                 .Include(s => s.Machines)
                     .ThenInclude(m => m.MachineType) // 
                 .Include(s => s.Machines)
-                    .ThenInclude(m => m.Procurements) // Include Procurements
-                        .ThenInclude(p => p.Vendor) // Include Vendor details
+                    .ThenInclude(m => m.Procurements) 
+                        .ThenInclude(p => p.Vendor)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             if (salesOrder == null)
@@ -537,12 +529,12 @@ namespace haver.Controllers
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Sales Order has been successfully archived";
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 TempData["Message"] = "An error occured";
             }
 
-            return RedirectToAction(nameof(Index));  // Redirect back to the Index page after archiving.
+            return RedirectToAction(nameof(Index));  
         }
 
 		[Authorize(Roles = "Admin,Sales")]
@@ -569,7 +561,7 @@ namespace haver.Controllers
                 TempData["Message"] = "An error occured";
             }
 
-            return RedirectToAction(nameof(Index));  // Redirect back to the Index page after restoring.
+            return RedirectToAction(nameof(Index));  
         }
 
 
@@ -759,7 +751,7 @@ namespace haver.Controllers
             {
                 if (selectedOptionsHS.Contains(s.ID.ToString()))//it is selected
                 {
-                    if (!currentOptionsHS.Contains(s.ID))//but not currently in the Doctor's collection - Add it!
+                    if (!currentOptionsHS.Contains(s.ID))
                     {
                         salesOrderToUpdate.SalesOrderEngineers.Add(new SalesOrderEngineer
                         {
@@ -770,7 +762,7 @@ namespace haver.Controllers
                 }
                 else //not selected
                 {
-                    if (currentOptionsHS.Contains(s.ID))//but is currently in the Doctor's collection - Remove it!
+                    if (currentOptionsHS.Contains(s.ID))
                     {
                         SalesOrderEngineer? specToRemove = salesOrderToUpdate.SalesOrderEngineers.FirstOrDefault(d => d.EngineerID == s.ID);
                         if (specToRemove != null)

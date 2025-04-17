@@ -65,8 +65,8 @@ namespace haver.Controllers
                     sortField = actionButton;//Sort by the button clicked
                 }
             }
-            //Now we know which field and direction to sort by
 
+            //Now we know which field and direction to sort by
             if (sortField == "Company Name")
             {
                 if (sortDirection == "asc")

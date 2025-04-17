@@ -404,7 +404,6 @@ namespace haver.Controllers
                 .Include(m => m.Procurements)
                 .FirstOrDefaultAsync(m => m.ID == machineId);
 
-            // Check if machine or procurements are null or empty
             if (machine != null && machine.Procurements != null && machine.Procurements.Any())
             {
                 // Get the min and max dates for procurement safely
@@ -423,7 +422,6 @@ namespace haver.Controllers
                     ganttRecord.PurchaseOrdersCompleted = procurementEnd;
                     ganttRecord.SupplierPODue = spoDue;
 
-                    // Save the updated Gantt record
                     _context.GanttDatas.Update(ganttRecord);
                     await _context.SaveChangesAsync();
 
