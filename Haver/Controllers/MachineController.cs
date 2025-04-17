@@ -291,8 +291,6 @@ namespace haver.Controllers
                 machine.MachineTypeID = mmodel.ID;
 
                 // Save Machine only after validation and MachineType are handled
-
-
                 _context.Machines.Add(machine);
                 await _context.SaveChangesAsync();
                 await CreateGanttForMachine(machine);
@@ -343,14 +341,12 @@ namespace haver.Controllers
         {
             // Retrieve the Sales Order that the machine belongs to, including related machines and procurements
             var salesOrder = await _context.SalesOrders
-                .Include(so => so.Machines)   // Include related Machines
-                .ThenInclude(m => m.Procurements)  // Include related Procurements for each machine
+                .Include(so => so.Machines)   
+                .ThenInclude(m => m.Procurements)  
                 .FirstOrDefaultAsync(so => so.ID == machine.SalesOrderID);
 
             if (salesOrder != null)
             {
-                //// Retrieve the Procurement related to this specific machine (if it exists)
-                //var procurement = machine.Procurements.FirstOrDefault();
 
                 // Create a Gantt record for the machine
                 var gantt = new GanttData
@@ -650,10 +646,6 @@ namespace haver.Controllers
                 "Description",
                 selectedId);
         }
-
-
-
-
 
 
         private void PopulateDropDownLists(Machine? machine = null)
