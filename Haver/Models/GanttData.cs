@@ -3,6 +3,7 @@ using System.Globalization;
 
 namespace haver.Models
 {
+    //ganttdata class and properties
     public class GanttData : IValidatableObject
     {
         public int ID { get; set; }

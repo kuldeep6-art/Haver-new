@@ -2,6 +2,7 @@
 
 namespace haver.Models
 {
+    //machine model class and properties
     public class MachineType : Auditable
     {
         public int ID { get; set; }

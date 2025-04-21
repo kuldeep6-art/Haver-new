@@ -2,6 +2,7 @@
 
 namespace haver.Models
 {
+    //procurement class and properties
     public class Procurement
     {
         public int ID { get; set; }

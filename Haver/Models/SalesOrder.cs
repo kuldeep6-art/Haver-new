@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace haver.Models
 {
+    //salesorder class and properties
     public class SalesOrder : Auditable, IValidatableObject
     {
         public int ID { get; set; }

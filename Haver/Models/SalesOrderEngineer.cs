@@ -2,6 +2,7 @@
 
 namespace haver.Models
 {
+    //table connecting sales order and engineers
     public class SalesOrderEngineer : Auditable
     {
         public int ID { get; set; }

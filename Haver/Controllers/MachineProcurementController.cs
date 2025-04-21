@@ -33,7 +33,7 @@ namespace haver.Controllers
 
             if (!MachineID.HasValue)
             {
-                //Go back to the proper return URL for the Patients controller
+                //Go back to the proper return URL for the Machines controller
                 return Redirect(ViewData["returnURL"].ToString());
             }
 
@@ -121,7 +121,7 @@ namespace haver.Controllers
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
 
-            //Now get the MASTER record, the patient, so it can be displayed at the top of the screen
+            //Now get the MASTER record, the machine, so it can be displayed at the top of the screen
             Machine? machine = await _context.Machines
                 .Include(s => s.MachineType)
                 .Include(s => s.SalesOrder)

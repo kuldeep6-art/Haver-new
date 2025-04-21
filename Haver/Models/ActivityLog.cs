@@ -1,5 +1,7 @@
 ﻿namespace haver.Models
 {
+
+    //activity log class and properties
     public class ActivityLog
     {
         public int Id { get; set; }
