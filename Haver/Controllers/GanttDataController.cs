@@ -823,29 +823,11 @@ namespace haver.Controllers
         }
 
 
+        //export schedules logic
 
         [HttpPost]
         public IActionResult DownloadSchedules(ScheduleExportOptionsViewModel options)
         {
-            //// Load previously saved options from the database if no form submission
-            //if (!HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) || options == null)
-            //{
-            //    //if (options != null)
-            //    //{
-            //    //    SaveSelectionToDatabase(options);
-            //    //}
-
-            //    var savedSelections = LoadSelectionsFromDatabase();
-            //    if (savedSelections.Any())
-            //    {
-            //        options = savedSelections.First(); // Load the most recent selection
-            //    }
-            //    else
-            //    {
-            //        options = new ScheduleExportOptionsViewModel(); // Fallback if nothing is found
-            //    }
-            //}
-
             // Fetch sales orders with related data (unchanged)
             var salesOrders = _context.SalesOrders
                 .Include(so => so.Machines).ThenInclude(m => m.MachineType)
@@ -953,11 +935,6 @@ namespace haver.Controllers
             {
                 return NotFound("No data available to export.");
             }
-
-            //if (HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    SaveSelectionToDatabase(options);
-            //}
 
             using (ExcelPackage excel = new ExcelPackage())
             {
@@ -2053,6 +2030,7 @@ namespace haver.Controllers
         }
 
 
+        //creating and assigning dates to milestones and adding colors
         private List<GanttViewModel> GetMilestoneTasks(GanttData g)
         {
             var tasks = new List<GanttViewModel>();
