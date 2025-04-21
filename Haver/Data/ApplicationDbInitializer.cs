@@ -22,6 +22,7 @@ namespace haver.Data
                     }
                     catch (Exception ex)
                     {
+                        //error message for when the migration fails
                         Debug.WriteLine(ex.GetBaseException().Message);
                     }
                 }
@@ -36,6 +37,7 @@ namespace haver.Data
                 {
                     try
                     {
+                        //list of all the roles for app
                         string[] roleNames = { "Admin", "Sales", "Engineering", "Procurement", "Production", "PIC" };
 
                         IdentityResult roleResult;
@@ -54,11 +56,12 @@ namespace haver.Data
                     }
                 }
 
-                //Create Users
+                //Create Users. all the default roles for the app
                 using (var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>())
                 {
                     try
                     {
+                        //this is the default password which can be changed for the admin
                         string defaultPassword = "Pa55w@rd";
 
                         if (userManager.FindByEmailAsync("admin@haverniagara.com").Result == null)
@@ -157,6 +160,7 @@ namespace haver.Data
                                 userManager.AddToRoleAsync(user, "PIC").Wait();
                             }
                         }
+                        //test role for the user but removed since other users can be added in through the app itself
                         //if (userManager.FindByEmailAsync("user@haverniagara.com").Result == null)
                         //{
                         //    IdentityUser user = new IdentityUser
