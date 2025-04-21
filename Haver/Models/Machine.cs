@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace haver.Models
 {
+    //machine class and properties
     public class Machine : Auditable
     {
         public int ID { get; set; }

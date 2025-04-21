@@ -2,6 +2,7 @@
 
 namespace haver.Models
 {
+    //userselection class for export
     public class UserSelection
     {
         [Key]

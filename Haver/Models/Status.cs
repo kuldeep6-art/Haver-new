@@ -2,7 +2,8 @@
 
 namespace haver.Models
 {
-	public enum Status
+    //salesorder status list
+    public enum Status
 	{
 		Draft,
 		[Display(Name="In Progress")]
