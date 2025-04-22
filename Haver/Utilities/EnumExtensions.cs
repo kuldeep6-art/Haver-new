@@ -8,6 +8,7 @@ namespace haver.Utilities
 		public static SelectList ToSelectList<TEnum>(this TEnum enumObj, TEnum? selectedValue)
 			where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
+			//gets all the values from the enum as list
 			var values = Enum.GetValues(typeof(TEnum))
 							 .Cast<TEnum>()
 							 .Select(e => new
@@ -21,7 +22,7 @@ namespace haver.Utilities
 									 : e.ToString()
 							 })
 							 .ToList();
-
+			//returns selectlist to be used in razor pages and forms
 			return new SelectList(values, "Value", "Text", selectedValue);
 		}
 	}
